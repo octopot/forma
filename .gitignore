@@ -1,0 +1,7 @@
+vendor
+
+# goreleaser
+/dist/
+
+# go test
+*coverage*.out

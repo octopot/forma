@@ -16,13 +16,13 @@ func main() {
 	r.Post("/{UID}", func(rw http.ResponseWriter, req *http.Request) {
 		rw.Write([]byte("send form data"))
 	})
-	log.Fatal(http.ListenAndServe(":"+port(), r))
+	log.Fatal(http.ListenAndServe(addr(), r))
 }
 
-func port() string {
+func addr() string {
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
-	return port
+	return os.Getenv("BIND") + ":" + port
 }

@@ -6,6 +6,9 @@ import (
 	"os"
 
 	"github.com/go-chi/chi"
+	_ "github.com/rubenv/sql-migrate"
+	_ "github.com/spf13/cobra"
+	_ "github.com/spf13/viper"
 )
 
 func main() {

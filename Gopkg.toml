@@ -1,3 +1,14 @@
 [[constraint]]
   name = "github.com/go-chi/chi"
   version = "^3.3.0"
+
+[[constraint]]
+  name = "github.com/rubenv/sql-migrate"
+
+[[constraint]]
+  name = "github.com/spf13/cobra"
+  version = "*"
+
+[[constraint]]
+  name = "github.com/spf13/viper"
+  version = "^1.0.0"

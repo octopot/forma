@@ -5,3 +5,7 @@ vendor
 
 # go test
 *coverage*.out
+
+# migrations
+/migrations/*
+!/migrations/1_initial.sql

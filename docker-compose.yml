@@ -1,8 +1,14 @@
 version: "3"
 
 services:
-  service:
-
-  server:
-
   db:
+    image: postgres:10-alpine
+    restart: always
+    ports:
+    - 5432:5432
+#
+#  discovery:
+#
+#  service:
+#
+#  server:

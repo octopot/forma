@@ -1,7 +1,9 @@
 -- +migrate Up
 
+CREATE EXTENSION "uuid-ossp";
+
 CREATE TABLE "form_schema" (
-  "uuid" UUID NOT NULL PRIMARY KEY,
+  "uuid" UUID NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
   "user" UUID NOT NULL,
   "schema" XML NOT NULL
 );

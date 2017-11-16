@@ -9,3 +9,5 @@ vendor
 # migrations
 /migrations/*
 !/migrations/1_initial.sql
+
+.env

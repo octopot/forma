@@ -1,0 +1,17 @@
+upstream service {
+    server ${HOST}:${PORT};
+}
+
+server {
+    listen 8080 default_server;
+
+    location /api/ {
+        limit_req zone=api burst=100;
+        proxy_pass http://service;
+    }
+
+    location /admin/ {
+        limit_req zone=admin burst=5;
+        proxy_pass http://service;
+    }
+}

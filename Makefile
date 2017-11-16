@@ -41,6 +41,11 @@ up:
 down:
 	docker-compose down
 
+.PHONY: status
+status:
+	docker-compose ps
+
+
 .PHONY: start-db
 start-db:
 	docker-compose start db
@@ -49,13 +54,21 @@ start-db:
 stop-db:
 	docker-compose stop db
 
+.PHONY: logs-db
+logs-db:
+	docker-compose logs -f db
+
 .PHONY: start-discovery
 start-discovery:
-	docker-compose discovery db
+	docker-compose start discovery
 
 .PHONY: stop-discovery
 stop-discovery:
 	docker-compose stop discovery
+
+.PHONY: logs-discovery
+logs-discovery:
+	docker-compose logs -f discovery
 
 .PHONY: start-service
 start-service:
@@ -65,6 +78,10 @@ start-service:
 stop-service:
 	docker-compose stop service
 
+.PHONY: logs-service
+logs-service:
+	docker-compose logs -f service
+
 .PHONY: start-server
 start-server:
 	docker-compose start server
@@ -72,3 +89,7 @@ start-server:
 .PHONY: stop-server
 stop-server:
 	docker-compose stop server
+
+.PHONY: logs-server
+logs-server:
+	docker-compose logs -f server

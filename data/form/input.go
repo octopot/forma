@@ -1,6 +1,6 @@
 package form
 
-// Input represents input element in form.
+// Input represents input element in a form.
 type Input struct {
 	ID        string `xml:"id,attr"`
 	Name      string `xml:"name,attr"`

@@ -1,14 +1,14 @@
-package dao_test
+package data_test
 
 import (
 	"testing"
 
-	"github.com/kamilsk/form-api/dao"
+	"github.com/kamilsk/form-api/data"
 )
 
 func TestUUID_IsValid(t *testing.T) {
 	for _, tc := range []struct {
-		uuid     dao.UUID
+		uuid     data.UUID
 		expected bool
 	}{
 		{uuid: "invalid", expected: false},
@@ -26,25 +26,6 @@ func TestUUID_IsValid(t *testing.T) {
 				t.Errorf("expected valid UUID, obtained invalid: %s", tc.uuid)
 			} else {
 				t.Errorf("expected invalid UUID, obtained valid: %s", tc.uuid)
-			}
-		}
-	}
-}
-
-func TestInputType_IsSupported(t *testing.T) {
-	for _, tc := range []struct {
-		input    dao.InputType
-		expected bool
-	}{
-		{input: "email", expected: true},
-		{input: "button", expected: false},
-		{input: "unknown", expected: false},
-	} {
-		if tc.expected != tc.input.IsSupported() {
-			if tc.expected {
-				t.Errorf("expected supported input type, obtained unsupported: %s", tc.input)
-			} else {
-				t.Errorf("expected unsupported input type, obtained supported: %s", tc.input)
 			}
 		}
 	}

@@ -6,6 +6,10 @@
   name = "github.com/rubenv/sql-migrate"
 
 [[constraint]]
+  name = "github.com/pkg/errors"
+  version = "0.8.0"
+
+[[constraint]]
   name = "github.com/spf13/cobra"
   version = "*"
 

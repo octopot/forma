@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/kamilsk/form-api/dao/form"
+	"github.com/kamilsk/form-api/data/form"
 )
 
 func TestXML_Decode(t *testing.T) {
@@ -25,6 +25,11 @@ func TestXML_Decode(t *testing.T) {
 					Title:     "Email",
 					MaxLength: 64,
 				},
+				{
+					ID:   "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_redirect",
+					Name: "redirect",
+					Type: "hidden",
+				},
 			},
 		}},
 	} {
@@ -40,7 +45,11 @@ func TestXML_Decode(t *testing.T) {
 			t.Error("unexpected error", err)
 		}
 		if !reflect.DeepEqual(schema, tc.schema) {
-			t.Errorf("expected form schema: %+v, obtained: %+v", tc.schema, schema)
+			t.Errorf(`
+expected form schema:
+%+v
+obtained:
+%+v`, tc.schema, schema)
 		}
 	}
 }

@@ -1,27 +1,25 @@
 package server
 
 import (
+	"context"
 	"net/http"
 
-	"github.com/kamilsk/form-api/dao"
+	"github.com/kamilsk/form-api/data"
 )
 
-// UUIDKey used as a context key to store form UUID.
-type UUIDKey struct{}
-
-// UUID validated form UUID stored in request context.
-func UUID(next http.Handler) http.Handler {
-	return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		uuid, ok := req.Context().Value(UUIDKey{}).(string)
-		if ok && dao.UUID(uuid).IsValid() {
-			next.ServeHTTP(rw, req)
-			return
-		}
-		var err *ErrorMessage
-		if !ok {
-			err.NotProvidedUUID().MarshalTo(rw)
-			return
-		}
+// ValidateUUID validates form UUID and makes a decision what to return to a client.
+func ValidateUUID(formUUID string, rw http.ResponseWriter, req *http.Request, next http.Handler) {
+	var err *Error
+	uuid := data.UUID(formUUID)
+	if uuid.IsEmpty() {
+		err.NotProvidedUUID().MarshalTo(rw)
+		return
+	}
+	if !uuid.IsValid() {
 		err.InvalidUUID().MarshalTo(rw)
-	})
+		return
+	}
+	next.ServeHTTP(rw,
+		req.WithContext(
+			context.WithValue(req.Context(), UUIDKey{}, uuid)))
 }

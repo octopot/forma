@@ -5,11 +5,15 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/kamilsk/form-api/server/chi"
+	"github.com/kamilsk/form-api/server"
+	"github.com/kamilsk/form-api/server/router/chi"
 )
 
 func main() {
-	log.Fatal(http.ListenAndServe(addr(), chi.NewRouter()))
+	addr := addr()
+	log.Println("starting server at", addr)
+	log.Fatal(http.ListenAndServe(addr, chi.NewRouter(
+		server.New())))
 }
 
 func addr() string {

@@ -1,4 +1,18 @@
-.DEFAULT: watch
+.DEFAULT: run
+
+
+.PHONY: deps
+deps:
+	dep ensure -v
+
+.PHONY: run
+run: BIND = 127.0.0.1
+run: PORT = 8080
+run:
+	( \
+	  export BIND=$(BIND) PORT=$(PORT); \
+	  go run -ldflags '-s -w -X main.version=dev -X main.commit=unknown -X main.date=unknown' main.go \
+	)
 
 
 .PHONY: docker-build-fast dbf
@@ -16,13 +30,12 @@ docker-build:
 	             .
 
 
-.PHONY: docker-start watch
+.PHONY: docker-start
 docker-start:
 	docker run --rm -d \
 	           --name form-api-dev \
 	           --publish 8080:8080 \
 	           kamilsk/form-api:latest
-watch: docker-start docker-logs
 
 .PHONY: docker-logs
 docker-logs:

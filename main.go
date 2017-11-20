@@ -7,6 +7,7 @@ import (
 
 	"github.com/kamilsk/form-api/server"
 	"github.com/kamilsk/form-api/server/router/chi"
+	_ "github.com/lib/pq"
 )
 
 func main() {

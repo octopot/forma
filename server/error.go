@@ -62,7 +62,7 @@ func (e Error) IsServer() bool {
 	return e.Code%500 < 100
 }
 
-// MarshalTo writes an encoded JSON representation of self to response.
+// MarshalTo writes an encoded JSON representation of self to the response writer.
 func (e Error) MarshalTo(rw http.ResponseWriter) error {
 	rw.WriteHeader(e.Code)
 	rw.Header().Set("Content-Type", "application/json")

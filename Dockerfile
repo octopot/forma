@@ -1,7 +1,5 @@
 FROM golang:1.9 AS build
 
-LABEL maintainer="Kamil Samigullin <kamil@samigullin.info>"
-
 ARG QUICK
 
 WORKDIR /go/src/github.com/kamilsk/form-api

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/data"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestUUID_IsValid(t *testing.T) {
@@ -21,12 +22,6 @@ func TestUUID_IsValid(t *testing.T) {
 		{uuid: "a0eebc99-9c0b-6ef8-bb6d-6bb9bd380a11", expected: false},
 		{uuid: "A0EEBC99-9C0B-1EF8-BB6D-6BB9BD380A11", expected: true},
 	} {
-		if tc.expected != tc.uuid.IsValid() {
-			if tc.expected {
-				t.Errorf("expected valid UUID, obtained invalid: %s", tc.uuid)
-			} else {
-				t.Errorf("expected invalid UUID, obtained valid: %s", tc.uuid)
-			}
-		}
+		assert.Equal(t, tc.expected, tc.uuid.IsValid())
 	}
 }

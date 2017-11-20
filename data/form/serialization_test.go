@@ -6,10 +6,10 @@ import (
 	"flag"
 	"io/ioutil"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/kamilsk/form-api/data/form"
+	"github.com/stretchr/testify/assert"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -40,16 +40,8 @@ func TestXML_Decode(t *testing.T) {
 	} {
 		var schema form.Schema
 		file := reader(tc.filename)
-		if err := dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false); err != nil {
-			t.Error("unexpected error", err)
-		}
-		if !reflect.DeepEqual(schema, tc.schema) {
-			t.Errorf(`
-expected form schema:
-%+v
-obtained:
-%+v`, tc.schema, schema)
-		}
+		assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
+		assert.Equal(t, tc.schema, schema)
 	}
 }
 
@@ -79,23 +71,13 @@ func TestXML_Encode(t *testing.T) {
 	} {
 		if *update {
 			file := writer(tc.golden)
-			if err := dryClose(file, func() error { return tc.schema.MarshalTo(file) }, false); err != nil {
-				t.Error("unexpected error", err)
-			}
+			assert.NoError(t, dryClose(file, func() error { return tc.schema.MarshalTo(file) }, false))
 		}
 		buf := bytes.NewBuffer(nil)
 		tc.schema.MarshalTo(buf)
 		golden, err := ioutil.ReadFile(tc.golden)
-		if err != nil {
-			t.Error("unexpected error", err)
-		}
-		if !reflect.DeepEqual(buf.Bytes(), golden) {
-			t.Errorf(`
-expected form schema:
-%s
-obtained:
-%s`, golden, buf.Bytes())
-		}
+		assert.NoError(t, err)
+		assert.Equal(t, golden, buf.Bytes())
 	}
 }
 

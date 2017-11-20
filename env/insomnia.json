@@ -1,0 +1,128 @@
+{
+  "_type": "export",
+  "__export_format": 3,
+  "__export_date": "2017-11-20T12:09:36.680Z",
+  "__export_source": "insomnia.desktop.app:v5.11.7",
+  "resources": [
+    {
+      "_id": "wrk_39a96856d52d428db3215427df4d62b9",
+      "parentId": null,
+      "modified": 1511170173892,
+      "created": 1511170173892,
+      "name": "Form API",
+      "description": "",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_0293a080c9994358b115cdbd4fd89c69",
+      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
+      "modified": 1511170187505,
+      "created": 1511170173907,
+      "name": "Base Environment",
+      "data": {
+        "host": "http://localhost:8080"
+      },
+      "color": null,
+      "isPrivate": false,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_fc543b864a154a039352aa1ad1600b55",
+      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
+      "modified": 1511170173901,
+      "created": 1511170173901,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "fld_d2ae092acc3b41529ac426eabe40cb39",
+      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
+      "modified": 1511170201995,
+      "created": 1511170196968,
+      "name": "/api/v1",
+      "description": "",
+      "environment": {},
+      "metaSortKey": -1511170196968,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_90aec0df25174321a25a5335c81d1234",
+      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
+      "modified": 1511170207212,
+      "created": 1511170207212,
+      "name": "/admin",
+      "description": "",
+      "environment": {},
+      "metaSortKey": -1511170207212,
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_fe78a3818ede480e8233c4cf291f7592",
+      "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
+      "modified": 1511179391485,
+      "created": 1511178532108,
+      "url": "{{host}}/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+      "name": "/{UUID}",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json",
+          "id": "pair_f199f30026324808a36f16ea89fdcaa1"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1511178532108,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_ef9faa3b887247afb312dd4919045e20",
+      "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
+      "modified": 1511178708532,
+      "created": 1511178563984,
+      "url": "{{host}}/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+      "name": "/{UUID}",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "name": "email",
+            "value": "kamil@samigullin.info",
+            "id": "pair_f9a0481c7909424a8cb09ef22508d1d4",
+            "disabled": false
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded",
+          "id": "pair_5ba592a2cd624da292c075c96629996b"
+        },
+        {
+          "name": "Referer",
+          "value": "https://kamil.samigullin.info/",
+          "id": "pair_0ddbcb361b304f9ba66fad82d51fd347"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1511178532158,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    }
+  ]
+}

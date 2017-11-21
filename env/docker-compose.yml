@@ -22,7 +22,8 @@ services:
   service:
     build:
       args: { QUICK: "true" }
-      context: .
+      context: ../.
+      dockerfile: ./env/Dockerfile
     depends_on:
     - db
     env_file: .env

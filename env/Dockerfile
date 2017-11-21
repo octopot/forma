@@ -36,4 +36,4 @@ ENV PORT "8080"
 
 ENTRYPOINT form-api
 
-CMD ["start"]
+CMD ["run"]

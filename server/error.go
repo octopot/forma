@@ -29,7 +29,7 @@ func (*Error) NotProvidedUUID() Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Form UUID is not provided",
-		Details: "Please pass UUID compatible with RFC 4122",
+		Details: "Please provide UUID compatible with RFC 4122",
 	}
 }
 
@@ -38,7 +38,7 @@ func (*Error) InvalidUUID() Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Invalid form UUID is provided",
-		Details: "Please pass UUID compatible with RFC 4122",
+		Details: "Please provide UUID compatible with RFC 4122",
 	}
 }
 
@@ -47,6 +47,25 @@ func (*Error) InvalidFormData(err error) Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Request PostForm is invalid",
+		Details: err.Error(),
+		origin:  err,
+	}
+}
+
+// NoReferer returns prepared client error.
+func (*Error) NoReferer() Error {
+	return Error{
+		Code:    http.StatusBadRequest,
+		Message: "Request does not contain HTTP referer",
+		Details: "Please provide required header",
+	}
+}
+
+// NoReferer returns prepared client error.
+func (*Error) InvalidReferer(err error) Error {
+	return Error{
+		Code:    http.StatusBadRequest,
+		Message: "Request contains invalid HTTP referer",
 		Details: err.Error(),
 		origin:  err,
 	}

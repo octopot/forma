@@ -2,6 +2,8 @@ package dao
 
 import (
 	"database/sql"
+	"encoding/json"
+	"fmt"
 	"net/url"
 
 	"github.com/kamilsk/form-api/data"
@@ -42,13 +44,26 @@ func (s *service) Schema(uuid data.UUID) (form.Schema, error) {
 		schema form.Schema
 		xml    []byte
 	)
-	row := s.conn.QueryRow(`SELECT schema FROM form_schema WHERE uuid = $1`, uuid)
+	row := s.conn.QueryRow(`SELECT schema FROM form_schema WHERE uuid = $1 AND status = 'enabled'`, uuid)
 	if err := row.Scan(&xml); err != nil {
-		return schema, errors.WithMessage(err, "trying to find schema with UUID "+uuid.String())
+		return schema, errors.WithMessage(err, fmt.Sprintf("trying to find schema with UUID %q", uuid))
 	}
 	if err := (&schema).UnmarshalFrom(xml); err != nil {
-		return schema, errors.WithMessage(err, "trying to unmarshal schema with UUID "+uuid.String())
+		return schema, errors.WithMessage(err, fmt.Sprintf("trying to unmarshal schema with UUID %q from XML", uuid))
 	}
 	schema.ID = uuid.String()
 	return schema, nil
+}
+
+// AddData inserts form data and returns its ID.
+func (s *service) AddData(uuid data.UUID, d map[string]interface{}) (int64, error) {
+	encoded, err := json.Marshal(d)
+	if err != nil {
+		return 0, errors.WithMessage(err, fmt.Sprintf("trying to marshal data into JSON with schema of %q", uuid))
+	}
+	result, err := s.conn.Exec(`INSERT INTO form_data (data) VALUES ($1)`, encoded)
+	if err != nil {
+		return 0, errors.WithMessage(err, fmt.Sprintf("trying to insert JSON `%+v` with schema of %q", encoded, uuid))
+	}
+	return result.LastInsertId()
 }

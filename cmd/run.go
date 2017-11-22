@@ -3,11 +3,14 @@ package cmd
 import (
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 
+	"github.com/kamilsk/form-api/dao"
 	"github.com/kamilsk/form-api/server"
 	"github.com/kamilsk/form-api/server/router/chi"
+	"github.com/kamilsk/form-api/service"
 	"github.com/spf13/cobra"
 )
 
@@ -18,7 +21,31 @@ var run = &cobra.Command{
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 		log.Println("starting server at", addr)
 		log.Fatal(http.ListenAndServe(addr, chi.NewRouter(
-			server.New(), cmd.Flag("with-profiler").Value.String() == "true")))
+			server.New(service.New(func() service.DataLoader {
+
+				// TODO configure by viper
+				srv, err := dao.New(dao.Connection(func() *url.URL {
+					dsn := &url.URL{
+						Scheme: "postgres",
+						User:   url.UserPassword("postgres", "postgres"),
+						Host:   "127.0.0.1:5432",
+						Path:   "/postgres",
+						RawQuery: func() string {
+							query := url.Values{}
+							query.Add("connect_timeout", "1")
+							query.Add("sslmode", "disable")
+							return query.Encode()
+						}(),
+					}
+					return dsn
+				}()))
+				if err != nil {
+					log.Fatal(err)
+				}
+				return srv
+
+			}())),
+			cmd.Flag("with-profiler").Value.String() == "true")))
 	},
 }
 

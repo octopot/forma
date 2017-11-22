@@ -1,6 +1,7 @@
 package form
 
 import (
+	"encoding/xml"
 	"io"
 	"net/url"
 	"text/template"
@@ -31,4 +32,9 @@ type Schema struct {
 // MarshalTo writes an encoded XML representation of self to the writer.
 func (s Schema) MarshalTo(w io.Writer) error {
 	return tpl.Execute(w, s)
+}
+
+// UnmarshalFrom parses the XML-encoded data and stores the result in self.
+func (s *Schema) UnmarshalFrom(data []byte) error {
+	return xml.Unmarshal(data, s)
 }

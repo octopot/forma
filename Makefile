@@ -11,7 +11,7 @@ run: PORT = 8080
 run:
 	( \
 	  export BIND=$(BIND) PORT=$(PORT); \
-	  go run -ldflags '-s -w -X main.version=dev -X main.commit=unknown -X main.date=unknown' main.go $(COMMAND); \
+	  go run -ldflags '-s -w -X main.version=dev -X main.commit=unknown -X main.date=unknown' main.go build.go $(COMMAND); \
 	)
 
 .PHONY: help
@@ -22,6 +22,10 @@ help: run
 migrate: COMMAND = migrate
 migrate: run
 
-.PHONY: service
-service: COMMAND = run --with-profiler
-service: run
+.PHONY: server
+server: COMMAND = run --with-profiler
+server: run
+
+.PHONY: version
+version: COMMAND = version
+version: run

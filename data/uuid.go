@@ -16,3 +16,8 @@ func (s UUID) IsEmpty() bool {
 func (s UUID) IsValid() bool {
 	return !s.IsEmpty() && uuid.MatchString(string(s))
 }
+
+// String implements `fmt.Stringer` interface.
+func (s UUID) String() string {
+	return string(s)
+}

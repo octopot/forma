@@ -8,7 +8,4 @@ func init() {
 
 var RootCmd = &cobra.Command{
 	Short: "Form API",
-	Long:  ``,
-	Run: func(cmd *cobra.Command, args []string) {
-	},
 }

@@ -22,6 +22,6 @@ help: run
 migrate: COMMAND = migrate
 migrate: run
 
-.PHONY: server
-server: COMMAND = run
-server: run
+.PHONY: service
+service: COMMAND = run --with-profiler
+service: run

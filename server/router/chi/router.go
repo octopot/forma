@@ -2,6 +2,7 @@ package chi
 
 import (
 	"net/http"
+	"net/http/pprof"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
@@ -9,7 +10,7 @@ import (
 )
 
 // NewRouter returns configured `github.com/go-chi/chi` router.
-func NewRouter(api server.FormAPI) http.Handler {
+func NewRouter(api server.FormAPI, withProfiler bool) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Recoverer)
@@ -30,6 +31,16 @@ func NewRouter(api server.FormAPI) http.Handler {
 	})
 
 	r.Route("/admin", func(r chi.Router) {})
+
+	if withProfiler {
+		r.Route("/debug/pprof", func(r chi.Router) {
+			r.Get("/", pprof.Index)
+			r.Get("/cmdline", pprof.Cmdline)
+			r.Get("/profile", pprof.Profile)
+			r.Get("/symbol", pprof.Symbol)
+			r.Get("/trace", pprof.Trace)
+		})
+	}
 
 	return r
 }

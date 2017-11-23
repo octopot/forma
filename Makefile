@@ -44,9 +44,24 @@ run:
 help: COMMAND = help
 help: run
 
+.PHONY: help-migrate
+help-migrate: COMMAND = migrate --help
+help-migrate: run
+
+.PHONY: help-run
+help-run: COMMAND = run --help
+help-run: run
+
 .PHONY: migrate
 migrate: COMMAND = migrate
 migrate: run
+
+.PHONY: migrate-up
+migrate-up: migrate
+
+.PHONY: migrate-down
+migrate-down: COMMAND = migrate down
+migrate-down: run
 
 .PHONY: server
 server: COMMAND = run --with-profiler

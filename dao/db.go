@@ -49,13 +49,23 @@ type layer struct {
 	conn *sql.DB
 }
 
+// Connection returns current database connection.
+func (l *layer) Connection() *sql.DB {
+	return l.conn
+}
+
+// Dialect returns database SQL dialect.
+func (l *layer) Dialect() string {
+	return "postgres"
+}
+
 // Schema returns form schema with provided UUID.
-func (s *layer) Schema(uuid data.UUID) (form.Schema, error) {
+func (l *layer) Schema(uuid data.UUID) (form.Schema, error) {
 	var (
 		schema form.Schema
 		xml    []byte
 	)
-	row := s.conn.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
+	row := l.conn.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&xml); err != nil {
 		return schema, errors.WithMessage(err, fmt.Sprintf("trying to find schema with UUID %q", uuid))
 	}
@@ -67,12 +77,12 @@ func (s *layer) Schema(uuid data.UUID) (form.Schema, error) {
 }
 
 // AddData inserts form data and returns its ID.
-func (s *layer) AddData(uuid data.UUID, values url.Values) (int64, error) {
+func (l *layer) AddData(uuid data.UUID, values url.Values) (int64, error) {
 	encoded, err := json.Marshal(values)
 	if err != nil {
 		return 0, errors.WithMessage(err, fmt.Sprintf("trying to marshal data into JSON with schema of %q", uuid))
 	}
-	result, err := s.conn.Exec(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`, uuid, encoded)
+	result, err := l.conn.Exec(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`, uuid, encoded)
 	if err != nil {
 		return 0, errors.WithMessage(err, fmt.Sprintf("trying to insert JSON `%+v` with schema of %q", encoded, uuid))
 	}

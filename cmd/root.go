@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	RootCmd.AddCommand(migrate, run)
+	RootCmd.AddCommand(migrateCmd, runCmd)
 }
 
 var RootCmd = &cobra.Command{
@@ -47,10 +47,10 @@ func db(cmd *cobra.Command) {
 	{
 		cmd.Flags().String("db_host", v.GetString("host"), "database host")
 		cmd.Flags().Int("db_port", v.GetInt("port"), "database port")
-		cmd.Flags().String("db_user", v.GetString("user"), "user name")
-		cmd.Flags().String("db_pass", v.GetString("pass"), "user password")
+		cmd.Flags().String("db_user", v.GetString("user"), "database user name")
+		cmd.Flags().String("db_pass", v.GetString("pass"), "database user password")
 		cmd.Flags().String("db_name", v.GetString("name"), "database name")
-		cmd.Flags().Int("db_timeout", v.GetInt("timeout"), "connection timeout")
+		cmd.Flags().Int("db_timeout", v.GetInt("timeout"), "connection timeout in seconds")
 		cmd.Flags().String("db_sslmode", v.GetString("sslmode"), "ssl mode")
 	}
 }

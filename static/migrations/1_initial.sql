@@ -2,6 +2,7 @@
 
 CREATE EXTENSION "uuid-ossp";
 
+-- +migrate StatementBegin
 CREATE FUNCTION update_timestamp() RETURNS TRIGGER AS $update_timestamp$
 BEGIN
   NEW.updated_at := current_timestamp;
@@ -15,6 +16,7 @@ BEGIN
 --   END IF;
 END;
 $update_timestamp$ LANGUAGE plpgsql;
+-- +migrate StatementEnd
 
 CREATE TYPE STATUS AS ENUM ('enabled','disabled');
 

@@ -12,7 +12,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var run = &cobra.Command{
+var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Start HTTP server",
 	Run: func(cmd *cobra.Command, args []string) {
@@ -38,9 +38,9 @@ func init() {
 		v.SetDefault("port", 8080)
 	}
 	{
-		run.Flags().String("bind", v.GetString("bind"), "interface to which the server will bind")
-		run.Flags().Int("port", v.GetInt("port"), "port on which the server will listen")
-		run.Flags().Bool("with-profiler", false, "enable pprof on /debug/pprof")
+		runCmd.Flags().String("bind", v.GetString("bind"), "interface to which the server will bind")
+		runCmd.Flags().Int("port", v.GetInt("port"), "port on which the server will listen")
+		runCmd.Flags().Bool("with-profiler", false, "enable pprof on /debug/pprof")
 	}
-	db(run)
+	db(runCmd)
 }

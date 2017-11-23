@@ -1,3 +1,5 @@
+//go:generate echo $PWD/$GOPACKAGE/$GOFILE
+//go:generate mockgen -package dao -destination $PWD/dao/mock_database.go database/sql/driver Conn,Driver,Stmt,Rows
 package dao
 
 import (

@@ -27,8 +27,8 @@ static: tools
 	go-bindata -o static/static.go -pkg static -ignore "^.+\.go$$" static/...
 
 .PHONY: test
-test:
-	go test ./...
+test: generate
+	go test -cover ./... | column -t | sort -r
 
 
 .PHONY: run

@@ -10,6 +10,9 @@ tools:
 	    go get github.com/golang/mock/gomock; \
 	    go get github.com/golang/mock/mockgen; \
 	fi
+	if ! command -v go-bindata > /dev/null; then \
+	    go get github.com/jteeuwen/go-bindata/go-bindata; \
+	fi
 
 .PHONY: deps
 deps: tools
@@ -18,6 +21,10 @@ deps: tools
 .PHONY: generate
 generate: tools
 	go generate ./...
+
+.PHONY: static
+static: tools
+	go-bindata -o static/static.go -pkg static -ignore "^.+\.go$$" static/...
 
 .PHONY: test
 test:

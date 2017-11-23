@@ -1,9 +1,28 @@
 include env/docker.mk
 include env/docker-compose.mk
 
+.PHONY: tools
+tools:
+	if ! command -v dep > /dev/null; then \
+	    go get github.com/golang/dep/cmd/dep; \
+	fi
+	if ! command -v mockgen > /dev/null; then \
+	    go get github.com/golang/mock/gomock; \
+	    go get github.com/golang/mock/mockgen; \
+	fi
+
 .PHONY: deps
-deps:
+deps: tools
 	dep ensure -v
+
+.PHONY: generate
+generate: tools
+	go generate ./...
+
+.PHONY: test
+test:
+	go test ./...
+
 
 .PHONY: run
 run: BIND = 127.0.0.1

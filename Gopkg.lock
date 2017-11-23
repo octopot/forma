@@ -16,8 +16,14 @@
 [[projects]]
   name = "github.com/go-chi/chi"
   packages = [".","middleware"]
-  revision = "f7c66f685bcab06bcce78ac212c5f3553c063d19"
-  version = "v3.3.0"
+  revision = "687d2792aedd8e8ac3bbd8592cf55b91d7ea8ce9"
+  version = "v3.3.1"
+
+[[projects]]
+  name = "github.com/golang/mock"
+  packages = ["gomock"]
+  revision = "13f360950a79f5864a972c786a10a50e44b69541"
+  version = "v1.0.0"
 
 [[projects]]
   branch = "master"
@@ -71,7 +77,7 @@
   branch = "master"
   name = "github.com/rubenv/sql-migrate"
   packages = [".","sqlparse"]
-  revision = "27ebce5b74e63a71c82d93a37f5ce0a8e1e42714"
+  revision = "e2c068b24b5e367fdce5c208e280839f9ae0940f"
 
 [[projects]]
   name = "github.com/spf13/afero"
@@ -119,7 +125,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "bf42f188b9bc6f2cf5b8ee5a912ef1aedd0eba4c"
+  revision = "82aafbf43bf885069dc71b7e7c2f9d7a614d47da"
 
 [[projects]]
   branch = "master"
@@ -137,11 +143,11 @@
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
+  revision = "287cf08546ab5e7e37d55a84f7ed3fd1db036de5"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "151e5feb35821f9b55aa727845ed9ff6c9704aa9441dab96249e2a01753800e9"
+  inputs-digest = "91262fb308a4c74647c8b7f61ce9fb651570f8b3c39a7f1ece06802dd1ad2840"
   solver-name = "gps-cdcl"
   solver-version = 1

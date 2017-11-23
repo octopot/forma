@@ -29,7 +29,7 @@ func New(configs ...Configurator) (*service, error) {
 func Connection(dsn *url.URL) Configurator {
 	return func(instance *service) error {
 		var err error
-		instance.conn, err = sql.Open("postgres", dsn.String())
+		instance.conn, err = sql.Open(dsn.Scheme, dsn.String())
 		return err
 	}
 }
@@ -44,7 +44,7 @@ func (s *service) Schema(uuid data.UUID) (form.Schema, error) {
 		schema form.Schema
 		xml    []byte
 	)
-	row := s.conn.QueryRow(`SELECT schema FROM form_schema WHERE uuid = $1 AND status = 'enabled'`, uuid)
+	row := s.conn.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&xml); err != nil {
 		return schema, errors.WithMessage(err, fmt.Sprintf("trying to find schema with UUID %q", uuid))
 	}
@@ -56,12 +56,12 @@ func (s *service) Schema(uuid data.UUID) (form.Schema, error) {
 }
 
 // AddData inserts form data and returns its ID.
-func (s *service) AddData(uuid data.UUID, d map[string]interface{}) (int64, error) {
-	encoded, err := json.Marshal(d)
+func (s *service) AddData(uuid data.UUID, values url.Values) (int64, error) {
+	encoded, err := json.Marshal(values)
 	if err != nil {
 		return 0, errors.WithMessage(err, fmt.Sprintf("trying to marshal data into JSON with schema of %q", uuid))
 	}
-	result, err := s.conn.Exec(`INSERT INTO form_data (data) VALUES ($1)`, encoded)
+	result, err := s.conn.Exec(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`, uuid, encoded)
 	if err != nil {
 		return 0, errors.WithMessage(err, fmt.Sprintf("trying to insert JSON `%+v` with schema of %q", encoded, uuid))
 	}

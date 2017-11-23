@@ -6,8 +6,12 @@ vendor
 # go test
 *coverage*.out
 
+# mockgen
+/*/mock_*.go
+
 # migrations
 /migrations/*
 !/migrations/1_initial.sql
 
-.env
+# environment
+/env/.env

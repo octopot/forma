@@ -28,18 +28,6 @@ stop-db: docker-compose
 logs-db: COMMAND = logs -f db
 logs-db: docker-compose
 
-.PHONY: start-discovery
-start-discovery: COMMAND = start discovery
-start-discovery: docker-compose
-
-.PHONY: stop-discovery
-stop-discovery: COMMAND = stop discovery
-stop-discovery: docker-compose
-
-.PHONY: logs-discovery
-logs-discovery: COMMAND = logs -f discovery
-logs-discovery: docker-compose
-
 .PHONY: start-service
 start-service: COMMAND = start service
 start-service: docker-compose

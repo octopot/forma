@@ -22,10 +22,17 @@ type server struct {
 
 // GetV1 implements `FormAPI` interface.
 func (s *server) GetV1(rw http.ResponseWriter, req *http.Request) {
+	var httpErr *Error
+
 	uuid := req.Context().Value(UUIDKey{}).(data.UUID)
 
 	request := v1.GetRequest{UUID: uuid, Format: req.Header.Get("Accept")}
-	_ = s.service.HandleGetV1(request)
+	response := s.service.HandleGetV1(request)
+	if response.Error != nil {
+		httpErr.FromGetV1(response.Error).MarshalTo(rw)
+		return
+	}
+	response.Schema.MarshalTo(rw)
 }
 
 // PostV1 implements `FormAPI` interface

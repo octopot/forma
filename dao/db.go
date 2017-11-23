@@ -13,12 +13,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Configurator defines a function which can use to configure DAO service.
-type Configurator func(*service) error
+// Configurator defines a function which can use to configure DAO layer.
+type Configurator func(*layer) error
 
-// New returns a new instance of DAO service.
-func New(configs ...Configurator) (*service, error) {
-	instance := &service{}
+// New returns a new instance of DAO layer.
+func New(configs ...Configurator) (*layer, error) {
+	instance := &layer{}
 	for _, configure := range configs {
 		if err := configure(instance); err != nil {
 			return nil, err
@@ -27,21 +27,30 @@ func New(configs ...Configurator) (*service, error) {
 	return instance, nil
 }
 
+// Must returns a new instance of DAO layer or panic if it can't do it.
+func Must(configs ...Configurator) *layer {
+	instance, err := New(configs...)
+	if err != nil {
+		panic(err)
+	}
+	return instance
+}
+
 // Connection returns database connection Configurator.
 func Connection(dsn *url.URL) Configurator {
-	return func(instance *service) error {
+	return func(instance *layer) error {
 		var err error
 		instance.conn, err = sql.Open(dsn.Scheme, dsn.String())
 		return err
 	}
 }
 
-type service struct {
+type layer struct {
 	conn *sql.DB
 }
 
 // Schema returns form schema with provided UUID.
-func (s *service) Schema(uuid data.UUID) (form.Schema, error) {
+func (s *layer) Schema(uuid data.UUID) (form.Schema, error) {
 	var (
 		schema form.Schema
 		xml    []byte
@@ -58,7 +67,7 @@ func (s *service) Schema(uuid data.UUID) (form.Schema, error) {
 }
 
 // AddData inserts form data and returns its ID.
-func (s *service) AddData(uuid data.UUID, values url.Values) (int64, error) {
+func (s *layer) AddData(uuid data.UUID, values url.Values) (int64, error) {
 	encoded, err := json.Marshal(values)
 	if err != nil {
 		return 0, errors.WithMessage(err, fmt.Sprintf("trying to marshal data into JSON with schema of %q", uuid))

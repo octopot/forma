@@ -3,15 +3,13 @@ package cmd
 import (
 	"log"
 	"net/http"
-	"net/url"
-	"os"
-	"strconv"
 
 	"github.com/kamilsk/form-api/dao"
 	"github.com/kamilsk/form-api/server"
 	"github.com/kamilsk/form-api/server/router/chi"
 	"github.com/kamilsk/form-api/service"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var run = &cobra.Command{
@@ -20,53 +18,29 @@ var run = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 		log.Println("starting server at", addr)
-		log.Fatal(http.ListenAndServe(addr, chi.NewRouter(
-			server.New(service.New(func() service.DataLoader {
-
-				// TODO configure by viper
-				srv, err := dao.New(dao.Connection(func() *url.URL {
-					dsn := &url.URL{
-						Scheme: "postgres",
-						User:   url.UserPassword("postgres", "postgres"),
-						Host:   "127.0.0.1:5432",
-						Path:   "/postgres",
-						RawQuery: func() string {
-							query := url.Values{}
-							query.Add("connect_timeout", "1")
-							query.Add("sslmode", "disable")
-							return query.Encode()
-						}(),
-					}
-					return dsn
-				}()))
-				if err != nil {
-					log.Fatal(err)
-				}
-				return srv
-
-			}())),
-			cmd.Flag("with-profiler").Value.String() == "true")))
+		log.Fatal(http.ListenAndServe(addr,
+			chi.NewRouter(
+				server.New(
+					service.New(
+						dao.Must(dao.Connection(dsn(cmd))))),
+				cmd.Flag("with-profiler").Value.String() == "true")))
 	},
 }
 
 func init() {
-	run.Flags().String("bind", func() string {
-		env := os.Getenv("BIND")
-		if env == "" {
-			return "127.0.0.1"
-		}
-		return env
-	}(), "interface to which the server will bind")
-	run.Flags().Int("port", func() int {
-		env := os.Getenv("PORT")
-		if env == "" {
-			return 8080
-		}
-		port, err := strconv.Atoi(env)
-		if err != nil {
-			panic(err)
-		}
-		return port
-	}(), "port on which the server will listen")
-	run.Flags().Bool("with-profiler", false, "enable pprof on /debug/pprof")
+	v := viper.New()
+	must(
+		func() error { return v.BindEnv("bind") },
+		func() error { return v.BindEnv("port") },
+	)
+	{
+		v.SetDefault("bind", "127.0.0.1")
+		v.SetDefault("port", 8080)
+	}
+	{
+		run.Flags().String("bind", v.GetString("bind"), "interface to which the server will bind")
+		run.Flags().Int("port", v.GetInt("port"), "port on which the server will listen")
+		run.Flags().Bool("with-profiler", false, "enable pprof on /debug/pprof")
+	}
+	db(run)
 }

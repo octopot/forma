@@ -3,6 +3,9 @@ package server
 import (
 	"encoding/json"
 	"net/http"
+	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // Error represents HTTP error.
@@ -71,6 +74,15 @@ func (*Error) InvalidReferer(err error) Error {
 	}
 }
 
+func (*Error) FromGetV1(err error) Error {
+	return Error{
+		Code:    classify(err),
+		Message: "Error occurred",
+		Details: err.Error(),
+		origin:  err,
+	}
+}
+
 // IsClient returns true if the error is a client error.
 func (e Error) IsClient() bool {
 	return e.Code%400 < 100
@@ -86,4 +98,14 @@ func (e Error) MarshalTo(rw http.ResponseWriter) error {
 	rw.WriteHeader(e.Code)
 	rw.Header().Set("Content-Type", "application/json")
 	return json.NewEncoder(rw).Encode(e)
+}
+
+func classify(err error) int {
+	cause := errors.Cause(err)
+	switch {
+	case strings.Contains(cause.Error(), "sql:"):
+		return http.StatusInternalServerError
+	default:
+		return http.StatusInternalServerError
+	}
 }

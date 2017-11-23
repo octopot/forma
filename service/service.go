@@ -12,8 +12,10 @@ type formAPI struct {
 }
 
 // HandleGetV1 ...
-func (*formAPI) HandleGetV1(v1.GetRequest) v1.GetResponse {
-	return v1.GetResponse{}
+func (s *formAPI) HandleGetV1(req v1.GetRequest) v1.GetResponse {
+	var resp v1.GetResponse
+	resp.Schema, resp.Error = s.dao.Schema(req.UUID)
+	return resp
 }
 
 // HandlePostV1 ...

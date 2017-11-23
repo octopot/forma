@@ -14,4 +14,5 @@ type GetRequest struct {
 // GetResponse represents `GET /api/v1/{UUID}` response.
 type GetResponse struct {
 	Schema form.Schema
+	Error  error
 }

@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 3,
-  "__export_date": "2017-11-22T14:55:44.190Z",
+  "__export_date": "2017-11-24T11:16:44.149Z",
   "__export_source": "insomnia.desktop.app:v5.11.7",
   "resources": [
     {
@@ -16,11 +16,12 @@
     {
       "_id": "env_0293a080c9994358b115cdbd4fd89c69",
       "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
-      "modified": 1511170187505,
+      "modified": 1511444439462,
       "created": 1511170173907,
       "name": "Base Environment",
       "data": {
-        "host": "http://localhost:8080"
+        "host": "http://localhost:8080",
+        "uuid": "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11"
       },
       "color": null,
       "isPrivate": false,
@@ -71,9 +72,9 @@
     {
       "_id": "req_fe78a3818ede480e8233c4cf291f7592",
       "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
-      "modified": 1511179391485,
+      "modified": 1511443944189,
       "created": 1511178532108,
-      "url": "{{host}}/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+      "url": "{{host}}/api/v1/{{ uuid}}",
       "name": "/{UUID}",
       "description": "",
       "method": "GET",
@@ -84,6 +85,11 @@
           "name": "Accept",
           "value": "application/json",
           "id": "pair_f199f30026324808a36f16ea89fdcaa1"
+        },
+        {
+          "name": "",
+          "value": "",
+          "id": "pair_c6969e6acef1442b9430c0a3b59ad472"
         }
       ],
       "authentication": {},
@@ -97,9 +103,9 @@
     {
       "_id": "req_ef9faa3b887247afb312dd4919045e20",
       "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
-      "modified": 1511178708532,
+      "modified": 1511443935425,
       "created": 1511178563984,
-      "url": "{{host}}/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+      "url": "{{host}}/api/v1/{{ uuid}}",
       "name": "/{UUID}",
       "description": "",
       "method": "POST",
@@ -129,6 +135,78 @@
       ],
       "authentication": {},
       "metaSortKey": -1511178532158,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_bde44fe454f04e53b82e7b0fa86452c5",
+      "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
+      "modified": 1511443983625,
+      "created": 1511443967902,
+      "url": "{{host}}/api/v1/{{ uuid}}-invalid",
+      "name": "/{invalid UUID}",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Accept",
+          "value": "application/json",
+          "id": "pair_f199f30026324808a36f16ea89fdcaa1"
+        },
+        {
+          "name": "",
+          "value": "",
+          "id": "pair_c6969e6acef1442b9430c0a3b59ad472"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1500463759298,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_6192fa0a01224f08b5a22bb343a35300",
+      "parentId": "fld_d2ae092acc3b41529ac426eabe40cb39",
+      "modified": 1511448899800,
+      "created": 1511448885015,
+      "url": "{{host}}/api/v1/{{ uuid}}-invalid",
+      "name": "/{invalid UUID}",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/x-www-form-urlencoded",
+        "params": [
+          {
+            "name": "email",
+            "value": "kamil@samigullin.info",
+            "id": "pair_f9a0481c7909424a8cb09ef22508d1d4",
+            "disabled": false
+          }
+        ]
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/x-www-form-urlencoded",
+          "id": "pair_5ba592a2cd624da292c075c96629996b"
+        },
+        {
+          "name": "Referer",
+          "value": "https://kamil.samigullin.info/",
+          "id": "pair_0ddbcb361b304f9ba66fad82d51fd347"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1511178532133,
       "settingStoreCookies": true,
       "settingSendCookies": true,
       "settingDisableRenderRequestBody": false,

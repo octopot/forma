@@ -20,6 +20,7 @@ deps: tools
 
 .PHONY: generate
 generate: tools
+	find . -name mock_*.go | grep -v ./vendor | xargs rm
 	go generate ./...
 
 .PHONY: static

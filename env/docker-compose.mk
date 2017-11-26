@@ -1,13 +1,14 @@
 .PHONY: docker-compose
 docker-compose:
+	cp -n env/.example.env env/.env || true
+	cp env/.env .env # because https://docs.docker.com/compose/env-file/
 	docker-compose -f env/docker-compose.yml $(COMMAND)
 
 
 
 .PHONY: up
+up: status
 up:
-	cp -n env/.example.env env/.env || true
-	cp env/.env .env # because https://docs.docker.com/compose/env-file/
 	docker-compose -f env/docker-compose.yml up -d
 	docker-compose -f env/docker-compose.yml exec service form-api migrate
 

@@ -1,8 +1,7 @@
 version: "3"
 
 services:
-  db:
-    # https://hub.docker.com/_/postgres/
+  db: # https://hub.docker.com/_/postgres/
     image: postgres:10-alpine
     env_file: .env
     ports:
@@ -11,31 +10,35 @@ services:
     volumes:
     - pgdata:${PGDATA}
 
-  service:
-    build:
-      args: { QUICK: "true" }
-      context: ../.
-      dockerfile: ./env/Dockerfile
-    depends_on:
-    - db
-    env_file: .env
-    restart: always
-    ports:
-    - 8080:${PORT}
-
-  server:
-    # https://hub.docker.com/_/nginx/
+  server: # https://hub.docker.com/_/nginx/
     image: kamilsk/nginx:alpine
-    entrypoint: /bin/sh -c 'envsubst < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf && /entrypoint.sh'
+    entrypoint: |
+      /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \
+                  < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf \
+                  && echo $$BASIC_USER:`(echo $$BASIC_PASS | openssl passwd -crypt -stdin -noverify)` >> /etc/nginx/.htpasswd \
+                  && /entrypoint.sh"
     env_file: .env
     ports:
-    - 8081:${DOMAIN_PORT}
+    - 8080:${DOMAIN_PORT}
     restart: always
     volumes:
     - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./etc/service.conf.template:/etc/nginx/conf.d/service.template:ro
     - certificates:/etc/nginx/ssl
     - le_challenge:/usr/share/sites/${DOMAIN_NAME}
+
+  service: # https://hub.docker.com/r/kamilsk/form-api/
+    build:
+      args: { QUICK: "true" }
+      context: ../.
+      dockerfile: ./env/Dockerfile
+    command: [ "run", "--with-profiler" ]
+    depends_on:
+    - db
+    env_file: .env
+    restart: always
+    ports:
+    - 8081:${PORT}
 
 volumes:
   pgdata:

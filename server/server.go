@@ -61,5 +61,5 @@ func (s *server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	request := v1.PostRequest{UUID: uuid, Data: req.PostForm}
 	_ = s.service.HandlePostV1(request)
 	rw.Header().Set("Location", redirect.String())
-	rw.WriteHeader(http.StatusTemporaryRedirect)
+	rw.WriteHeader(http.StatusFound)
 }

@@ -41,7 +41,7 @@
   branch = "master"
   name = "github.com/lib/pq"
   packages = [".","oid"]
-  revision = "8c6ee72f3e6bcb1542298dd5f76cb74af9742cec"
+  revision = "83612a56d3dd153a94a629cd64925371c9adad78"
 
 [[projects]]
   name = "github.com/magiconair/properties"
@@ -77,7 +77,7 @@
   branch = "master"
   name = "github.com/rubenv/sql-migrate"
   packages = [".","sqlparse"]
-  revision = "e2c068b24b5e367fdce5c208e280839f9ae0940f"
+  revision = "6edbfbd6a369ee82463312ec67b2c92f97a1d4dc"
 
 [[projects]]
   name = "github.com/spf13/afero"
@@ -125,7 +125,7 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "82aafbf43bf885069dc71b7e7c2f9d7a614d47da"
+  revision = "4ff8c001ce4cc464e644b922325097228fce14d8"
 
 [[projects]]
   branch = "master"

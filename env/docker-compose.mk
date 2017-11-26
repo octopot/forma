@@ -2,9 +2,12 @@
 docker-compose:
 	docker-compose -f env/docker-compose.yml $(COMMAND)
 
+
+
 .PHONY: up
-up: COMMAND = up -d
-up: docker-compose
+up:
+	docker-compose -f env/docker-compose.yml up -d
+	docker-compose -f env/docker-compose.yml exec service form-api migrate
 
 .PHONY: down
 down: COMMAND = down
@@ -28,6 +31,8 @@ stop-db: docker-compose
 logs-db: COMMAND = logs -f db
 logs-db: docker-compose
 
+
+
 .PHONY: start-service
 start-service: COMMAND = start service
 start-service: docker-compose
@@ -39,6 +44,8 @@ stop-service: docker-compose
 .PHONY: logs-service
 logs-service: COMMAND = logs -f service
 logs-service: docker-compose
+
+
 
 .PHONY: start-server
 start-server: COMMAND = start server

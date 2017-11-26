@@ -8,6 +8,8 @@ services:
     ports:
     - "5432:5432"
     restart: always
+    volumes:
+    - pgdata:/var/lib/postgresql/data
 
   service:
     build:
@@ -17,14 +19,15 @@ services:
     depends_on:
     - db
     env_file: .env
+    restart: always
     ports:
     - "8080:8080"
 
   server:
     # https://hub.docker.com/_/nginx/
-    image: nginx:1-alpine
+    image: kamilsk/nginx:alpine
+    entrypoint: /bin/sh -c 'envsubst < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf && /entrypoint.sh'
     env_file: .env
-    command: sh -c "envsubst < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf && nginx -g 'daemon off;'"
     ports:
     - "8081:80"
     - "8082:8080"
@@ -32,7 +35,11 @@ services:
     volumes:
     - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./etc/service.conf.template:/etc/nginx/conf.d/service.template:ro
+    - certificates:/etc/nginx/ssl
 
 volumes:
-  db-data:
+  pgdata:
+    driver: local
+
+  certificates:
     driver: local

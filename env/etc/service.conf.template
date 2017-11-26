@@ -1,17 +1,44 @@
 upstream service {
-    server ${HOST}:${PORT};
+    server ${SERVICE_HOST}:${SERVICE_PORT};
 }
 
 server {
-    listen 8080 default_server;
+    listen ${DOMAIN_PORT} ${DOMAIN_NAME};
+
+    #:ssl listen              443 ssl http2;
+    #:ssl ssl_certificate     SSL_CERT;
+    #:ssl ssl_certificate_key SSL_KEY;
+
+    charset utf-8;
+    index   index.html;
+    root    /usr/share/sites/${DOMAIN_NAME};
+
+    etag on;
+
+    gzip       on;
+    gzip_types *;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options        "SAMEORIGIN" always;
+
+    location = /favicon.ico { log_not_found off; access_log off; }
+    location = /robots.txt  { log_not_found off; access_log off; }
+
+    location /admin/ {
+        limit_req zone=admin burst=5;
+        proxy_pass http://service;
+    }
 
     location /api/ {
         limit_req zone=api burst=100;
         proxy_pass http://service;
     }
 
-    location /admin/ {
-        limit_req zone=admin burst=5;
+    location /debug/ {
+        # TODO protect by base auth
         proxy_pass http://service;
     }
+
+    # let's encrypt
+    location /.well-known/ {}
 }

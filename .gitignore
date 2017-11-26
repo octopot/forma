@@ -14,4 +14,5 @@ vendor
 !/migrations/1_initial.sql
 
 # environment
-/env/.env
+/env/*.env
+!/env/.example.env

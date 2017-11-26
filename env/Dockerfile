@@ -34,6 +34,5 @@ COPY --from=build /go/bin/form-api /usr/local/bin/
 ENV BIND "0.0.0.0"
 ENV PORT "8080"
 
-ENTRYPOINT ["form-api"]
-
-CMD ["run"]
+ENTRYPOINT [ "form-api" ]
+CMD        [ "run" ]

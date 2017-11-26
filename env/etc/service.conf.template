@@ -3,15 +3,17 @@ upstream service {
 }
 
 server {
-    listen ${DOMAIN_PORT} ${DOMAIN_NAME};
+    listen ${DOMAIN_PORT} default_server;
 
     #:ssl listen              443 ssl http2;
     #:ssl ssl_certificate     SSL_CERT;
     #:ssl ssl_certificate_key SSL_KEY;
 
+    server_name ${DOMAIN_NAME};
+
     charset utf-8;
     index   index.html;
-    root    /usr/share/sites/${DOMAIN_NAME};
+    root    /usr/share/nginx/html;
 
     etag on;
 
@@ -40,5 +42,7 @@ server {
     }
 
     # let's encrypt
-    location /.well-known/ {}
+    location /.well-known/ {
+        root /usr/share/sites/${DOMAIN_NAME};
+    }
 }

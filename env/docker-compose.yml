@@ -6,10 +6,10 @@ services:
     image: postgres:10-alpine
     env_file: .env
     ports:
-    - "5432:5432"
+    - 5432:5432
     restart: always
     volumes:
-    - pgdata:/var/lib/postgresql/data
+    - pgdata:${PGDATA}
 
   service:
     build:
@@ -21,7 +21,7 @@ services:
     env_file: .env
     restart: always
     ports:
-    - "8080:8080"
+    - 8080:${PORT}
 
   server:
     # https://hub.docker.com/_/nginx/
@@ -29,17 +29,20 @@ services:
     entrypoint: /bin/sh -c 'envsubst < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf && /entrypoint.sh'
     env_file: .env
     ports:
-    - "8081:80"
-    - "8082:8080"
+    - 8081:${DOMAIN_PORT}
     restart: always
     volumes:
     - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./etc/service.conf.template:/etc/nginx/conf.d/service.template:ro
     - certificates:/etc/nginx/ssl
+    - le_challenge:/usr/share/sites/${DOMAIN_NAME}
 
 volumes:
   pgdata:
     driver: local
 
   certificates:
+    driver: local
+
+  le_challenge:
     driver: local

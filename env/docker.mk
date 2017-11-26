@@ -16,6 +16,20 @@ docker-build:
 
 
 
+.PHONY: docker-push
+docker-push:
+	docker push kamilsk/form-api:latest
+
+.PHONY: docker-refresh
+docker-refresh:
+	docker images --all \
+	| grep '^kamilsk\/form-api\s\+' \
+	| awk '{print $$3}' \
+	| xargs docker rmi -f &>/dev/null || true
+	docker pull kamilsk/form-api:latest
+
+
+
 .PHONY: docker-start
 docker-start:
 	docker run --rm -d \

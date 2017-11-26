@@ -9,8 +9,8 @@ server {
     listen ${DOMAIN_PORT} default_server;
 
     #:ssl listen              443 ssl http2;
-    #:ssl ssl_certificate     SSL_CERT;
-    #:ssl ssl_certificate_key SSL_KEY;
+    #:ssl ssl_certificate     ${SSL_CERT};
+    #:ssl ssl_certificate_key ${SSL_KEY};
 
     server_name ${DOMAIN_NAME};
 
@@ -23,6 +23,7 @@ server {
 
     location = /favicon.ico { log_not_found off; access_log off; }
     location = /robots.txt  { log_not_found off; access_log off; }
+    location /.well-known/  { root /usr/share/nginx/html; } # let's encrypt
 
     location /admin/ {
         limit_req zone=form_adm burst=100;
@@ -38,10 +39,5 @@ server {
         auth_basic           'secured zone';
         auth_basic_user_file .htpasswd;
         proxy_pass http://service;
-    }
-
-    # let's encrypt
-    location /.well-known/ {
-        root /usr/share/sites/${DOMAIN_NAME};
     }
 }

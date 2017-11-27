@@ -2,27 +2,41 @@ package errors
 
 import "github.com/pkg/errors"
 
-// Server returns an application error related to server side.
-func Server() *Error {
-	return &Error{server: true}
+const (
+	ResourceNotFound = 1 + iota
+)
+
+const (
+	ServerError = 100 + iota
+	DatabaseError
+	SerializationError
+)
+
+// NotFound returns an application error related to an empty search result.
+func NotFound(cause error, format string, args ...interface{}) *withCode {
+	return &withCode{cause: errors.Wrapf(cause, format, args...), code: ResourceNotFound}
 }
 
-// User returns an application error related to client side.
-func User() *Error {
-	return &Error{server: false}
+// Database returns an application error related to database problems.
+func Database(cause error, format string, args ...interface{}) *withCode {
+	return &withCode{cause: errors.Wrapf(cause, format, args...), code: DatabaseError}
 }
 
-// Error represents an application error.
-type Error struct {
-	cause  error
-	server bool
+// Serialization returns an application error related to serialization problems.
+func Serialization(cause error, format string, args ...interface{}) *withCode {
+	return &withCode{cause: errors.Wrapf(cause, format, args...), code: SerializationError}
 }
 
-// Error returns a message of the underlying cause of the error,
+type withCode struct {
+	cause error
+	code  int
+}
+
+// Error returns a message of the underlying cause of the error
 // or default message for server or client side error.
-func (err *Error) Error() string {
+func (err *withCode) Error() string {
 	if err.cause == nil {
-		if err.server {
+		if err.IsServer() {
 			return "server error"
 		}
 		return "user error"
@@ -32,21 +46,13 @@ func (err *Error) Error() string {
 
 // Cause returns the underlying cause of the error.
 // It is friendly to `github.com/pkg/errors.Cause` method.
-func (err *Error) Cause() error { return err.cause }
+func (err *withCode) Cause() error { return err.cause }
 
-// IsServer returns true if the error on server side.
-func (err *Error) IsServer() bool { return err.server }
+// IsServer returns true if the error on the server side.
+func (err *withCode) IsServer() bool { return err.code > ServerError }
 
-// IsUser returns true if the error on client side.
-func (err *Error) IsUser() bool { return !err.server }
+// IsUser returns true if the error on the client side.
+func (err *withCode) IsUser() bool { return err.code < ServerError }
 
-// Wrapf returns an error annotating cause with a stack trace
-// at the point Wrapf is call, and the format specifier.
-// If cause is nil, Wrapf returns nil.
-func (err *Error) Wrapf(cause error, format string, args ...interface{}) error {
-	if cause == nil {
-		return nil
-	}
-	err.cause = cause
-	return errors.Wrapf(err, format, args...)
-}
+// IsNotFound returns true if the error related to an empty search result.
+func (err *withCode) IsNotFound() bool { return err.code == ResourceNotFound }

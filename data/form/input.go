@@ -2,6 +2,7 @@ package form
 
 // Input represents input element in a form.
 type Input struct {
+	ID        string `xml:"id,attr,omitempty"`
 	Name      string `xml:"name,attr"`
 	Type      string `xml:"type,attr"`
 	Title     string `xml:"title,attr"`

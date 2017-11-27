@@ -3,6 +3,10 @@
   version = "^3.3.0"
 
 [[constraint]]
+  name = "github.com/golang/mock"
+  version = "^1.0.0"
+
+[[constraint]]
   branch = "master"
   name = "github.com/lib/pq"
 

@@ -5,18 +5,26 @@ package dao
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
-	"net/url"
+	"encoding/xml"
 
 	"github.com/kamilsk/form-api/data"
 	"github.com/kamilsk/form-api/data/form"
-	"github.com/pkg/errors"
+	"github.com/kamilsk/form-api/errors"
 )
 
 // Configurator defines a function which can use to configure DAO layer.
 type Configurator func(*layer) error
 
-// New returns a new instance of DAO layer.
+// Must returns a new instance of DAO layer or panics if it can't configure it.
+func Must(configs ...Configurator) *layer {
+	instance, err := New(configs...)
+	if err != nil {
+		panic(err)
+	}
+	return instance
+}
+
+// New returns a new instance of DAO layer or an error if it can't configure it.
 func New(configs ...Configurator) (*layer, error) {
 	instance := &layer{}
 	for _, configure := range configs {
@@ -27,20 +35,11 @@ func New(configs ...Configurator) (*layer, error) {
 	return instance, nil
 }
 
-// Must returns a new instance of DAO layer or panic if it can't do it.
-func Must(configs ...Configurator) *layer {
-	instance, err := New(configs...)
-	if err != nil {
-		panic(err)
-	}
-	return instance
-}
-
 // Connection returns database connection Configurator.
-func Connection(dsn *url.URL) Configurator {
+func Connection(driver, dsn string) Configurator {
 	return func(instance *layer) error {
 		var err error
-		instance.conn, err = sql.Open(dsn.Scheme, dsn.String())
+		instance.conn, err = sql.Open(driver, dsn)
 		return err
 	}
 }
@@ -54,37 +53,44 @@ func (l *layer) Connection() *sql.DB {
 	return l.conn
 }
 
-// Dialect returns database SQL dialect.
+// Dialect returns supported database SQL dialect.
 func (l *layer) Dialect() string {
 	return "postgres"
 }
 
-// Schema returns form schema with provided UUID.
+// Schema returns form schema with provided UUID or an error if something went wrong.
 func (l *layer) Schema(uuid data.UUID) (form.Schema, error) {
 	var (
 		schema form.Schema
-		xml    []byte
+		raw    []byte
 	)
 	row := l.conn.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
-	if err := row.Scan(&xml); err != nil {
-		return schema, errors.WithMessage(err, fmt.Sprintf("trying to find schema with UUID %q", uuid))
+	if err := row.Scan(&raw); err != nil {
+		if err == sql.ErrNoRows {
+			return schema, errors.User().Wrapf(err, "schema with UUID %q not found", uuid)
+		}
+		return schema, errors.Server().Wrapf(err, "trying to populate schema with UUID %q", uuid)
 	}
-	if err := (&schema).UnmarshalFrom(xml); err != nil {
-		return schema, errors.WithMessage(err, fmt.Sprintf("trying to unmarshal schema with UUID %q from XML", uuid))
+	if err := xml.Unmarshal(raw, &schema); err != nil {
+		return schema, errors.Server().Wrapf(err, "trying to unmarshal schema with UUID %q from XML", uuid)
 	}
 	schema.ID = uuid.String()
 	return schema, nil
 }
 
-// AddData inserts form data and returns its ID.
-func (l *layer) AddData(uuid data.UUID, values url.Values) (int64, error) {
+// AddData inserts form data and returns its ID or an error if something went wrong.
+func (l *layer) AddData(uuid data.UUID, values map[string][]string) (int64, error) {
 	encoded, err := json.Marshal(values)
 	if err != nil {
-		return 0, errors.WithMessage(err, fmt.Sprintf("trying to marshal data into JSON with schema of %q", uuid))
+		return 0, errors.Server().Wrapf(err, "trying to marshal data into JSON with schema of %q", uuid)
 	}
 	result, err := l.conn.Exec(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`, uuid, encoded)
 	if err != nil {
-		return 0, errors.WithMessage(err, fmt.Sprintf("trying to insert JSON `%+v` with schema of %q", encoded, uuid))
+		return 0, errors.Server().Wrapf(err, "trying to insert JSON `%s` with schema of %q", encoded, uuid)
 	}
-	return result.LastInsertId()
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, errors.Server().Wrapf(err, "trying to get last insert ID of JSON `%s` with schema of %q", encoded, uuid)
+	}
+	return id, nil
 }

@@ -1,3 +1,0 @@
-<form title="Email subscription">
-    <input name="email" type="email" title="Email" maxlength="64"/>
-</form>

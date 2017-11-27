@@ -1,5 +1,5 @@
 <form id="a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11" title="Email subscription"
-      action="https://form-api.octolab.net/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11" method="post"
+      action="http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11" method="post"
       enctype="application/x-www-form-urlencoded">
     <input id="a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email" name="email" type="email" title="Email" maxlength="64"
            required="1"/>

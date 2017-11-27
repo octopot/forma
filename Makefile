@@ -29,7 +29,12 @@ static: tools
 
 .PHONY: test
 test: generate
+	go test -cover ./...
+
+.PHONY: formatted-test
+formatted-test: generate
 	go test -cover ./... | column -t | sort -r
+
 
 
 .PHONY: run

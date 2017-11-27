@@ -1,7 +1,7 @@
 {
   "_type": "export",
   "__export_format": 3,
-  "__export_date": "2017-11-26T14:40:42.686Z",
+  "__export_date": "2017-11-27T16:38:42.546Z",
   "__export_source": "insomnia.desktop.app:v5.11.7",
   "resources": [
     {
@@ -70,6 +70,17 @@
       "description": "",
       "environment": {},
       "metaSortKey": -1511170196918,
+      "_type": "request_group"
+    },
+    {
+      "_id": "fld_6e4fe368b0cd46ab8319aefd5257607a",
+      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
+      "modified": 1511800657148,
+      "created": 1511800533546,
+      "name": "/docs",
+      "description": "",
+      "environment": {},
+      "metaSortKey": -1511170196868,
       "_type": "request_group"
     },
     {
@@ -228,6 +239,26 @@
       "_type": "request"
     },
     {
+      "_id": "req_36d2bffd0eba4deba0fa9739e43c317d",
+      "parentId": "fld_90aec0df25174321a25a5335c81d1234",
+      "modified": 1511800613756,
+      "created": 1511800546298,
+      "url": "{{ schema  }}{{host}}/admin",
+      "name": "/",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1511170202090,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    },
+    {
       "_id": "req_b793075302b44058bf2594a6d7d90a7c",
       "parentId": "fld_3ae6b417453e4bddb2b0a5c6b589b605",
       "modified": 1511705717841,
@@ -321,6 +352,26 @@
       "headers": [],
       "authentication": {},
       "metaSortKey": -1511362167859,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "_type": "request"
+    },
+    {
+      "_id": "req_8e2c7228efff4ba79043cdb3c31973dd",
+      "parentId": "fld_6e4fe368b0cd46ab8319aefd5257607a",
+      "modified": 1511800648306,
+      "created": 1511800620477,
+      "url": "{{schema}}{{ user  }}:{{ pass  }}@{{ host  }}/docs",
+      "name": "/",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1511800620477,
       "settingStoreCookies": true,
       "settingSendCookies": true,
       "settingDisableRenderRequestBody": false,

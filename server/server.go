@@ -32,7 +32,6 @@ func (s *server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		httpErr.FromGetV1(response.Error).MarshalTo(rw)
 		return
 	}
-	response.Schema.MarshalTo(rw)
 }
 
 // PostV1 implements `FormAPI` interface

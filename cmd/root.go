@@ -55,8 +55,8 @@ func db(cmd *cobra.Command) {
 	}
 }
 
-func dsn(cmd *cobra.Command) *url.URL {
-	return &url.URL{
+func dsn(cmd *cobra.Command) (driver, dsn string) {
+	uri := &url.URL{
 		Scheme: "postgres",
 		User:   url.UserPassword(cmd.Flag("db_user").Value.String(), cmd.Flag("db_pass").Value.String()),
 		Host:   cmd.Flag("db_host").Value.String() + ":" + cmd.Flag("db_port").Value.String(),
@@ -68,4 +68,5 @@ func dsn(cmd *cobra.Command) *url.URL {
 			return query.Encode()
 		}(),
 	}
+	return uri.Scheme, uri.String()
 }

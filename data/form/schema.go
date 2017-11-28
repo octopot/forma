@@ -32,7 +32,6 @@ func (s Schema) Apply(in map[string][]string) map[string][]string {
 	return out
 }
 
-/* TODO not implemented yet
 // Validate validates input values and returns all occurred errors.
 func (s Schema) Validate(in map[string][]string) []error {
 	if len(s.Inputs) == 0 || len(in) == 0 {
@@ -40,8 +39,19 @@ func (s Schema) Validate(in map[string][]string) []error {
 	}
 	rules := make(map[string][]Validator, len(s.Inputs))
 	for _, input := range s.Inputs {
-		rules[input.Name] = make([]Validator, 0)
+		validators := []Validator{
+			TypeValidator(input.Type),
+		}
+		if input.MinLength != 0 || input.MaxLength != 0 {
+			validators = append(validators, LengthValidator(input.MinLength, input.MaxLength))
+		}
+		if input.Required {
+			validators = append(validators, RequireValidator)
+		}
+		rules[input.Name] = validators
 	}
+
+	// TODO not implemented yet
 	errors := make([]error, 0)
 	for name, values := range in {
 		validators := rules[name]
@@ -53,4 +63,3 @@ func (s Schema) Validate(in map[string][]string) []error {
 	}
 	return errors
 }
-*/

@@ -12,3 +12,45 @@ type Schema struct {
 	EncType string   `json:"enctype,omitempty" xml:"enctype,attr,omitempty"`
 	Inputs  []Input  `json:"input"             xml:"input"`
 }
+
+// Apply applies the schema to input values to filter them.
+// It removes all values not fitted by the schema.
+func (s Schema) Apply(in map[string][]string) map[string][]string {
+	if len(s.Inputs) == 0 || len(in) == 0 {
+		return nil
+	}
+	index := make(map[string]struct{}, len(s.Inputs))
+	for _, input := range s.Inputs {
+		index[input.Name] = struct{}{}
+	}
+	out := make(map[string][]string)
+	for name, values := range in {
+		if _, ok := index[name]; ok {
+			out[name] = values
+		}
+	}
+	return out
+}
+
+/* TODO not implemented yet
+// Validate validates input values and returns all occurred errors.
+func (s Schema) Validate(in map[string][]string) []error {
+	if len(s.Inputs) == 0 || len(in) == 0 {
+		return nil
+	}
+	rules := make(map[string][]Validator, len(s.Inputs))
+	for _, input := range s.Inputs {
+		rules[input.Name] = make([]Validator, 0)
+	}
+	errors := make([]error, 0)
+	for name, values := range in {
+		validators := rules[name]
+		for _, validator := range validators {
+			if err := validator.Validate(values); err != nil {
+				errors = append(errors, err)
+			}
+		}
+	}
+	return errors
+}
+*/

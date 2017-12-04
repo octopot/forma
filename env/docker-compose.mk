@@ -7,10 +7,8 @@ docker-compose:
 
 
 .PHONY: up
-up: status
-up:
-	docker-compose -f env/docker-compose.yml up -d
-	docker-compose -f env/docker-compose.yml exec service form-api migrate
+up: COMMAND = up -d
+up: docker-compose status
 
 .PHONY: down
 down: COMMAND = down
@@ -61,3 +59,9 @@ stop-server: docker-compose
 .PHONY: logs-server
 logs-server: COMMAND = logs -f server
 logs-server: docker-compose
+
+
+
+.PHONY: rm-volumes
+rm-volumes: down
+	docker volume ls | tail +2 | awk '{print $$2}' | grep ^env_ | xargs docker volume rm

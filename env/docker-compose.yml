@@ -32,7 +32,8 @@ services:
       args: { QUICK: "true" }
       context: ../.
       dockerfile: ./env/Dockerfile
-    command: [ "run", "--with-profiler" ]
+    entrypoint: |
+      /bin/sh -c "form-api migrate && form-api run --with-profiler"
     depends_on:
     - db
     env_file: .env

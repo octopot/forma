@@ -1,5 +1,3 @@
-//go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package service -destination $PWD/service/mock_contract.go github.com/kamilsk/form-api/service DataLoader
 package service
 
 import (

@@ -17,7 +17,7 @@ type Error struct {
 	origin error
 }
 
-// Error implements built-in error interface.
+// Error implements built-in `error` interface.
 func (e Error) Error() string {
 	return e.Message
 }

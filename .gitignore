@@ -7,7 +7,7 @@ vendor
 *coverage*.out
 
 # mockgen
-/*/mock_*.go
+/**/mock_*.go
 
 # migrations
 /migrations/*

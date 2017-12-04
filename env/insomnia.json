@@ -139,7 +139,7 @@
         "params": [
           {
             "name": "email",
-            "value": "kamil@samigullin.info",
+            "value": "test@my.email",
             "id": "pair_f9a0481c7909424a8cb09ef22508d1d4",
             "disabled": false
           }
@@ -211,7 +211,7 @@
         "params": [
           {
             "name": "email",
-            "value": "kamil@samigullin.info",
+            "value": "test@my.email",
             "id": "pair_f9a0481c7909424a8cb09ef22508d1d4",
             "disabled": false
           }

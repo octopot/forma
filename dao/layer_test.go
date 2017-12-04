@@ -1,3 +1,5 @@
+//go:generate echo $PWD/$GOPACKAGE/$GOFILE
+//go:generate mockgen -package dao_test -destination $PWD/dao/mock_db_test.go database/sql/driver Conn,Driver,Stmt,Rows
 package dao_test
 
 import (
@@ -33,20 +35,22 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	drv := dao.NewMockDriver(ctrl)
-	conn := dao.NewMockConn(ctrl)
-	stmt := dao.NewMockStmt(ctrl)
-	rows := dao.NewMockRows(ctrl)
+	dsn := "stub://localhost"
+	drv := NewMockDriver(ctrl)
+	name := "stub"
+	conn := NewMockConn(ctrl)
+	stmt := NewMockStmt(ctrl)
+	rows := NewMockRows(ctrl)
 	drv.EXPECT().
-		Open("driver://").
+		Open(dsn).
 		Times(2).
 		Return(conn, nil)
 	conn.EXPECT().
-		Prepare(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`).
+		Prepare(gomock.Any()).
 		Times(2).
 		Return(stmt, nil)
 	conn.EXPECT().
-		Prepare(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`).
+		Prepare(gomock.Any()).
 		Times(2).
 		Return(stmt, nil)
 	stmt.EXPECT().
@@ -73,9 +77,9 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 		Close().
 		Times(2).
 		Return(nil)
-	sql.Register("driver", drv)
 
-	valid := []dao.Configurator{dao.Connection("driver", "driver://")}
+	sql.Register(name, drv)
+	valid := []dao.Configurator{dao.Connection(name, dsn)}
 	{
 		service, err := dao.New(valid...)
 		assert.NoError(t, err)

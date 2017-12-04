@@ -1,5 +1,3 @@
-//go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package server -destination $PWD/server/mock_contract.go github.com/kamilsk/form-api/server FormAPI,FormAPIService
 package server
 
 import (

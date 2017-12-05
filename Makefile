@@ -31,8 +31,8 @@ static: tools
 test: generate
 	go test -cover ./...
 
-.PHONY: formatted-test
-formatted-test: generate
+.PHONY: test-formatted
+test-formatted: generate
 	go test -cover ./... | column -t | sort -r
 
 

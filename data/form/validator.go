@@ -1,85 +1,148 @@
 package form
 
 import (
-	"errors"
 	"fmt"
-	"regexp"
+	"strings"
 )
 
 const (
 	EmailType = "email"
+	TextType  = "text"
 )
 
-// Validator defines behavior of input validators.
+// ValidationError represents validation error.
+type ValidationError interface {
+	error
+	InputWithErrors() map[Input][]error
+}
+
+// Validator defines the behavior of input validators.
 type Validator interface {
-	// Validate ...
+	// Validate validates the input values.
 	Validate(values []string) error
 }
 
-// ValidatorFunc ...
+// The ValidatorFunc type is an adapter to allow the use of ordinary functions as a validator.
 type ValidatorFunc func(values []string) error
 
-// Validate ...
+// Validate calls fn(values).
 func (fn ValidatorFunc) Validate(values []string) error {
 	return fn(values)
 }
 
 var (
-	// LengthValidator ...
-	LengthValidator = func(min, max int) ValidatorFunc {
+	lengthValidator = func(min, max int) ValidatorFunc {
 		return func(values []string) error {
 			for i, value := range values {
 				if min != 0 && len(value) < min {
-					return fmt.Errorf("value %q at position %d has length less than %d", value, i, min)
+					return validationError{true, i, value, fmt.Sprintf("value length is less than %d", min)}
 				}
 				if max != 0 && len(value) > max {
-					return fmt.Errorf("value %q at position %d has length greater than %d", value, i, max)
+					return validationError{true, i, value, fmt.Sprintf("value length is greater than %d", max)}
 				}
 			}
 			return nil
 		}
 	}
-	// RequireValidator ...
-	RequireValidator ValidatorFunc = func(values []string) error {
+	requireValidator ValidatorFunc = func(values []string) error {
 		if len(values) == 0 {
-			return errors.New("values are empty")
+			return validationError{message: "values are empty"}
 		}
 		for i, value := range values {
 			if value == "" {
-				return fmt.Errorf("value at position %d is empty", i)
+				return validationError{single: true, position: i, message: "value is empty"}
 			}
 		}
 		return nil
 	}
-	// TypeValidator ...
-	TypeValidator = func(inputType string) ValidatorFunc {
-		var (
-			email = regexp.MustCompile(`(?i:^[^@]+@[^@]+$)`) // TODO replace by correct method
-		)
+	typeValidator = func(inputType string, strict bool) ValidatorFunc {
 		return func(values []string) error {
 			switch inputType {
 			case EmailType:
 				for i, value := range values {
-					if !email.MatchString(value) {
-						return fmt.Errorf("value %q at position %d is not a valid email", value, i)
+					// https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
+					if !strings.Contains(value, `@`) {
+						return validationError{true, i, value, "value is not a valid email"}
 					}
+					// TODO strict support by
+					// - net.LookupMX
+					// - smtp.Dial
+					// - smtp.Client.Hello("checkmail.me")
+					// - smtp.Client.Mail(...)
+					// - smtp.Client.Rcpt(value)
+					// see https://github.com/badoux/checkmail as example
 				}
+			case TextType:
 			default:
-				return fmt.Errorf("not supported input type %q", inputType)
+				panic(fmt.Sprintf("not supported input type %q", inputType))
 			}
 			return nil
 		}
 	}
 )
 
-/* TODO not implemented yet
 type validationError struct {
+	single   bool
+	position int
+	value    string
+	message  string
+}
+
+// Error implements built-in `error` interface.
+func (err validationError) Error() string {
+	if err.single {
+		if err.value != "" {
+			return fmt.Sprintf("value %q at position %d is invalid: %s", err.value, err.position, err.message)
+		}
+		return fmt.Sprintf("value at position %d is invalid: %s", err.position, err.message)
+	}
+	return err.message
+}
+
+type dataValidationError struct {
+	dataValidationResult
+}
+
+// Error implements built-in `error` interface.
+func (dataValidationError) Error() string {
+	return "input data has error"
+}
+
+// InputWithErrors returns map of input to its validation errors.
+func (err dataValidationError) InputWithErrors() map[Input][]error {
+	m := make(map[Input][]error)
+	for _, r := range err.results {
+		m[r.input] = r.errors
+	}
+	return m
+}
+
+type dataValidationResult struct {
+	data    map[string][]string
+	results []inputValidationResult
+}
+
+// AsError converts the result into error if it contains at least one input validation error.
+func (r dataValidationResult) AsError() ValidationError {
+	for _, sub := range r.results {
+		if sub.HasError() {
+			return dataValidationError{r}
+		}
+	}
+	return nil
+}
+
+type inputValidationResult struct {
 	input  Input
-	data   []string
 	errors []error
 }
 
-func (err validationError) Error() string {
-	return fmt.Sprintf("input %q is not valid", err.input.Name)
+// HasError returns true if the result contains at least one, not nil error.
+func (r inputValidationResult) HasError() bool {
+	for _, err := range r.errors {
+		if err != nil {
+			return true
+		}
+	}
+	return false
 }
-*/

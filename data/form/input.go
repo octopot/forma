@@ -9,5 +9,6 @@ type Input struct {
 	MinLength int    `json:"minlength,omitempty" xml:"minlength,attr,omitempty"`
 	MaxLength int    `json:"maxlength,omitempty" xml:"maxlength,attr,omitempty"`
 	Required  bool   `json:"required,omitempty"  xml:"required,attr,omitempty"`
+	Strict    bool   `json:"strict,omitempty"    xml:"strict,attr,omitempty"`
 	Value     string `json:"value,omitempty"     xml:"value,attr,omitempty"`
 }

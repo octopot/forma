@@ -49,17 +49,17 @@ func (l *layer) Connection() *sql.DB {
 	return l.conn
 }
 
+// AddData inserts form data and returns its ID or an error if something went wrong.
+func (l *layer) AddData(uuid data.UUID, values map[string][]string) (int64, error) {
+	return postgres.AddData(l.conn, uuid, values)
+}
+
 // Dialect returns supported database SQL dialect.
 func (l *layer) Dialect() string {
-	return "postgres"
+	return postgres.Dialect()
 }
 
 // Schema would return a form schema with provided UUID or an error if something went wrong.
 func (l *layer) Schema(uuid data.UUID) (form.Schema, error) {
 	return postgres.Schema(l.conn, uuid)
-}
-
-// AddData inserts form data and returns its ID or an error if something went wrong.
-func (l *layer) AddData(uuid data.UUID, values map[string][]string) (int64, error) {
-	return postgres.AddData(l.conn, uuid, values)
 }

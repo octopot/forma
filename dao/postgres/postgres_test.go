@@ -66,9 +66,11 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 	db, err := sql.Open(name, dsn)
 	assert.NoError(t, err)
 
-	_, err = postgres.Schema(db, UUID)
+	_, err = postgres.AddData(db, UUID, map[string][]string{})
 	assert.Error(t, err)
 
-	_, err = postgres.AddData(db, UUID, map[string][]string{})
+	assert.Equal(t, "postgres", postgres.Dialect())
+
+	_, err = postgres.Schema(db, UUID)
 	assert.Error(t, err)
 }

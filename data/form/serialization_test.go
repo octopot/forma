@@ -16,6 +16,52 @@ import (
 
 var update = flag.Bool("update", false, "update .golden files")
 
+func TestJSON(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		schema form.Schema
+	}{
+		{"email subscription", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.schema, func() form.Schema {
+				var schema form.Schema
+				data, err := json.Marshal(tc.schema)
+				if err != nil {
+					panic(err)
+				}
+				if err := json.Unmarshal(data, &schema); err != nil {
+					panic(err)
+				}
+				return schema
+			}())
+		})
+	}
+}
+
 func TestJSON_Decode(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
@@ -101,14 +147,12 @@ func TestJSON_Encode(t *testing.T) {
 	}
 }
 
-func TestXML_Decode(t *testing.T) {
+func TestXML(t *testing.T) {
 	for _, tc := range []struct {
-		name     string
-		filename string
-		schema   form.Schema
+		name   string
+		schema form.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
-			XMLName: xml.Name{Local: "form"},
+		{"email subscription", form.Schema{
 			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Title:   "Email subscription",
 			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
@@ -116,7 +160,6 @@ func TestXML_Decode(t *testing.T) {
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					XMLName:   xml.Name{Local: "input"},
 					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
 					Name:      "email",
 					Type:      "email",
@@ -125,11 +168,57 @@ func TestXML_Decode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					XMLName: xml.Name{Local: "input"},
-					ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
-					Name:    "_redirect",
-					Type:    "hidden",
-					Value:   "https://kamil.samigullin.info/",
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.schema, func() form.Schema {
+				var schema form.Schema
+				data, err := xml.Marshal(tc.schema)
+				if err != nil {
+					panic(err)
+				}
+				if err := xml.Unmarshal(data, &schema); err != nil {
+					panic(err)
+				}
+				return normalize(schema)
+			}())
+		})
+	}
+}
+
+func TestXML_Decode(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		filename string
+		schema   form.Schema
+	}{
+		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -139,7 +228,7 @@ func TestXML_Decode(t *testing.T) {
 			var schema form.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
-			assert.Equal(t, tc.schema, schema)
+			assert.Equal(t, tc.schema, normalize(schema))
 		})
 	}
 }
@@ -210,6 +299,52 @@ func TestXML_Encode(t *testing.T) {
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
 			assert.Equal(t, string(golden), string(buf.Bytes()))
+		})
+	}
+}
+
+func TestYAML(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		schema form.Schema
+	}{
+		{"email subscription", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.schema, func() form.Schema {
+				var schema form.Schema
+				data, err := yaml.Marshal(tc.schema)
+				if err != nil {
+					panic(err)
+				}
+				if err := yaml.Unmarshal(data, &schema); err != nil {
+					panic(err)
+				}
+				return schema
+			}())
 		})
 	}
 }
@@ -325,6 +460,15 @@ func dryClose(file *os.File, action func() error, closeIfError bool) error {
 		return err
 	}
 	return nil
+}
+
+// so, the xml representation of the schema is not mirrored
+func normalize(schema form.Schema) form.Schema {
+	schema.XMLName = xml.Name{}
+	for i := range schema.Inputs {
+		schema.Inputs[i].XMLName = xml.Name{}
+	}
+	return schema
 }
 
 func reader(file string) *os.File {

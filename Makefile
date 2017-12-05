@@ -29,9 +29,17 @@ static: tools
 
 .PHONY: test
 test: generate
-	go test -cover ./...
+	go test ./...
 
-.PHONY: test-formatted
+.PHONY: test-detailed
+test-detailed:
+	go test -cover -v ./...
+
+.PHONY: test-with-race
+test-with-race:
+	go test -race ./...
+
+.PHONY: test-with-coverage-formatted
 test-formatted: generate
 	go test -cover ./... | column -t | sort -r
 

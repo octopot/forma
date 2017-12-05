@@ -46,8 +46,11 @@ func TestSchema_Apply(t *testing.T) {
 			expected: map[string][]string{"name1": {"val1"}},
 		},
 	} {
-		filtered := tc.schema.Apply(tc.values)
-		assert.Equal(t, tc.expected, filtered, fmt.Sprintf("test case %q failed", tc.name))
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			filtered := tc.schema.Apply(tc.values)
+			assert.Equal(t, tc.expected, filtered, fmt.Sprintf("test case %q failed", tc.name))
+		})
 	}
 }
 
@@ -167,28 +170,31 @@ func TestSchema_Validate(t *testing.T) {
 			values: map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 		},
 	} {
-		var err form.ValidationError
-		action := func() { err = tc.schema.Validate(tc.values) }
-		if tc.expected.panic {
-			assert.Panics(t, action)
-		} else {
-			assert.NotPanics(t, action)
-		}
-		if tc.expected.error {
-			assert.EqualError(t, err, "input data has error")
-			obtained := err.InputWithErrors()
-			for input, errors := range obtained {
-				expected := tc.expected.data[input]
-				assert.Equal(t, expected, func() []string {
-					converted := make([]string, 0, len(errors))
-					for _, err := range errors {
-						converted = append(converted, err.Error())
-					}
-					return converted
-				}())
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			var err form.ValidationError
+			action := func() { err = tc.schema.Validate(tc.values) }
+			if tc.expected.panic {
+				assert.Panics(t, action)
+			} else {
+				assert.NotPanics(t, action)
 			}
-		} else {
-			assert.NoError(t, err)
-		}
+			if tc.expected.error {
+				assert.EqualError(t, err, "input data has error")
+				obtained := err.InputWithErrors()
+				for input, errors := range obtained {
+					expected := tc.expected.data[input]
+					assert.Equal(t, expected, func() []string {
+						converted := make([]string, 0, len(errors))
+						for _, err := range errors {
+							converted = append(converted, err.Error())
+						}
+						return converted
+					}())
+				}
+			} else {
+				assert.NoError(t, err)
+			}
+		})
 	}
 }

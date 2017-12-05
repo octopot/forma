@@ -11,16 +11,18 @@ import (
 
 	"github.com/kamilsk/form-api/data/form"
 	"github.com/stretchr/testify/assert"
+	"gopkg.in/yaml.v2"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
 
 func TestJSON_Decode(t *testing.T) {
 	for _, tc := range []struct {
+		name     string
 		filename string
 		schema   form.Schema
 	}{
-		{filename: "./fixtures/email_subscription.json", schema: form.Schema{
+		{"email subscription", "./fixtures/email_subscription.json", form.Schema{
 			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Title:   "Email subscription",
 			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
@@ -44,19 +46,23 @@ func TestJSON_Decode(t *testing.T) {
 			},
 		}},
 	} {
-		var schema form.Schema
-		file := reader(tc.filename)
-		assert.NoError(t, dryClose(file, func() error { return json.NewDecoder(file).Decode(&schema) }, false))
-		assert.Equal(t, tc.schema, schema)
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			var schema form.Schema
+			file := reader(tc.filename)
+			assert.NoError(t, dryClose(file, func() error { return json.NewDecoder(file).Decode(&schema) }, false))
+			assert.Equal(t, tc.schema, schema)
+		})
 	}
 }
 
 func TestJSON_Encode(t *testing.T) {
 	for _, tc := range []struct {
+		name   string
 		golden string
 		schema form.Schema
 	}{
-		{golden: "./fixtures/email_subscription.json.golden", schema: form.Schema{
+		{"email subscription", "./fixtures/email_subscription.json.golden", form.Schema{
 			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Title:   "Email subscription",
 			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
@@ -80,24 +86,28 @@ func TestJSON_Encode(t *testing.T) {
 			},
 		}},
 	} {
-		if *update {
-			file := writer(tc.golden)
-			assert.NoError(t, dryClose(file, func() error { return json.NewEncoder(file).Encode(tc.schema) }, false))
-		}
-		buf := bytes.NewBuffer(nil)
-		json.NewEncoder(buf).Encode(tc.schema)
-		golden, err := ioutil.ReadFile(tc.golden)
-		assert.NoError(t, err)
-		assert.Equal(t, string(golden), string(buf.Bytes()))
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			if *update {
+				file := writer(tc.golden)
+				assert.NoError(t, dryClose(file, func() error { return json.NewEncoder(file).Encode(tc.schema) }, false))
+			}
+			buf := bytes.NewBuffer(nil)
+			json.NewEncoder(buf).Encode(tc.schema)
+			golden, err := ioutil.ReadFile(tc.golden)
+			assert.NoError(t, err)
+			assert.Equal(t, string(golden), string(buf.Bytes()))
+		})
 	}
 }
 
 func TestXML_Decode(t *testing.T) {
 	for _, tc := range []struct {
+		name     string
 		filename string
 		schema   form.Schema
 	}{
-		{filename: "./fixtures/email_subscription.xml", schema: form.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
 			XMLName: xml.Name{Local: "form"},
 			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Title:   "Email subscription",
@@ -106,6 +116,7 @@ func TestXML_Decode(t *testing.T) {
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
+					XMLName:   xml.Name{Local: "input"},
 					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
 					Name:      "email",
 					Type:      "email",
@@ -114,27 +125,32 @@ func TestXML_Decode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
+					XMLName: xml.Name{Local: "input"},
+					ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:    "_redirect",
+					Type:    "hidden",
+					Value:   "https://kamil.samigullin.info/",
 				},
 			},
 		}},
 	} {
-		var schema form.Schema
-		file := reader(tc.filename)
-		assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
-		assert.Equal(t, tc.schema, schema)
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			var schema form.Schema
+			file := reader(tc.filename)
+			assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
+			assert.Equal(t, tc.schema, schema)
+		})
 	}
 }
 
 func TestXML_Encode(t *testing.T) {
 	for _, tc := range []struct {
+		name   string
 		golden string
 		schema form.Schema
 	}{
-		{golden: "./fixtures/email_subscription.xml.golden", schema: form.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml.golden", form.Schema{
 			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Title:   "Email subscription",
 			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
@@ -157,7 +173,7 @@ func TestXML_Encode(t *testing.T) {
 				},
 			},
 		}},
-		{golden: "./fixtures/stored_in_db.xml.golden", schema: form.Schema{
+		{"stored in db", "./fixtures/stored_in_db.xml.golden", form.Schema{
 			Title:  "Email subscription",
 			Action: "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
 			Inputs: []form.Input{
@@ -176,22 +192,125 @@ func TestXML_Encode(t *testing.T) {
 			},
 		}},
 	} {
-		if *update {
-			file := writer(tc.golden)
-			assert.NoError(t, dryClose(file, func() error {
-				if err := xml.NewEncoder(file).Encode(tc.schema); err != nil {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			if *update {
+				file := writer(tc.golden)
+				assert.NoError(t, dryClose(file, func() error {
+					if err := xml.NewEncoder(file).Encode(tc.schema); err != nil {
+						return err
+					}
+					_, err := file.Write([]byte("\n"))
 					return err
-				}
-				_, err := file.Write([]byte("\n"))
-				return err
+				}, false))
+			}
+			buf := bytes.NewBuffer(nil)
+			xml.NewEncoder(buf).Encode(tc.schema)
+			buf.Write([]byte("\n"))
+			golden, err := ioutil.ReadFile(tc.golden)
+			assert.NoError(t, err)
+			assert.Equal(t, string(golden), string(buf.Bytes()))
+		})
+	}
+}
+
+func TestYAML_Decode(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		filename string
+		schema   form.Schema
+	}{
+		{"email subscription", "./fixtures/email_subscription.yaml", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			var schema form.Schema
+			file := reader(tc.filename)
+			assert.NoError(t, dryClose(file, func() error {
+				return yaml.Unmarshal(func() []byte {
+					data, err := ioutil.ReadAll(file)
+					if err != nil {
+						panic(err)
+					}
+					return data
+				}(), &schema)
 			}, false))
-		}
-		buf := bytes.NewBuffer(nil)
-		xml.NewEncoder(buf).Encode(tc.schema)
-		buf.Write([]byte("\n"))
-		golden, err := ioutil.ReadFile(tc.golden)
-		assert.NoError(t, err)
-		assert.Equal(t, string(golden), string(buf.Bytes()))
+			assert.Equal(t, tc.schema, schema)
+		})
+	}
+}
+
+func TestYAML_Encode(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		golden string
+		schema form.Schema
+	}{
+		{"email subscription", "./fixtures/email_subscription.yaml.golden", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			if *update {
+				file := writer(tc.golden)
+				assert.NoError(t, dryClose(file, func() error {
+					data, err := yaml.Marshal(tc.schema)
+					if err != nil {
+						return err
+					}
+					_, err = file.Write(data)
+					return err
+				}, false))
+			}
+			data, err := yaml.Marshal(tc.schema)
+			assert.NoError(t, err)
+			golden, err := ioutil.ReadFile(tc.golden)
+			assert.NoError(t, err)
+			assert.Equal(t, string(golden), string(data))
+		})
 	}
 }
 

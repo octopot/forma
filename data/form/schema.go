@@ -1,6 +1,10 @@
 package form
 
-import "encoding/xml"
+import (
+	"encoding/xml"
+	"strings"
+	"unicode"
+)
 
 // Schema represents form specification.
 type Schema struct {
@@ -13,9 +17,14 @@ type Schema struct {
 	Inputs  []Input  `json:"input"             yaml:"input"             xml:"input"`
 }
 
-// Apply applies the schema to input values to filter them.
-// It removes all values not fitted by the schema.
-func (s Schema) Apply(data map[string][]string) map[string][]string {
+// Apply uses filtration, normalization and validation of input values.
+func (s Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
+	return s.Validate(s.Normalize(s.Filter(data)))
+}
+
+// Filter applies the schema to input values to filter them.
+// It omits all values not fitted by the schema.
+func (s Schema) Filter(data map[string][]string) map[string][]string {
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return nil
 	}
@@ -32,10 +41,41 @@ func (s Schema) Apply(data map[string][]string) map[string][]string {
 	return filtered
 }
 
-// Validate validates input values and returns all occurred errors.
-func (s Schema) Validate(data map[string][]string) ValidationError {
+// Normalize removes unnecessary characters from input values.
+func (s Schema) Normalize(data map[string][]string) map[string][]string {
+	for _, values := range data {
+		for i, value := range values {
+			values[i] = strings.TrimFunc(value, func(r rune) bool {
+				if unicode.IsSpace(r) {
+					return true
+				}
+				// U+200B ZeroWidth
+				if r == '\u200B' {
+					return true
+				}
+				// U+200C ZeroWidthNoJoiner
+				if r == '\u200C' {
+					return true
+				}
+				// U+200D ZeroWidthJoiner
+				if r == '\u200D' {
+					return true
+				}
+				// U+2060 WordJoiner
+				if r == '\u2060' {
+					return true
+				}
+				return false
+			})
+		}
+	}
+	return data
+}
+
+// Validate checks input values.
+func (s Schema) Validate(data map[string][]string) (map[string][]string, ValidationError) {
 	if len(s.Inputs) == 0 || len(data) == 0 {
-		return nil
+		return data, nil
 	}
 	index := make(map[string]int, len(s.Inputs))
 	rules := make(map[string][]Validator, len(s.Inputs))
@@ -67,5 +107,5 @@ func (s Schema) Validate(data map[string][]string) ValidationError {
 		}
 		validation.results = append(validation.results, inputValidation)
 	}
-	return validation.AsError()
+	return data, validation.AsError()
 }

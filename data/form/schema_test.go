@@ -1,7 +1,6 @@
 package form_test
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/kamilsk/form-api/data/form"
@@ -9,6 +8,50 @@ import (
 )
 
 func TestSchema_Apply(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		schema   form.Schema
+		values   map[string][]string
+		expected struct {
+			error bool
+			panic bool
+			data  map[string][]string
+		}
+	}{
+		{"normal case", form.Schema{Inputs: []form.Input{
+			{Name: "name1", Type: form.EmailType, MinLength: 6, MaxLength: 255, Required: true},
+		}},
+			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
+			struct {
+				error bool
+				panic bool
+				data  map[string][]string
+			}{false, false, map[string][]string{"name1": {"test@my.email"}}},
+		},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			var (
+				obtained map[string][]string
+				err      form.ValidationError
+			)
+			action := func() { obtained, err = tc.schema.Apply(tc.values) }
+			if tc.expected.panic {
+				assert.Panics(t, action)
+			} else {
+				assert.NotPanics(t, action)
+			}
+			if tc.expected.error {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+				assert.Equal(t, tc.expected.data, obtained)
+			}
+		})
+	}
+}
+
+func TestSchema_Filter(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
 		schema   form.Schema
@@ -48,8 +91,26 @@ func TestSchema_Apply(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			filtered := tc.schema.Apply(tc.values)
-			assert.Equal(t, tc.expected, filtered, fmt.Sprintf("test case %q failed", tc.name))
+			assert.Equal(t, tc.expected, tc.schema.Filter(tc.values))
+		})
+	}
+}
+
+func TestSchema_Normalize(t *testing.T) {
+	for _, tc := range []struct {
+		name     string
+		schema   form.Schema
+		values   map[string][]string
+		expected map[string][]string
+	}{
+		{"input with spaces", form.Schema{},
+			map[string][]string{"name1": {string([]rune{'\u200B', '\u200C'}) + " val1 " + string([]rune{'\u200D', '\u2060'})}},
+			map[string][]string{"name1": {"val1"}},
+		},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.expected, tc.schema.Normalize(tc.values))
 		})
 	}
 }
@@ -173,7 +234,7 @@ func TestSchema_Validate(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var err form.ValidationError
-			action := func() { err = tc.schema.Validate(tc.values) }
+			action := func() { _, err = tc.schema.Validate(tc.values) }
 			if tc.expected.panic {
 				assert.Panics(t, action)
 			} else {

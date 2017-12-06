@@ -32,6 +32,10 @@ stop-db: docker-compose
 logs-db: COMMAND = logs -f db
 logs-db: docker-compose
 
+.PHONY: psql
+psql: COMMAND = exec db /bin/sh -c "su - postgres -c psql"
+psql: docker-compose
+
 
 
 .PHONY: start-migration

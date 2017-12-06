@@ -9,9 +9,10 @@ vendor
 # mockgen
 /**/mock_*.go
 
-# migrations
-/migrations/*
-!/migrations/1_initial.sql
+# database
+/static/migrations/*
+!/static/migrations/1_initial.sql
+/env/backup.sql
 
 # environment
 *.env

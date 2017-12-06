@@ -8,11 +8,19 @@ docker-compose:
 
 .PHONY: up
 up: COMMAND = up -d
-up: docker-compose status
+up: docker-compose
+
+.PHONY: fresh-up
+fresh-up: COMMAND = up --build --force-recreate -d
+fresh-up: docker-compose
 
 .PHONY: down
 down: COMMAND = down
 down: docker-compose
+
+.PHONY: clean-down
+clean-down: COMMAND = down --volumes --rmi local
+clean-down: docker-compose
 
 .PHONY: status
 status: COMMAND = ps
@@ -35,6 +43,15 @@ logs-db: docker-compose
 .PHONY: psql
 psql: COMMAND = exec db /bin/sh -c "su - postgres -c psql"
 psql: docker-compose
+
+.PHONY: backup
+backup: COMMAND = exec db /bin/sh -c 'su - postgres -c "pg_dump --if-exists --clean $${POSTGRES_DB}"' > ./env/backup.sql
+backup: docker-compose
+
+.PHONY: restore
+restore:
+	cat ./env/backup.sql | docker exec -i $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1) \
+	  /bin/sh -c 'cat > /tmp/backup.sql && su - postgres -c "psql --single-transaction $${POSTGRES_DB} < /tmp/backup.sql"'
 
 
 
@@ -77,6 +94,14 @@ stop-service: docker-compose
 .PHONY: logs-service
 logs-service: COMMAND = logs -f service
 logs-service: docker-compose
+
+.PHONY: service-migrate-up
+service-migrate-up: COMMAND = exec service form-api migrate up
+service-migrate-up: docker-compose
+
+.PHONY: service-migrate-down
+service-migrate-down: COMMAND = exec service form-api migrate down
+service-migrate-down: docker-compose
 
 
 

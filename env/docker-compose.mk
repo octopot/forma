@@ -34,17 +34,17 @@ logs-db: docker-compose
 
 
 
-.PHONY: start-service
-start-service: COMMAND = start service
-start-service: docker-compose
+.PHONY: start-migration
+start-migration: COMMAND = start migration
+start-migration: docker-compose
 
-.PHONY: stop-service
-stop-service: COMMAND = stop service
-stop-service: docker-compose
+.PHONY: stop-migration
+stop-migration: COMMAND = stop migration
+stop-migration: docker-compose
 
-.PHONY: logs-service
-logs-service: COMMAND = logs -f service
-logs-service: docker-compose
+.PHONY: logs-migration
+logs-migration: COMMAND = logs -f migration
+logs-migration: docker-compose
 
 
 
@@ -59,6 +59,20 @@ stop-server: docker-compose
 .PHONY: logs-server
 logs-server: COMMAND = logs -f server
 logs-server: docker-compose
+
+
+
+.PHONY: start-service
+start-service: COMMAND = start service
+start-service: docker-compose
+
+.PHONY: stop-service
+stop-service: COMMAND = stop service
+stop-service: docker-compose
+
+.PHONY: logs-service
+logs-service: COMMAND = logs -f service
+logs-service: docker-compose
 
 
 

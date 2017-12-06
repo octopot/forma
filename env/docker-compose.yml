@@ -10,6 +10,17 @@ services:
     volumes:
     - pgdata:${PGDATA}
 
+  migration: # https://hub.docker.com/r/kamilsk/form-api/
+    build:
+      args: { QUICK: "true" }
+      context: ../.
+      dockerfile: ./env/Dockerfile
+    command: [ "migrate", "up" ]
+    depends_on:
+    - db
+    env_file: .env
+    restart: on-failure
+
   server: # https://hub.docker.com/_/nginx/
     image: kamilsk/nginx:alpine
     entrypoint: |
@@ -32,8 +43,7 @@ services:
       args: { QUICK: "true" }
       context: ../.
       dockerfile: ./env/Dockerfile
-    entrypoint: |
-      /bin/sh -c "form-api migrate && form-api run --with-profiler"
+    command: [ "run", "--with-profiler" ]
     depends_on:
     - db
     env_file: .env

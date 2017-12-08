@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-// Schema represents form specification.
+// Schema represents a form specification.
 type Schema struct {
 	ID      string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
 	Title   string  `json:"title"             yaml:"title"             xml:"title,attr"`
@@ -15,7 +15,7 @@ type Schema struct {
 	Inputs  []Input `json:"input"             yaml:"input"             xml:"input"`
 }
 
-// Apply uses filtration, normalization and validation for input values.
+// Apply uses filtration, normalization, and validation for input values.
 func (s Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
 	return s.Validate(s.Normalize(s.Filter(data)))
 }
@@ -70,7 +70,8 @@ func (s Schema) Normalize(data map[string][]string) map[string][]string {
 	return data
 }
 
-// Validate checks input values.
+// Validate checks input values for errors.
+// It can raise the panic if the input type is unsupported.
 func (s Schema) Validate(data map[string][]string) (map[string][]string, ValidationError) {
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return data, nil

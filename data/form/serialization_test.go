@@ -16,6 +16,58 @@ import (
 
 var update = flag.Bool("update", false, "update .golden files")
 
+func TestHTML(t *testing.T) {
+	for _, tc := range []struct {
+		name   string
+		golden string
+		schema form.Schema
+	}{
+		{"email subscription", "./fixtures/email_subscription.html.golden", form.Schema{
+			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Title:   "Email subscription",
+			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Method:  "post",
+			EncType: "application/x-www-form-urlencoded",
+			Inputs: []form.Input{
+				{
+					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					Name:      "email",
+					Type:      "email",
+					Title:     "Email",
+					MaxLength: 64,
+					Required:  true,
+				},
+				{
+					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					Name:  "_redirect",
+					Type:  "hidden",
+					Value: "https://kamil.samigullin.info/",
+				},
+			},
+		}},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			if *update {
+				file := writer(tc.golden)
+				assert.NoError(t, dryClose(file, func() error {
+					html, err := tc.schema.MarshalHTML()
+					if err != nil {
+						return err
+					}
+					_, err = file.Write(html)
+					return err
+				}, false))
+			}
+			golden, err := ioutil.ReadFile(tc.golden)
+			assert.NoError(t, err)
+			obtained, err := tc.schema.MarshalHTML()
+			assert.NoError(t, err)
+			assert.Equal(t, golden, obtained)
+		})
+	}
+}
+
 func TestJSON(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
@@ -138,10 +190,10 @@ func TestJSON_Encode(t *testing.T) {
 				file := writer(tc.golden)
 				assert.NoError(t, dryClose(file, func() error { return json.NewEncoder(file).Encode(tc.schema) }, false))
 			}
-			buf := bytes.NewBuffer(nil)
-			json.NewEncoder(buf).Encode(tc.schema)
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
+			buf := bytes.NewBuffer(nil)
+			json.NewEncoder(buf).Encode(tc.schema)
 			assert.Equal(t, string(golden), string(buf.Bytes()))
 		})
 	}
@@ -289,15 +341,13 @@ func TestXML_Encode(t *testing.T) {
 					if err := xml.NewEncoder(file).Encode(tc.schema); err != nil {
 						return err
 					}
-					_, err := file.Write([]byte("\n"))
-					return err
+					return nil
 				}, false))
 			}
-			buf := bytes.NewBuffer(nil)
-			xml.NewEncoder(buf).Encode(tc.schema)
-			buf.Write([]byte("\n"))
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
+			buf := bytes.NewBuffer(nil)
+			xml.NewEncoder(buf).Encode(tc.schema)
 			assert.Equal(t, string(golden), string(buf.Bytes()))
 		})
 	}
@@ -440,9 +490,9 @@ func TestYAML_Encode(t *testing.T) {
 					return err
 				}, false))
 			}
-			data, err := yaml.Marshal(tc.schema)
-			assert.NoError(t, err)
 			golden, err := ioutil.ReadFile(tc.golden)
+			assert.NoError(t, err)
+			data, err := yaml.Marshal(tc.schema)
 			assert.NoError(t, err)
 			assert.Equal(t, string(golden), string(data))
 		})

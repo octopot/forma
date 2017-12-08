@@ -13,10 +13,11 @@ const (
 // ValidationError represents validation error.
 type ValidationError interface {
 	error
+	// InputWithErrors returns map for form input and its errors.
 	InputWithErrors() map[Input][]error
 }
 
-// Validator defines the behavior of input validators.
+// Validator defines basic behavior of input validators.
 type Validator interface {
 	// Validate validates the input values.
 	Validate(values []string) error
@@ -64,15 +65,18 @@ var (
 					if !strings.Contains(value, `@`) {
 						return validationError{true, i, value, "value is not a valid email"}
 					}
-					// TODO strict support by
-					// - net.LookupMX
-					// - smtp.Dial
-					// - smtp.Client.Hello("checkmail.me")
-					// - smtp.Client.Mail(...)
-					// - smtp.Client.Rcpt(value)
-					// see https://github.com/badoux/checkmail as example
+					if strict {
+						// TODO strict support by
+						// - net.LookupMX
+						// - smtp.Dial
+						// - smtp.Client.Hello("checkmail.me")
+						// - smtp.Client.Mail(...)
+						// - smtp.Client.Rcpt(value)
+						// see https://github.com/badoux/checkmail as example
+					}
 				}
 			case TextType:
+				// nothing to do
 			default:
 				panic(fmt.Sprintf("not supported input type %q", inputType))
 			}
@@ -88,7 +92,6 @@ type validationError struct {
 	message  string
 }
 
-// Error implements built-in `error` interface.
 func (err validationError) Error() string {
 	if err.single {
 		if err.value != "" {
@@ -103,12 +106,10 @@ type dataValidationError struct {
 	dataValidationResult
 }
 
-// Error implements built-in `error` interface.
 func (dataValidationError) Error() string {
 	return "input data has error"
 }
 
-// InputWithErrors returns map of input to its validation errors.
 func (err dataValidationError) InputWithErrors() map[Input][]error {
 	m := make(map[Input][]error)
 	for _, r := range err.results {

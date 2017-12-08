@@ -19,8 +19,7 @@ func TestSchema_Apply(t *testing.T) {
 		}
 	}{
 		{"normal case", form.Schema{Inputs: []form.Input{
-			{Name: "name1", Type: form.EmailType, MinLength: 6, MaxLength: 255, Required: true},
-		}},
+			{Name: "name1", Type: form.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
 			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 			struct {
 				error bool
@@ -58,35 +57,25 @@ func TestSchema_Filter(t *testing.T) {
 		values   map[string][]string
 		expected map[string][]string
 	}{
-		{
-			name:     "nil inputs",
-			schema:   form.Schema{},
-			values:   map[string][]string{"name1": {"val1", "val2"}},
-			expected: nil,
+		{"nil inputs", form.Schema{},
+			map[string][]string{"name1": {"val1", "val2"}},
+			nil,
 		},
-		{
-			name:     "empty inputs",
-			schema:   form.Schema{Inputs: []form.Input{}},
-			values:   map[string][]string{"name1": {"val1", "val2"}},
-			expected: nil,
+		{"empty inputs", form.Schema{Inputs: []form.Input{}},
+			map[string][]string{"name1": {"val1", "val2"}},
+			nil,
 		},
-		{
-			name:     "nil values",
-			schema:   form.Schema{},
-			values:   nil,
-			expected: nil,
+		{"nil values", form.Schema{},
+			nil,
+			nil,
 		},
-		{
-			name:     "empty values",
-			schema:   form.Schema{},
-			values:   nil,
-			expected: nil,
+		{"empty values", form.Schema{},
+			nil,
+			nil,
 		},
-		{
-			name:     "normal case",
-			schema:   form.Schema{Inputs: []form.Input{{Name: "name1"}}},
-			values:   map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
-			expected: map[string][]string{"name1": {"val1"}},
+		{"normal case", form.Schema{Inputs: []form.Input{{Name: "name1"}}},
+			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
+			map[string][]string{"name1": {"val1"}},
 		},
 	} {
 		tc := tc
@@ -126,54 +115,43 @@ func TestSchema_Validate(t *testing.T) {
 			data  map[form.Input][]string
 		}
 	}{
-		{
-			name:   "nil inputs",
-			schema: form.Schema{},
-			values: map[string][]string{"name1": {"val1", "val2"}},
-			expected: struct {
+		{"nil inputs", form.Schema{},
+			map[string][]string{"name1": {"val1", "val2"}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
 			}{false, false, nil},
 		},
-		{
-			name:   "empty inputs",
-			schema: form.Schema{Inputs: []form.Input{}},
-			values: map[string][]string{"name1": {"val1", "val2"}},
-			expected: struct {
+		{"empty inputs", form.Schema{Inputs: []form.Input{}},
+			map[string][]string{"name1": {"val1", "val2"}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
 			}{false, false, nil},
 		},
-		{
-			name:   "nil values",
-			schema: form.Schema{},
-			values: nil,
-			expected: struct {
+		{"nil values", form.Schema{},
+			nil,
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
 			}{false, false, nil},
 		},
-		{
-			name:   "empty values",
-			schema: form.Schema{},
-			values: nil,
-			expected: struct {
+		{"empty values", form.Schema{},
+			nil,
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
 			}{false, false, nil},
 		},
-		{
-			name: "invalid length",
-			schema: form.Schema{Inputs: []form.Input{
-				{Name: "name1", Type: form.TextType, MinLength: 5},
-				{Name: "name2", Type: form.TextType, MaxLength: 2},
-			}},
-			values: map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
-			expected: struct {
+		{"invalid length", form.Schema{Inputs: []form.Input{
+			{Name: "name1", Type: form.TextType, MinLength: 5},
+			{Name: "name2", Type: form.TextType, MaxLength: 2}}},
+			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
@@ -184,14 +162,11 @@ func TestSchema_Validate(t *testing.T) {
 					`value "val2" at position 0 is invalid: value length is greater than 2`},
 			}},
 		},
-		{
-			name: "empty required value",
-			schema: form.Schema{Inputs: []form.Input{
-				{Name: "name1", Type: form.TextType, Required: true},
-				{Name: "name2", Type: form.TextType, Required: true},
-			}},
-			values: map[string][]string{"name1": {"val1", ""}, "name2": {}},
-			expected: struct {
+		{"empty required value", form.Schema{Inputs: []form.Input{
+			{Name: "name1", Type: form.TextType, Required: true},
+			{Name: "name2", Type: form.TextType, Required: true}}},
+			map[string][]string{"name1": {"val1", ""}, "name2": {}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
@@ -200,21 +175,17 @@ func TestSchema_Validate(t *testing.T) {
 				{Name: "name2", Type: form.TextType, Required: true}: {"values are empty"},
 			}},
 		},
-		{
-			name:   "invalid type",
-			schema: form.Schema{Inputs: []form.Input{{Name: "name1", Type: "unknown"}}},
-			values: map[string][]string{"name1": {"val1", "val2"}},
-			expected: struct {
+		{"invalid type", form.Schema{Inputs: []form.Input{{Name: "name1", Type: "unknown"}}},
+			map[string][]string{"name1": {"val1", "val2"}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
 			}{false, true, map[form.Input][]string{}},
 		},
-		{
-			name:   "invalid email",
-			schema: form.Schema{Inputs: []form.Input{{Name: "name1", Type: form.EmailType}}},
-			values: map[string][]string{"name1": {"val1", "val2"}},
-			expected: struct {
+		{"invalid email", form.Schema{Inputs: []form.Input{{Name: "name1", Type: form.EmailType}}},
+			map[string][]string{"name1": {"val1", "val2"}},
+			struct {
 				error bool
 				panic bool
 				data  map[form.Input][]string
@@ -223,12 +194,14 @@ func TestSchema_Validate(t *testing.T) {
 					`value "val1" at position 0 is invalid: value is not a valid email`},
 			}},
 		},
-		{
-			name: "normal case",
-			schema: form.Schema{Inputs: []form.Input{
-				{Name: "name1", Type: form.EmailType, MinLength: 6, MaxLength: 255, Required: true},
-			}},
-			values: map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
+		{"normal case", form.Schema{Inputs: []form.Input{
+			{Name: "name1", Type: form.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
+			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
+			struct {
+				error bool
+				panic bool
+				data  map[form.Input][]string
+			}{},
 		},
 	} {
 		tc := tc

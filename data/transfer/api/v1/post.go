@@ -1,19 +1,19 @@
 package v1
 
 import (
-	"net/url"
-
 	"github.com/kamilsk/form-api/data"
+	"github.com/kamilsk/form-api/data/form"
 )
 
 // PostRequest represents `POST /api/v1/{UUID}` request.
 type PostRequest struct {
 	UUID data.UUID
-	Data url.Values
+	Data map[string][]string
 }
 
 // PostResponse represents `POST /api/v1/{UUID}` response.
 type PostResponse struct {
-	Error error
-	ID    int64
+	Error  error
+	ID     int64
+	Schema form.Schema
 }

@@ -11,8 +11,8 @@ import (
 )
 
 // AddData inserts form data and returns its ID or an error if something went wrong.
-func AddData(db *sql.DB, uuid data.UUID, values map[string][]string) (int64, error) {
-	encoded, err := json.Marshal(values)
+func AddData(db *sql.DB, uuid data.UUID, verified map[string][]string) (int64, error) {
+	encoded, err := json.Marshal(verified)
 	if err != nil {
 		return 0, errors.Serialization(err, "trying to marshal data into JSON with schema of %q", uuid)
 	}

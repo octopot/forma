@@ -14,5 +14,6 @@ type PostRequest struct {
 
 // PostResponse represents `POST /api/v1/{UUID}` response.
 type PostResponse struct {
-	DefaultRedirect *url.URL
+	Error error
+	ID    int64
 }

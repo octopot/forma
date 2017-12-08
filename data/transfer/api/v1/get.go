@@ -7,12 +7,11 @@ import (
 
 // GetRequest represents `GET /api/v1/{UUID}` request.
 type GetRequest struct {
-	UUID   data.UUID
-	Format string
+	UUID data.UUID
 }
 
 // GetResponse represents `GET /api/v1/{UUID}` response.
 type GetResponse struct {
-	Schema form.Schema
 	Error  error
+	Schema form.Schema
 }

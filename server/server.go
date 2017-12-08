@@ -26,7 +26,7 @@ func (s *server) GetV1(rw http.ResponseWriter, req *http.Request) {
 
 	uuid := req.Context().Value(UUIDKey{}).(data.UUID)
 
-	request := v1.GetRequest{UUID: uuid, Format: req.Header.Get("Accept")}
+	request := v1.GetRequest{UUID: uuid}
 	response := s.service.HandleGetV1(request)
 	if response.Error != nil {
 		httpErr.FromGetV1(response.Error).MarshalTo(rw)

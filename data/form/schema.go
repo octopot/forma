@@ -17,7 +17,7 @@ type Schema struct {
 	Inputs  []Input  `json:"input"             yaml:"input"             xml:"input"`
 }
 
-// Apply uses filtration, normalization and validation of input values.
+// Apply uses filtration, normalization and validation for input values.
 func (s Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
 	return s.Validate(s.Normalize(s.Filter(data)))
 }

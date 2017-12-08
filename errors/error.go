@@ -4,6 +4,7 @@ import "github.com/pkg/errors"
 
 const (
 	ResourceNotFound = 1 + iota
+	InvalidInputData
 )
 
 const (
@@ -15,6 +16,11 @@ const (
 // NotFound returns an application error related to an empty search result.
 func NotFound(cause error, format string, args ...interface{}) *withCode {
 	return &withCode{cause: errors.Wrapf(cause, format, args...), code: ResourceNotFound}
+}
+
+// Validation returns an application error related to invalid input values.
+func Validation(cause error, format string, args ...interface{}) *withCode {
+	return &withCode{cause: errors.Wrapf(cause, format, args...), code: InvalidInputData}
 }
 
 // Database returns an application error related to database problems.
@@ -56,3 +62,6 @@ func (err *withCode) IsUser() bool { return err.code < ServerError }
 
 // IsNotFound returns true if the error related to an empty search result.
 func (err *withCode) IsNotFound() bool { return err.code == ResourceNotFound }
+
+// IsInvalid returns true if the error related to invalid input values.
+func (err *withCode) IsInvalid() bool { return err.code == InvalidInputData }

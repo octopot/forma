@@ -50,8 +50,8 @@ func (l *layer) Connection() *sql.DB {
 }
 
 // AddData inserts form data and returns its ID or an error if something went wrong.
-func (l *layer) AddData(uuid data.UUID, values map[string][]string) (int64, error) {
-	return postgres.AddData(l.conn, uuid, values)
+func (l *layer) AddData(uuid data.UUID, verified map[string][]string) (int64, error) {
+	return postgres.AddData(l.conn, uuid, verified)
 }
 
 // Dialect returns supported database SQL dialect.

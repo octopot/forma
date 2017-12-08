@@ -187,7 +187,7 @@ func TestXML(t *testing.T) {
 				if err := xml.Unmarshal(data, &schema); err != nil {
 					panic(err)
 				}
-				return normalize(schema)
+				return schema
 			}())
 		})
 	}
@@ -228,7 +228,7 @@ func TestXML_Decode(t *testing.T) {
 			var schema form.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
-			assert.Equal(t, tc.schema, normalize(schema))
+			assert.Equal(t, tc.schema, schema)
 		})
 	}
 }
@@ -460,15 +460,6 @@ func dryClose(file *os.File, action func() error, closeIfError bool) error {
 		return err
 	}
 	return nil
-}
-
-// so, the xml representation of the schema is not mirrored
-func normalize(schema form.Schema) form.Schema {
-	schema.XMLName = xml.Name{}
-	for i := range schema.Inputs {
-		schema.Inputs[i].XMLName = xml.Name{}
-	}
-	return schema
 }
 
 func reader(file string) *os.File {

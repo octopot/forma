@@ -20,6 +20,20 @@ const (
 	XML = "text/xml"
 )
 
+type support []string
+
+var supported support = []string{HTML, JSON, TEXT, XML}
+
+// Support returns true if provided content type is supported by encoder.
+func Support(contentType string) bool {
+	for _, available := range supported {
+		if available == contentType {
+			return true
+		}
+	}
+	return false
+}
+
 // Generic defines basic behavior for all available encoders.
 type Generic interface {
 	// Encode writes the encoding of the value to the stream.

@@ -5,11 +5,15 @@ import (
 	"net/url"
 
 	"github.com/kamilsk/form-api/data"
+	"github.com/kamilsk/form-api/data/encoder"
 	"github.com/kamilsk/form-api/data/transfer/api/v1"
 )
 
-// UUIDKey used as a context key to store a form UUID.
+// UUIDKey used as a context key to store a form schema UUID.
 type UUIDKey struct{}
+
+// EncoderKey used as sa context key to store a form schema encoder.
+type EncoderKey struct{}
 
 // New returns new instance of Form API server.
 func New(service FormAPIService) *server {
@@ -25,6 +29,7 @@ func (s *server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var httpErr *Error
 
 	uuid := req.Context().Value(UUIDKey{}).(data.UUID)
+	enc := req.Context().Value(EncoderKey{}).(encoder.Generic)
 
 	request := v1.GetRequest{UUID: uuid}
 	response := s.service.HandleGetV1(request)
@@ -32,6 +37,7 @@ func (s *server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		httpErr.FromGetV1(response.Error).MarshalTo(rw)
 		return
 	}
+	enc.Encode(response.Schema)
 }
 
 // PostV1 implements `FormAPI` interface

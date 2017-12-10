@@ -6,9 +6,9 @@ import (
 )
 
 const (
-	// EmailType specifies `<input type="email">`
+	// EmailType specifies `<input type="email">`.
 	EmailType = "email"
-	// TextType specifies `<input type="text">`
+	// TextType specifies `<input type="text">`.
 	TextType = "text"
 )
 

@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	// HTML MIME type
+	// HTML MIME type.
 	HTML = "text/html"
-	// JSON MIME type
+	// JSON MIME type.
 	JSON = "application/json"
-	// TEXT MIME type
+	// TEXT MIME type.
 	TEXT = "text/plain"
-	// XML MIME type
+	// XML MIME type.
 	XML = "text/xml"
 )
 

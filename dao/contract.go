@@ -5,7 +5,7 @@ import (
 	"github.com/kamilsk/form-api/data/form"
 )
 
-// Executor defines behavior of database specific SQL executor.
+// Executor defines behavior of database specific query executors.
 type Executor interface {
 	// AddData inserts form data and returns its ID or an error if something went wrong.
 	AddData(uuid data.UUID, values map[string][]string) (int64, error)

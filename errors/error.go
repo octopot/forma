@@ -3,52 +3,93 @@ package errors
 import "github.com/pkg/errors"
 
 const (
-	ResourceNotFound = 1 + iota
+	// ClientError is a code of client error.
+	ClientError = iota
+	// ResourceNotFound is a code of client error when the requested resource is not found.
+	ResourceNotFound
+	// InvalidInputData is a code of client error when data provided by a user is invalid.
 	InvalidInputData
 )
 
 const (
+	// ServerError is a code of server error.
 	ServerError = 100 + iota
-	DatabaseError
-	SerializationError
+	// DatabaseFail is a code of server error related to database problems.
+	DatabaseFail
+	// SerializationFail is a code of server error related to serialization problems.
+	SerializationFail
 )
 
+const (
+	// ClientErrorMessage is a default message for client error.
+	ClientErrorMessage = "Error"
+	// ServerErrorMessage is a default message for server error.
+	ServerErrorMessage = "Server Error"
+	// NeutralMessage is a default message.
+	NeutralMessage = "Something went wrong"
+	// FormInvalidMessage is a default message in case when input values are invalid.
+	FormInvalidMessage = "Form data contains error"
+	// SchemaNotFoundMessage is a default message in case when schema is not found.
+	SchemaNotFoundMessage = "Schema not found"
+)
+
+// ApplicationError defines behavior of application errors.
+type ApplicationError interface {
+	error
+	// Cause returns the underlying cause of the error.
+	Cause() error
+	// IsUser returns true if the error on the client side.
+	IsUser() bool
+	// IsNotFound returns true if the error related to an empty search result.
+	IsNotFound() bool
+	// IsInvalid returns true if the error related to invalid data provided by a user.
+	IsInvalid() bool
+	// IsServer returns true if the error on the server side.
+	IsServer() bool
+	// Message returns an error message intended for a user.
+	Message() string
+}
+
 // NotFound returns an application error related to an empty search result.
-func NotFound(cause error, format string, args ...interface{}) *withCode {
-	return &withCode{cause: errors.Wrapf(cause, format, args...), code: ResourceNotFound}
+func NotFound(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
+	return &withCode{ResourceNotFound, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
 }
 
 // Validation returns an application error related to invalid input values.
-func Validation(cause error, format string, args ...interface{}) *withCode {
-	return &withCode{cause: errors.Wrapf(cause, format, args...), code: InvalidInputData}
+func Validation(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
+	return &withCode{InvalidInputData, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
 }
 
 // Database returns an application error related to database problems.
-func Database(cause error, format string, args ...interface{}) *withCode {
-	return &withCode{cause: errors.Wrapf(cause, format, args...), code: DatabaseError}
+func Database(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
+	return &withCode{DatabaseFail, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
 }
 
 // Serialization returns an application error related to serialization problems.
-func Serialization(cause error, format string, args ...interface{}) *withCode {
-	return &withCode{cause: errors.Wrapf(cause, format, args...), code: SerializationError}
+func Serialization(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
+	return &withCode{SerializationFail, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
 }
 
 type withCode struct {
-	cause error
 	code  int
+	msg   string
+	cause error
 }
 
-// Error returns a message of the underlying cause of the error
-// or default message for server or client side error.
 func (err *withCode) Error() string {
-	if err.cause == nil {
+	msg := err.msg
+	if msg == "" {
 		if err.IsServer() {
-			return "server error"
+			msg = "Server Error"
+		} else {
+			msg = "Error"
 		}
-		return "user error"
 	}
-	return err.cause.Error()
+	return msg
 }
+
+// Message returns an error message intended for a user.
+func (err *withCode) Message() string { return err.msg }
 
 // Cause returns the underlying cause of the error.
 // It is friendly to `github.com/pkg/errors.Cause` method.
@@ -63,5 +104,5 @@ func (err *withCode) IsUser() bool { return err.code < ServerError }
 // IsNotFound returns true if the error related to an empty search result.
 func (err *withCode) IsNotFound() bool { return err.code == ResourceNotFound }
 
-// IsInvalid returns true if the error related to invalid input values.
+// IsInvalid returns true if the error related to invalid data provided by a user.
 func (err *withCode) IsInvalid() bool { return err.code == InvalidInputData }

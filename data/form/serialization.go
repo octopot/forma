@@ -32,7 +32,7 @@ func (s Schema) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(schema(s), start)
 }
 
-// MarshalHTML encodes the receiver into HTML.
+// MarshalHTML encodes the schema to HTML.
 func (s Schema) MarshalHTML() ([]byte, error) {
 	buf := bytes.NewBuffer(nil)
 	err := html.Execute(buf, s)

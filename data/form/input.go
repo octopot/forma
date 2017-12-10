@@ -1,6 +1,6 @@
 package form
 
-// Input represents an input element of a form specification.
+// Input represents an element of a HTML form.
 type Input struct {
 	ID          string `json:"id,omitempty"          yaml:"id,omitempty"          xml:"id,attr,omitempty"`
 	Name        string `json:"name"                  yaml:"name"                  xml:"name,attr"`

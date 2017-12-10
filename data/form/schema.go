@@ -5,7 +5,7 @@ import (
 	"unicode"
 )
 
-// Schema represents a form specification.
+// Schema represents a HTML form specification.
 type Schema struct {
 	ID      string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
 	Title   string  `json:"title"             yaml:"title"             xml:"title,attr"`
@@ -20,8 +20,7 @@ func (s Schema) Apply(data map[string][]string) (map[string][]string, Validation
 	return s.Validate(s.Normalize(s.Filter(data)))
 }
 
-// Filter applies the schema to input values to filter them.
-// It omits all values not fitted by the schema.
+// Filter applies the schema to input values to remove unspecified of them.
 func (s Schema) Filter(data map[string][]string) map[string][]string {
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return nil

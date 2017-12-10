@@ -1,5 +1,19 @@
+OPEN_BROWSER       =
+SUPPORTED_VERSIONS = 1.9
+
+include makes/env.mk
+include makes/docker.mk
 include env/docker.mk
 include env/docker-compose.mk
+
+.PHONY: check-code-quality
+check-code-quality: ARGS = \
+	--exclude=".*_test\.go:.*error return value not checked.*\(errcheck\)$$" \
+	--exclude="duplicate of.*_test.go.*\(dupl\)$$" \
+	--vendor --deadline=4m ./...
+check-code-quality: docker-tool-gometalinter
+
+
 
 .PHONY: tools
 tools:

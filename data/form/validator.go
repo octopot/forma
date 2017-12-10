@@ -10,10 +10,10 @@ const (
 	TextType  = "text"
 )
 
-// ValidationError represents validation error.
+// ValidationError represents an error related to invalid input values.
 type ValidationError interface {
 	error
-	// InputWithErrors returns map for form input and its errors.
+	// InputWithErrors returns map of form inputs and their errors.
 	InputWithErrors() map[Input][]error
 }
 
@@ -66,7 +66,7 @@ var (
 						return validationError{true, i, value, "value is not a valid email"}
 					}
 					if strict {
-						// TODO strict support by
+						// TODO v2: strict support by
 						// - net.LookupMX
 						// - smtp.Dial
 						// - smtp.Client.Hello("checkmail.me")
@@ -76,7 +76,7 @@ var (
 					}
 				}
 			case TextType:
-				// nothing to do
+				// nothing special
 			default:
 				panic(fmt.Sprintf("not supported input type %q", inputType))
 			}
@@ -111,7 +111,7 @@ func (dataValidationError) Error() string {
 }
 
 func (err dataValidationError) InputWithErrors() map[Input][]error {
-	m := make(map[Input][]error)
+	m := make(map[Input][]error, len(err.results))
 	for _, r := range err.results {
 		m[r.input] = r.errors
 	}

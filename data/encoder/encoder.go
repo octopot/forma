@@ -34,7 +34,7 @@ func Support(contentType string) bool {
 	return false
 }
 
-// Generic defines basic behavior for all available encoders.
+// Generic defines basic behavior of encoders.
 type Generic interface {
 	// Encode writes the encoding of the value to the stream.
 	Encode(interface{}) error
@@ -50,7 +50,7 @@ func New(stream io.Writer, contentType string) Generic {
 	case JSON:
 		enc.real = json.NewEncoder(stream)
 	case TEXT:
-		enc.real = &yamlEncoder{stream}
+		enc.real = &yamlEncoder{stream, yaml.Marshal}
 	case XML:
 		enc.real = xml.NewEncoder(stream)
 	default:
@@ -64,9 +64,7 @@ type encoder struct {
 	real   Generic
 }
 
-func (enc *encoder) Encode(v interface{}) error {
-	return enc.real.Encode(v)
-}
+func (enc *encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
 
 type htmlEncoder struct{ stream io.Writer }
 
@@ -75,27 +73,38 @@ func (enc *htmlEncoder) Encode(v interface{}) error {
 		MarshalHTML() ([]byte, error)
 	})
 	if !compatible {
-		return fmt.Errorf("html: the value does not have `MarshalHTML` method")
+		return fmt.Errorf("html encode: the value does not have `MarshalHTML` method")
 	}
 	b, err := marshaler.MarshalHTML()
 	if err != nil {
 		return err
 	}
-	if _, err := enc.stream.Write(b); err != nil {
+	n, err := enc.stream.Write(b)
+	if err != nil {
 		return err
+	}
+	if n != len(b) {
+		return fmt.Errorf("html encode: data loss when recording")
 	}
 	return nil
 }
 
-type yamlEncoder struct{ stream io.Writer }
+type yamlEncoder struct {
+	stream  io.Writer
+	marshal func(interface{}) ([]byte, error)
+}
 
 func (enc *yamlEncoder) Encode(v interface{}) error {
-	b, err := yaml.Marshal(v)
+	b, err := enc.marshal(v)
 	if err != nil {
 		return err
 	}
-	if _, err := enc.stream.Write(b); err != nil {
+	n, err := enc.stream.Write(b)
+	if err != nil {
 		return err
+	}
+	if n != len(b) {
+		return fmt.Errorf("yaml encode: data loss when recording")
 	}
 	return nil
 }

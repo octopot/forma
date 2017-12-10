@@ -11,6 +11,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestSupport(t *testing.T) {
+	for _, tc := range []struct {
+		name        string
+		contentType string
+		expected    bool
+	}{
+		{"supported, HTML", encoder.HTML, true},
+		{"supported, JSON", encoder.JSON, true},
+		{"supported, TEXT", encoder.TEXT, true},
+		{"supported, XML", encoder.XML, true},
+		{"not supported, TOML", "TOML", false},
+	} {
+		tc := tc
+		t.Run(tc.name, func(t *testing.T) {
+			assert.Equal(t, tc.expected, encoder.Support(tc.contentType))
+		})
+	}
+}
+
 func TestEncoder_Encode(t *testing.T) {
 	for _, tc := range []struct {
 		name        string

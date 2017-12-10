@@ -10,8 +10,12 @@ include env/docker-compose.mk
 check-code-quality: ARGS = \
 	--exclude=".*_test\.go:.*error return value not checked.*\(errcheck\)$$" \
 	--exclude="duplicate of.*_test.go.*\(dupl\)$$" \
-	--vendor --deadline=4m ./...
+	--vendor --deadline=5m ./... | sort
 check-code-quality: docker-tool-gometalinter
+
+.PHONY: code-quality-report
+code-quality-report:
+	time make check-code-quality | tail +7 | tee report.out | pbcopy
 
 
 

@@ -18,7 +18,7 @@ func NewRouter(api server.FormAPI, withProfiler bool) http.Handler {
 	r.Use(middleware.Logger)
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/new", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2 */ })
+		r.Post("/new", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
 
 		r.Route("/{UUID}", func(r chi.Router) {
 			r.Use(func(next http.Handler) http.Handler {
@@ -30,8 +30,8 @@ func NewRouter(api server.FormAPI, withProfiler bool) http.Handler {
 			r.Get("/", server.Encoder(api.GetV1))
 			r.Post("/", api.PostV1)
 
-			r.Put("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2 */ })
-			r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2 */ })
+			r.Put("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
+			r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
 		})
 	})
 

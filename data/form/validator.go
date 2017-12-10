@@ -6,8 +6,10 @@ import (
 )
 
 const (
+	// EmailType specifies `<input type="email">`
 	EmailType = "email"
-	TextType  = "text"
+	// TextType specifies `<input type="text">`
+	TextType = "text"
 )
 
 // ValidationError represents an error related to invalid input values.
@@ -66,7 +68,7 @@ var (
 						return validationError{true, i, value, "value is not a valid email"}
 					}
 					if strict {
-						// TODO v2: strict support by
+						// TODO v2: support strict by
 						// - net.LookupMX
 						// - smtp.Dial
 						// - smtp.Client.Hello("checkmail.me")

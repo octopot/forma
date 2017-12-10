@@ -75,21 +75,7 @@ func (s Schema) Validate(data map[string][]string) (map[string][]string, Validat
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return data, nil
 	}
-	index := make(map[string]int, len(s.Inputs))
-	rules := make(map[string][]Validator, len(s.Inputs))
-	for i, input := range s.Inputs {
-		index[input.Name] = i
-		validators := []Validator{
-			typeValidator(input.Type, input.Strict),
-		}
-		if input.MinLength != 0 || input.MaxLength != 0 {
-			validators = append(validators, lengthValidator(input.MinLength, input.MaxLength))
-		}
-		if input.Required {
-			validators = append(validators, requireValidator)
-		}
-		rules[input.Name] = validators
-	}
+	rules, index := makeRules(s.Inputs)
 	validation := dataValidationResult{data: data}
 	for name, values := range data {
 		i, found := index[name]
@@ -106,4 +92,22 @@ func (s Schema) Validate(data map[string][]string) (map[string][]string, Validat
 		validation.results = append(validation.results, inputValidation)
 	}
 	return data, validation.AsError()
+}
+
+func makeRules(inputs []Input) (map[string][]Validator, map[string]int) {
+	index := make(map[string]int, len(inputs))
+	rules := make(map[string][]Validator, len(inputs))
+	for i, input := range inputs {
+		index[input.Name] = i
+		validators := make([]Validator, 0, 3)
+		validators = append(validators, typeValidator(input.Type, input.Strict))
+		if input.MinLength != 0 || input.MaxLength != 0 {
+			validators = append(validators, lengthValidator(input.MinLength, input.MaxLength))
+		}
+		if input.Required {
+			validators = append(validators, requireValidator)
+		}
+		rules[input.Name] = validators
+	}
+	return rules, index
 }

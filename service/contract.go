@@ -7,6 +7,8 @@ import (
 
 // DataLayer defines behavior of DAO.
 type DataLayer interface {
-	Schema(data.UUID) (form.Schema, error)
-	AddData(data.UUID, map[string][]string) (int64, error)
+	// AddData inserts form data and returns its ID or an error if something went wrong.
+	AddData(uuid data.UUID, values map[string][]string) (int64, error)
+	// Schema would return a form schema with provided UUID or an error if something went wrong.
+	Schema(uuid data.UUID) (form.Schema, error)
 }

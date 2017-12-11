@@ -12,6 +12,9 @@ vendor
 # database
 /static/migrations/*
 !/static/migrations/1_initial.sql
+!/static/migrations/demo
+/static/migrations/demo/*
+!/static/migrations/demo/fake_data.sql
 /env/backup.sql
 
 # environment

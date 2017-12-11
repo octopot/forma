@@ -32,12 +32,20 @@ var migrateCmd = &cobra.Command{
 			migrate.SetSchema(cmd.Flag("schema").Value.String())
 		}
 		layer := dao.Must(dao.Connection(dsn(cmd)))
-		migrations := &migrate.AssetMigrationSource{
+		src := make(migrations, 0, 2)
+		src = append(src, &migrate.AssetMigrationSource{
 			Asset:    static.Asset,
 			AssetDir: static.AssetDir,
 			Dir:      "static/migrations",
+		})
+		if cmd.Flag("with-profiler").Value.String() == "true" {
+			src = append(src, &migrate.AssetMigrationSource{
+				Asset:    static.Asset,
+				AssetDir: static.AssetDir,
+				Dir:      "static/migrations/demo",
+			})
 		}
-		count, err := migrate.ExecMax(layer.Connection(), layer.Dialect(), migrations, direction, 0)
+		count, err := migrate.ExecMax(layer.Connection(), layer.Dialect(), src, direction, 0)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -61,6 +69,29 @@ func init() {
 		migrateCmd.Flags().String("schema", v.GetString("schema"), "migration schema")
 		migrateCmd.Flags().Int("limit", 0, "limit the number of migrations (0 = unlimited)")
 		migrateCmd.Flags().Bool("dry-run", false, "do not apply migration, just print them")
+		migrateCmd.Flags().Bool("with-demo", false, "paste fake data for demo purpose")
 	}
 	db(migrateCmd)
+}
+
+type migrations []migrate.MigrationSource
+
+func (b migrations) FindMigrations() ([]*migrate.Migration, error) {
+	base, err := static.AssetDir("static/migrations")
+	if err != nil {
+		return nil, err
+	}
+	demo, err := static.AssetDir("static/migrations/demo")
+	if err != nil {
+		return nil, err
+	}
+	all := make([]*migrate.Migration, 0, len(base)+len(demo))
+	for _, src := range b {
+		found, err := src.FindMigrations()
+		if err != nil {
+			return nil, err
+		}
+		all = append(all, found...)
+	}
+	return all, nil
 }

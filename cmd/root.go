@@ -11,6 +11,7 @@ func init() {
 	RootCmd.AddCommand(migrateCmd, runCmd)
 }
 
+// RootCmd is an entry point.
 var RootCmd = &cobra.Command{
 	Short: "Form API",
 }

@@ -67,10 +67,21 @@ func TestAssetDir(t *testing.T) {
 }
 
 func TestAssetInfo(t *testing.T) {
+	// TODO v2: increase code coverage
 }
 
 func TestAssetNames(t *testing.T) {
+	// TODO v2: increase code coverage
 }
 
 func TestMustAsset(t *testing.T) {
+	// TODO v2: increase code coverage
+}
+
+func TestRestoreAsset(t *testing.T) {
+	// TODO v2: increase code coverage
+}
+
+func TestRestoreAssets(t *testing.T) {
+	// TODO v2: increase code coverage
 }

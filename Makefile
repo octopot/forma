@@ -10,7 +10,7 @@ include env/docker-compose.mk
 check-code-quality: ARGS = \
 	--exclude=".*_test\.go:.*error return value not checked.*\(errcheck\)$$" \
 	--exclude="duplicate of.*_test.go.*\(dupl\)$$" \
-	--exclude="static/static.go" \
+	--exclude="static/bindata.go" \
 	--vendor --deadline=5m ./... | sort
 check-code-quality: docker-tool-gometalinter
 
@@ -44,22 +44,22 @@ generate: tools
 
 .PHONY: static
 static: tools
-	go-bindata -o static/static.go -pkg static -ignore "^.+\.go$$" static/...
+	go-bindata -o static/bindata.go -pkg static -ignore "^.+\.go$$" static/...
 
 .PHONY: test
-test: generate
+test: generate static
 	go test ./...
 
 .PHONY: test-detailed
-test-detailed:
+test-detailed: generate static
 	go test -cover -v ./...
 
 .PHONY: test-with-race
-test-with-race:
+test-with-race: generate static
 	go test -race ./...
 
-.PHONY: test-with-coverage-formatted
-test-formatted: generate
+.PHONY: test-formatted
+test-formatted: generate static
 	go test -cover ./... | column -t | sort -r
 
 

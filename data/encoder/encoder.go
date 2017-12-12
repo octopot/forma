@@ -37,16 +37,23 @@ func Supported() []string {
 	return supported
 }
 
-// Generic defines basic behavior of encoders.
-type Generic interface {
+// Encoder defines basic behavior of encoders.
+type Encoder interface {
 	// Encode writes the encoding of the value to the stream.
 	Encode(interface{}) error
+}
+
+// Generic defines basic behavior of the application encoder.
+type Generic interface {
+	Encoder
+	// ContentType returns a content type of the encoder.
+	ContentType() string
 }
 
 // New returns encoder corresponding to the content type.
 // It can raise the panic if the content type is unsupported.
 func New(stream io.Writer, contentType string) Generic {
-	enc := &encoder{stream: stream}
+	enc := &encoder{cType: contentType, stream: stream}
 	switch contentType {
 	case HTML:
 		enc.real = &htmlEncoder{stream}
@@ -63,9 +70,12 @@ func New(stream io.Writer, contentType string) Generic {
 }
 
 type encoder struct {
+	cType  string
 	stream io.Writer
-	real   Generic
+	real   Encoder
 }
+
+func (enc *encoder) ContentType() string { return enc.cType }
 
 func (enc *encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
 

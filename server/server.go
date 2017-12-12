@@ -7,6 +7,7 @@ import (
 	"github.com/kamilsk/form-api/data"
 	"github.com/kamilsk/form-api/data/encoder"
 	"github.com/kamilsk/form-api/data/transfer/api/v1"
+	"github.com/kamilsk/form-api/server/errors"
 )
 
 // UUIDKey used as a context key to store a form schema UUID.
@@ -27,25 +28,30 @@ type Server struct {
 
 // GetV1 implements `FormAPI` interface.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
-	//var httpErr *Error
-
-	uuid := req.Context().Value(UUIDKey{}).(data.UUID)
-	enc := req.Context().Value(EncoderKey{}).(encoder.Generic)
-
-	request := v1.GetRequest{UUID: uuid}
-	response := s.service.HandleGetV1(request)
+	var (
+		uuid data.UUID
+		enc  encoder.Generic
+	)
+	{ // from middleware
+		uuid = req.Context().Value(UUIDKey{}).(data.UUID)
+		enc = req.Context().Value(EncoderKey{}).(encoder.Generic)
+	}
+	response := s.service.HandleGetV1(v1.GetRequest{UUID: uuid})
 	if response.Error != nil {
-		//httpErr.FromGetV1(response.Error).MarshalTo(rw) //nolint: errcheck
+		errors.FromGetV1(response.Error).MarshalTo(rw) //nolint: errcheck
 		return
 	}
+	rw.Header().Set("Content-Type", enc.ContentType())
+	rw.WriteHeader(http.StatusOK)
 	enc.Encode(response.Schema) //nolint: errcheck
 }
 
 // PostV1 implements `FormAPI` interface
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
-	//var httpErr *Error
-
-	uuid := req.Context().Value(UUIDKey{}).(data.UUID)
+	var uuid data.UUID
+	{ // from middleware
+		uuid = req.Context().Value(UUIDKey{}).(data.UUID)
+	}
 
 	if err := req.ParseForm(); err != nil {
 		//httpErr.InvalidFormData(err).MarshalTo(rw) //nolint: errcheck

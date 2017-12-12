@@ -3,10 +3,9 @@ package errors
 import (
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"github.com/kamilsk/form-api/data/encoder"
-	"github.com/pkg/errors"
+	"github.com/kamilsk/form-api/errors"
 )
 
 // Error represents HTTP error.
@@ -56,8 +55,8 @@ func (e Error) MarshalTo(rw http.ResponseWriter) error {
 func NotSupportedContentType(supported []string) Error {
 	return Error{
 		Code:    http.StatusNotAcceptable,
-		Message: "Request's header `Accept` does not contain supported MIME type",
-		Details: "Please review response's header `Accept` with supported MIME types",
+		Message: `Request header "Accept" does not contain supported MIME type`,
+		Details: `Please refer to response header "Accept" with supported MIME types`,
 		Headers: http.Header{"Accept": supported},
 	}
 }
@@ -78,6 +77,26 @@ func InvalidUUID() Error {
 		Message: "Invalid form UUID is provided",
 		Details: "Please provide UUID compatible with RFC 4122",
 	}
+}
+
+// FromGetV1 checks passed error and convert it into HTTP error.
+func FromGetV1(err error) Error {
+	return Error{
+		Code:    classify(err),
+		Message: "Error occurred",
+		Details: err.Error(),
+		cause:   err,
+	}
+}
+
+func classify(err error) int {
+	if err, is := err.(errors.ApplicationError); is && err.IsUser() {
+		if err.IsNotFound() {
+			return http.StatusNotFound
+		}
+		return http.StatusBadRequest
+	}
+	return http.StatusInternalServerError
 }
 
 // ~~~
@@ -108,25 +127,5 @@ func (*Error) InvalidReferer(err error) Error {
 		Message: "Request contains invalid HTTP referer",
 		Details: err.Error(),
 		cause:   err,
-	}
-}
-
-// FromGetV1 returns prepared error.
-func (*Error) FromGetV1(err error) Error {
-	return Error{
-		Code:    classify(err),
-		Message: "Error occurred",
-		Details: err.Error(),
-		cause:   err,
-	}
-}
-
-func classify(err error) int {
-	cause := errors.Cause(err)
-	switch {
-	case strings.Contains(cause.Error(), "sql:"):
-		return http.StatusInternalServerError
-	default:
-		return http.StatusInternalServerError
 	}
 }

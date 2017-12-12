@@ -33,7 +33,7 @@ func TestSupport(t *testing.T) {
 	}
 }
 
-func TestEncoder_Encode(t *testing.T) {
+func TestEncoder(t *testing.T) {
 	for _, tc := range []struct {
 		name        string
 		contentType string
@@ -137,6 +137,7 @@ func TestEncoder_Encode(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
 			enc := encoder.New(buf, tc.contentType)
+			assert.Equal(t, tc.contentType, enc.ContentType())
 			assert.NoError(t, enc.Encode(tc.schema))
 			expected, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)

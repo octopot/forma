@@ -1,6 +1,7 @@
-package server
+package errors
 
 import (
+	"encoding/json"
 	"net/http"
 	"strings"
 
@@ -48,11 +49,11 @@ func (e Error) MarshalTo(rw http.ResponseWriter) error {
 		}
 	}
 	rw.WriteHeader(e.Code)
-	return encoder.New(rw, encoder.JSON).Encode(e)
+	return json.NewEncoder(rw).Encode(e)
 }
 
 // NotSupportedContentType returns prepared client error related to "Accept" header.
-func (*Error) NotSupportedContentType(supported []string) Error {
+func NotSupportedContentType(supported []string) Error {
 	return Error{
 		Code:    http.StatusNotAcceptable,
 		Message: "Request's header `Accept` does not contain supported MIME type",
@@ -61,10 +62,8 @@ func (*Error) NotSupportedContentType(supported []string) Error {
 	}
 }
 
-// ~~~
-
-// NotProvidedUUID returns prepared client error.
-func (*Error) NotProvidedUUID() Error {
+// NotProvidedUUID returns prepared client error related to empty form identifier.
+func NotProvidedUUID() Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Form UUID is not provided",
@@ -72,14 +71,16 @@ func (*Error) NotProvidedUUID() Error {
 	}
 }
 
-// InvalidUUID returns prepared client error.
-func (*Error) InvalidUUID() Error {
+// InvalidUUID returns prepared client error related to invalid form identifier.
+func InvalidUUID() Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Invalid form UUID is provided",
 		Details: "Please provide UUID compatible with RFC 4122",
 	}
 }
+
+// ~~~
 
 // InvalidFormData returns prepared client error.
 func (*Error) InvalidFormData(err error) Error {

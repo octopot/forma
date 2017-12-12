@@ -52,6 +52,9 @@ func Schema(db *sql.DB, uuid data.UUID) (form.Schema, error) {
 		return schema, errors.Serialization(errors.NeutralMessage,
 			err, "trying to unmarshal schema with UUID %q from XML", uuid)
 	}
-	schema.ID = uuid.String()
+	schema.ID = string(uuid)
+	for i := range schema.Inputs {
+		schema.Inputs[i].ID = string(uuid) + "_" + schema.Inputs[i].Name
+	}
 	return schema, nil
 }

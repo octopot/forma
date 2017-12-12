@@ -43,64 +43,53 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 	rows := NewMockRows(ctrl)
 	drv.EXPECT().
 		Open(dsn).
-		Times(2).
+		Times(1).
 		Return(conn, nil)
 	conn.EXPECT().
 		Prepare(gomock.Any()).
-		Times(2).
+		Times(1).
 		Return(stmt, nil)
 	conn.EXPECT().
 		Prepare(gomock.Any()).
-		Times(2).
+		Times(1).
 		Return(stmt, nil)
 	stmt.EXPECT().
 		NumInput().
-		Times(6).
+		Times(3).
 		Return(1)
 	stmt.EXPECT().
 		Query(gomock.Any()).
-		Times(2).
+		Times(1).
 		Return(rows, nil)
 	stmt.EXPECT().
 		Close().
-		Times(4).
+		Times(2).
 		Return(nil)
 	rows.EXPECT().
 		Columns().
-		Times(2).
+		Times(1).
 		Return([]string{"schema"})
 	rows.EXPECT().
 		Next([]driver.Value{nil}).
-		Times(2).
+		Times(1).
 		Return(nil)
 	rows.EXPECT().
 		Close().
-		Times(2).
+		Times(1).
 		Return(nil)
 
 	sql.Register(name, drv)
 	valid := []dao.Configurator{dao.Connection(name, dsn)}
-	{
-		service, err := dao.New(valid...)
-		assert.NoError(t, err)
-		assert.NotNil(t, service.Connection())
-		assert.Equal(t, "postgres", service.Dialect())
+	service, err := dao.New(valid...)
+	assert.NoError(t, err)
+	assert.NotNil(t, service.Connection())
+	assert.Equal(t, "postgres", service.Dialect())
 
-		_, err = service.Schema(UUID)
-		assert.Error(t, err)
+	_, err = service.Schema(UUID)
+	assert.Error(t, err)
 
-		_, err = service.AddData(UUID, map[string][]string{})
-		assert.Error(t, err)
-	}
-	{
-		service, err := dao.Must(valid...), error(nil)
-		assert.NotNil(t, service.Connection())
-		assert.Equal(t, "postgres", service.Dialect())
+	_, err = service.AddData(UUID, map[string][]string{})
+	assert.Error(t, err)
 
-		_, err = service.Schema(UUID)
-		assert.Error(t, err)
-
-		_, err = service.AddData(UUID, map[string][]string{})
-		assert.Error(t, err)
-	}
+	assert.NotPanics(t, func() { dao.Must(valid...) })
 }

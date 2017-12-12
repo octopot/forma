@@ -1,20 +1,27 @@
 package server
 
 import (
-	"encoding/json"
 	"net/http"
 	"strings"
 
+	"github.com/kamilsk/form-api/data/encoder"
 	"github.com/pkg/errors"
 )
 
 // Error represents HTTP error.
 type Error struct {
-	Code    int    `json:"-"`
-	Message string `json:"message"`
-	Details string `json:"details"`
+	Code    int         `json:"-"`
+	Message string      `json:"message"`
+	Details string      `json:"details"`
+	Headers http.Header `json:"-"`
 
-	origin error
+	cause error
+}
+
+// Cause returns the underlying cause of the error.
+// It is friendly to `github.com/pkg/errors.Cause` method.
+func (e Error) Cause() error {
+	return e.cause
 }
 
 // Error implements built-in `error` interface.
@@ -22,10 +29,39 @@ func (e Error) Error() string {
 	return e.Message
 }
 
-// Cause implements `github.com/pkg/errors` causer interface.
-func (e Error) Cause() error {
-	return e.origin
+// IsClient returns true if the error is a client error.
+func (e Error) IsClient() bool {
+	return e.Code%400 < 100
 }
+
+// IsServer returns true if the error is a server error.
+func (e Error) IsServer() bool {
+	return e.Code%500 < 100
+}
+
+// MarshalTo writes an encoded JSON representation of self to the response writer.
+func (e Error) MarshalTo(rw http.ResponseWriter) error {
+	rw.Header().Set("Content-Type", encoder.JSON)
+	for key, values := range e.Headers {
+		for _, value := range values {
+			rw.Header().Add(key, value)
+		}
+	}
+	rw.WriteHeader(e.Code)
+	return encoder.New(rw, encoder.JSON).Encode(e)
+}
+
+// NotSupportedContentType returns prepared client error related to "Accept" header.
+func (*Error) NotSupportedContentType(supported []string) Error {
+	return Error{
+		Code:    http.StatusNotAcceptable,
+		Message: "Request's header `Accept` does not contain supported MIME type",
+		Details: "Please review response's header `Accept` with supported MIME types",
+		Headers: http.Header{"Accept": supported},
+	}
+}
+
+// ~~~
 
 // NotProvidedUUID returns prepared client error.
 func (*Error) NotProvidedUUID() Error {
@@ -51,7 +87,7 @@ func (*Error) InvalidFormData(err error) Error {
 		Code:    http.StatusBadRequest,
 		Message: "Request PostForm is invalid",
 		Details: err.Error(),
-		origin:  err,
+		cause:   err,
 	}
 }
 
@@ -64,40 +100,24 @@ func (*Error) NoReferer() Error {
 	}
 }
 
-// NoReferer returns prepared client error.
+// InvalidReferer returns prepared client error.
 func (*Error) InvalidReferer(err error) Error {
 	return Error{
 		Code:    http.StatusBadRequest,
 		Message: "Request contains invalid HTTP referer",
 		Details: err.Error(),
-		origin:  err,
+		cause:   err,
 	}
 }
 
+// FromGetV1 returns prepared error.
 func (*Error) FromGetV1(err error) Error {
 	return Error{
 		Code:    classify(err),
 		Message: "Error occurred",
 		Details: err.Error(),
-		origin:  err,
+		cause:   err,
 	}
-}
-
-// IsClient returns true if the error is a client error.
-func (e Error) IsClient() bool {
-	return e.Code%400 < 100
-}
-
-// IsServer returns true if the error is a server error.
-func (e Error) IsServer() bool {
-	return e.Code%500 < 100
-}
-
-// MarshalTo writes an encoded JSON representation of self to the response writer.
-func (e Error) MarshalTo(rw http.ResponseWriter) error {
-	rw.WriteHeader(e.Code)
-	rw.Header().Set("Content-Type", "application/json")
-	return json.NewEncoder(rw).Encode(e)
 }
 
 func classify(err error) int {

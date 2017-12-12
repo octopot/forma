@@ -20,18 +20,21 @@ const (
 	XML = "text/xml"
 )
 
-type support []string
-
-var supported support = []string{HTML, JSON, TEXT, XML}
+var supported = []string{HTML, JSON, TEXT, XML}
 
 // Support returns true if provided content type is supported by encoder.
 func Support(contentType string) bool {
-	for _, available := range supported {
+	for _, available := range Supported() {
 		if available == contentType {
 			return true
 		}
 	}
 	return false
+}
+
+// Supported returns acceptable content types.
+func Supported() []string {
+	return supported
 }
 
 // Generic defines basic behavior of encoders.

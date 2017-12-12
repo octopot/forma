@@ -9,10 +9,13 @@ import (
 	"os"
 	"testing"
 
+	"github.com/kamilsk/form-api/data"
 	"github.com/kamilsk/form-api/data/form"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 )
+
+const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 var update = flag.Bool("update", false, "update .golden files")
 
@@ -23,14 +26,14 @@ func TestHTML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.html.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -38,7 +41,7 @@ func TestHTML(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -74,14 +77,14 @@ func TestJSON(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -89,7 +92,7 @@ func TestJSON(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -121,14 +124,14 @@ func TestJSON_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -136,7 +139,7 @@ func TestJSON_Decode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -161,14 +164,14 @@ func TestJSON_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -176,7 +179,7 @@ func TestJSON_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -205,14 +208,14 @@ func TestXML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -220,7 +223,7 @@ func TestXML(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -252,14 +255,14 @@ func TestXML_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -267,7 +270,7 @@ func TestXML_Decode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -292,14 +295,14 @@ func TestXML_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -307,7 +310,7 @@ func TestXML_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -316,7 +319,7 @@ func TestXML_Encode(t *testing.T) {
 		}},
 		{"stored in db", "./fixtures/stored_in_db.xml.golden", form.Schema{
 			Title:  "Email subscription",
-			Action: "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action: "http://localhost:8080/api/v1/" + UUID.String(),
 			Inputs: []form.Input{
 				{
 					Name:      "email",
@@ -359,14 +362,14 @@ func TestYAML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -374,7 +377,7 @@ func TestYAML(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -406,14 +409,14 @@ func TestYAML_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -421,7 +424,7 @@ func TestYAML_Decode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -454,14 +457,14 @@ func TestYAML_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String() + "",
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -469,7 +472,7 @@ func TestYAML_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",

@@ -96,11 +96,13 @@ logs-service: COMMAND = logs -f service
 logs-service: docker-compose
 
 .PHONY: service-migrate-up
-service-migrate-up: COMMAND = exec service form-api migrate up
+service-migrate-up: FLAGS   =
+service-migrate-up: COMMAND = exec service form-api migrate $(FLAGS) up 1
 service-migrate-up: docker-compose
 
 .PHONY: service-migrate-down
-service-migrate-down: COMMAND = exec service form-api migrate down
+service-migrate-down: FLAGS   =
+service-migrate-down: COMMAND = exec service form-api migrate $(FLAGS) down 1
 service-migrate-down: docker-compose
 
 

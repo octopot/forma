@@ -90,10 +90,13 @@ migrate: COMMAND = migrate
 migrate: run
 
 .PHONY: migrate-up
-migrate-up: migrate
+migrate-up: FLAGS   =
+migrate-up: COMMAND = migrate $(FLAGS) up 1
+migrate-up: run
 
 .PHONY: migrate-down
-migrate-down: COMMAND = migrate down
+migrate-down: FLAGS   =
+migrate-down: COMMAND = migrate $(FLAGS) down 1
 migrate-down: run
 
 .PHONY: server

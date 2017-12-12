@@ -13,7 +13,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID data.UUID = "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11"
+const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestNew_WithValidConfiguration(t *testing.T) {
 	ctrl := gomock.NewController(t)

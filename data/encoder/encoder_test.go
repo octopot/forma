@@ -6,10 +6,13 @@ import (
 	"io/ioutil"
 	"testing"
 
+	"github.com/kamilsk/form-api/data"
 	"github.com/kamilsk/form-api/data/encoder"
 	"github.com/kamilsk/form-api/data/form"
 	"github.com/stretchr/testify/assert"
 )
+
+const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestSupport(t *testing.T) {
 	for _, tc := range []struct {
@@ -38,14 +41,14 @@ func TestEncoder_Encode(t *testing.T) {
 		schema      form.Schema
 	}{
 		{"email subscription, HTML", encoder.HTML, "./fixtures/email_subscription.html.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -53,7 +56,7 @@ func TestEncoder_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -61,14 +64,14 @@ func TestEncoder_Encode(t *testing.T) {
 			},
 		}},
 		{"email subscription, JSON", encoder.JSON, "./fixtures/email_subscription.json.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -76,7 +79,7 @@ func TestEncoder_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -84,14 +87,14 @@ func TestEncoder_Encode(t *testing.T) {
 			},
 		}},
 		{"email subscription, XML", encoder.XML, "./fixtures/email_subscription.xml.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -99,7 +102,7 @@ func TestEncoder_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",
@@ -107,14 +110,14 @@ func TestEncoder_Encode(t *testing.T) {
 			},
 		}},
 		{"email subscription, YAML", encoder.TEXT, "./fixtures/email_subscription.yaml.golden", form.Schema{
-			ID:      "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			ID:      UUID.String(),
 			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11",
+			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:  "post",
 			EncType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
-					ID:        "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11_email",
+					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
@@ -122,7 +125,7 @@ func TestEncoder_Encode(t *testing.T) {
 					Required:  true,
 				},
 				{
-					ID:    "a0eebc99-9c0b-1ef8-bb6d-6bb9bd380a11__redirect",
+					ID:    UUID.String() + "__redirect",
 					Name:  "_redirect",
 					Type:  "hidden",
 					Value: "https://kamil.samigullin.info/",

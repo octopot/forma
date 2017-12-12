@@ -44,7 +44,7 @@ func TestAssetDir(t *testing.T) {
 		}{[]string{"migrations", "templates"}}},
 		{"migrations", "static/migrations", struct {
 			files []string
-		}{[]string{"1_initial.sql"}}},
+		}{[]string{"1_initial.sql", "demo"}}},
 		{"templates", "static/templates", struct {
 			files []string
 		}{[]string{"error.html", "redirect.html"}}},
@@ -67,21 +67,21 @@ func TestAssetDir(t *testing.T) {
 }
 
 func TestAssetInfo(t *testing.T) {
-	// TODO v2: increase code coverage
+	// TODO v2: up code coverage
 }
 
 func TestAssetNames(t *testing.T) {
-	// TODO v2: increase code coverage
+	// TODO v2: up code coverage
 }
 
 func TestMustAsset(t *testing.T) {
-	// TODO v2: increase code coverage
+	// TODO v2: up code coverage
 }
 
 func TestRestoreAsset(t *testing.T) {
-	// TODO v2: increase code coverage
+	// TODO v2: up code coverage
 }
 
 func TestRestoreAssets(t *testing.T) {
-	// TODO v2: increase code coverage
+	// TODO v2: up code coverage
 }

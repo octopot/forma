@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"net/url"
+	"strconv"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -12,9 +14,7 @@ func init() {
 }
 
 // RootCmd is an entry point.
-var RootCmd = &cobra.Command{
-	Short: "Form API",
-}
+var RootCmd = &cobra.Command{Short: "Form API"}
 
 func must(actions ...func() error) {
 	for _, action := range actions {
@@ -34,7 +34,7 @@ func db(cmd *cobra.Command) {
 		func() error { return v.BindEnv("pass") },
 		func() error { return v.BindEnv("name") },
 		func() error { return v.BindEnv("timeout") },
-		func() error { return v.BindEnv("sslmode") },
+		func() error { return v.BindEnv("ssl_mode") },
 	)
 	{
 		v.SetDefault("host", "127.0.0.1")
@@ -43,7 +43,7 @@ func db(cmd *cobra.Command) {
 		v.SetDefault("pass", "postgres")
 		v.SetDefault("name", "postgres")
 		v.SetDefault("timeout", 1)
-		v.SetDefault("sslmode", "disable")
+		v.SetDefault("ssl_mode", "disable")
 	}
 	{
 		cmd.Flags().String("db_host", v.GetString("host"), "database host")
@@ -52,7 +52,7 @@ func db(cmd *cobra.Command) {
 		cmd.Flags().String("db_pass", v.GetString("pass"), "database user password")
 		cmd.Flags().String("db_name", v.GetString("name"), "database name")
 		cmd.Flags().Int("db_timeout", v.GetInt("timeout"), "connection timeout in seconds")
-		cmd.Flags().String("db_sslmode", v.GetString("sslmode"), "ssl mode")
+		cmd.Flags().String("db_ssl_mode", v.GetString("ssl_mode"), "ssl mode")
 	}
 }
 
@@ -65,9 +65,17 @@ func dsn(cmd *cobra.Command) (driver, dsn string) {
 		RawQuery: func() string {
 			query := url.Values{}
 			query.Add("connect_timeout", cmd.Flag("db_timeout").Value.String())
-			query.Add("sslmode", cmd.Flag("db_sslmode").Value.String())
+			query.Add("sslmode", cmd.Flag("db_ssl_mode").Value.String())
 			return query.Encode()
 		}(),
 	}
 	return uri.Scheme, uri.String()
+}
+
+func isTrue(value fmt.Stringer) bool {
+	is, err := strconv.ParseBool(value.String())
+	if err != nil {
+		is = false
+	}
+	return is
 }

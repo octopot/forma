@@ -23,7 +23,7 @@ var runCmd = &cobra.Command{
 				server.New(
 					service.New(
 						dao.Must(dao.Connection(dsn(cmd))))),
-				cmd.Flag("with-profiler").Value.String() == "true")))
+				isTrue(cmd.Flag("with-profiler").Value))))
 	},
 }
 

@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Error {{ .Code }}</title>
-    <meta http-equiv="refresh" content="{{ .Delay.Seconds() }};url={{ .Redirect }}">
+    <meta http-equiv="refresh" content="{{ .Delay.Seconds }};url={{ .Redirect }}">
 </head>
 <body>
-<script>setTimeout(function() { window.location="{{ .Redirect }}" }, {{ .Delay.Seconds() }}000);</script>
 </body>
 </html>

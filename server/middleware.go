@@ -19,7 +19,7 @@ func Encoder(next http.HandlerFunc) http.HandlerFunc {
 		accept := defaultStringValue(req.Header.Get("Accept"), encoder.XML)
 		contentType := strings.TrimSpace(strings.Split(strings.Split(accept, ";")[0], ",")[0])
 		if !encoder.Support(contentType) {
-			errors.NotSupportedContentType(encoder.Supported()).MarshalTo(rw) //nolint: errcheck
+			errors.NotSupportedContentType(encoder.Supported()).MarshalTo(rw) //nolint: errcheck,gas
 			return
 		}
 		next(rw, req.WithContext(context.WithValue(req.Context(), EncoderKey{}, encoder.New(rw, contentType))))
@@ -40,9 +40,13 @@ func ValidateUUID(formUUID string, rw http.ResponseWriter, req *http.Request, ne
 	next.ServeHTTP(rw, req.WithContext(context.WithValue(req.Context(), UUIDKey{}, uuid)))
 }
 
-func defaultStringValue(value, defaultValue string) string {
+func defaultStringValue(value string, defaultValues ...string) string {
 	if value == "" {
-		return defaultValue
+		for _, value := range defaultValues {
+			if value != "" {
+				return value
+			}
+		}
 	}
 	return value
 }

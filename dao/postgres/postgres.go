@@ -17,15 +17,11 @@ func AddData(db *sql.DB, uuid data.UUID, verified map[string][]string) (int64, e
 		return 0, errors.Serialization(errors.NeutralMessage,
 			err, "trying to marshal data into JSON with schema of %q", uuid)
 	}
-	result, err := db.Exec(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`, uuid, encoded)
+	var id int64
+	err = db.QueryRow(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`, uuid, encoded).Scan(&id)
 	if err != nil {
 		return 0, errors.Database(errors.NeutralMessage,
 			err, "trying to insert JSON `%s` with schema of %q", encoded, uuid)
-	}
-	id, err := result.LastInsertId()
-	if err != nil {
-		return 0, errors.Database(errors.NeutralMessage,
-			err, "trying to get last insert ID of JSON `%s` with schema of %q", encoded, uuid)
 	}
 	return id, nil
 }

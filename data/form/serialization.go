@@ -21,6 +21,7 @@ var html = template.Must(template.New("form").Parse(`
            {{- with .MaxLength }} maxlength="{{ . }}"{{ end -}}
            {{- with .Required }} required{{ end -}}>
 {{- end -}}
+    <input type="submit">
 </form>
 `))
 

@@ -45,9 +45,9 @@
 
 [[projects]]
   name = "github.com/magiconair/properties"
-  packages = ["."]
-  revision = "be5ece7dd465ab0765a9682137865547526d1dfb"
-  version = "v1.7.3"
+  packages = [".","assert"]
+  revision = "d419a98cdbed11a922bf76f257b7c4be79b50e73"
+  version = "v1.7.4"
 
 [[projects]]
   branch = "master"
@@ -125,13 +125,13 @@
   branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
-  revision = "4ff8c001ce4cc464e644b922325097228fce14d8"
+  revision = "571f7bbbe08da2a8955aed9d4db316e78630e9a3"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/text"
   packages = ["internal/gen","internal/triegen","internal/ucd","transform","unicode/cldr","unicode/norm"]
-  revision = "88f656faf3f37f690df1a32515b479415e1a6769"
+  revision = "eb22672bea55af56d225d4e35405f4d2e9f062a0"
 
 [[projects]]
   name = "gopkg.in/gorp.v1"
@@ -148,6 +148,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "6785375a9696e65c9bb1ee6fe18e7613c0aa6ff3ddf23680b022c13422375245"
+  inputs-digest = "dc5178c36121b5273b79689c56e079d8cb81a5ad8496bf9952822d97e69d3f36"
   solver-name = "gps-cdcl"
   solver-version = 1

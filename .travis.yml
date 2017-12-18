@@ -1,0 +1,24 @@
+language: go
+
+go:
+- 1.9.x
+- master
+
+matrix:
+  allow_failures:
+  - go: master
+  fast_finish: true
+
+sudo: false
+
+before_install:
+- make tools
+
+install:
+- make deps
+
+script:
+- make test-with-race
+
+notifications:
+  slack: octolab:1eMS7IqOArBipiu31jYVd0cN

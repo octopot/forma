@@ -34,7 +34,7 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 		Times(1).
 		Return(stmt, nil)
 	conn.EXPECT().
-		Prepare(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2)`).
+		Prepare(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`).
 		Times(1).
 		Return(stmt, nil)
 	stmt.EXPECT().

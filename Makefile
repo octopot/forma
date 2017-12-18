@@ -25,9 +25,11 @@ tools:
 	if ! command -v dep > /dev/null; then \
 	    go get github.com/golang/dep/cmd/dep; \
 	fi
+	# https://github.com/golang/mock/compare/v1.0.0...master#diff-0f304850dfe306e76016f4bc2d70d23e
 	if ! command -v mockgen > /dev/null; then \
-	    go get github.com/golang/mock/gomock; \
-	    go get github.com/golang/mock/mockgen; \
+	    go get -d github.com/golang/mock/mockgen; \
+	    cd $(GOPATH)/src/github.com/golang/mock/mockgen && git checkout v1.0.0; \
+	    go install github.com/golang/mock/mockgen; \
 	fi
 	if ! command -v go-bindata > /dev/null; then \
 	    go get github.com/jteeuwen/go-bindata/go-bindata; \
@@ -39,7 +41,7 @@ deps: tools
 
 .PHONY: generate
 generate: tools
-	find . -name mock_*.go | grep -v ./vendor | xargs rm
+	find . -name mock_*.go | grep -v ./vendor | xargs rm || true
 	go generate ./...
 
 .PHONY: static

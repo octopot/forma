@@ -6,17 +6,17 @@ include makes/docker.mk
 include env/docker.mk
 include env/docker-compose.mk
 
-.PHONY: check-code-quality
-check-code-quality: ARGS = \
+.PHONY: code-quality-check
+code-quality-check: ARGS = \
 	--exclude=".*_test\.go:.*error return value not checked.*\(errcheck\)$$" \
 	--exclude="duplicate of.*_test.go.*\(dupl\)$$" \
 	--exclude="static/bindata.go" \
 	--vendor --deadline=5m ./... | sort
-check-code-quality: docker-tool-gometalinter
+code-quality-check: docker-tool-gometalinter
 
 .PHONY: code-quality-report
 code-quality-report:
-	time make check-code-quality | tail +7 | tee report.out | pbcopy
+	time make code-quality-check | tail +7 | tee report.out | pbcopy
 
 
 

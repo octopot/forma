@@ -1,4 +1,5 @@
-vendor
+# dep
+vendor/
 
 # goreleaser
 /dist/

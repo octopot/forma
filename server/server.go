@@ -23,11 +23,12 @@ import (
 //   - log errors
 // - nolint replace by logging
 
-// UUIDKey used as a context key to store a form schema UUID.
-type UUIDKey struct{}
-
-// EncoderKey used as sa context key to store a form schema encoder.
-type EncoderKey struct{}
+type (
+	// EncoderKey used as a context key to store a form schema encoder.
+	EncoderKey struct{}
+	// UUIDKey used as a context key to store a form schema UUID.
+	UUIDKey struct{}
+)
 
 // New returns new instance of Form API server.
 // It can raise the panic if HTML templates are not available.

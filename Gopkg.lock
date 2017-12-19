@@ -20,10 +20,10 @@
   version = "v3.3.1"
 
 [[projects]]
+  branch = "master"
   name = "github.com/golang/mock"
   packages = ["gomock"]
-  revision = "13f360950a79f5864a972c786a10a50e44b69541"
-  version = "v1.0.0"
+  revision = "b3e60bcdc577185fce3cf625fc96b62857ce5574"
 
 [[projects]]
   branch = "master"
@@ -123,6 +123,12 @@
 
 [[projects]]
   branch = "master"
+  name = "golang.org/x/net"
+  packages = ["context"]
+  revision = "d866cfc389cec985d6fda2859936a575a55a3ab6"
+
+[[projects]]
+  branch = "master"
   name = "golang.org/x/sys"
   packages = ["unix"]
   revision = "571f7bbbe08da2a8955aed9d4db316e78630e9a3"
@@ -148,6 +154,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "dc5178c36121b5273b79689c56e079d8cb81a5ad8496bf9952822d97e69d3f36"
+  inputs-digest = "dd1cadc0d3f8abc6b7e649554b4525a8b457cb62de084f373198115bfd14b7cb"
   solver-name = "gps-cdcl"
   solver-version = 1

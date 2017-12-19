@@ -86,7 +86,7 @@ func staticMigrations1_initialSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "static/migrations/1_initial.sql", size: 1286, mode: os.FileMode(420), modTime: time.Unix(1511457221, 0)}
+	info := bindataFileInfo{name: "static/migrations/1_initial.sql", size: 1286, mode: os.FileMode(420), modTime: time.Unix(1511463355, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -106,7 +106,7 @@ func staticMigrationsDemoFake_dataSql() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "static/migrations/demo/fake_data.sql", size: 709, mode: os.FileMode(420), modTime: time.Unix(1513076921, 0)}
+	info := bindataFileInfo{name: "static/migrations/demo/fake_data.sql", size: 709, mode: os.FileMode(420), modTime: time.Unix(1513446154, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -126,7 +126,7 @@ func staticTemplatesErrorHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "static/templates/error.html", size: 218, mode: os.FileMode(420), modTime: time.Unix(1513137411, 0)}
+	info := bindataFileInfo{name: "static/templates/error.html", size: 218, mode: os.FileMode(420), modTime: time.Unix(1513446154, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }
@@ -146,7 +146,7 @@ func staticTemplatesRedirectHtml() (*asset, error) {
 		return nil, err
 	}
 
-	info := bindataFileInfo{name: "static/templates/redirect.html", size: 213, mode: os.FileMode(420), modTime: time.Unix(1513137411, 0)}
+	info := bindataFileInfo{name: "static/templates/redirect.html", size: 213, mode: os.FileMode(420), modTime: time.Unix(1513446154, 0)}
 	a := &asset{bytes: bytes, info: info}
 	return a, nil
 }

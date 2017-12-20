@@ -1,6 +1,6 @@
 > # Form API
 >
-> Data Collection as a Service.
+> Data Collector as a Service.
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![GoDoc](https://godoc.org/github.com/kamilsk/form-api?status.svg)](https://godoc.org/github.com/kamilsk/form-api)

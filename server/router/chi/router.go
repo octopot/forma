@@ -17,8 +17,9 @@ func NewRouter(api server.FormAPI, withProfiler bool) http.Handler {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 
+	// TODO v2: support CRUD
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/new", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
+		r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
 
 		r.Route("/{UUID}", func(r chi.Router) {
 			r.Use(func(next http.Handler) http.Handler {
@@ -29,9 +30,33 @@ func NewRouter(api server.FormAPI, withProfiler bool) http.Handler {
 
 			r.Get("/", server.Encoder(api.GetV1))
 			r.Post("/", api.PostV1)
+			r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+		})
+	})
 
-			r.Put("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
-			r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { /* TODO v2: support CRUD */ })
+	// TODO v4: extended API
+	r.Route("/api/v2", func(r chi.Router) {
+		r.Route("/schema", func(r chi.Router) {
+			r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+
+			r.Route("/{UUID}", func(r chi.Router) {
+				r.Get("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			})
+		})
+
+		r.Route("/template", func(r chi.Router) {
+			r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+
+			r.Route("/{UUID}", func(r chi.Router) {
+				r.Get("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			})
 		})
 	})
 

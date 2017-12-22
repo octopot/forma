@@ -9,15 +9,14 @@ import (
 )
 
 // TODO v2: refactoring
-// - replace sql.DB by Executor
-// - move Connection to Executor layer (Configurator and method)
-// - do not use postgres package directly, use new Configurator
-// - add support MySQL and MongoDB
+// - replace sql.DB by DriverManager
+// - move Connection to Driver/DriverManager layer
+// - do not use postgres package directly, use DriverManager instead
 
-// Configurator defines a function which can use to configure DAO.
+// Configurator defines a function which can use to configure data access object.
 type Configurator func(*Layer) error
 
-// Must returns a new instance of DAO or panics if it cannot configure it.
+// Must returns a new instance of data access object or panics if it cannot configure it.
 func Must(configs ...Configurator) *Layer {
 	instance, err := New(configs...)
 	if err != nil {
@@ -26,7 +25,7 @@ func Must(configs ...Configurator) *Layer {
 	return instance
 }
 
-// New returns a new instance of DAO or an error if it cannot configure it.
+// New returns a new instance of data access object or an error if it cannot configure it.
 func New(configs ...Configurator) (*Layer, error) {
 	instance := &Layer{}
 	for _, configure := range configs {
@@ -49,7 +48,6 @@ func Connection(driver, dsn string) Configurator {
 // Layer is an implementation of Data Access Object.
 type Layer struct {
 	conn *sql.DB
-	_    Executor
 }
 
 // Connection returns current database connection.

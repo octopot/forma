@@ -62,26 +62,25 @@ func TestAssetDir(t *testing.T) {
 				assert.Error(t, err)
 			}
 		})
-
 	}
 }
 
 func TestAssetInfo(t *testing.T) {
-	// TODO v2: up code coverage
+	// TODO v4: up code coverage
 }
 
 func TestAssetNames(t *testing.T) {
-	// TODO v2: up code coverage
+	// TODO v4: up code coverage
 }
 
 func TestMustAsset(t *testing.T) {
-	// TODO v2: up code coverage
+	// TODO v4: up code coverage
 }
 
 func TestRestoreAsset(t *testing.T) {
-	// TODO v2: up code coverage
+	// TODO v4: up code coverage
 }
 
 func TestRestoreAssets(t *testing.T) {
-	// TODO v2: up code coverage
+	// TODO v4: up code coverage
 }

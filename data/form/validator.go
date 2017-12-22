@@ -68,7 +68,7 @@ var (
 						return validationError{true, i, value, "value is not a valid email"}
 					}
 					if strict {
-						// TODO v2: support strict by
+						// TODO v4: support `strict`
 						// - net.LookupMX
 						// - smtp.Dial
 						// - smtp.Client.Hello("checkmail.me")

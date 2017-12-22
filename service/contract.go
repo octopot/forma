@@ -5,7 +5,7 @@ import (
 	"github.com/kamilsk/form-api/data/form"
 )
 
-// DataLayer defines behavior of DAO.
+// DataLayer defines behavior of data access object.
 type DataLayer interface {
 	// AddData inserts form data and returns its ID or an error if something went wrong.
 	AddData(uuid data.UUID, values map[string][]string) (int64, error)

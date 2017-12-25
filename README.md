@@ -11,7 +11,10 @@
 
 ```bash
 $ make up
-$ open http://localhost:8080/docs/ # https://github.com/kamilsk/form-api/issues/16
+$ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+$ curl -H "Content-Type: application/x-www-form-urlencoded" \
+       --data-urlencode "email=test@my.email" \
+       http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 ```
 
 ## Installation
@@ -28,12 +31,8 @@ $ open http://localhost:8080/docs/ # https://github.com/kamilsk/form-api/issues/
 ```bash
 $ go get -d -u github.com/kamilsk/form-api
 $ cd $GOPATH/src/github.com/kamilsk/form-api
-$ make deps test
+$ make test install
 ```
-
-### Binary
-
-...coming soon
 
 ## Feedback
 

@@ -3,6 +3,7 @@ package cmd
 import (
 	"log"
 	"net/http"
+	"runtime"
 
 	"github.com/kamilsk/form-api/dao"
 	"github.com/kamilsk/form-api/server"
@@ -16,6 +17,7 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Start HTTP server",
 	Run: func(cmd *cobra.Command, args []string) {
+		runtime.GOMAXPROCS(asInt(cmd.Flag("cpus").Value))
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 		log.Println("starting server at", addr)
 		log.Fatal(http.ListenAndServe(addr,
@@ -36,18 +38,20 @@ func init() {
 		func() error { return v.BindEnv("bind") },
 		func() error { return v.BindEnv("port") },
 		func() error { return v.BindEnv("template_dir") },
+		func() error { return v.BindEnv("max_cpus") },
 	)
 	{
 		v.SetDefault("base_url", "http://127.0.0.1:8080/")
 		v.SetDefault("bind", "127.0.0.1")
 		v.SetDefault("port", 8080)
 		v.SetDefault("template_dir", "")
+		v.SetDefault("max_cpus", 1)
 	}
 	{
-		runCmd.Flags().String("baseURL", v.GetString("base_url"),
-			"hostname (and path) to the root, e.g. https://kamil.samigullin.info/")
+		runCmd.Flags().String("baseURL", v.GetString("base_url"), "hostname (and path) to the root")
 		runCmd.Flags().String("bind", v.GetString("bind"), "interface to which the server will bind")
 		runCmd.Flags().Int("port", v.GetInt("port"), "port on which the server will listen")
+		runCmd.Flags().Int("cpus", v.GetInt("max_procs"), "maximum number of CPUs that can be executing simultaneously")
 		runCmd.Flags().String("tplDir", v.GetString("template_dir"), "filesystem path to custom template directory")
 		runCmd.Flags().Bool("with-profiler", false, "enable pprof on /debug/pprof")
 	}

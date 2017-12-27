@@ -32,7 +32,7 @@ func Encoder(next http.HandlerFunc) http.HandlerFunc {
 			errors.NotSupportedContentType(encoder.Supported()).MarshalTo(rw) //nolint: errcheck,gas
 			return
 		}
-		next.ServeHTTP(rw, req.WithContext(context.WithValue(req.Context(), EncoderKey{}, encoder.New(rw, contentType))))
+		next(rw, req.WithContext(context.WithValue(req.Context(), EncoderKey{}, encoder.New(rw, contentType))))
 	}
 }
 

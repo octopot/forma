@@ -5,8 +5,6 @@ import (
 	"net/url"
 	"strconv"
 
-	_ "github.com/lib/pq"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -72,6 +70,14 @@ func dsn(cmd *cobra.Command) (driver, dsn string) {
 		}(),
 	}
 	return uri.Scheme, uri.String()
+}
+
+func asInt(value fmt.Stringer) int {
+	integer, err := strconv.ParseInt(value.String(), 10, 0)
+	if err != nil {
+		integer = 0
+	}
+	return int(integer)
 }
 
 func isTrue(value fmt.Stringer) bool {

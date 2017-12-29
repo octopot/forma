@@ -8,6 +8,8 @@ import (
 const (
 	// EmailType specifies `<input type="email">`.
 	EmailType = "email"
+	// HiddenType specifies `<input type="hidden">`
+	HiddenType = "hidden"
 	// TextType specifies `<input type="text">`.
 	TextType = "text"
 )
@@ -77,7 +79,7 @@ var (
 						// see https://github.com/badoux/checkmail as example
 					}
 				}
-			case TextType:
+			case HiddenType, TextType:
 				// nothing special
 			default:
 				panic(fmt.Sprintf("not supported input type %q", inputType))

@@ -75,13 +75,13 @@ func init() {
 func chooseDirectionAndLimit(args []string) (migrate.MigrationDirection, int) {
 	direction, limit := migrate.Up, 0
 	if len(args) > 0 {
-		switch dir := strings.ToLower(args[0]); dir {
-		case "up":
+		switch {
+		case strings.EqualFold(args[0], "up"):
 			direction = migrate.Up
-		case "down":
+		case strings.EqualFold(args[0], "down"):
 			direction = migrate.Down
 		default:
-			log.Fatalf("invalid direction %q", dir)
+			log.Fatalf("invalid direction %q", args[0])
 		}
 		if len(args) == 2 {
 			var err error

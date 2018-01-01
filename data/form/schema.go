@@ -46,19 +46,19 @@ func (s Schema) Normalize(data map[string][]string) map[string][]string {
 				if unicode.IsSpace(r) {
 					return true
 				}
-				// U+200B ZeroWidth
+				// https://www.compart.com/en/unicode/U+200B, Zero Width Space
 				if r == '\u200B' {
 					return true
 				}
-				// U+200C ZeroWidthNoJoiner
+				// https://www.compart.com/en/unicode/U+200C, Zero Width Non-joiner
 				if r == '\u200C' {
 					return true
 				}
-				// U+200D ZeroWidthJoiner
+				// https://www.compart.com/en/unicode/U+200D, Zero Width Joiner
 				if r == '\u200D' {
 					return true
 				}
-				// U+2060 WordJoiner
+				// https://www.compart.com/en/unicode/U+2060, Word Joiner
 				if r == '\u2060' {
 					return true
 				}

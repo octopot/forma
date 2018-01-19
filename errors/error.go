@@ -1,73 +1,37 @@
 package errors
 
-import "github.com/pkg/errors"
-
-const (
-	// ClientError is a code of client error.
-	ClientError = iota
-	// ResourceNotFound is a code of client error when the requested resource is not found.
-	ResourceNotFound
-	// InvalidInputData is a code of client error when data provided by a user is invalid.
-	InvalidInputData
-)
-
-const (
-	// ServerError is a code of server error.
-	ServerError = 100 + iota
-	// DatabaseFail is a code of server error related to database problems.
-	DatabaseFail
-	// SerializationFail is a code of server error related to serialization problems.
-	SerializationFail
-)
-
-const (
-	// ClientErrorMessage is a default message for client error.
-	ClientErrorMessage = "Error"
-	// ServerErrorMessage is a default message for server error.
-	ServerErrorMessage = "Server Error"
-	// NeutralMessage is a default message.
-	NeutralMessage = "Something went wrong"
-	// FormInvalidMessage is a default message in case when input values are invalid.
-	FormInvalidMessage = "Form data contains error"
-	// SchemaNotFoundMessage is a default message in case when schema is not found.
-	SchemaNotFoundMessage = "Schema not found"
-)
-
-// ApplicationError defines behavior of application errors.
+// ApplicationError defines the behavior of application errors.
 type ApplicationError interface {
 	error
+
 	// Cause returns the underlying cause of the error.
+	// It is friendly to `github.com/pkg/errors.Cause` method.
 	Cause() error
-	// IsUser returns true if the error on the client side.
-	IsUser() bool
-	// IsNotFound returns true if the error related to an empty search result.
-	IsNotFound() bool
-	// IsInvalid returns true if the error related to invalid data provided by a user.
-	IsInvalid() bool
-	// IsServer returns true if the error on the server side.
-	IsServer() bool
-	// Message returns an error message intended for a user.
+	// Message returns an error message intended to a user.
 	Message() string
+
+	// IsClientError returns true and specific error if the error on the client side.
+	// Otherwise, it returns false and nil.
+	IsClientError() (ClientError, bool)
+	// IsServerError returns true and specific error if the error on the server side.
+	// Otherwise, it returns false and nil.
+	IsServerError() (ServerError, bool)
 }
 
-// NotFound returns an application error related to an empty search result.
-func NotFound(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
-	return &withCode{ResourceNotFound, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
+// ClientError defines the behavior of application errors related to a user error.
+type ClientError interface {
+	// IsInvalidInput returns true if the error related to invalid data provided by a user.
+	IsInvalidInput() bool
+	// IsResourceNotFound returns true if the error related to an empty search result.
+	IsResourceNotFound() bool
 }
 
-// Validation returns an application error related to invalid input values.
-func Validation(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
-	return &withCode{InvalidInputData, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
-}
-
-// Database returns an application error related to database problems.
-func Database(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
-	return &withCode{DatabaseFail, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
-}
-
-// Serialization returns an application error related to serialization problems.
-func Serialization(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError {
-	return &withCode{SerializationFail, userMsg, errors.Wrapf(cause, ctxMsg, ctxArgs...)}
+// ServerError defines the behavior of application errors related to a server error.
+type ServerError interface {
+	// IsDatabaseFail returns true if the error related to database problems.
+	IsDatabaseFail() bool
+	// IsSerializationFail returns true if the error related to serialization problems.
+	IsSerializationFail() bool
 }
 
 type withCode struct {
@@ -76,33 +40,51 @@ type withCode struct {
 	cause error
 }
 
-func (err *withCode) Error() string {
-	msg := err.msg
-	if msg == "" {
-		if err.IsServer() {
-			msg = "Server Error"
-		} else {
-			msg = "Error"
-		}
-	}
-	return msg
+type empty string
+
+func (err empty) Error() string {
+	return "<nil>"
 }
 
-// Message returns an error message intended for a user.
-func (err *withCode) Message() string { return err.msg }
+func (err withCode) Error() string {
+	return err.Message() + ": " + err.Cause().Error()
+}
 
-// Cause returns the underlying cause of the error.
-// It is friendly to `github.com/pkg/errors.Cause` method.
-func (err *withCode) Cause() error { return err.cause }
+func (err withCode) Cause() error {
+	if err.cause == nil {
+		return empty("")
+	}
+	return err.cause
+}
 
-// IsServer returns true if the error on the server side.
-func (err *withCode) IsServer() bool { return err.code > ServerError }
+func (err withCode) Message() string {
+	if err.msg == "" {
+		if err.code < ServerErrorCode {
+			return ClientErrorMessage
+		}
+		return ServerErrorMessage
+	}
+	return err.msg
+}
 
-// IsUser returns true if the error on the client side.
-func (err *withCode) IsUser() bool { return err.code < ServerError }
+func (err withCode) IsClientError() (ClientError, bool) {
+	if err.code < ServerErrorCode {
+		return err, true
+	}
+	return nil, false
+}
 
-// IsNotFound returns true if the error related to an empty search result.
-func (err *withCode) IsNotFound() bool { return err.code == ResourceNotFound }
+func (err withCode) IsServerError() (ServerError, bool) {
+	if err.code >= ServerErrorCode {
+		return err, true
+	}
+	return nil, false
+}
 
-// IsInvalid returns true if the error related to invalid data provided by a user.
-func (err *withCode) IsInvalid() bool { return err.code == InvalidInputData }
+func (err withCode) IsInvalidInput() bool { return err.code == InvalidInputCode }
+
+func (err withCode) IsResourceNotFound() bool { return err.code == ResourceNotFoundCode }
+
+func (err withCode) IsDatabaseFail() bool { return err.code == DatabaseFailCode }
+
+func (err withCode) IsSerializationFail() bool { return err.code == SerializationFailCode }

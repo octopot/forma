@@ -34,7 +34,7 @@ func (e Error) IsClient() bool {
 	return e.Code%400 < 100
 }
 
-// IsServer returns true if the error is a server error.
+// IsServerError returns true if the error is a server error.
 func (e Error) IsServer() bool {
 	return e.Code%500 < 100
 }
@@ -90,7 +90,7 @@ func FromGetV1(err error) Error {
 }
 
 func classify(err error) int {
-	if err, is := err.(errors.ApplicationError); is && err.IsUser() {
+	if err, is := err.(errors.ApplicationError); is && err.IsClientError() {
 		if err.IsNotFound() {
 			return http.StatusNotFound
 		}

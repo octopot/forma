@@ -7,12 +7,12 @@ import (
 
 // Schema represents a HTML form specification.
 type Schema struct {
-	ID      string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
-	Title   string  `json:"title"             yaml:"title"             xml:"title,attr"`
-	Action  string  `json:"action"            yaml:"action"            xml:"action,attr"`
-	Method  string  `json:"method,omitempty"  yaml:"method,omitempty"  xml:"method,attr,omitempty"`
-	EncType string  `json:"enctype,omitempty" yaml:"enctype,omitempty" xml:"enctype,attr,omitempty"`
-	Inputs  []Input `json:"input"             yaml:"input"             xml:"input"`
+	ID           string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
+	Title        string  `json:"title"             yaml:"title"             xml:"title,attr"`
+	Action       string  `json:"action"            yaml:"action"            xml:"action,attr"`
+	Method       string  `json:"method,omitempty"  yaml:"method,omitempty"  xml:"method,attr,omitempty"`
+	EncodingType string  `json:"enctype,omitempty" yaml:"enctype,omitempty" xml:"enctype,attr,omitempty"`
+	Inputs       []Input `json:"input"             yaml:"input"             xml:"input"`
 }
 
 // Apply uses filtration, normalization, and validation for input values.

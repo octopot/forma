@@ -26,11 +26,11 @@ func TestHTML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.html.golden", form.Schema{
-			ID:      UUID.String(),
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String(),
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -77,11 +77,11 @@ func TestJSON(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      UUID.String(),
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String(),
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -124,11 +124,11 @@ func TestJSON_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -164,11 +164,11 @@ func TestJSON_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json.golden", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -208,11 +208,11 @@ func TestXML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -255,11 +255,11 @@ func TestXML_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -295,11 +295,11 @@ func TestXML_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml.golden", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -362,11 +362,11 @@ func TestYAML(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -409,11 +409,11 @@ func TestYAML_Decode(t *testing.T) {
 		schema   form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",
@@ -457,11 +457,11 @@ func TestYAML_Encode(t *testing.T) {
 		schema form.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml.golden", form.Schema{
-			ID:      UUID.String() + "",
-			Title:   "Email subscription",
-			Action:  "http://localhost:8080/api/v1/" + UUID.String(),
-			Method:  "post",
-			EncType: "application/x-www-form-urlencoded",
+			ID:           UUID.String() + "",
+			Title:        "Email subscription",
+			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Method:       "post",
+			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []form.Input{
 				{
 					ID:        UUID.String() + "_email",

@@ -7,7 +7,7 @@ import (
 )
 
 var html = template.Must(template.New("form").Parse(`
-<form id="{{ .ID }}" title="{{ .Title }}" action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncType }}">
+<form id="{{ .ID }}" title="{{ .Title }}" action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
 {{- $ := . -}}
 {{- range .Inputs -}}
     {{- if .Title -}}

@@ -10,43 +10,47 @@ import (
 	"github.com/kamilsk/form-api/errors"
 )
 
-// AddData inserts form data and returns its ID or an error if something went wrong.
+const dialect = "postgres"
+
+// AddData inserts form data and returns its ID.
 func AddData(db *sql.DB, uuid data.UUID, verified map[string][]string) (int64, error) {
 	encoded, err := json.Marshal(verified)
 	if err != nil {
-		return 0, errors.Serialization(errors.NeutralMessage,
-			err, "trying to marshal data into JSON with schema of %q", uuid)
+		return 0, errors.Serialization(errors.ServerErrorMessage, err,
+			"trying to marshal data `%#v` into JSON with the schema %q", verified, uuid)
 	}
 	var id int64
 	err = db.QueryRow(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`, uuid, encoded).Scan(&id)
 	if err != nil {
-		return 0, errors.Database(errors.NeutralMessage,
-			err, "trying to insert JSON `%s` with schema of %q", encoded, uuid)
+		return 0, errors.Database(errors.ServerErrorMessage, err,
+			"trying to insert JSON `%s` with the schema %q", encoded, uuid)
 	}
 	return id, nil
 }
 
-// Dialect returns supported database SQL dialect.
+// Dialect returns supported database dialect.
 func Dialect() string {
-	return "postgres"
+	return dialect
 }
 
-// Schema would return a form schema with provided UUID or an error if something went wrong.
+// Schema returns the form schema with provided UUID.
 func Schema(db *sql.DB, uuid data.UUID) (form.Schema, error) {
 	var (
 		schema form.Schema
-		raw    []byte
+		// allocate on stack
+		buf = [1024]byte{}
+		raw = buf[:]
 	)
 	row := db.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&raw); err != nil {
 		if err == sql.ErrNoRows {
-			return schema, errors.NotFound(errors.SchemaNotFoundMessage, err, "schema with UUID %q not found", uuid)
+			return schema, errors.NotFound(errors.SchemaNotFoundMessage, err, "schema %q not found or disabled", uuid)
 		}
-		return schema, errors.Database(errors.NeutralMessage, err, "trying to populate schema with UUID %q", uuid)
+		return schema, errors.Database(errors.ServerErrorMessage, err, "trying to populate schema %q", uuid)
 	}
 	if err := xml.Unmarshal(raw, &schema); err != nil {
-		return schema, errors.Serialization(errors.NeutralMessage,
-			err, "trying to unmarshal schema with UUID %q from XML", uuid)
+		return schema, errors.Serialization(errors.NeutralMessage, err,
+			"trying to unmarshal schema %q from XML `%s`", uuid, raw)
 	}
 	schema.ID = string(uuid)
 	for i := range schema.Inputs {

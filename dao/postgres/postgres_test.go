@@ -13,33 +13,87 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const (
+	DSN  = "postgres://postgres:postgres@db:5432/postgres"
+	UUID = data.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+)
 
-func TestNew_WithValidConfiguration(t *testing.T) {
+func TestAddData(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	dsn := "postgres://postgres:postgres@db:5432/postgres"
-	drv := NewMockDriver(ctrl)
-	name := "postgres"
-	conn := NewMockConn(ctrl)
-	stmt := NewMockStmt(ctrl)
-	rows := NewMockRows(ctrl)
+	var (
+		drv  = NewMockDriver(ctrl)
+		conn = NewMockConn(ctrl)
+		stmt = NewMockStmt(ctrl)
+		rows = NewMockRows(ctrl)
+	)
 	drv.EXPECT().
-		Open(dsn).
+		Open(DSN).
 		Times(1).
 		Return(conn, nil)
-	conn.EXPECT().
-		Prepare(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`).
-		Times(1).
-		Return(stmt, nil)
 	conn.EXPECT().
 		Prepare(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`).
 		Times(1).
 		Return(stmt, nil)
 	stmt.EXPECT().
 		NumInput().
-		Times(3).
+		Times(2).
+		Return(2)
+	stmt.EXPECT().
+		Query(gomock.Any()).
+		Times(1).
+		Return(rows, nil)
+	stmt.EXPECT().
+		Close().
+		Times(1).
+		Return(nil)
+	rows.EXPECT().
+		Columns().
+		Times(1).
+		Return([]string{"id"})
+	rows.EXPECT().
+		Next([]driver.Value{nil}).
+		Times(1).
+		Return(nil)
+	rows.EXPECT().
+		Close().
+		Times(1).
+		Return(nil)
+
+	sql.Register(t.Name(), drv)
+	db, err := sql.Open(t.Name(), DSN)
+	assert.NoError(t, err)
+
+	_, err = postgres.AddData(db, UUID, map[string][]string{})
+	assert.Error(t, err)
+}
+
+func TestDialect(t *testing.T) {
+	assert.Equal(t, "postgres", postgres.Dialect())
+}
+
+func TestSchema(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	var (
+		drv  = NewMockDriver(ctrl)
+		conn = NewMockConn(ctrl)
+		stmt = NewMockStmt(ctrl)
+		rows = NewMockRows(ctrl)
+	)
+	drv.EXPECT().
+		Open(DSN).
+		Times(1).
+		Return(conn, nil)
+	conn.EXPECT().
+		Prepare(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`).
+		Times(1).
+		Return(stmt, nil)
+	stmt.EXPECT().
+		NumInput().
+		Times(2).
 		Return(1)
 	stmt.EXPECT().
 		Query(gomock.Any()).
@@ -47,7 +101,7 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 		Return(rows, nil)
 	stmt.EXPECT().
 		Close().
-		Times(2).
+		Times(1).
 		Return(nil)
 	rows.EXPECT().
 		Columns().
@@ -62,14 +116,9 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 		Times(1).
 		Return(nil)
 
-	sql.Register(name, drv)
-	db, err := sql.Open(name, dsn)
+	sql.Register(t.Name(), drv)
+	db, err := sql.Open(t.Name(), DSN)
 	assert.NoError(t, err)
-
-	_, err = postgres.AddData(db, UUID, map[string][]string{})
-	assert.Error(t, err)
-
-	assert.Equal(t, "postgres", postgres.Dialect())
 
 	_, err = postgres.Schema(db, UUID)
 	assert.Error(t, err)

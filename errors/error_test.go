@@ -11,7 +11,7 @@ import (
 )
 
 func TestApplicationError(t *testing.T) {
-	const errorMessage, contextMessage = "error", "context"
+	const userMsg, ctxMsg = "error", "context"
 
 	type (
 		Result struct {
@@ -39,7 +39,7 @@ func TestApplicationError(t *testing.T) {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			cause := fmt.Errorf(tc.name)
-			err := tc.constructor(errorMessage, cause, contextMessage)
+			err := tc.constructor(userMsg, cause, ctxMsg)
 			{
 				assert.NotEqual(t, cause, err.Cause())
 				assert.Equal(t, cause, deep.Cause(err))
@@ -68,35 +68,31 @@ func TestApplicationErrorMessage(t *testing.T) {
 	tests := []struct {
 		name        string
 		constructor func(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) errors.ApplicationError
-		userMsg     string
-		ctxMsg      string
-		cause       func(name string) error
+		args        func(name string) (userMsg string, cause error, ctxMsg string)
 		expected    func() (err, msg string)
 	}{
 		{"not found", errors.NotFound,
-			emptyMessage, "uuid is not presented",
-			func(name string) error { return fmt.Errorf(name) },
+			func(name string) (string, error, string) {
+				return emptyMessage, fmt.Errorf(name), "uuid is not presented"
+			},
 			func() (string, string) { return "error: uuid is not presented: not found", errors.ClientErrorMessage }},
 		{"validation", errors.Validation,
-			validationMessage, "invalid email",
-			func(name string) error { return nil },
+			func(name string) (string, error, string) { return validationMessage, nil, "invalid email" },
 			func() (string, string) { return "validation: <nil>", validationMessage }},
 		{"database", errors.Database,
-			emptyMessage, "connection is lost",
-			func(name string) error { return fmt.Errorf(name) },
+			func(name string) (string, error, string) { return emptyMessage, fmt.Errorf(name), "connection is lost" },
 			func() (string, string) {
 				return "server error: connection is lost: database", errors.ServerErrorMessage
 			}},
 		{"serialization", errors.Serialization,
-			serializationMessage, "corrupted data",
-			func(name string) error { return nil },
+			func(name string) (string, error, string) { return serializationMessage, nil, "corrupted data" },
 			func() (string, string) { return "serialization: <nil>", serializationMessage }},
 	}
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			cause := tc.cause(tc.name)
-			err := tc.constructor(tc.userMsg, cause, tc.ctxMsg)
+			userMsg, cause, ctxMsg := tc.args(tc.name)
+			err := tc.constructor(userMsg, cause, ctxMsg)
 			errMsg, userMsg := tc.expected()
 			assert.Equal(t, errMsg, err.Error())
 			assert.Equal(t, userMsg, err.Message())

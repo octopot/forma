@@ -1,11 +1,11 @@
-package form
+package domen
 
 import (
 	"strings"
 	"unicode"
 )
 
-// Schema represents a HTML form specification.
+// Schema represents an HTML form.
 type Schema struct {
 	ID           string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
 	Title        string  `json:"title"             yaml:"title"             xml:"title,attr"`
@@ -100,12 +100,12 @@ func makeRules(inputs []Input) (map[string][]Validator, map[string]int) {
 	for i, input := range inputs {
 		index[input.Name] = i
 		validators := make([]Validator, 0, 3)
-		validators = append(validators, typeValidator(input.Type, input.Strict))
+		validators = append(validators, TypeValidator(input.Type, input.Strict))
 		if input.MinLength != 0 || input.MaxLength != 0 {
-			validators = append(validators, lengthValidator(input.MinLength, input.MaxLength))
+			validators = append(validators, LengthValidator(input.MinLength, input.MaxLength))
 		}
 		if input.Required {
-			validators = append(validators, requireValidator)
+			validators = append(validators, RequireValidator())
 		}
 		rules[input.Name] = validators
 	}

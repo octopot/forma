@@ -8,7 +8,7 @@ VALUES ('41ca5e09-3ce2-4094-b108-3ecc257c6fa4',uuid_generate_v4(),'
 </form>
 ');
 
-INSERT INTO "form_data" ("uuid","data") VALUES ('41ca5e09-3ce2-4094-b108-3ecc257c6fa4','{"email":"kamil@samigullin.info"}');
+INSERT INTO "form_data" ("uuid","data") VALUES ('41ca5e09-3ce2-4094-b108-3ecc257c6fa4','{"email":"test@my.email"}');
 
 -- +migrate Down
 

@@ -1,4 +1,4 @@
-package encoder
+package encoding
 
 import (
 	"encoding/json"
@@ -50,9 +50,9 @@ type Generic interface {
 	ContentType() string
 }
 
-// New returns encoder corresponding to the content type.
+// NewEncoder returns encoder corresponding to the content type.
 // It can raise the panic if the content type is unsupported.
-func New(stream io.Writer, contentType string) Generic {
+func NewEncoder(stream io.Writer, contentType string) Generic {
 	enc := &encoder{cType: contentType, stream: stream}
 	switch contentType {
 	case HTML:

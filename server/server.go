@@ -5,34 +5,17 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/kamilsk/form-api/data"
-	"github.com/kamilsk/form-api/data/encoder"
-	"github.com/kamilsk/form-api/data/transfer/api/v1"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/kamilsk/form-api/server/errors"
+	"github.com/kamilsk/form-api/server/middleware"
 	"github.com/kamilsk/form-api/static"
-)
-
-// checklist:
-// - inject redirect link via middleware
-// - check that Referer exists and it is valid URL
-// - classify error: ApplicationError and ValidationError
-// - use detailed information in case with ValidationError
-// - review templates:
-//   - add button next
-//   - add bootstrap css
-//   - log errors
-// - nolint replace by logging
-
-type (
-	// EncoderKey used as a context key to store a form schema encoder.
-	EncoderKey struct{}
-	// UUIDKey used as a context key to store a form schema UUID.
-	UUIDKey struct{}
+	"github.com/kamilsk/form-api/transfer/api/v1"
+	"github.com/kamilsk/form-api/transfer/encoding"
 )
 
 // New returns new instance of Form API server.
 // It can raise the panic if HTML templates are not available.
-func New(baseURL, tplPath string, service FormAPIService) *Server {
+func New(baseURL, tplPath string, service Service) *Server {
 	must := func(base, tpl string) string {
 		b, err := static.LoadTemplate(base, tpl)
 		if err != nil {
@@ -52,7 +35,7 @@ func New(baseURL, tplPath string, service FormAPIService) *Server {
 // Server handles HTTP requests.
 type Server struct {
 	baseURL   string
-	service   FormAPIService
+	service   Service
 	templates struct {
 		errorTpl    *template.Template
 		redirectTpl *template.Template
@@ -62,12 +45,12 @@ type Server struct {
 // GetV1 implements `FormAPI` interface.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid data.UUID
-		enc  encoder.Generic
+		uuid domen.UUID
+		enc  encoding.Generic
 	)
-	{ // from middleware
-		uuid = req.Context().Value(UUIDKey{}).(data.UUID)
-		enc = req.Context().Value(EncoderKey{}).(encoder.Generic)
+	{
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
+		enc = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
 	}
 	response := s.service.HandleGetV1(v1.GetRequest{UUID: uuid})
 	if response.Error != nil {
@@ -83,15 +66,15 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 // PostV1 implements `FormAPI` interface
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid     data.UUID
+		uuid     domen.UUID
 		redirect string
 	)
-	{ // from middleware
-		uuid = req.Context().Value(UUIDKey{}).(data.UUID)
+	{
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
 		redirect = req.Header.Get("Referer")
 	}
 
-	rw.Header().Set("Content-Type", encoder.HTML)
+	rw.Header().Set("Content-Type", encoding.HTML)
 	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
 		//nolint: errcheck

@@ -9,40 +9,37 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/dao"
-	"github.com/kamilsk/form-api/data"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const (
+	DSN  = "stub://localhost"
+	UUID = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+)
 
-func TestNew_WithoutConfiguration(t *testing.T) {
-	service, err := dao.New()
-	assert.NoError(t, err)
-	assert.NotNil(t, service)
-	assert.Panics(t, func() { service.Schema(UUID) })
-	assert.Panics(t, func() { service.AddData(UUID, map[string][]string{}) })
+func TestMust_WithInvalidConfiguration(t *testing.T) {
+	var configs = []dao.Configurator{dao.Connection("", "")}
+	assert.Panics(t, func() { dao.Must(configs...) })
 }
 
-func TestNew_WithInvalidConfiguration(t *testing.T) {
-	invalid := []dao.Configurator{dao.Connection("", "")}
-	service, err := dao.New(invalid...)
-	assert.Error(t, err)
-	assert.Nil(t, service)
-	assert.Panics(t, func() { dao.Must(invalid...) })
+func TestMust_WithoutConfiguration(t *testing.T) {
+	var configs []dao.Configurator
+	assert.NotPanics(t, func() { dao.Must(configs...) })
 }
 
-func TestNew_WithValidConfiguration(t *testing.T) {
+func TestStorage(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	dsn := "stub://localhost"
-	drv := NewMockDriver(ctrl)
-	name := "stub"
-	conn := NewMockConn(ctrl)
-	stmt := NewMockStmt(ctrl)
-	rows := NewMockRows(ctrl)
+	var (
+		drv  = NewMockDriver(ctrl)
+		conn = NewMockConn(ctrl)
+		stmt = NewMockStmt(ctrl)
+		rows = NewMockRows(ctrl)
+	)
 	drv.EXPECT().
-		Open(dsn).
+		Open(DSN).
 		Times(1).
 		Return(conn, nil)
 	conn.EXPECT().
@@ -78,18 +75,17 @@ func TestNew_WithValidConfiguration(t *testing.T) {
 		Times(1).
 		Return(nil)
 
-	sql.Register(name, drv)
-	valid := []dao.Configurator{dao.Connection(name, dsn)}
-	service, err := dao.New(valid...)
+	var configs = []dao.Configurator{dao.Connection(t.Name(), DSN)}
+	sql.Register(t.Name(), drv)
+	service, err := dao.New(configs...)
 	assert.NoError(t, err)
+
 	assert.NotNil(t, service.Connection())
 	assert.Equal(t, "postgres", service.Dialect())
-
-	_, err = service.Schema(UUID)
-	assert.Error(t, err)
 
 	_, err = service.AddData(UUID, map[string][]string{})
 	assert.Error(t, err)
 
-	assert.NotPanics(t, func() { dao.Must(valid...) })
+	_, err = service.Schema(UUID)
+	assert.Error(t, err)
 }

@@ -9,14 +9,18 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/dao/postgres"
-	"github.com/kamilsk/form-api/data"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/stretchr/testify/assert"
 )
 
 const (
 	DSN  = "postgres://postgres:postgres@db:5432/postgres"
-	UUID = data.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+	UUID = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
+
+func TestDialect(t *testing.T) {
+	assert.Equal(t, "postgres", postgres.Dialect())
+}
 
 func TestAddData(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -67,10 +71,6 @@ func TestAddData(t *testing.T) {
 
 	_, err = postgres.AddData(db, UUID, map[string][]string{})
 	assert.Error(t, err)
-}
-
-func TestDialect(t *testing.T) {
-	assert.Equal(t, "postgres", postgres.Dialect())
 }
 
 func TestSchema(t *testing.T) {

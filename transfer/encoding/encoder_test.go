@@ -1,4 +1,4 @@
-package encoder_test
+package encoding_test
 
 import (
 	"bytes"
@@ -6,13 +6,12 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/kamilsk/form-api/data"
-	"github.com/kamilsk/form-api/data/encoder"
-	"github.com/kamilsk/form-api/data/form"
+	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestSupport(t *testing.T) {
 	for _, tc := range []struct {
@@ -20,15 +19,15 @@ func TestSupport(t *testing.T) {
 		contentType string
 		expected    bool
 	}{
-		{"supported, HTML", encoder.HTML, true},
-		{"supported, JSON", encoder.JSON, true},
-		{"supported, TEXT", encoder.TEXT, true},
-		{"supported, XML", encoder.XML, true},
+		{"supported, HTML", encoding.HTML, true},
+		{"supported, JSON", encoding.JSON, true},
+		{"supported, TEXT", encoding.TEXT, true},
+		{"supported, XML", encoding.XML, true},
 		{"not supported, TOML", "TOML", false},
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.expected, encoder.Support(tc.contentType))
+			assert.Equal(t, tc.expected, encoding.Support(tc.contentType))
 		})
 	}
 }
@@ -38,15 +37,15 @@ func TestEncoder(t *testing.T) {
 		name        string
 		contentType string
 		golden      string
-		schema      form.Schema
+		schema      domen.Schema
 	}{
-		{"email subscription, HTML", encoder.HTML, "./fixtures/email_subscription.html.golden", form.Schema{
+		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -63,13 +62,13 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, JSON", encoder.JSON, "./fixtures/email_subscription.json.golden", form.Schema{
+		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -86,13 +85,13 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, XML", encoder.XML, "./fixtures/email_subscription.xml.golden", form.Schema{
+		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -109,13 +108,13 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, YAML", encoder.TEXT, "./fixtures/email_subscription.yaml.golden", form.Schema{
+		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -136,7 +135,7 @@ func TestEncoder(t *testing.T) {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			buf := bytes.NewBuffer(nil)
-			enc := encoder.New(buf, tc.contentType)
+			enc := encoding.NewEncoder(buf, tc.contentType)
 			assert.Equal(t, tc.contentType, enc.ContentType())
 			assert.NoError(t, enc.Encode(tc.schema))
 			expected, err := ioutil.ReadFile(tc.golden)
@@ -145,18 +144,18 @@ func TestEncoder(t *testing.T) {
 		})
 	}
 	t.Run("unsupported content type", func(t *testing.T) {
-		assert.Panics(t, func() { encoder.New(bytes.NewBuffer(nil), "unsupported") })
+		assert.Panics(t, func() { encoding.NewEncoder(bytes.NewBuffer(nil), "unsupported") })
 	})
 	t.Run("unsupported value by HTML encoder", func(t *testing.T) {
-		enc := encoder.New(bytes.NewBuffer(nil), encoder.HTML)
+		enc := encoding.NewEncoder(bytes.NewBuffer(nil), encoding.HTML)
 		assert.Error(t, enc.Encode("the value does not have `MarshalHTML` method"))
 	})
 	t.Run("problem writer", func(t *testing.T) {
-		var enc encoder.Generic
-		enc = encoder.New(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoder.HTML)
-		assert.Error(t, enc.Encode(form.Schema{}))
-		enc = encoder.New(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoder.TEXT)
-		assert.Error(t, enc.Encode(form.Schema{}))
+		var enc encoding.Generic
+		enc = encoding.NewEncoder(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoding.HTML)
+		assert.Error(t, enc.Encode(domen.Schema{}))
+		enc = encoding.NewEncoder(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoding.TEXT)
+		assert.Error(t, enc.Encode(domen.Schema{}))
 	})
 }
 

@@ -1,25 +1,25 @@
 package service
 
-import "github.com/kamilsk/form-api/data/transfer/api/v1"
+import "github.com/kamilsk/form-api/transfer/api/v1"
 
-// New returns new instance of Form API service.
-func New(dao DataLayer) *FormAPI {
+// New returns a new instance of Form API service.
+func New(dao Storage) *FormAPI {
 	return &FormAPI{dao: dao}
 }
 
-// FormAPI is a main application service.
+// FormAPI is the primary application service.
 type FormAPI struct {
-	dao DataLayer
+	dao Storage
 }
 
-// HandleGetV1 handles `GET /api/v1/{UUID}` request.
+// HandleGetV1 handles an input request.
 func (s *FormAPI) HandleGetV1(request v1.GetRequest) v1.GetResponse {
 	var response v1.GetResponse
 	response.Schema, response.Error = s.dao.Schema(request.UUID)
 	return response
 }
 
-// HandlePostV1 handles `POST /api/v1/{UUID}` request.
+// HandlePostV1 handles an input request.
 func (s *FormAPI) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	var (
 		response v1.PostResponse

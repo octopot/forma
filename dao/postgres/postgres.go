@@ -5,15 +5,19 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"github.com/kamilsk/form-api/data"
-	"github.com/kamilsk/form-api/data/form"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/kamilsk/form-api/errors"
 )
 
 const dialect = "postgres"
 
-// AddData inserts form data and returns its ID.
-func AddData(db *sql.DB, uuid data.UUID, verified map[string][]string) (int64, error) {
+// Dialect returns supported database dialect.
+func Dialect() string {
+	return dialect
+}
+
+// AddData inserts form data and returns their ID.
+func AddData(db *sql.DB, uuid domen.UUID, verified map[string][]string) (int64, error) {
 	encoded, err := json.Marshal(verified)
 	if err != nil {
 		return 0, errors.Serialization(errors.ServerErrorMessage, err,
@@ -28,15 +32,10 @@ func AddData(db *sql.DB, uuid data.UUID, verified map[string][]string) (int64, e
 	return id, nil
 }
 
-// Dialect returns supported database dialect.
-func Dialect() string {
-	return dialect
-}
-
 // Schema returns the form schema with provided UUID.
-func Schema(db *sql.DB, uuid data.UUID) (form.Schema, error) {
+func Schema(db *sql.DB, uuid domen.UUID) (domen.Schema, error) {
 	var (
-		schema form.Schema
+		schema domen.Schema
 		// allocate on stack
 		buf = [1024]byte{}
 		raw = buf[:]

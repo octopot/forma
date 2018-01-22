@@ -1,4 +1,4 @@
-package form
+package domen
 
 import (
 	"fmt"
@@ -35,21 +35,22 @@ func (fn ValidatorFunc) Validate(values []string) error {
 	return fn(values)
 }
 
-var (
-	lengthValidator = func(min, max int) ValidatorFunc {
-		return func(values []string) error {
-			for i, value := range values {
-				if min != 0 && len(value) < min {
-					return validationError{true, i, value, fmt.Sprintf("value length is less than %d", min)}
-				}
-				if max != 0 && len(value) > max {
-					return validationError{true, i, value, fmt.Sprintf("value length is greater than %d", max)}
-				}
+func LengthValidator(min, max int) ValidatorFunc {
+	return func(values []string) error {
+		for i, value := range values {
+			if min != 0 && len(value) < min {
+				return validationError{true, i, value, fmt.Sprintf("value length is less than %d", min)}
 			}
-			return nil
+			if max != 0 && len(value) > max {
+				return validationError{true, i, value, fmt.Sprintf("value length is greater than %d", max)}
+			}
 		}
+		return nil
 	}
-	requireValidator ValidatorFunc = func(values []string) error {
+}
+
+func RequireValidator() ValidatorFunc {
+	return func(values []string) error {
 		if len(values) == 0 {
 			return validationError{message: "values are empty"}
 		}
@@ -60,34 +61,35 @@ var (
 		}
 		return nil
 	}
-	typeValidator = func(inputType string, strict bool) ValidatorFunc {
-		return func(values []string) error {
-			switch inputType {
-			case EmailType:
-				for i, value := range values {
-					// https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
-					if !strings.Contains(value, `@`) {
-						return validationError{true, i, value, "value is not a valid email"}
-					}
-					if strict {
-						// TODO v4: support `strict`
-						// - net.LookupMX
-						// - smtp.Dial
-						// - smtp.Client.Hello("checkmail.me")
-						// - smtp.Client.Mail(...)
-						// - smtp.Client.Rcpt(value)
-						// see https://github.com/badoux/checkmail as example
-					}
+}
+
+func TypeValidator(inputType string, strict bool) ValidatorFunc {
+	return func(values []string) error {
+		switch inputType {
+		case EmailType:
+			for i, value := range values {
+				// https://davidcel.is/posts/stop-validating-email-addresses-with-regex/
+				if !strings.Contains(value, `@`) {
+					return validationError{true, i, value, "value is not a valid email"}
 				}
-			case HiddenType, TextType:
-				// nothing special
-			default:
-				panic(fmt.Sprintf("not supported input type %q", inputType))
+				if strict {
+					// TODO v2: support `strict`
+					// - net.LookupMX
+					// - smtp.Dial
+					// - smtp.Client.Hello("checkmail.me")
+					// - smtp.Client.Mail(...)
+					// - smtp.Client.Rcpt(value)
+					// see https://github.com/badoux/checkmail as example
+				}
 			}
-			return nil
+		case HiddenType, TextType:
+			// nothing special
+		default:
+			panic(fmt.Sprintf("not supported input type %q", inputType))
 		}
+		return nil
 	}
-)
+}
 
 type validationError struct {
 	single   bool

@@ -1,5 +1,5 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package service_test -destination $PWD/service/mock_contract_test.go github.com/kamilsk/form-api/service DataLayer
+//go:generate mockgen -package service_test -destination $PWD/service/mock_contract_test.go github.com/kamilsk/form-api/service Storage
 package service_test
 
 import (
@@ -7,63 +7,93 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/data"
-	"github.com/kamilsk/form-api/data/form"
-	"github.com/kamilsk/form-api/data/transfer/api/v1"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/kamilsk/form-api/service"
+	"github.com/kamilsk/form-api/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 )
 
-const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestFormAPI_HandleGetV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	req := v1.GetRequest{UUID: UUID}
-	resp := v1.GetResponse{Error: nil, Schema: form.Schema{}}
-	dao := NewMockDataLayer(ctrl)
-	dao.EXPECT().Schema(UUID).Return(resp.Schema, resp.Error)
-	api := service.New(dao)
+	var (
+		dao = NewMockStorage(ctrl)
+		api = service.New(dao)
+	)
 
-	assert.Equal(t, resp, api.HandleGetV1(req))
+	tests := []struct {
+		name string
+		data func() (v1.GetRequest, v1.GetResponse)
+	}{
+		{"without error", func() (v1.GetRequest, v1.GetResponse) {
+			request, response := v1.GetRequest{UUID: UUID}, v1.GetResponse{Schema: domen.Schema{}}
+			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
+			return request, response
+		}},
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
+			request, response := tc.data()
+			assert.Equal(t, response, api.HandleGetV1(request))
+		})
+	}
 }
 
 func TestFormAPI_HandlePostV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	{
-		req := v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-		resp := v1.PostResponse{Error: nil, ID: 1, Schema: form.Schema{Inputs: []form.Input{
-			{Name: "name1", Type: form.TextType}}}}
-		dao := NewMockDataLayer(ctrl)
-		dao.EXPECT().Schema(UUID).Return(resp.Schema, resp.Error)
-		dao.EXPECT().AddData(UUID, req.Data).Return(resp.ID, resp.Error)
-		api := service.New(dao)
+	var (
+		dao = NewMockStorage(ctrl)
+		api = service.New(dao)
+	)
 
-		assert.Equal(t, resp, api.HandlePostV1(req))
+	tests := []struct {
+		name string
+		data func() (v1.PostRequest, v1.PostResponse)
+	}{
+		{"without error", func() (v1.PostRequest, v1.PostResponse) {
+			var (
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				response = v1.PostResponse{ID: 1, Schema: domen.Schema{
+					Inputs: []domen.Input{{Name: "name1", Type: domen.TextType}},
+				}}
+			)
+			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
+			dao.EXPECT().AddData(request.UUID, request.Data).Return(response.ID, nil)
+			return request, response
+		}},
+		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
+			var (
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				response = v1.PostResponse{Error: errors.New("not found"), Schema: domen.Schema{}}
+			)
+			dao.EXPECT().Schema(request.UUID).Return(response.Schema, response.Error)
+			return request, response
+		}},
+		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
+			var (
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				response = v1.PostResponse{Schema: domen.Schema{
+					Inputs: []domen.Input{{Name: "name1", Type: domen.EmailType}},
+				}}
+			)
+			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
+			_, response.Error = response.Schema.Apply(request.Data)
+			return request, response
+		}},
 	}
 
-	{
-		err := errors.New("not found")
-		req := v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-		resp := v1.PostResponse{Error: err, ID: 0, Schema: form.Schema{}}
-		dao := NewMockDataLayer(ctrl)
-		dao.EXPECT().Schema(UUID).Return(form.Schema{}, err)
-		api := service.New(dao)
-
-		assert.Equal(t, resp, api.HandlePostV1(req))
-	}
-
-	{
-		req := v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-		resp := v1.PostResponse{ID: 0, Schema: form.Schema{Inputs: []form.Input{{Name: "name1", Type: form.EmailType}}}}
-		_, resp.Error = resp.Schema.Apply(req.Data)
-		dao := NewMockDataLayer(ctrl)
-		dao.EXPECT().Schema(UUID).Return(resp.Schema, nil)
-		api := service.New(dao)
-
-		assert.Equal(t, resp, api.HandlePostV1(req))
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
+			request, response := tc.data()
+			assert.Equal(t, response, api.HandlePostV1(request))
+		})
 	}
 }

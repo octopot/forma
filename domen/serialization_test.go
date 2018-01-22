@@ -1,4 +1,4 @@
-package form_test
+package domen_test
 
 import (
 	"bytes"
@@ -9,13 +9,12 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kamilsk/form-api/data"
-	"github.com/kamilsk/form-api/data/form"
+	"github.com/kamilsk/form-api/domen"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 )
 
-const UUID data.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 var update = flag.Bool("update", false, "update .golden files")
 
@@ -23,15 +22,15 @@ func TestHTML(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
 		golden string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.html.golden", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.html.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -74,15 +73,15 @@ func TestHTML(t *testing.T) {
 func TestJSON(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", form.Schema{
+		{"email subscription", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -102,8 +101,8 @@ func TestJSON(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() form.Schema {
-				var schema form.Schema
+			assert.Equal(t, tc.schema, func() domen.Schema {
+				var schema domen.Schema
 				data, err := json.Marshal(tc.schema)
 				if err != nil {
 					panic(err)
@@ -121,15 +120,15 @@ func TestJSON_Decode(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
 		filename string
-		schema   form.Schema
+		schema   domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.json", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -149,7 +148,7 @@ func TestJSON_Decode(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var schema form.Schema
+			var schema domen.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, dryClose(file, func() error { return json.NewDecoder(file).Decode(&schema) }, false))
 			assert.Equal(t, tc.schema, schema)
@@ -161,15 +160,15 @@ func TestJSON_Encode(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
 		golden string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json.golden", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.json.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -205,15 +204,15 @@ func TestJSON_Encode(t *testing.T) {
 func TestXML(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", form.Schema{
+		{"email subscription", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -233,8 +232,8 @@ func TestXML(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() form.Schema {
-				var schema form.Schema
+			assert.Equal(t, tc.schema, func() domen.Schema {
+				var schema domen.Schema
 				data, err := xml.Marshal(tc.schema)
 				if err != nil {
 					panic(err)
@@ -252,15 +251,15 @@ func TestXML_Decode(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
 		filename string
-		schema   form.Schema
+		schema   domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -280,7 +279,7 @@ func TestXML_Decode(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var schema form.Schema
+			var schema domen.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
 			assert.Equal(t, tc.schema, schema)
@@ -292,15 +291,15 @@ func TestXML_Encode(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
 		golden string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml.golden", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -317,10 +316,10 @@ func TestXML_Encode(t *testing.T) {
 				},
 			},
 		}},
-		{"stored in db", "./fixtures/stored_in_db.xml.golden", form.Schema{
+		{"stored in db", "./fixtures/stored_in_db.xml.golden", domen.Schema{
 			Title:  "Email subscription",
 			Action: "http://localhost:8080/api/v1/" + UUID.String(),
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					Name:      "email",
 					Type:      "email",
@@ -359,15 +358,15 @@ func TestXML_Encode(t *testing.T) {
 func TestYAML(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", form.Schema{
+		{"email subscription", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -387,8 +386,8 @@ func TestYAML(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() form.Schema {
-				var schema form.Schema
+			assert.Equal(t, tc.schema, func() domen.Schema {
+				var schema domen.Schema
 				data, err := yaml.Marshal(tc.schema)
 				if err != nil {
 					panic(err)
@@ -406,15 +405,15 @@ func TestYAML_Decode(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
 		filename string
-		schema   form.Schema
+		schema   domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.yaml", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",
@@ -434,7 +433,7 @@ func TestYAML_Decode(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var schema form.Schema
+			var schema domen.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, dryClose(file, func() error {
 				return yaml.Unmarshal(func() []byte {
@@ -454,15 +453,15 @@ func TestYAML_Encode(t *testing.T) {
 	for _, tc := range []struct {
 		name   string
 		golden string
-		schema form.Schema
+		schema domen.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml.golden", form.Schema{
+		{"email subscription", "./fixtures/email_subscription.yaml.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
 			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []form.Input{
+			Inputs: []domen.Input{
 				{
 					ID:        UUID.String() + "_email",
 					Name:      "email",

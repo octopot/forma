@@ -35,6 +35,7 @@ func TestApplicationError(t *testing.T) {
 		{"database", errors.Database, Result{isServerError: true, isDatabaseFail: true}},
 		{"serialization", errors.Serialization, Result{isServerError: true, isSerializationFail: true}},
 	}
+
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
@@ -78,7 +79,7 @@ func TestApplicationErrorMessage(t *testing.T) {
 			func() (string, string) { return "error: uuid is not presented: not found", errors.ClientErrorMessage }},
 		{"validation", errors.Validation,
 			func(name string) (string, error, string) { return validationMessage, nil, "invalid email" },
-			func() (string, string) { return "validation: <nil>", validationMessage }},
+			func() (string, string) { return validationMessage, validationMessage }},
 		{"database", errors.Database,
 			func(name string) (string, error, string) { return emptyMessage, fmt.Errorf(name), "connection is lost" },
 			func() (string, string) {
@@ -86,8 +87,9 @@ func TestApplicationErrorMessage(t *testing.T) {
 			}},
 		{"serialization", errors.Serialization,
 			func(name string) (string, error, string) { return serializationMessage, nil, "corrupted data" },
-			func() (string, string) { return "serialization: <nil>", serializationMessage }},
+			func() (string, string) { return serializationMessage, serializationMessage }},
 	}
+
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {

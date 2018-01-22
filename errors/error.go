@@ -40,20 +40,14 @@ type withCode struct {
 	cause error
 }
 
-type empty string
-
-func (err empty) Error() string {
-	return "<nil>"
-}
-
 func (err withCode) Error() string {
-	return err.Message() + ": " + err.Cause().Error()
+	if err.cause == nil {
+		return err.Message()
+	}
+	return err.Message() + ": " + err.cause.Error()
 }
 
 func (err withCode) Cause() error {
-	if err.cause == nil {
-		return empty("")
-	}
 	return err.cause
 }
 

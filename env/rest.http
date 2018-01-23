@@ -1,6 +1,7 @@
 ### API v1
 
-POST http://localhost:8080/api/v1
+POST http://admin:admin@localhost:8080/api/v1
+Content-Type: application/xml
 
 <form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
@@ -14,7 +15,8 @@ Accept: application/xml
 
 ###
 
-PUT http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+Content-Type: application/xml
 
 <form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
@@ -23,7 +25,7 @@ PUT http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
-DELETE http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
@@ -34,7 +36,8 @@ email=test@my.email
 
 ### API v2
 
-POST http://localhost:8080/api/v2/schema
+POST http://admin:admin@localhost:8080/api/v2/schema
+Content-Type: application/xml
 
 <form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
@@ -48,7 +51,8 @@ Accept: application/xml
 
 ###
 
-PUT http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+Content-Type: application/xml
 
 <form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
@@ -57,7 +61,7 @@ PUT http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
-DELETE http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
@@ -68,7 +72,8 @@ email=test@my.email
 
 ###
 
-POST http://localhost:8080/api/v2/template
+POST http://admin:admin@localhost:8080/api/v2/template
+Content-Type: text/html
 
 <form id="form-{{ .ID }}" title="{{ .Title }}"
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
@@ -84,10 +89,12 @@ POST http://localhost:8080/api/v2/template
 ###
 
 GET http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+Accept: text/html
 
 ###
 
-PUT http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+PUT http://admin:admin@localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+Content-Type: text/html
 
 <form id="form-{{ .ID }}" title="{{ .Title }}"
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
@@ -102,44 +109,49 @@ PUT http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
 
 ###
 
-DELETE http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+DELETE http://admin:admin@localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
 
 ###
 
 GET http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4/template/4405940a-03c2-4840-b66d-937c59f109c1
+Accept: text/html
 
 ### Profiling
 
-GET http://localhost:8080/debug/pprof/cmdline
+GET http://admin:admin@localhost:8080/debug/pprof/cmdline
 
 ###
 
-GET http://localhost:8080/debug/pprof/profile
+GET http://admin:admin@localhost:8080/debug/pprof/profile
 
 ###
 
-GET http://localhost:8080/debug/pprof/symbol
+GET http://admin:admin@localhost:8080/debug/pprof/symbol
 
 ###
 
-GET http://localhost:8080/debug/pprof/trace
+GET http://admin:admin@localhost:8080/debug/pprof/trace
 
 ###
 
-GET http://localhost:8080/debug/pprof/goroutine
+GET http://admin:admin@localhost:8080/debug/pprof
 
 ###
 
-GET http://localhost:8080/debug/pprof/threadcreate
+GET http://admin:admin@localhost:8080/debug/pprof/goroutine
 
 ###
 
-GET http://localhost:8080/debug/pprof/heap
+GET http://admin:admin@localhost:8080/debug/pprof/threadcreate
 
 ###
 
-GET http://localhost:8080/debug/pprof/block
+GET http://admin:admin@localhost:8080/debug/pprof/heap
 
 ###
 
-GET http://localhost:8080/debug/pprof/mutex
+GET http://admin:admin@localhost:8080/debug/pprof/block
+
+###
+
+GET http://admin:admin@localhost:8080/debug/pprof/mutex

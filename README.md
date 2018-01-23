@@ -1,5 +1,5 @@
 > # Form API [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://github.com/kamilsk/form-api&via=ikamilsk&hashtags=go,service,data-collector)
-> [![Analytics](https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel)](https://github.com/igrigorik/ga-beacon)
+> [![Analytics](https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel)](https://github.com/kamilsk/form-api)
 > Data Collector as a Service.
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
@@ -16,6 +16,11 @@ $ curl -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \
        http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 ```
+
+### Specification
+
+You can find API specification [here](env/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest)
+HTTP client to work with the API - you can import data for it from the [file](env/insomnia.json).
 
 ## Installation
 
@@ -41,4 +46,14 @@ $ make test install
 
 ## Notes
 
+- brief roadmap
+  - [ ] v1: MVP
+  - [ ] v2: CRUD
+  - [ ] v3: GUI
+  - [ ] v4: API v2
+  - [ ] v5: Scalability
+  - [ ] v6: Integrability
+  - [ ] v7: Redundancy
+  - [ ] v8: Complexity
+- tested on Go 1.9
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

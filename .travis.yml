@@ -8,6 +8,8 @@ go:
 
 matrix:
   allow_failures:
+  - go: 1.7.x # problems with go get dep
+  - go: 1.8.x # problems with go generate
   - go: master
   fast_finish: true
 

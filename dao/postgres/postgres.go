@@ -37,8 +37,8 @@ func Schema(db *sql.DB, uuid domen.UUID) (domen.Schema, error) {
 	var (
 		schema domen.Schema
 		// allocate on stack
-		buf = [1024]byte{}
-		raw = buf[:]
+		blob = [1024]byte{}
+		raw  = blob[:0]
 	)
 	row := db.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&raw); err != nil {

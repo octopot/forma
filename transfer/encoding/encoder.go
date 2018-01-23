@@ -20,21 +20,17 @@ const (
 	XML = "application/xml"
 )
 
-var supported = []string{HTML, JSON, TEXT, XML}
-
-// Support returns true if provided content type is supported by encoder.
-func Support(contentType string) bool {
-	for _, available := range Supported() {
-		if available == contentType {
-			return true
-		}
-	}
-	return false
+var supported = map[string]func(io.Writer) Encoder{
+	HTML: func(stream io.Writer) Encoder { return htmlEncoder{stream} },
+	JSON: func(stream io.Writer) Encoder { return json.NewEncoder(stream) },
+	TEXT: func(stream io.Writer) Encoder { return yamlEncoder{stream, yaml.Marshal} },
+	XML:  func(stream io.Writer) Encoder { return xml.NewEncoder(stream) },
 }
 
-// Supported returns acceptable content types.
-func Supported() []string {
-	return supported
+// IsSupported returns true if provided content type is supported by encoder.
+func IsSupported(contentType string) bool {
+	_, ok := supported[contentType]
+	return ok
 }
 
 // Encoder defines basic behavior of encoders.
@@ -52,31 +48,22 @@ type Generic interface {
 }
 
 // NewEncoder returns encoder corresponding to the content type.
-// It can raise the panic if the content type is unsupported.
+// It can raise panic if the content type is not supported.
+// Use IsSupported first to check that.
 func NewEncoder(stream io.Writer, contentType string) Generic {
-	enc := encoder{cType: contentType, stream: stream}
-	switch contentType {
-	case HTML:
-		enc.real = htmlEncoder{stream}
-	case JSON:
-		enc.real = json.NewEncoder(stream)
-	case TEXT:
-		enc.real = yamlEncoder{stream, yaml.Marshal}
-	case XML:
-		enc.real = xml.NewEncoder(stream)
-	default:
-		panic(fmt.Sprintf("not supported content type %q", contentType))
+	if !IsSupported(contentType) {
+		panic(fmt.Errorf("not supported content type %q", contentType))
 	}
-	return enc
+	return encoder{contentType, supported[contentType](stream), stream}
 }
 
 type encoder struct {
-	cType  string
-	stream io.Writer
-	real   Encoder
+	contentType string
+	real        Encoder
+	stream      io.Writer
 }
 
-func (enc encoder) ContentType() string { return enc.cType }
+func (enc encoder) ContentType() string { return enc.contentType }
 
 func (enc encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
 

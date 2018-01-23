@@ -35,7 +35,12 @@ func (s Schema) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 
 // MarshalHTML encodes the schema to HTML.
 func (s Schema) MarshalHTML() ([]byte, error) {
-	buf := bytes.NewBuffer(nil)
+	var (
+		// allocate on stack
+		blob = [1024]byte{}
+		raw  = blob[:0]
+	)
+	buf := bytes.NewBuffer(raw)
 	err := html.Execute(buf, s)
 	return buf.Bytes(), err
 }

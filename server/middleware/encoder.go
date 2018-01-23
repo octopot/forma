@@ -16,7 +16,7 @@ func Encoder(next http.HandlerFunc) http.HandlerFunc {
 		// Accept: text/html, application/xhtml+xml, application/xml; q=0.9, */*; q=0.8
 		accept := fallback(req.Header.Get("Accept"), encoding.XML)
 		contentType := strings.TrimSpace(strings.Split(strings.Split(accept, ";")[0], ",")[0])
-		if !encoding.Support(contentType) {
+		if !encoding.IsSupported(contentType) {
 			rw.WriteHeader(http.StatusNotAcceptable)
 			return
 		}

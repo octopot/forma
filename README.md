@@ -17,10 +17,31 @@ $ curl -H "Content-Type: application/x-www-form-urlencoded" \
        http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 ```
 
-### Specification
+## Specification
+
+### API
 
 You can find API specification [here](env/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest)
 HTTP client to work with the API - you can import data for it from the [file](env/insomnia.json).
+
+### CLI
+
+```bash
+$ form-api --help
+Form API
+
+Usage:
+   [command]
+
+Available Commands:
+  help        Help about any command
+  migrate     Apply database migration
+  run         Start HTTP server
+  version     Show application version
+
+Flags:
+  -h, --help   help for this command
+```
 
 ## Installation
 

@@ -79,7 +79,7 @@ Content-Type: text/html
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
     <div class="form-group">
         {{ range where .Inputs "Name" "email" }}
-        <label for="input-{{ .ID }}">Email address</label>
+        <label for="input-{{ .ID }}">{{ .Title }}</label>
         <input id="input-{{ .ID }}" name="{{ .Name }}" type="{{ .Type }}" title="{{ .Title }}" {{ extra . }}>
         {{ end }}
     </div>
@@ -100,7 +100,7 @@ Content-Type: text/html
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
     <div class="form-group">
         {{ range where .Inputs "Name" "email" }}
-        <label for="input-{{ .ID }}">Email address</label>
+        <label for="input-{{ .ID }}">{{ .Title }}</label>
         <input id="input-{{ .ID }}" name="{{ .Name }}" type="{{ .Type }}" title="{{ .Title }}" {{ extra . }}>
         {{ end }}
     </div>

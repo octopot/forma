@@ -19,15 +19,20 @@ var runCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		runtime.GOMAXPROCS(asInt(cmd.Flag("cpus").Value))
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
+		handler := chi.NewRouter(
+			server.New(
+				cmd.Flag("baseURL").Value.String(),
+				cmd.Flag("tplDir").Value.String(),
+				service.New(
+					dao.Must(dao.Connection(dsn(cmd))))),
+			isTrue(cmd.Flag("with-profiler").Value))
+		srv := &http.Server{Addr: addr, Handler: handler,
+			ReadTimeout:       0,
+			ReadHeaderTimeout: 0,
+			WriteTimeout:      0,
+			IdleTimeout:       0}
 		log.Println("starting server at", addr)
-		log.Fatal(http.ListenAndServe(addr,
-			chi.NewRouter(
-				server.New(
-					cmd.Flag("baseURL").Value.String(),
-					cmd.Flag("tplDir").Value.String(),
-					service.New(
-						dao.Must(dao.Connection(dsn(cmd))))),
-				isTrue(cmd.Flag("with-profiler").Value))))
+		log.Fatal(srv.ListenAndServe())
 	},
 }
 

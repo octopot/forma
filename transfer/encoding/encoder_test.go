@@ -27,7 +27,7 @@ func TestSupport(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			assert.Equal(t, tc.expected, encoding.Support(tc.contentType))
+			assert.Equal(t, tc.expected, encoding.IsSupported(tc.contentType))
 		})
 	}
 }

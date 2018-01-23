@@ -46,6 +46,7 @@ type Encoder interface {
 // Generic defines basic behavior of the application encoder.
 type Generic interface {
 	Encoder
+
 	// ContentType returns a content type of the encoder.
 	ContentType() string
 }
@@ -53,14 +54,14 @@ type Generic interface {
 // NewEncoder returns encoder corresponding to the content type.
 // It can raise the panic if the content type is unsupported.
 func NewEncoder(stream io.Writer, contentType string) Generic {
-	enc := &encoder{cType: contentType, stream: stream}
+	enc := encoder{cType: contentType, stream: stream}
 	switch contentType {
 	case HTML:
-		enc.real = &htmlEncoder{stream}
+		enc.real = htmlEncoder{stream}
 	case JSON:
 		enc.real = json.NewEncoder(stream)
 	case TEXT:
-		enc.real = &yamlEncoder{stream, yaml.Marshal}
+		enc.real = yamlEncoder{stream, yaml.Marshal}
 	case XML:
 		enc.real = xml.NewEncoder(stream)
 	default:
@@ -75,13 +76,13 @@ type encoder struct {
 	real   Encoder
 }
 
-func (enc *encoder) ContentType() string { return enc.cType }
+func (enc encoder) ContentType() string { return enc.cType }
 
-func (enc *encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
+func (enc encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
 
 type htmlEncoder struct{ stream io.Writer }
 
-func (enc *htmlEncoder) Encode(v interface{}) error {
+func (enc htmlEncoder) Encode(v interface{}) error {
 	marshaler, compatible := v.(interface {
 		MarshalHTML() ([]byte, error)
 	})
@@ -107,7 +108,7 @@ type yamlEncoder struct {
 	marshal func(interface{}) ([]byte, error)
 }
 
-func (enc *yamlEncoder) Encode(v interface{}) error {
+func (enc yamlEncoder) Encode(v interface{}) error {
 	b, err := enc.marshal(v)
 	if err != nil {
 		return err

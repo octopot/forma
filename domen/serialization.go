@@ -33,10 +33,9 @@ func (s Schema) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(schema(s), start)
 }
 
-// MarshalHTML encodes the schema to HTML.
+// MarshalHTML encodes the schema to HTML by default template.
 func (s Schema) MarshalHTML() ([]byte, error) {
 	var (
-		// allocate on stack
 		blob = [1024]byte{}
 		raw  = blob[:0]
 	)

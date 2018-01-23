@@ -74,7 +74,7 @@ $ make test install
   - [ ] v4: API v2
   - [ ] v5: Scalability
   - [ ] v6: Integrability
-  - [ ] v7: Redundancy
+  - [ ] v7: Performance and Redundancy
   - [ ] v8: Complexity
 - tested on Go 1.9
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

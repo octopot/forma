@@ -17,7 +17,7 @@ const (
 	// TEXT MIME type.
 	TEXT = "text/plain"
 	// XML MIME type.
-	XML = "text/xml"
+	XML = "application/xml"
 )
 
 var supported = []string{HTML, JSON, TEXT, XML}

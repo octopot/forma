@@ -1,1 +1,4 @@
-<form title="Email subscription" action="http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"><input name="email" type="email" title="Email" maxlength="64" required="true"></input><input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"></input></form>
+<form title="Email subscription" action="http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4">
+    <input name="email" type="email" title="Email" maxlength="64" required="true"></input>
+    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"></input>
+</form>

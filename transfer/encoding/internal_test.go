@@ -9,7 +9,7 @@ import (
 )
 
 func TestHTMLEncoder_Encode(t *testing.T) {
-	t.Run("problem marshal", func(t *testing.T) {
+	t.Run("marshal fails", func(t *testing.T) {
 		enc := htmlEncoder{writer(nil)}
 		assert.Error(t, enc.Encode(writer(nil)))
 	})
@@ -20,7 +20,7 @@ func TestHTMLEncoder_Encode(t *testing.T) {
 }
 
 func TestYAMLEncoder_Encode(t *testing.T) {
-	t.Run("problem marshal", func(t *testing.T) {
+	t.Run("marshal fails", func(t *testing.T) {
 		enc := yamlEncoder{writer(nil), func(interface{}) ([]byte, error) { return nil, errors.New("problem marshal") }}
 		assert.Error(t, enc.Encode(domen.Schema{}))
 	})
@@ -37,5 +37,5 @@ func (writer) Write(p []byte) (n int, err error) {
 }
 
 func (writer) MarshalHTML() ([]byte, error) {
-	return nil, errors.New("problem marshal")
+	return nil, errors.New("marshal fails")
 }

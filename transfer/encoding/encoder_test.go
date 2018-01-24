@@ -3,7 +3,9 @@ package encoding_test
 import (
 	"bytes"
 	"errors"
+	"flag"
 	"io/ioutil"
+	"os"
 	"testing"
 
 	"github.com/kamilsk/form-api/domen"
@@ -13,8 +15,10 @@ import (
 
 const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
+var update = flag.Bool("update", false, "update .golden files")
+
 func TestSupport(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name        string
 		contentType string
 		expected    bool
@@ -24,16 +28,18 @@ func TestSupport(t *testing.T) {
 		{"supported, TEXT", encoding.TEXT, true},
 		{"supported, XML", encoding.XML, true},
 		{"not supported, TOML", "TOML", false},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			assert.Equal(t, tc.expected, encoding.IsSupported(tc.contentType))
 		})
 	}
 }
 
 func TestEncoder(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name        string
 		contentType string
 		golden      string
@@ -131,9 +137,18 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
+			if *update {
+				file := writer(tc.golden)
+				assert.NoError(t, closeAfter(file, func() error {
+					return encoding.NewEncoder(file, tc.contentType).Encode(tc.schema)
+				}))
+			}
+
 			buf := bytes.NewBuffer(nil)
 			enc := encoding.NewEncoder(buf, tc.contentType)
 			assert.Equal(t, tc.contentType, enc.ContentType())
@@ -143,6 +158,7 @@ func TestEncoder(t *testing.T) {
 			assert.Equal(t, string(expected), string(buf.Bytes()))
 		})
 	}
+
 	t.Run("unsupported content type", func(t *testing.T) {
 		assert.Panics(t, func() { encoding.NewEncoder(bytes.NewBuffer(nil), "unsupported") })
 	})
@@ -150,17 +166,33 @@ func TestEncoder(t *testing.T) {
 		enc := encoding.NewEncoder(bytes.NewBuffer(nil), encoding.HTML)
 		assert.Error(t, enc.Encode("the value does not have `MarshalHTML` method"))
 	})
-	t.Run("problem writer", func(t *testing.T) {
+	t.Run("writer fails", func(t *testing.T) {
 		var enc encoding.Generic
-		enc = encoding.NewEncoder(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoding.HTML)
+		enc = encoding.NewEncoder(writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.HTML)
 		assert.Error(t, enc.Encode(domen.Schema{}))
-		enc = encoding.NewEncoder(writer(func(p []byte) (n int, err error) { return 0, errors.New("problem writer") }), encoding.TEXT)
+		enc = encoding.NewEncoder(writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.TEXT)
 		assert.Error(t, enc.Encode(domen.Schema{}))
 	})
 }
 
-type writer func(p []byte) (n int, err error)
+func closeAfter(file *os.File, action func() error) error {
+	defer file.Close()
+	if err := action(); err != nil {
+		return err
+	}
+	return nil
+}
 
-func (fn writer) Write(p []byte) (n int, err error) {
+func writer(file string) *os.File {
+	f, err := os.OpenFile(file, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
+	if err != nil {
+		panic(err)
+	}
+	return f
+}
+
+type writerFn func(p []byte) (n int, err error)
+
+func (fn writerFn) Write(p []byte) (n int, err error) {
 	return fn(p)
 }

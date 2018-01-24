@@ -1,7 +1,6 @@
 package domen_test
 
 import (
-	"bytes"
 	"encoding/json"
 	"encoding/xml"
 	"flag"
@@ -19,7 +18,7 @@ const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 var update = flag.Bool("update", false, "update .golden files")
 
 func TestHTML(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		golden string
 		schema domen.Schema
@@ -47,19 +46,21 @@ func TestHTML(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			if *update {
 				file := writer(tc.golden)
-				assert.NoError(t, dryClose(file, func() error {
+				assert.NoError(t, closeAfter(file, func() error {
 					html, err := tc.schema.MarshalHTML()
 					if err != nil {
 						return err
 					}
 					_, err = file.Write(html)
 					return err
-				}, false))
+				}))
 			}
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
@@ -71,7 +72,7 @@ func TestHTML(t *testing.T) {
 }
 
 func TestJSON(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		schema domen.Schema
 	}{
@@ -98,12 +99,14 @@ func TestJSON(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			assert.Equal(t, tc.schema, func() domen.Schema {
 				var schema domen.Schema
-				data, err := json.Marshal(tc.schema)
+				data, err := json.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
 				}
@@ -117,7 +120,7 @@ func TestJSON(t *testing.T) {
 }
 
 func TestJSON_Decode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name     string
 		filename string
 		schema   domen.Schema
@@ -145,19 +148,21 @@ func TestJSON_Decode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			var schema domen.Schema
 			file := reader(tc.filename)
-			assert.NoError(t, dryClose(file, func() error { return json.NewDecoder(file).Decode(&schema) }, false))
+			assert.NoError(t, closeAfter(file, func() error { return json.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
 		})
 	}
 }
 
 func TestJSON_Encode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		golden string
 		schema domen.Schema
@@ -185,24 +190,33 @@ func TestJSON_Encode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			if *update {
 				file := writer(tc.golden)
-				assert.NoError(t, dryClose(file, func() error { return json.NewEncoder(file).Encode(tc.schema) }, false))
+				assert.NoError(t, closeAfter(file, func() error {
+					data, err := json.MarshalIndent(tc.schema, "", "  ")
+					if err != nil {
+						return err
+					}
+					_, err = file.Write(data)
+					return err
+				}))
 			}
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
-			buf := bytes.NewBuffer(nil)
-			json.NewEncoder(buf).Encode(tc.schema)
-			assert.Equal(t, string(golden), string(buf.Bytes()))
+			data, err := json.MarshalIndent(tc.schema, "", "  ")
+			assert.NoError(t, err)
+			assert.Equal(t, golden, data)
 		})
 	}
 }
 
 func TestXML(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		schema domen.Schema
 	}{
@@ -229,12 +243,14 @@ func TestXML(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			assert.Equal(t, tc.schema, func() domen.Schema {
 				var schema domen.Schema
-				data, err := xml.Marshal(tc.schema)
+				data, err := xml.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
 				}
@@ -248,7 +264,7 @@ func TestXML(t *testing.T) {
 }
 
 func TestXML_Decode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name     string
 		filename string
 		schema   domen.Schema
@@ -276,19 +292,21 @@ func TestXML_Decode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			var schema domen.Schema
 			file := reader(tc.filename)
-			assert.NoError(t, dryClose(file, func() error { return xml.NewDecoder(file).Decode(&schema) }, false))
+			assert.NoError(t, closeAfter(file, func() error { return xml.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
 		})
 	}
 }
 
 func TestXML_Encode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		golden string
 		schema domen.Schema
@@ -334,29 +352,33 @@ func TestXML_Encode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			if *update {
 				file := writer(tc.golden)
-				assert.NoError(t, dryClose(file, func() error {
-					if err := xml.NewEncoder(file).Encode(tc.schema); err != nil {
+				assert.NoError(t, closeAfter(file, func() error {
+					data, err := xml.MarshalIndent(tc.schema, "", "    ")
+					if err != nil {
 						return err
 					}
-					return nil
-				}, false))
+					_, err = file.Write(data)
+					return err
+				}))
 			}
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
-			buf := bytes.NewBuffer(nil)
-			xml.NewEncoder(buf).Encode(tc.schema)
-			assert.Equal(t, string(golden), string(buf.Bytes()))
+			data, err := xml.MarshalIndent(tc.schema, "", "    ")
+			assert.NoError(t, err)
+			assert.Equal(t, golden, data)
 		})
 	}
 }
 
 func TestYAML(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		schema domen.Schema
 	}{
@@ -383,9 +405,11 @@ func TestYAML(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			assert.Equal(t, tc.schema, func() domen.Schema {
 				var schema domen.Schema
 				data, err := yaml.Marshal(tc.schema)
@@ -402,7 +426,7 @@ func TestYAML(t *testing.T) {
 }
 
 func TestYAML_Decode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name     string
 		filename string
 		schema   domen.Schema
@@ -430,12 +454,14 @@ func TestYAML_Decode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			var schema domen.Schema
 			file := reader(tc.filename)
-			assert.NoError(t, dryClose(file, func() error {
+			assert.NoError(t, closeAfter(file, func() error {
 				return yaml.Unmarshal(func() []byte {
 					data, err := ioutil.ReadAll(file)
 					if err != nil {
@@ -443,14 +469,14 @@ func TestYAML_Decode(t *testing.T) {
 					}
 					return data
 				}(), &schema)
-			}, false))
+			}))
 			assert.Equal(t, tc.schema, schema)
 		})
 	}
 }
 
 func TestYAML_Encode(t *testing.T) {
-	for _, tc := range []struct {
+	tests := []struct {
 		name   string
 		golden string
 		schema domen.Schema
@@ -478,19 +504,21 @@ func TestYAML_Encode(t *testing.T) {
 				},
 			},
 		}},
-	} {
-		tc := tc
-		t.Run(tc.name, func(t *testing.T) {
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
 			if *update {
 				file := writer(tc.golden)
-				assert.NoError(t, dryClose(file, func() error {
+				assert.NoError(t, closeAfter(file, func() error {
 					data, err := yaml.Marshal(tc.schema)
 					if err != nil {
 						return err
 					}
 					_, err = file.Write(data)
 					return err
-				}, false))
+				}))
 			}
 			golden, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
@@ -501,14 +529,9 @@ func TestYAML_Encode(t *testing.T) {
 	}
 }
 
-func dryClose(file *os.File, action func() error, closeIfError bool) error {
-	if !closeIfError {
-		defer file.Close()
-	}
+func closeAfter(file *os.File, action func() error) error {
+	defer file.Close()
 	if err := action(); err != nil {
-		if closeIfError {
-			file.Close()
-		}
 		return err
 	}
 	return nil

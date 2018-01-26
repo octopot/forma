@@ -23,8 +23,9 @@ import (
 const (
 	HOST  = "http://form-api.dev/"
 	APIv1 = "api/v1"
+	FAKE  = domen.UUID("41ca5e09-3ce2-0094-b108-3ecc257c6fa4")
+	ZERO  = domen.UUID("00000000-0000-4000-8000-000000000000")
 	UUID  = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
-	ZERO  = domen.UUID("00000000-0000-0000-0000-000000000000")
 )
 
 func TestAPI_GetV1(t *testing.T) {
@@ -130,7 +131,7 @@ func TestAPI_GetV1(t *testing.T) {
 			code    int
 		}{
 			{http.StatusText(http.StatusBadRequest), func() *http.Request {
-				req, err := http.NewRequest(http.MethodGet, join(srv.URL, APIv1, ZERO.String()), nil)
+				req, err := http.NewRequest(http.MethodGet, join(srv.URL, APIv1, FAKE.String()), nil)
 				if err != nil {
 					panic(err)
 				}
@@ -145,14 +146,14 @@ func TestAPI_GetV1(t *testing.T) {
 				return req
 			}(), http.StatusNotAcceptable},
 			{http.StatusText(http.StatusNotFound), func() *http.Request {
-				req, err := http.NewRequest(http.MethodGet, join(srv.URL, APIv1, UUID.String()), nil)
+				req, err := http.NewRequest(http.MethodGet, join(srv.URL, APIv1, ZERO.String()), nil)
 				if err != nil {
 					panic(err)
 				}
 				return req
 			}(), http.StatusNotFound},
 		}
-		storage.EXPECT().Schema(UUID).Times(1).Return(domen.Schema{}, errors.NotFound("", nil, ""))
+		storage.EXPECT().Schema(ZERO).Times(1).Return(domen.Schema{}, errors.NotFound("", nil, ""))
 
 		for _, test := range tests {
 			tc := test

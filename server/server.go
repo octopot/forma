@@ -16,25 +16,18 @@ import (
 )
 
 // New returns new instance of Form API server.
-// It can raise the panic if baseURL is invalid or HTML templates are not available.
+// It can raise the panic if base URL is invalid or HTML templates are not available.
 func New(baseURL, tplPath string, service Service) *Server {
 	u, err := url.Parse(baseURL)
 	if err != nil {
 		panic(err)
-	}
-	must := func(base, tpl string) string {
-		b, err := static.LoadTemplate(base, tpl)
-		if err != nil {
-			panic(tpl)
-		}
-		return string(b)
 	}
 	return &Server{baseURL: u, service: service, templates: struct {
 		errorTpl    *template.Template
 		redirectTpl *template.Template
 	}{
 		errorTpl:    template.Must(template.New("error").Parse(must(tplPath, "error.html"))),
-		redirectTpl: template.Must(template.New("error").Parse(must(tplPath, "redirect.html"))),
+		redirectTpl: template.Must(template.New("redirect").Parse(must(tplPath, "redirect.html"))),
 	}}
 }
 
@@ -122,4 +115,12 @@ func join(u url.URL, paths ...string) string {
 	}
 	u.Path = path.Join(append([]string{u.Path}, paths...)...)
 	return u.String()
+}
+
+func must(base, tpl string) string {
+	b, err := static.LoadTemplate(base, tpl)
+	if err != nil {
+		panic(tpl)
+	}
+	return string(b)
 }

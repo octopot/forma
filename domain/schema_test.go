@@ -1,16 +1,16 @@
-package domen_test
+package domain_test
 
 import (
 	"testing"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestSchema_Apply(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		schema   domen.Schema
+		schema   domain.Schema
 		values   map[string][]string
 		expected struct {
 			error bool
@@ -18,8 +18,8 @@ func TestSchema_Apply(t *testing.T) {
 			data  map[string][]string
 		}
 	}{
-		{"normal case", domen.Schema{Inputs: []domen.Input{
-			{Name: "name1", Type: domen.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
+		{"normal case", domain.Schema{Inputs: []domain.Input{
+			{Name: "name1", Type: domain.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
 			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 			struct {
 				error bool
@@ -32,7 +32,7 @@ func TestSchema_Apply(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var (
 				obtained map[string][]string
-				err      domen.ValidationError
+				err      domain.ValidationError
 			)
 			action := func() { obtained, err = tc.schema.Apply(tc.values) }
 			if tc.expected.panic {
@@ -53,27 +53,27 @@ func TestSchema_Apply(t *testing.T) {
 func TestSchema_Filter(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		schema   domen.Schema
+		schema   domain.Schema
 		values   map[string][]string
 		expected map[string][]string
 	}{
-		{"nil inputs", domen.Schema{},
+		{"nil inputs", domain.Schema{},
 			map[string][]string{"name1": {"val1", "val2"}},
 			nil,
 		},
-		{"empty inputs", domen.Schema{Inputs: []domen.Input{}},
+		{"empty inputs", domain.Schema{Inputs: []domain.Input{}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			nil,
 		},
-		{"nil values", domen.Schema{},
+		{"nil values", domain.Schema{},
 			nil,
 			nil,
 		},
-		{"empty values", domen.Schema{},
+		{"empty values", domain.Schema{},
 			nil,
 			nil,
 		},
-		{"normal case", domen.Schema{Inputs: []domen.Input{{Name: "name1"}}},
+		{"normal case", domain.Schema{Inputs: []domain.Input{{Name: "name1"}}},
 			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
 			map[string][]string{"name1": {"val1"}},
 		},
@@ -88,11 +88,11 @@ func TestSchema_Filter(t *testing.T) {
 func TestSchema_Normalize(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		schema   domen.Schema
+		schema   domain.Schema
 		values   map[string][]string
 		expected map[string][]string
 	}{
-		{"input with spaces", domen.Schema{},
+		{"input with spaces", domain.Schema{},
 			map[string][]string{"name1": {string([]rune{'\u200B', '\u200C'}) + " val1 " + string([]rune{'\u200D', '\u2060'})}},
 			map[string][]string{"name1": {"val1"}},
 		},
@@ -107,106 +107,106 @@ func TestSchema_Normalize(t *testing.T) {
 func TestSchema_Validate(t *testing.T) {
 	for _, tc := range []struct {
 		name     string
-		schema   domen.Schema
+		schema   domain.Schema
 		values   map[string][]string
 		expected struct {
 			error bool
 			panic bool
-			data  map[domen.Input][]string
+			data  map[domain.Input][]string
 		}
 	}{
-		{"nil inputs", domen.Schema{},
+		{"nil inputs", domain.Schema{},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
+				data  map[domain.Input][]string
 			}{false, false, nil},
 		},
-		{"empty inputs", domen.Schema{Inputs: []domen.Input{}},
+		{"empty inputs", domain.Schema{Inputs: []domain.Input{}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
+				data  map[domain.Input][]string
 			}{false, false, nil},
 		},
-		{"nil values", domen.Schema{},
+		{"nil values", domain.Schema{},
 			nil,
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
+				data  map[domain.Input][]string
 			}{false, false, nil},
 		},
-		{"empty values", domen.Schema{},
+		{"empty values", domain.Schema{},
 			nil,
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
+				data  map[domain.Input][]string
 			}{false, false, nil},
 		},
-		{"invalid length", domen.Schema{Inputs: []domen.Input{
-			{Name: "name1", Type: domen.TextType, MinLength: 5},
-			{Name: "name2", Type: domen.TextType, MaxLength: 2}}},
+		{"invalid length", domain.Schema{Inputs: []domain.Input{
+			{Name: "name1", Type: domain.TextType, MinLength: 5},
+			{Name: "name2", Type: domain.TextType, MaxLength: 2}}},
 			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
-			}{true, false, map[domen.Input][]string{
-				{Name: "name1", Type: domen.TextType, MinLength: 5}: {
+				data  map[domain.Input][]string
+			}{true, false, map[domain.Input][]string{
+				{Name: "name1", Type: domain.TextType, MinLength: 5}: {
 					`value "val1" at position 0 is invalid: value length is less than 5`},
-				{Name: "name2", Type: domen.TextType, MaxLength: 2}: {
+				{Name: "name2", Type: domain.TextType, MaxLength: 2}: {
 					`value "val2" at position 0 is invalid: value length is greater than 2`},
 			}},
 		},
-		{"empty required value", domen.Schema{Inputs: []domen.Input{
-			{Name: "name1", Type: domen.TextType, Required: true},
-			{Name: "name2", Type: domen.TextType, Required: true}}},
+		{"empty required value", domain.Schema{Inputs: []domain.Input{
+			{Name: "name1", Type: domain.TextType, Required: true},
+			{Name: "name2", Type: domain.TextType, Required: true}}},
 			map[string][]string{"name1": {"val1", ""}, "name2": {}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
-			}{true, false, map[domen.Input][]string{
-				{Name: "name1", Type: domen.TextType, Required: true}: {"value at position 1 is invalid: value is empty"},
-				{Name: "name2", Type: domen.TextType, Required: true}: {"values are empty"},
+				data  map[domain.Input][]string
+			}{true, false, map[domain.Input][]string{
+				{Name: "name1", Type: domain.TextType, Required: true}: {"value at position 1 is invalid: value is empty"},
+				{Name: "name2", Type: domain.TextType, Required: true}: {"values are empty"},
 			}},
 		},
-		{"invalid type", domen.Schema{Inputs: []domen.Input{{Name: "name1", Type: "unknown"}}},
+		{"invalid type", domain.Schema{Inputs: []domain.Input{{Name: "name1", Type: "unknown"}}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
-			}{false, true, map[domen.Input][]string{}},
+				data  map[domain.Input][]string
+			}{false, true, map[domain.Input][]string{}},
 		},
-		{"invalid email", domen.Schema{Inputs: []domen.Input{{Name: "name1", Type: domen.EmailType}}},
+		{"invalid email", domain.Schema{Inputs: []domain.Input{{Name: "name1", Type: domain.EmailType}}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
-			}{true, false, map[domen.Input][]string{
-				{Name: "name1", Type: domen.EmailType}: {
+				data  map[domain.Input][]string
+			}{true, false, map[domain.Input][]string{
+				{Name: "name1", Type: domain.EmailType}: {
 					`value "val1" at position 0 is invalid: value is not a valid email`},
 			}},
 		},
-		{"normal case", domen.Schema{Inputs: []domen.Input{
-			{Name: "name1", Type: domen.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
+		{"normal case", domain.Schema{Inputs: []domain.Input{
+			{Name: "name1", Type: domain.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
 			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domen.Input][]string
+				data  map[domain.Input][]string
 			}{},
 		},
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var err domen.ValidationError
+			var err domain.ValidationError
 			action := func() { _, err = tc.schema.Validate(tc.values) }
 			if tc.expected.panic {
 				assert.Panics(t, action)

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/errors"
 )
 
@@ -17,7 +17,7 @@ func Dialect() string {
 }
 
 // AddData inserts form data and returns their ID.
-func AddData(db *sql.DB, uuid domen.UUID, verified map[string][]string) (int64, error) {
+func AddData(db *sql.DB, uuid domain.UUID, verified map[string][]string) (int64, error) {
 	encoded, err := json.Marshal(verified)
 	if err != nil {
 		return 0, errors.Serialization(errors.ServerErrorMessage, err,
@@ -33,11 +33,11 @@ func AddData(db *sql.DB, uuid domen.UUID, verified map[string][]string) (int64, 
 }
 
 // Schema returns the form schema with provided UUID.
-func Schema(db *sql.DB, uuid domen.UUID) (domen.Schema, error) {
+func Schema(db *sql.DB, uuid domain.UUID) (domain.Schema, error) {
 	var (
-		schema domen.Schema
-		blob   = [1024]byte{}
-		raw    = blob[:0]
+		schema domain.Schema
+		blob      = [1024]byte{}
+		raw        = blob[:0]
 	)
 	row := db.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&raw); err != nil {
@@ -49,10 +49,6 @@ func Schema(db *sql.DB, uuid domen.UUID) (domen.Schema, error) {
 	if err := xml.Unmarshal(raw, &schema); err != nil {
 		return schema, errors.Serialization(errors.NeutralMessage, err,
 			"trying to unmarshal schema %q from XML `%s`", uuid, raw)
-	}
-	schema.ID = string(uuid)
-	for i := range schema.Inputs {
-		schema.Inputs[i].ID = string(uuid) + "_" + schema.Inputs[i].Name
 	}
 	return schema, nil
 }

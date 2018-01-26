@@ -5,20 +5,12 @@ import (
 	"errors"
 	"flag"
 	"io/ioutil"
-	"net/url"
 	"os"
-	"path"
 	"testing"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/transfer/encoding"
 	"github.com/stretchr/testify/assert"
-)
-
-const (
-	HOST  = "http://form-api.dev/"
-	APIv1 = "api/v1"
-	UUID  = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -49,97 +41,65 @@ func TestEncoder(t *testing.T) {
 		name        string
 		contentType string
 		golden      string
-		schema      domen.Schema
+		schema      domain.Schema
 	}{
-		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
-		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
-		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
-		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -174,10 +134,12 @@ func TestEncoder(t *testing.T) {
 	})
 	t.Run("writer fails", func(t *testing.T) {
 		var enc encoding.Generic
-		enc = encoding.NewEncoder(writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.HTML)
-		assert.Error(t, enc.Encode(domen.Schema{}))
-		enc = encoding.NewEncoder(writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.TEXT)
-		assert.Error(t, enc.Encode(domen.Schema{}))
+		enc = encoding.NewEncoder(
+			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.HTML)
+		assert.Error(t, enc.Encode(domain.Schema{}))
+		enc = encoding.NewEncoder(
+			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.TEXT)
+		assert.Error(t, enc.Encode(domain.Schema{}))
 	})
 }
 
@@ -187,15 +149,6 @@ func closeAfter(file *os.File, action func() error) error {
 		return err
 	}
 	return nil
-}
-
-func join(base string, paths ...string) string {
-	u, err := url.Parse(base)
-	if err != nil {
-		panic(err)
-	}
-	u.Path = path.Join(append([]string{u.Path}, paths...)...)
-	return u.String()
 }
 
 func writer(file string) *os.File {

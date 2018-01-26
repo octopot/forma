@@ -5,30 +5,30 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/server/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestSchema(t *testing.T) {
 	tests := []struct {
 		name string
-		uuid domen.UUID
-		next func(uuid domen.UUID) (*domen.UUID, http.Handler)
+		uuid domain.UUID
+		next func(uuid domain.UUID) (*domain.UUID, http.Handler)
 		code int
 	}{
-		{"invalid uuid", "abc-def-ghi", func(uuid domen.UUID) (*domen.UUID, http.Handler) {
+		{"invalid uuid", "abc-def-ghi", func(uuid domain.UUID) (*domain.UUID, http.Handler) {
 			return &uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
 			})
 		}, http.StatusBadRequest},
-		{"valid uuid", UUID, func(_ domen.UUID) (*domen.UUID, http.Handler) {
-			uuid := new(domen.UUID)
+		{"valid uuid", UUID, func(_ domain.UUID) (*domain.UUID, http.Handler) {
+			uuid := new(domain.UUID)
 			return uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
+				*uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
 			})
 		}, http.StatusOK},
 	}
@@ -49,20 +49,20 @@ func TestSchema(t *testing.T) {
 func TestTemplate(t *testing.T) {
 	tests := []struct {
 		name string
-		uuid domen.UUID
-		next func(uuid domen.UUID) (*domen.UUID, http.Handler)
+		uuid domain.UUID
+		next func(uuid domain.UUID) (*domain.UUID, http.Handler)
 		code int
 	}{
-		{"invalid uuid", "abc-def-ghi", func(uuid domen.UUID) (*domen.UUID, http.Handler) {
+		{"invalid uuid", "abc-def-ghi", func(uuid domain.UUID) (*domain.UUID, http.Handler) {
 			return &uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
 			})
 		}, http.StatusBadRequest},
-		{"valid uuid", UUID, func(_ domen.UUID) (*domen.UUID, http.Handler) {
-			uuid := new(domen.UUID)
+		{"valid uuid", UUID, func(_ domain.UUID) (*domain.UUID, http.Handler) {
+			uuid := new(domain.UUID)
 			return uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*uuid = req.Context().Value(middleware.TemplateKey{}).(domen.UUID)
+				*uuid = req.Context().Value(middleware.TemplateKey{}).(domain.UUID)
 			})
 		}, http.StatusOK},
 	}

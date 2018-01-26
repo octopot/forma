@@ -3,9 +3,9 @@
 POST http://admin:admin@localhost:8080/api/v1
 Content-Type: application/xml
 
-<form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
+<form title="Email subscription"
+      action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
 </form>
 
 ###
@@ -18,9 +18,9 @@ Accept: application/xml
 PUT http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
-<form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
+<form title="Email subscription"
+      action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
 </form>
 
 ###
@@ -39,9 +39,9 @@ email=test@my.email
 POST http://admin:admin@localhost:8080/api/v2/schema
 Content-Type: application/xml
 
-<form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
+<form title="Email subscription"
+      action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
 </form>
 
 ###
@@ -54,9 +54,9 @@ Accept: application/xml
 PUT http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
-<form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
+<form title="Email subscription"
+      action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
 </form>
 
 ###
@@ -83,7 +83,7 @@ Content-Type: text/html
         <input id="input-{{ .ID }}" name="{{ .Name }}" type="{{ .Type }}" title="{{ .Title }}" {{ extra . }}>
         {{ end }}
     </div>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
+    <input type="submit">
 </form>
 
 ###
@@ -104,7 +104,7 @@ Content-Type: text/html
         <input id="input-{{ .ID }}" name="{{ .Name }}" type="{{ .Type }}" title="{{ .Title }}" {{ extra . }}>
         {{ end }}
     </div>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
+    <input type="submit">
 </form>
 
 ###

@@ -7,13 +7,13 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/service"
 	"github.com/kamilsk/form-api/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 )
 
-const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestFormAPI_HandleGetV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -29,7 +29,7 @@ func TestFormAPI_HandleGetV1(t *testing.T) {
 		data func() (v1.GetRequest, v1.GetResponse)
 	}{
 		{"without error", func() (v1.GetRequest, v1.GetResponse) {
-			request, response := v1.GetRequest{UUID: UUID}, v1.GetResponse{Schema: domen.Schema{}}
+			request, response := v1.GetRequest{UUID: UUID}, v1.GetResponse{Schema: domain.Schema{}}
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
 			return request, response
 		}},
@@ -60,8 +60,8 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-				response = v1.PostResponse{ID: 1, Schema: domen.Schema{
-					Inputs: []domen.Input{{Name: "name1", Type: domen.TextType}},
+				response = v1.PostResponse{ID: 1, Schema: domain.Schema{
+					Inputs: []domain.Input{{Name: "name1", Type: domain.TextType}},
 				}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
@@ -71,7 +71,7 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-				response = v1.PostResponse{Error: errors.New("not found"), Schema: domen.Schema{}}
+				response = v1.PostResponse{Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, response.Error)
 			return request, response
@@ -79,8 +79,8 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
-				response = v1.PostResponse{Schema: domen.Schema{
-					Inputs: []domen.Input{{Name: "name1", Type: domen.EmailType}},
+				response = v1.PostResponse{Schema: domain.Schema{
+					Inputs: []domain.Input{{Name: "name1", Type: domain.EmailType}},
 				}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)

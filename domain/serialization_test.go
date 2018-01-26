@@ -1,24 +1,16 @@
-package domen_test
+package domain_test
 
 import (
 	"encoding/json"
 	"encoding/xml"
 	"flag"
 	"io/ioutil"
-	"net/url"
 	"os"
-	"path"
 	"testing"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
-)
-
-const (
-	HOST  = "http://form-api.dev/"
-	APIv1 = "api/v1"
-	UUID  = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -27,28 +19,20 @@ func TestHTML(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.html.golden", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription", "./fixtures/email_subscription.html.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -80,28 +64,20 @@ func TestHTML(t *testing.T) {
 func TestJSON(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", domen.Schema{
-			ID:           UUID.String(),
+		{"email subscription", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -110,8 +86,8 @@ func TestJSON(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domen.Schema {
-				var schema domen.Schema
+			assert.Equal(t, tc.schema, func() domain.Schema {
+				var schema domain.Schema
 				data, err := json.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
@@ -129,28 +105,20 @@ func TestJSON_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domen.Schema
+		schema   domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.json", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -159,7 +127,7 @@ func TestJSON_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domen.Schema
+			var schema domain.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error { return json.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
@@ -171,28 +139,20 @@ func TestJSON_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json.golden", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.json.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -224,28 +184,20 @@ func TestJSON_Encode(t *testing.T) {
 func TestXML(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -254,8 +206,8 @@ func TestXML(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domen.Schema {
-				var schema domen.Schema
+			assert.Equal(t, tc.schema, func() domain.Schema {
+				var schema domain.Schema
 				data, err := xml.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
@@ -273,28 +225,20 @@ func TestXML_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domen.Schema
+		schema   domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.xml", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -303,7 +247,7 @@ func TestXML_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domen.Schema
+			var schema domain.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error { return xml.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
@@ -315,46 +259,33 @@ func TestXML_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml.golden", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.xml.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
-		{"stored in db", "./fixtures/stored_in_db.xml.golden", domen.Schema{
+		{"stored in db", "./fixtures/stored_in_db.xml.golden", domain.Schema{
 			Title:  "Email subscription",
-			Action: join(HOST, APIv1, UUID.String()),
-			Inputs: []domen.Input{
+			Action: "https://kamil.samigullin.info/",
+			Inputs: []domain.Input{
 				{
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -386,28 +317,20 @@ func TestXML_Encode(t *testing.T) {
 func TestYAML(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -416,8 +339,8 @@ func TestYAML(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domen.Schema {
-				var schema domen.Schema
+			assert.Equal(t, tc.schema, func() domain.Schema {
+				var schema domain.Schema
 				data, err := yaml.Marshal(tc.schema)
 				if err != nil {
 					panic(err)
@@ -435,28 +358,20 @@ func TestYAML_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domen.Schema
+		schema   domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.yaml", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -465,7 +380,7 @@ func TestYAML_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domen.Schema
+			var schema domain.Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error {
 				return yaml.Unmarshal(func() []byte {
@@ -485,28 +400,20 @@ func TestYAML_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domen.Schema
+		schema domain.Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml.golden", domen.Schema{
-			ID:           UUID.String() + "",
+		{"email subscription", "./fixtures/email_subscription.yaml.golden", domain.Schema{
 			Title:        "Email subscription",
-			Action:       join(HOST, APIv1, UUID.String()),
+			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domen.Input{
+			Inputs: []domain.Input{
 				{
-					ID:        UUID.String() + "_email",
 					Name:      "email",
 					Type:      "email",
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
-				},
-				{
-					ID:    UUID.String() + "__redirect",
-					Name:  "_redirect",
-					Type:  "hidden",
-					Value: "https://kamil.samigullin.info/",
 				},
 			},
 		}},
@@ -541,15 +448,6 @@ func closeAfter(file *os.File, action func() error) error {
 		return err
 	}
 	return nil
-}
-
-func join(base string, paths ...string) string {
-	u, err := url.Parse(base)
-	if err != nil {
-		panic(err)
-	}
-	u.Path = path.Join(append([]string{u.Path}, paths...)...)
-	return u.String()
 }
 
 func reader(file string) *os.File {

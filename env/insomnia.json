@@ -224,7 +224,7 @@
       "authentication": {},
       "body": {
         "mimeType": "application/xml",
-        "text": "<form title=\"Email subscription\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n    <input name=\"email\" type=\"email\" title=\"Email\" maxlength=\"64\" required=\"1\"/>\n    <input name=\"_redirect\" type=\"hidden\" value=\"https://kamil.samigullin.info/\"/>\n</form>\n"
+        "text": "<form title=\"Email subscription\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n    <input name=\"email\" type=\"email\" title=\"Email\" maxlength=\"64\" required=\"1\"/>\n</form>\n"
       },
       "created": 1516705873570,
       "description": "",
@@ -253,7 +253,7 @@
       "authentication": {},
       "body": {
         "mimeType": "application/xml",
-        "text": "<form title=\"Email subscription\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n    <input name=\"email\" type=\"email\" title=\"Email\" maxlength=\"64\" required=\"1\"/>\n    <input name=\"_redirect\" type=\"hidden\" value=\"https://kamil.samigullin.info/\"/>\n</form>\n"
+        "text": "<form title=\"Email subscription\" method=\"post\" enctype=\"application/x-www-form-urlencoded\">\n    <input name=\"email\" type=\"email\" title=\"Email\" maxlength=\"64\" required=\"1\"/>\n</form>\n"
       },
       "created": 1516706171283,
       "description": "",

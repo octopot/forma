@@ -7,7 +7,7 @@ import (
 	"path"
 	"time"
 
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/errors"
 	"github.com/kamilsk/form-api/server/middleware"
 	"github.com/kamilsk/form-api/static"
@@ -44,7 +44,7 @@ type Server struct {
 // GetV1 is responsible for `GET /api/v1/{UUID}` request handling.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
 		enc  = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
 	)
 	response := s.service.HandleGetV1(v1.GetRequest{UUID: uuid})
@@ -58,7 +58,15 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	response.Schema.Action = join(*s.baseURL, "api/v1", response.Schema.ID)
+	{ // domain logic
+		// add form namespace to make it unique
+		response.Schema.ID = string(uuid)
+		for i := range response.Schema.Inputs {
+			response.Schema.Inputs[i].ID = string(uuid) + "_" + response.Schema.Inputs[i].Name
+		}
+		// replace fallback by current API call
+		response.Schema.Action = join(*s.baseURL, "api/v1", string(uuid))
+	}
 	rw.Header().Set("Content-Type", enc.ContentType())
 	rw.WriteHeader(http.StatusOK)
 	enc.Encode(response.Schema)
@@ -66,29 +74,20 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 
 // PostV1 is responsible for `POST /api/v1/{UUID}` request handling.
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
-	var (
-		uuid     domen.UUID
-		redirect string
-	)
-	{
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
-		redirect = req.Header.Get("Referer")
+	if err := req.ParseForm(); err != nil {
+		rw.WriteHeader(http.StatusBadRequest)
+		return
 	}
+
+	var (
+		uuid     = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
+		redirect = req.Header.Get("Referer") // referer, _redirect, action => action fix in data
+	)
 
 	rw.Header().Set("Content-Type", encoding.HTML)
 
 	// application/x-www-form-urlencoded
 	// application/x-www-form-urlencoded; charset=UTF-8
-
-	if err := req.ParseForm(); err != nil {
-		rw.WriteHeader(http.StatusBadRequest)
-		s.templates.errorTpl.Execute(rw, struct {
-			Code     int
-			Delay    time.Duration
-			Redirect string
-		}{http.StatusBadRequest, 5 * time.Second, redirect})
-		return
-	}
 
 	request := v1.PostRequest{UUID: uuid, Data: req.PostForm}
 	response := s.service.HandlePostV1(request)

@@ -9,16 +9,14 @@ BEGIN;
     BEGIN
       INSERT INTO "form_schema" ("uuid","user","schema") VALUES
         (email,demoUser,'
-<form title="Email subscription" method="post" enctype="application/x-www-form-urlencoded">
+<form title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    <input name="_redirect" type="hidden" value="https://kamil.samigullin.info/"/>
 </form>
 '),
         (github,demoUser,'
-<form title="GitHub demo page" method="post" enctype="application/x-www-form-urlencoded">
+<form title="GitHub demo page" action="https://kamilsk.github.io/form-api/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="name" type="text" title="Name" placeholder="Name..." maxlength="25" required="1"/>
     <input name="feedback" type="text" title="Feedback" placeholder="Your feedback..." maxlength="255" required="1"/>
-    <input name="_redirect" type="hidden" value="http://kamilsk.github.io/form-api/"/>
 </form>
 ');
       INSERT INTO "form_data" ("uuid","data") VALUES

@@ -4,7 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/kamilsk/form-api/dao/postgres"
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 )
 
 // Must returns a new instance of the Storage or panics if it cannot configure it.
@@ -55,11 +55,11 @@ func (l *Storage) Dialect() string {
 }
 
 // AddData inserts form data and returns their ID.
-func (l *Storage) AddData(uuid domen.UUID, verified map[string][]string) (int64, error) {
+func (l *Storage) AddData(uuid domain.UUID, verified map[string][]string) (int64, error) {
 	return postgres.AddData(l.conn, uuid, verified)
 }
 
 // Schema returns the form schema with provided UUID.
-func (l *Storage) Schema(uuid domen.UUID) (domen.Schema, error) {
+func (l *Storage) Schema(uuid domain.UUID) (domain.Schema, error) {
 	return postgres.Schema(l.conn, uuid)
 }

@@ -10,7 +10,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/errors"
 	"github.com/kamilsk/form-api/server"
 	"github.com/kamilsk/form-api/server/middleware"
@@ -21,9 +21,9 @@ import (
 
 const (
 	HOST = "http://form-api.dev/"
-	FAKE = domen.UUID("41ca5e09-3ce2-0094-b108-3ecc257c6fa4")
-	ZERO = domen.UUID("00000000-0000-4000-8000-000000000000")
-	UUID = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+	FAKE = domain.UUID("41ca5e09-3ce2-0094-b108-3ecc257c6fa4")
+	ZERO = domain.UUID("00000000-0000-4000-8000-000000000000")
+	UUID = domain.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
 
 func TestNew(t *testing.T) {

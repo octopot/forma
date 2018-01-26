@@ -10,12 +10,12 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/server/router/chi"
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestChiRouter(t *testing.T) {
 	ctrl := gomock.NewController(t)

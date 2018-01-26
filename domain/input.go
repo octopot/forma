@@ -1,4 +1,4 @@
-package domen
+package domain
 
 // Input represents an element of an HTML form.
 type Input struct {

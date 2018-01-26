@@ -9,13 +9,13 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/dao"
-	"github.com/kamilsk/form-api/domen"
+	"github.com/kamilsk/form-api/domain"
 	"github.com/stretchr/testify/assert"
 )
 
 const (
 	DSN  = "stub://localhost"
-	UUID = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+	UUID = domain.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
 
 func TestMust_WithInvalidConfiguration(t *testing.T) {

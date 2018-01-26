@@ -1,4 +1,4 @@
-package domen
+package domain
 
 import (
 	"bytes"
@@ -7,11 +7,12 @@ import (
 )
 
 var html = template.Must(template.New("form").
-	Parse(`<form id="{{ .ID }}" title="{{ .Title }}" action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
+	Parse(`<form {{ with .ID }}id="{{ . }}" {{ end -}}
+                 title="{{ .Title }}" action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
 {{- $ := . -}}
 {{- range .Inputs -}}
     {{- if .Title }}<label for="{{ .ID }}">{{ .Title }}</label>{{ end -}}
-    <input id="{{ .ID }}" name="{{ .Name }}" type="{{ .Type }}"
+    <input {{ with .ID }}id="{{ .ID }}" {{ end -}} name="{{ .Name }}" type="{{ .Type }}"
            {{- with .Title }} title="{{ . }}"{{ end -}}
            {{- with .Placeholder }} placeholder="{{ . }}"{{ end -}}
            {{- with .Value }} value="{{ . }}"{{ end -}}

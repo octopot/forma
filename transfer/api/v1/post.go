@@ -1,10 +1,10 @@
 package v1
 
-import "github.com/kamilsk/form-api/domen"
+import "github.com/kamilsk/form-api/domain"
 
 // PostRequest represents `POST /api/v1/{UUID}` request.
 type PostRequest struct {
-	UUID domen.UUID
+	UUID domain.UUID
 	Data map[string][]string
 }
 
@@ -12,5 +12,5 @@ type PostRequest struct {
 type PostResponse struct {
 	ID     int64
 	Error  error
-	Schema domen.Schema
+	Schema domain.Schema
 }

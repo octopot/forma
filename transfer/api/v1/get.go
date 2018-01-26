@@ -1,14 +1,14 @@
 package v1
 
-import "github.com/kamilsk/form-api/domen"
+import "github.com/kamilsk/form-api/domain"
 
 // GetRequest represents `GET /api/v1/{UUID}` request.
 type GetRequest struct {
-	UUID domen.UUID
+	UUID domain.UUID
 }
 
 // GetResponse represents `GET /api/v1/{UUID}` response.
 type GetResponse struct {
-	Schema domen.Schema
+	Schema domain.Schema
 	Error  error
 }

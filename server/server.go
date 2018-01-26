@@ -3,10 +3,12 @@ package server
 import (
 	"html/template"
 	"net/http"
+	"net/url"
+	"path"
 	"time"
 
 	"github.com/kamilsk/form-api/domen"
-	"github.com/kamilsk/form-api/server/errors"
+	"github.com/kamilsk/form-api/errors"
 	"github.com/kamilsk/form-api/server/middleware"
 	"github.com/kamilsk/form-api/static"
 	"github.com/kamilsk/form-api/transfer/api/v1"
@@ -14,8 +16,12 @@ import (
 )
 
 // New returns new instance of Form API server.
-// It can raise the panic if HTML templates are not available.
+// It can raise the panic if baseURL is invalid or HTML templates are not available.
 func New(baseURL, tplPath string, service Service) *Server {
+	u, err := url.Parse(baseURL)
+	if err != nil {
+		panic(err)
+	}
 	must := func(base, tpl string) string {
 		b, err := static.LoadTemplate(base, tpl)
 		if err != nil {
@@ -23,7 +29,7 @@ func New(baseURL, tplPath string, service Service) *Server {
 		}
 		return string(b)
 	}
-	return &Server{baseURL: baseURL, service: service, templates: struct {
+	return &Server{baseURL: u, service: service, templates: struct {
 		errorTpl    *template.Template
 		redirectTpl *template.Template
 	}{
@@ -34,7 +40,7 @@ func New(baseURL, tplPath string, service Service) *Server {
 
 // Server handles HTTP requests.
 type Server struct {
-	baseURL   string
+	baseURL   *url.URL
 	service   Service
 	templates struct {
 		errorTpl    *template.Template
@@ -42,28 +48,30 @@ type Server struct {
 	}
 }
 
-// GetV1 implements `FormAPI` interface.
+// GetV1 is responsible for `GET /api/v1/{UUID}` request handling.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid domen.UUID
-		enc  encoding.Generic
-	)
-	{
 		uuid = req.Context().Value(middleware.SchemaKey{}).(domen.UUID)
-		enc = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
-	}
+		enc  = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
+	)
 	response := s.service.HandleGetV1(v1.GetRequest{UUID: uuid})
 	if response.Error != nil {
-		errors.FromGetV1(response.Error).MarshalTo(rw) //nolint: errcheck
+		if err, is := response.Error.(errors.ApplicationError); is {
+			if _, is := err.IsClientError(); is {
+				rw.WriteHeader(http.StatusNotFound)
+				return
+			}
+		}
+		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	response.Schema.Action = s.baseURL + "api/v1/" + response.Schema.ID
+	response.Schema.Action = join(*s.baseURL, "api/v1", response.Schema.ID)
 	rw.Header().Set("Content-Type", enc.ContentType())
 	rw.WriteHeader(http.StatusOK)
-	enc.Encode(response.Schema) //nolint: errcheck
+	enc.Encode(response.Schema)
 }
 
-// PostV1 implements `FormAPI` interface
+// PostV1 is responsible for `POST /api/v1/{UUID}` request handling.
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	var (
 		uuid     domen.UUID
@@ -75,9 +83,12 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	rw.Header().Set("Content-Type", encoding.HTML)
+
+	// application/x-www-form-urlencoded
+	// application/x-www-form-urlencoded; charset=UTF-8
+
 	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
-		//nolint: errcheck
 		s.templates.errorTpl.Execute(rw, struct {
 			Code     int
 			Delay    time.Duration
@@ -90,7 +101,6 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	response := s.service.HandlePostV1(request)
 	if response.Error != nil {
 		rw.WriteHeader(http.StatusBadRequest)
-		//nolint: errcheck
 		s.templates.errorTpl.Execute(rw, struct {
 			Code     int
 			Delay    time.Duration
@@ -99,10 +109,17 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	rw.WriteHeader(http.StatusOK)
-	//nolint: errcheck
 	s.templates.redirectTpl.Execute(rw, struct {
 		Title    string
 		Delay    time.Duration
 		Redirect string
 	}{"Success", 5 * time.Second, redirect})
+}
+
+func join(u url.URL, paths ...string) string {
+	if len(paths) == 0 {
+		return u.String()
+	}
+	u.Path = path.Join(append([]string{u.Path}, paths...)...)
+	return u.String()
 }

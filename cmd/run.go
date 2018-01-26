@@ -23,8 +23,7 @@ var runCmd = &cobra.Command{
 			server.New(
 				cmd.Flag("baseURL").Value.String(),
 				cmd.Flag("tplDir").Value.String(),
-				service.New(
-					dao.Must(dao.Connection(dsn(cmd))))),
+				service.New(dao.Must(dao.Connection(dsn(cmd))))),
 			isTrue(cmd.Flag("with-profiler").Value))
 		srv := &http.Server{Addr: addr, Handler: handler,
 			ReadTimeout:       0,

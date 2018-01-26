@@ -5,7 +5,9 @@ import (
 	"errors"
 	"flag"
 	"io/ioutil"
+	"net/url"
 	"os"
+	"path"
 	"testing"
 
 	"github.com/kamilsk/form-api/domen"
@@ -13,7 +15,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const (
+	HOST  = "http://form-api.dev/"
+	APIv1 = "api/v1"
+	UUID  = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+)
 
 var update = flag.Bool("update", false, "update .golden files")
 
@@ -27,7 +33,7 @@ func TestSupport(t *testing.T) {
 		{"supported, JSON", encoding.JSON, true},
 		{"supported, TEXT", encoding.TEXT, true},
 		{"supported, XML", encoding.XML, true},
-		{"not supported, TOML", "TOML", false},
+		{"unsupported, TOML", "application/toml", false},
 	}
 
 	for _, test := range tests {
@@ -48,7 +54,7 @@ func TestEncoder(t *testing.T) {
 		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -71,7 +77,7 @@ func TestEncoder(t *testing.T) {
 		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -94,7 +100,7 @@ func TestEncoder(t *testing.T) {
 		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -117,7 +123,7 @@ func TestEncoder(t *testing.T) {
 		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -160,7 +166,7 @@ func TestEncoder(t *testing.T) {
 	}
 
 	t.Run("unsupported content type", func(t *testing.T) {
-		assert.Panics(t, func() { encoding.NewEncoder(bytes.NewBuffer(nil), "unsupported") })
+		assert.Panics(t, func() { encoding.NewEncoder(bytes.NewBuffer(nil), "application/toml") })
 	})
 	t.Run("unsupported value by HTML encoder", func(t *testing.T) {
 		enc := encoding.NewEncoder(bytes.NewBuffer(nil), encoding.HTML)
@@ -181,6 +187,15 @@ func closeAfter(file *os.File, action func() error) error {
 		return err
 	}
 	return nil
+}
+
+func join(base string, paths ...string) string {
+	u, err := url.Parse(base)
+	if err != nil {
+		panic(err)
+	}
+	u.Path = path.Join(append([]string{u.Path}, paths...)...)
+	return u.String()
 }
 
 func writer(file string) *os.File {

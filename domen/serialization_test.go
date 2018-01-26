@@ -5,7 +5,9 @@ import (
 	"encoding/xml"
 	"flag"
 	"io/ioutil"
+	"net/url"
 	"os"
+	"path"
 	"testing"
 
 	"github.com/kamilsk/form-api/domen"
@@ -13,7 +15,11 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-const UUID domen.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const (
+	HOST  = "http://form-api.dev/"
+	APIv1 = "api/v1"
+	UUID  = domen.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+)
 
 var update = flag.Bool("update", false, "update .golden files")
 
@@ -26,7 +32,7 @@ func TestHTML(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.html.golden", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -79,7 +85,7 @@ func TestJSON(t *testing.T) {
 		{"email subscription", domen.Schema{
 			ID:           UUID.String(),
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -128,7 +134,7 @@ func TestJSON_Decode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.json", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -170,7 +176,7 @@ func TestJSON_Encode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.json.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -223,7 +229,7 @@ func TestXML(t *testing.T) {
 		{"email subscription", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -272,7 +278,7 @@ func TestXML_Decode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.xml", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -314,7 +320,7 @@ func TestXML_Encode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.xml.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -336,7 +342,7 @@ func TestXML_Encode(t *testing.T) {
 		}},
 		{"stored in db", "./fixtures/stored_in_db.xml.golden", domen.Schema{
 			Title:  "Email subscription",
-			Action: "http://localhost:8080/api/v1/" + UUID.String(),
+			Action: join(HOST, APIv1, UUID.String()),
 			Inputs: []domen.Input{
 				{
 					Name:      "email",
@@ -385,7 +391,7 @@ func TestYAML(t *testing.T) {
 		{"email subscription", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -434,7 +440,7 @@ func TestYAML_Decode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.yaml", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -484,7 +490,7 @@ func TestYAML_Encode(t *testing.T) {
 		{"email subscription", "./fixtures/email_subscription.yaml.golden", domen.Schema{
 			ID:           UUID.String() + "",
 			Title:        "Email subscription",
-			Action:       "http://localhost:8080/api/v1/" + UUID.String(),
+			Action:       join(HOST, APIv1, UUID.String()),
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
 			Inputs: []domen.Input{
@@ -535,6 +541,15 @@ func closeAfter(file *os.File, action func() error) error {
 		return err
 	}
 	return nil
+}
+
+func join(base string, paths ...string) string {
+	u, err := url.Parse(base)
+	if err != nil {
+		panic(err)
+	}
+	u.Path = path.Join(append([]string{u.Path}, paths...)...)
+	return u.String()
 }
 
 func reader(file string) *os.File {

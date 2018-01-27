@@ -100,7 +100,7 @@ func TestServer_GetV1(t *testing.T) {
 				middleware.EncoderKey{}, encoding.NewEncoder(out, encoding.XML)))
 			service.EXPECT().
 				HandleGetV1(v1.GetRequest{UUID: UUID}).
-				Return(v1.GetResponse{})
+				Return(v1.GetResponse{Schema: domain.Schema{Title: "schema", Inputs: []domain.Input{{Title: "input"}}}})
 			return req
 		}, http.StatusOK},
 	}

@@ -59,7 +59,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	{ // domain logic
-		// add form namespace to make it unique
+		// add form namespace to make its elements unique
 		response.Schema.ID = string(uuid)
 		for i := range response.Schema.Inputs {
 			response.Schema.Inputs[i].ID = string(uuid) + "_" + response.Schema.Inputs[i].Name

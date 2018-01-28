@@ -62,6 +62,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
 	{ // domain logic
 		// add form namespace to make its elements unique
 		response.Schema.ID = string(uuid)
@@ -71,6 +72,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		// replace fallback by current API call
 		response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
 	}
+
 	rw.Header().Set("Content-Type", enc.ContentType())
 	rw.WriteHeader(http.StatusOK)
 	enc.Encode(response.Schema)
@@ -109,6 +111,15 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+
+	{ // domain logic
+		u, err := url.Parse(redirect)
+		if err == nil {
+			u.Query().Set(string(uuid), "success")
+			redirect = u.String()
+		}
+	}
+
 	rw.Header().Set("Location", redirect)
 	rw.WriteHeader(http.StatusFound)
 }

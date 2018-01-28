@@ -97,13 +97,22 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 				case clientErr.IsResourceNotFound():
 					rw.WriteHeader(http.StatusNotFound)
 				case clientErr.IsInvalidInput():
+
+					{ // domain logic
+						u, err := url.Parse(redirect)
+						if err == nil {
+							u.Query().Set(string(uuid), "failure")
+							redirect = u.String()
+						}
+					}
+
 					rw.WriteHeader(http.StatusBadRequest)
-					s.templates.errorTpl.Execute(rw, struct {
-						Schema   domain.Schema
-						Error    domain.ValidationError
-						Delay    time.Duration
-						Redirect string
-					}{response.Schema, err.Cause().(domain.ValidationError), 5 * time.Second, redirect})
+					s.templates.errorTpl.Execute(rw, static.ErrorPageContext{
+						Schema:   response.Schema,
+						Error:    err.Cause().(domain.ValidationError),
+						Delay:    5 * time.Second,
+						Redirect: redirect,
+					})
 				}
 				return
 			}

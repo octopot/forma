@@ -125,7 +125,7 @@ func TestEncoder(t *testing.T) {
 			assert.NoError(t, enc.Encode(tc.schema))
 			expected, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
-			assert.Equal(t, string(expected), string(buf.Bytes()))
+			assert.Equal(t, expected, buf.Bytes())
 		})
 	}
 

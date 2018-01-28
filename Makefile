@@ -43,7 +43,7 @@ generate: tools
 
 .PHONY: static
 static: tools
-	go-bindata -o static/bindata.go -pkg static -ignore "^.+\.go$$" static/...
+	go-bindata -o static/bindata.go -pkg static -ignore "^.+\.go$$" -ignore "static/fixtures" static/...
 
 .PHONY: test
 test: generate static

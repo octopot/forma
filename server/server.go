@@ -15,7 +15,11 @@ import (
 	"github.com/kamilsk/form-api/transfer/encoding"
 )
 
-// New returns new instance of Form API server.
+const (
+	RedirectKey = "_redirect"
+)
+
+// New returns a new instance of Form API server.
 // It can raise the panic if base URL is invalid or HTML templates are not available.
 func New(baseURL, tplPath string, service Service) *Server {
 	u, err := url.Parse(baseURL)
@@ -65,7 +69,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 			response.Schema.Inputs[i].ID = string(uuid) + "_" + response.Schema.Inputs[i].Name
 		}
 		// replace fallback by current API call
-		response.Schema.Action = join(*s.baseURL, "api/v1", string(uuid))
+		response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
 	}
 	rw.Header().Set("Content-Type", enc.ContentType())
 	rw.WriteHeader(http.StatusOK)
@@ -78,42 +82,54 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
 	}
-
 	var (
-		uuid     = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
-		redirect = req.Header.Get("Referer") // referer, _redirect, action => action fix in data
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
 	)
-
-	rw.Header().Set("Content-Type", encoding.HTML)
-
-	// application/x-www-form-urlencoded
-	// application/x-www-form-urlencoded; charset=UTF-8
-
 	request := v1.PostRequest{UUID: uuid, Data: req.PostForm}
 	response := s.service.HandlePostV1(request)
+	redirect := fallback(req.Referer(), req.PostFormValue(RedirectKey), response.Schema.Action)
 	if response.Error != nil {
-		rw.WriteHeader(http.StatusBadRequest)
-		s.templates.errorTpl.Execute(rw, struct {
-			Code     int
-			Delay    time.Duration
-			Redirect string
-		}{http.StatusBadRequest, 5 * time.Second, redirect})
+		if err, is := response.Error.(errors.ApplicationError); is {
+			if clientErr, is := err.IsClientError(); is {
+				switch {
+				case clientErr.IsResourceNotFound():
+					rw.WriteHeader(http.StatusNotFound)
+				case clientErr.IsInvalidInput():
+					rw.WriteHeader(http.StatusBadRequest)
+					s.templates.errorTpl.Execute(rw, struct {
+						Schema   domain.Schema
+						Error    domain.ValidationError
+						Delay    time.Duration
+						Redirect string
+					}{response.Schema, err.Cause().(domain.ValidationError), 5 * time.Second, redirect})
+				}
+				return
+			}
+		}
+		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	rw.WriteHeader(http.StatusOK)
-	s.templates.redirectTpl.Execute(rw, struct {
-		Title    string
-		Delay    time.Duration
-		Redirect string
-	}{"Success", 5 * time.Second, redirect})
+	rw.Header().Set("Location", redirect)
+	rw.WriteHeader(http.StatusFound)
 }
 
-func join(u url.URL, paths ...string) string {
+func extend(u url.URL, paths ...string) string {
 	if len(paths) == 0 {
 		return u.String()
 	}
 	u.Path = path.Join(append([]string{u.Path}, paths...)...)
 	return u.String()
+}
+
+func fallback(value string, defaultValues ...string) string {
+	if value == "" {
+		for _, value := range defaultValues {
+			if value != "" {
+				return value
+			}
+		}
+	}
+	return value
 }
 
 func must(base, tpl string) string {

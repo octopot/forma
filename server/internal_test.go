@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestJoin(t *testing.T) {
+func TestExtend(t *testing.T) {
 	tests := []struct {
 		name     string
 		url      url.URL
@@ -21,7 +21,27 @@ func TestJoin(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.expected, join(tc.url, tc.paths...))
+			assert.Equal(t, tc.expected, extend(tc.url, tc.paths...))
+		})
+	}
+}
+
+func TestFallback(t *testing.T) {
+	tests := []struct {
+		name           string
+		value          string
+		fallbackValues []string
+		expected       string
+	}{
+		{"get value as is", "value", nil, "value"},
+		{"first fallback", "", []string{"first", "second"}, "first"},
+		{"second fallback", "", []string{"", "second"}, "second"},
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
+			assert.Equal(t, tc.expected, fallback(tc.value, tc.fallbackValues...))
 		})
 	}
 }

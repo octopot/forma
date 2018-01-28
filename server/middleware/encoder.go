@@ -24,9 +24,9 @@ func Encoder(next http.HandlerFunc) http.HandlerFunc {
 	}
 }
 
-func fallback(value string, defaultValues ...string) string {
+func fallback(value string, fallbackValues ...string) string {
 	if value == "" {
-		for _, value := range defaultValues {
+		for _, value := range fallbackValues {
 			if value != "" {
 				return value
 			}

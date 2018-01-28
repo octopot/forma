@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/golang/mock/gomock"
@@ -110,6 +111,47 @@ func TestServer_GetV1(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			rw := httptest.NewRecorder()
 			srv.GetV1(rw, tc.request(rw))
+			assert.Equal(t, tc.code, rw.Code)
+		})
+	}
+}
+
+func TestServer_PostV1(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	var (
+		service = NewMockService(ctrl)
+	)
+
+	srv := server.New(HOST, "", service)
+
+	tests := []struct {
+		name    string
+		request func(io.Writer) *http.Request
+		code    int
+	}{
+		{http.StatusText(http.StatusBadRequest) + ", missing form body", func(out io.Writer) *http.Request {
+			req, _ := http.NewRequest(http.MethodPost, HOST, nil)
+			return req
+		}, http.StatusBadRequest},
+		{http.StatusText(http.StatusFound), func(out io.Writer) *http.Request {
+			req, _ := http.NewRequest(http.MethodPost, HOST, strings.NewReader("email=test@my.email"))
+			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+			req = req.WithContext(context.WithValue(req.Context(),
+				middleware.SchemaKey{}, UUID))
+			service.EXPECT().
+				HandlePostV1(v1.PostRequest{UUID: UUID, Data: map[string][]string{"email": {"test@my.email"}}}).
+				Return(v1.PostResponse{ID: 1, Error: nil, Schema: domain.Schema{Action: HOST}})
+			return req
+		}, http.StatusFound},
+	}
+
+	for _, test := range tests {
+		tc := test
+		t.Run(test.name, func(t *testing.T) {
+			rw := httptest.NewRecorder()
+			srv.PostV1(rw, tc.request(rw))
 			assert.Equal(t, tc.code, rw.Code)
 		})
 	}

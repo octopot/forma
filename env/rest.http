@@ -3,7 +3,7 @@
 POST http://admin:admin@localhost:8080/api/v1
 Content-Type: application/xml
 
-<form title="Email subscription"
+<form lang="en" title="Email subscription"
       action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
 </form>
@@ -18,7 +18,7 @@ Accept: application/xml
 PUT http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
-<form title="Email subscription"
+<form lang="en" title="Email subscription"
       action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
 </form>
@@ -39,7 +39,7 @@ email=test@my.email
 POST http://admin:admin@localhost:8080/api/v2/schema
 Content-Type: application/xml
 
-<form title="Email subscription"
+<form lang="en" title="Email subscription"
       action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
 </form>
@@ -54,7 +54,7 @@ Accept: application/xml
 PUT http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
-<form title="Email subscription"
+<form lang="en" title="Email subscription"
       action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded">
     <input name="email" type="email" title="Email" maxlength="64" required="1"/>
 </form>
@@ -75,7 +75,7 @@ email=test@my.email
 POST http://admin:admin@localhost:8080/api/v2/template
 Content-Type: text/html
 
-<form id="form-{{ .ID }}" title="{{ .Title }}"
+<form id="form-{{ .ID }}" lang="{{ .Language }}" title="{{ .Title }}"
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
     <div class="form-group">
         {{ range where .Inputs "Name" "email" }}
@@ -96,7 +96,7 @@ Accept: text/html
 PUT http://admin:admin@localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
 Content-Type: text/html
 
-<form id="form-{{ .ID }}" title="{{ .Title }}"
+<form id="form-{{ .ID }}" lang="{{ .Language }}" title="{{ .Title }}"
       action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
     <div class="form-group">
         {{ range where .Inputs "Name" "email" }}

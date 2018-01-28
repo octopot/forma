@@ -1,1 +1,1 @@
-<form title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded"><input name="email" type="email" title="Email" maxlength="64" required="true"></input></form>
+<form lang="en" title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded"><input name="email" type="email" title="Email" maxlength="64" required="true"></input></form>

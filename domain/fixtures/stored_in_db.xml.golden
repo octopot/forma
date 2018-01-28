@@ -1,3 +1,3 @@
-<form title="Email subscription" action="https://kamil.samigullin.info/">
+<form lang="en" title="Email subscription" action="https://kamil.samigullin.info/">
     <input name="email" type="email" title="Email" maxlength="64" required="true"></input>
 </form>

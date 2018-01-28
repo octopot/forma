@@ -8,6 +8,7 @@ import (
 // Schema represents an HTML form.
 type Schema struct {
 	ID           string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
+	Language     string  `json:"lang"              yaml:"lang"              xml:"lang,attr"`
 	Title        string  `json:"title"             yaml:"title"             xml:"title,attr"`
 	Action       string  `json:"action"            yaml:"action"            xml:"action,attr"`
 	Method       string  `json:"method,omitempty"  yaml:"method,omitempty"  xml:"method,attr,omitempty"`

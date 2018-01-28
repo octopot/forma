@@ -44,6 +44,7 @@ func TestEncoder(t *testing.T) {
 		schema      domain.Schema
 	}{
 		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -59,6 +60,7 @@ func TestEncoder(t *testing.T) {
 			},
 		}},
 		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -74,6 +76,7 @@ func TestEncoder(t *testing.T) {
 			},
 		}},
 		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -89,6 +92,7 @@ func TestEncoder(t *testing.T) {
 			},
 		}},
 		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",

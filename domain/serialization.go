@@ -8,7 +8,9 @@ import (
 
 var html = template.Must(template.New("form").
 	Parse(`<form {{ with .ID }}id="{{ . }}" {{ end -}}
-                 title="{{ .Title }}" action="{{ .Action }}" method="{{ .Method }}" enctype="{{ .EncodingType }}">
+                 lang="{{ .Language }}" title="{{ .Title }}" action="{{ .Action }}"
+                 {{- with .Method }} method="{{ . }}"{{ end -}}
+                 {{- with .EncodingType }} enctype="{{ . }}"{{ end -}}>
 {{- $ := . -}}
 {{- range .Inputs -}}
     {{- if .Title }}<label for="{{ .ID }}">{{ .Title }}</label>{{ end -}}

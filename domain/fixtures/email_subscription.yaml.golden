@@ -1,3 +1,4 @@
+lang: en
 title: Email subscription
 action: https://kamil.samigullin.info/
 method: post

@@ -22,6 +22,7 @@ func TestHTML(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.html.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -67,6 +68,7 @@ func TestJSON(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -108,6 +110,7 @@ func TestJSON_Decode(t *testing.T) {
 		schema   domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -142,6 +145,7 @@ func TestJSON_Encode(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.json.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -187,6 +191,7 @@ func TestXML(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -228,6 +233,7 @@ func TestXML_Decode(t *testing.T) {
 		schema   domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -262,6 +268,7 @@ func TestXML_Encode(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.xml.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -277,8 +284,9 @@ func TestXML_Encode(t *testing.T) {
 			},
 		}},
 		{"stored in db", "./fixtures/stored_in_db.xml.golden", domain.Schema{
-			Title:  "Email subscription",
-			Action: "https://kamil.samigullin.info/",
+			Language: "en",
+			Title:    "Email subscription",
+			Action:   "https://kamil.samigullin.info/",
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
@@ -320,6 +328,7 @@ func TestYAML(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -361,6 +370,7 @@ func TestYAML_Decode(t *testing.T) {
 		schema   domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
@@ -403,6 +413,7 @@ func TestYAML_Encode(t *testing.T) {
 		schema domain.Schema
 	}{
 		{"email subscription", "./fixtures/email_subscription.yaml.golden", domain.Schema{
+			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",

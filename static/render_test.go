@@ -26,7 +26,7 @@ var (
 )
 
 func TestErrorTemplate(t *testing.T) {
-	tpl := template.Must(template.New("error").Parse(must("", "error.html")))
+	tpl := template.Must(template.New("error").Parse(must("./templates", "error.html")))
 
 	tests := []struct {
 		name   string
@@ -42,16 +42,18 @@ func TestErrorTemplate(t *testing.T) {
 				EncodingType: "application/x-www-form-urlencoded",
 				Inputs: []domain.Input{
 					{
-						Name:      "email",
-						Type:      "email",
-						Title:     "Email",
-						MaxLength: 64,
-						Required:  true,
+						ID:          "email",
+						Name:        "email",
+						Type:        "email",
+						Title:       "Email",
+						Placeholder: "Your email...",
+						MaxLength:   64,
+						Required:    true,
 					},
 				},
 			}
 			_, err := schema.Apply(map[string][]string{"email": {"invalid"}})
-			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Minute, Redirect: schema.Action}
+			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Hour, Redirect: schema.Action}
 		}, "./fixtures/email_subscription.html.golden"},
 	}
 

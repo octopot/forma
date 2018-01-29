@@ -60,6 +60,14 @@ $ cd $GOPATH/src/github.com/kamilsk/form-api
 $ make test install
 ```
 
+#### Mirror
+
+```bash
+$ egg bitbucket.org/kamilsk/form-api
+```
+
+> [egg](https://github.com/kamilsk/egg) is an `extended go get`.
+
 ## Feedback
 
 [![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)

@@ -13,8 +13,8 @@ var html = template.Must(template.New("form").
                  {{- with .EncodingType }} enctype="{{ . }}"{{ end -}}>
 {{- $ := . -}}
 {{- range .Inputs -}}
-    {{- if .Title }}<label for="{{ .ID }}">{{ .Title }}</label>{{ end -}}
-    <input {{ with .ID }}id="{{ .ID }}" {{ end -}} name="{{ .Name }}" type="{{ .Type }}"
+    {{- if and .ID .Title }}<label for="{{ .ID }}">{{ .Title }}</label>{{ end -}}
+    <input {{ with .ID }}id="{{ . }}" {{ end -}} name="{{ .Name }}" type="{{ .Type }}"
            {{- with .Title }} title="{{ . }}"{{ end -}}
            {{- with .Placeholder }} placeholder="{{ . }}"{{ end -}}
            {{- with .Value }} value="{{ . }}"{{ end -}}

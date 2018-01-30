@@ -59,9 +59,9 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
 				response = v1.PostResponse{ID: 1, Schema: domain.Schema{
-					Inputs: []domain.Input{{Name: "name1", Type: domain.TextType}},
+					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
@@ -70,7 +70,7 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
 				response = v1.PostResponse{Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, response.Error)
@@ -78,9 +78,9 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name1": {"val1"}}}
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"email": {"test.me"}}}
 				response = v1.PostResponse{Schema: domain.Schema{
-					Inputs: []domain.Input{{Name: "name1", Type: domain.EmailType}},
+					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)

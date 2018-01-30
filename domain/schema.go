@@ -17,8 +17,14 @@ type Schema struct {
 }
 
 // Apply uses filtration, normalization, and validation for input values.
-func (s Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
-	return s.Validate(s.Normalize(s.Filter(data)))
+func (s *Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
+	data, err := s.Validate(s.Normalize(s.Filter(data)))
+	for i, input := range s.Inputs {
+		if values, found := data[input.Name]; found && len(values) > 0 {
+			s.Inputs[i].Value = values[0]
+		}
+	}
+	return data, err
 }
 
 // Filter applies the schema to input values to remove unspecified of them.

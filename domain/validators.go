@@ -5,20 +5,27 @@ import (
 	"strings"
 )
 
-const (
-	// EmailType specifies `<input type="email">`.
-	EmailType = "email"
-	// HiddenType specifies `<input type="hidden">`
-	HiddenType = "hidden"
-	// TextType specifies `<input type="text">`.
-	TextType = "text"
-)
-
-// ValidationError represents an error related to invalid input values.
-type ValidationError interface {
-	error
-	// InputWithErrors returns map of form inputs and their errors.
-	InputWithErrors() map[Input][]error
+func Run(inputs []Input, rules map[string][]Validator, data map[string][]string) AccumulatedError {
+	index := make(map[string]int, len(inputs))
+	for i, input := range inputs {
+		index[input.Name] = i
+	}
+	validation := dataValidationResult{}
+	for name, values := range data {
+		i, found := index[name]
+		if !found {
+			continue
+		}
+		inputValidation := inputValidationResult{input: inputs[i]}
+		validators := rules[name]
+		for _, validator := range validators {
+			if err := validator.Validate(values); err != nil {
+				inputValidation.errors = append(inputValidation.errors, err)
+			}
+		}
+		validation.results = append(validation.results, inputValidation)
+	}
+	return validation.AsError()
 }
 
 // Validator defines basic behavior of input validators.
@@ -35,6 +42,7 @@ func (fn ValidatorFunc) Validate(values []string) error {
 	return fn(values)
 }
 
+// LengthValidator ...
 func LengthValidator(min, max int) ValidatorFunc {
 	return func(values []string) error {
 		for i, value := range values {
@@ -49,6 +57,7 @@ func LengthValidator(min, max int) ValidatorFunc {
 	}
 }
 
+// RequireValidator ...
 func RequireValidator() ValidatorFunc {
 	return func(values []string) error {
 		if len(values) == 0 {
@@ -63,6 +72,8 @@ func RequireValidator() ValidatorFunc {
 	}
 }
 
+// TypeValidator ...
+// It can raise the panic if the input type is unsupported.
 func TypeValidator(inputType string, strict bool) ValidatorFunc {
 	return func(values []string) error {
 		switch inputType {
@@ -85,71 +96,8 @@ func TypeValidator(inputType string, strict bool) ValidatorFunc {
 		case HiddenType, TextType:
 			// nothing special
 		default:
-			panic(fmt.Sprintf("not supported input type %q", inputType))
+			panic(fmt.Sprintf("input type %q is not supported", inputType))
 		}
 		return nil
 	}
-}
-
-type validationError struct {
-	single   bool
-	position int
-	value    string
-	message  string
-}
-
-func (err validationError) Error() string {
-	if err.single {
-		if err.value != "" {
-			return fmt.Sprintf("value %q at position %d is invalid: %s", err.value, err.position, err.message)
-		}
-		return fmt.Sprintf("value at position %d is invalid: %s", err.position, err.message)
-	}
-	return err.message
-}
-
-type dataValidationError struct {
-	dataValidationResult
-}
-
-func (dataValidationError) Error() string {
-	return "input data has error"
-}
-
-func (err dataValidationError) InputWithErrors() map[Input][]error {
-	m := make(map[Input][]error, len(err.results))
-	for _, r := range err.results {
-		m[r.input] = r.errors
-	}
-	return m
-}
-
-type dataValidationResult struct {
-	data    map[string][]string
-	results []inputValidationResult
-}
-
-// AsError converts the result into error if it contains at least one input validation error.
-func (r dataValidationResult) AsError() ValidationError {
-	for _, sub := range r.results {
-		if sub.HasError() {
-			return dataValidationError{r}
-		}
-	}
-	return nil
-}
-
-type inputValidationResult struct {
-	input  Input
-	errors []error
-}
-
-// HasError returns true if the result contains at least one, not nil error.
-func (r inputValidationResult) HasError() bool {
-	for _, err := range r.errors {
-		if err != nil {
-			return true
-		}
-	}
-	return false
 }

@@ -52,7 +52,7 @@ func TestErrorTemplate(t *testing.T) {
 					},
 				},
 			}
-			_, err := schema.Apply(map[string][]string{"email": {"invalid"}})
+			_, err := schema.Apply(map[string][]string{"email": {"is invalid"}})
 			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Hour, Redirect: schema.Action}
 		}, "./fixtures/email_subscription.html.golden"},
 	}

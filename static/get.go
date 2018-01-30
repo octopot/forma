@@ -12,7 +12,7 @@ import (
 // ErrorPageContext contains data for `error.html` template.
 type ErrorPageContext struct {
 	Schema   domain.Schema
-	Error    domain.ValidationError
+	Error    domain.AccumulatedError
 	Delay    time.Duration
 	Redirect string
 }

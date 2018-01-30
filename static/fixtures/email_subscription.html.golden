@@ -13,7 +13,7 @@
     </style>
 </head>
 <body class="text-center"><form lang="en" title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded"><div class="form-group row"><label for="email" class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                <div class="col-sm-10"><input id="email" class="form-control form-control-lg" name="email" type="email" title="Email" placeholder="Your email..." value="invalid" maxlength="64" required></div></div><input name="_redirect" type="hidden" value="https://kamil.samigullin.info/">
+                <div class="col-sm-10"><input id="email" class="form-control form-control-lg" name="email" type="email" title="Email" placeholder="Your email..." value="is invalid" maxlength="64" required></div></div><input name="_redirect" type="hidden" value="https://kamil.samigullin.info/">
         <input class="btn btn-danger" type="submit">
     </form><script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

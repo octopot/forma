@@ -109,7 +109,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 					rw.WriteHeader(http.StatusBadRequest)
 					s.templates.errorTpl.Execute(rw, static.ErrorPageContext{
 						Schema:   response.Schema,
-						Error:    err.Cause().(domain.ValidationError),
+						Error:    err.Cause().(domain.AccumulatedError),
 						Delay:    5 * time.Second,
 						Redirect: redirect,
 					})

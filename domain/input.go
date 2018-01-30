@@ -1,5 +1,14 @@
 package domain
 
+const (
+	// EmailType specifies `<input type="email">`.
+	EmailType = "email"
+	// HiddenType specifies `<input type="hidden">`
+	HiddenType = "hidden"
+	// TextType specifies `<input type="text">`.
+	TextType = "text"
+)
+
 // Input represents an element of an HTML form.
 type Input struct {
 	ID          string `json:"id,omitempty"          yaml:"id,omitempty"          xml:"id,attr,omitempty"`

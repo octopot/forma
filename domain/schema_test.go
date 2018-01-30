@@ -32,7 +32,7 @@ func TestSchema_Apply(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var (
 				obtained map[string][]string
-				err      domain.ValidationError
+				err      domain.AccumulatedError
 			)
 			action := func() { obtained, err = tc.schema.Apply(tc.values) }
 			if tc.expected.panic {
@@ -206,7 +206,7 @@ func TestSchema_Validate(t *testing.T) {
 	} {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var err domain.ValidationError
+			var err domain.AccumulatedError
 			action := func() { _, err = tc.schema.Validate(tc.values) }
 			if tc.expected.panic {
 				assert.Panics(t, action)
@@ -214,7 +214,7 @@ func TestSchema_Validate(t *testing.T) {
 				assert.NotPanics(t, action)
 			}
 			if tc.expected.error {
-				assert.EqualError(t, err, "input data has error")
+				assert.EqualError(t, err, "validation error")
 				obtained := err.InputWithErrors()
 				for input, errors := range obtained {
 					expected := tc.expected.data[input]

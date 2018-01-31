@@ -50,7 +50,7 @@ func TestAPI_GetV1(t *testing.T) {
 				Inputs: []domain.Input{
 					{
 						Name:      "email",
-						Type:      "email",
+						Type:      domain.EmailType,
 						Title:     "Email",
 						MaxLength: 64,
 						Required:  true,

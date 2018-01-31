@@ -18,7 +18,7 @@ type Schema struct {
 
 // Apply uses filtration, normalization, and validation for input values.
 // It can raise the panic if the input type is unsupported.
-func (s *Schema) Apply(data map[string][]string) (map[string][]string, AccumulatedError) {
+func (s *Schema) Apply(data map[string][]string) (map[string][]string, ValidationError) {
 	data, err := s.Validate(s.Normalize(s.Filter(data)))
 	for i, input := range s.Inputs {
 		if values, found := data[input.Name]; found && len(values) > 0 {
@@ -79,7 +79,7 @@ func (s Schema) Normalize(data map[string][]string) map[string][]string {
 
 // Validate checks input values for errors.
 // It can raise the panic if the input type is unsupported.
-func (s Schema) Validate(data map[string][]string) (map[string][]string, AccumulatedError) {
+func (s Schema) Validate(data map[string][]string) (map[string][]string, ValidationError) {
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return data, nil
 	}

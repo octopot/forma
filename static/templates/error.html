@@ -12,7 +12,7 @@
         form { width: 100%; max-width: 600px; margin: 0 auto; padding: 1rem; }
     </style>
 </head>
-<body class="text-center">
+<body>
 {{- $ := . -}}
 {{- with .Schema }}{{ $form := . -}}
     <form {{ with .ID }}id="{{ . }}" {{ end -}}
@@ -22,11 +22,13 @@
         {{- range .Inputs -}}
             <div class="form-group row">
                 {{- if and .ID .Title -}}
-                <label for="{{ .ID }}" class="col-sm-2 col-form-label col-form-label-lg">{{ .Title }}</label>
-                <div class="col-sm-10">
+                <label for="{{ .ID }}" class="col-sm-3 col-form-label col-form-label-lg">{{ .Title }}</label>
+                <div class="col-sm-9">
                 {{- end -}}
-                <input {{ with .ID }}id="{{ . }}" {{ end -}}
-                       class="form-control form-control-lg" name="{{ .Name }}" type="{{ .Type }}"
+                {{ $valid := not ($.Error.HasError .) }}
+                <input class="form-control form-control-lg is-{{ if $valid }}valid{{ else }}invalid{{ end }}"
+                       {{- with .ID }} id="{{ . }}" {{ end -}}
+                       name="{{ .Name }}" type="{{ .Type }}"
                        {{- with .Title }} title="{{ . }}"{{ end -}}
                        {{- with .Placeholder }} placeholder="{{ . }}"{{ end -}}
                        {{- with .Value }} value="{{ . }}"{{ end -}}

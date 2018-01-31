@@ -52,7 +52,7 @@ func TestEncoder(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -68,7 +68,7 @@ func TestEncoder(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -84,7 +84,7 @@ func TestEncoder(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -100,7 +100,7 @@ func TestEncoder(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,

@@ -44,15 +44,22 @@ func TestErrorTemplate(t *testing.T) {
 					{
 						ID:          "email",
 						Name:        "email",
-						Type:        "email",
+						Type:        domain.EmailType,
 						Title:       "Email",
 						Placeholder: "Your email...",
 						MaxLength:   64,
 						Required:    true,
 					},
+					{
+						ID:          "name",
+						Name:        "name",
+						Type:        domain.TextType,
+						Title:       "Full Name",
+						Placeholder: "Your first and second name...",
+					},
 				},
 			}
-			_, err := schema.Apply(map[string][]string{"email": {"is invalid"}})
+			_, err := schema.Apply(map[string][]string{"email": {"is invalid"}, "name": {"Kamil Samigullin"}})
 			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Hour, Redirect: schema.Action}
 		}, "./fixtures/email_subscription.html.golden"},
 	}

@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func Run(inputs []Input, rules map[string][]Validator, data map[string][]string) AccumulatedError {
+func Run(inputs []Input, rules map[string][]Validator, data map[string][]string) ValidationError {
 	index := make(map[string]int, len(inputs))
 	for i, input := range inputs {
 		index[input.Name] = i

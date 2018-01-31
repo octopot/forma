@@ -2,10 +2,12 @@ package domain
 
 import "fmt"
 
-// AccumulatedError represents an error related to invalid input values.
-type AccumulatedError interface {
+// ValidationError represents an error related to invalid input values.
+type ValidationError interface {
 	error
 
+	// HasError ...
+	HasError(input Input) bool
 	// InputWithErrors returns map of form inputs and their errors.
 	InputWithErrors() map[Input][]error
 }
@@ -35,6 +37,18 @@ func (dataValidationError) Error() string {
 	return "validation error"
 }
 
+// HasError ...
+func (err dataValidationError) HasError(input Input) bool {
+	for _, result := range err.results {
+		// check only a Name because the original input already can have not empty value
+		if result.input.Name == input.Name {
+			return result.HasError()
+		}
+	}
+	return false
+}
+
+// InputWithErrors ...
 func (err dataValidationError) InputWithErrors() map[Input][]error {
 	m := make(map[Input][]error, len(err.results))
 	for _, r := range err.results {
@@ -48,9 +62,9 @@ type dataValidationResult struct {
 }
 
 // AsError converts the result into error if it contains at least one input validation error.
-func (r dataValidationResult) AsError() AccumulatedError {
-	for _, sub := range r.results {
-		if sub.HasError() {
+func (r dataValidationResult) AsError() ValidationError {
+	for _, result := range r.results {
+		if result.HasError() {
 			return dataValidationError{r}
 		}
 	}

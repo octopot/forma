@@ -30,7 +30,7 @@ func TestHTML(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -76,7 +76,7 @@ func TestJSON(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -118,7 +118,7 @@ func TestJSON_Decode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -153,7 +153,7 @@ func TestJSON_Encode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -199,7 +199,7 @@ func TestXML(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -241,7 +241,7 @@ func TestXML_Decode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -276,7 +276,7 @@ func TestXML_Encode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -290,7 +290,7 @@ func TestXML_Encode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -336,7 +336,7 @@ func TestYAML(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -378,7 +378,7 @@ func TestYAML_Decode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -421,7 +421,7 @@ func TestYAML_Encode(t *testing.T) {
 			Inputs: []domain.Input{
 				{
 					Name:      "email",
-					Type:      "email",
+					Type:      domain.EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,

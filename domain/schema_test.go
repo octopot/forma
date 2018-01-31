@@ -218,6 +218,7 @@ func TestSchema_Validate(t *testing.T) {
 				obtained := err.InputWithErrors()
 				for input, errors := range obtained {
 					expected := tc.expected.data[input]
+					assert.True(t, err.HasError(input))
 					assert.Equal(t, expected, func() []string {
 						converted := make([]string, 0, len(errors))
 						for _, err := range errors {
@@ -226,6 +227,7 @@ func TestSchema_Validate(t *testing.T) {
 						return converted
 					}())
 				}
+				assert.False(t, err.HasError(domain.Input{}))
 			} else {
 				assert.NoError(t, err)
 			}

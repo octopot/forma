@@ -28,7 +28,7 @@ func (s *Schema) Apply(data map[string][]string) (map[string][]string, Validatio
 	return data, err
 }
 
-// Filter applies the schema to input values to remove unspecified of them.
+// Filter applies the schema to input values to remove unspecified from them.
 func (s Schema) Filter(data map[string][]string) map[string][]string {
 	if len(s.Inputs) == 0 || len(data) == 0 {
 		return nil
@@ -95,5 +95,5 @@ func (s Schema) Validate(data map[string][]string) (map[string][]string, Validat
 		}
 		rules[input.Name] = validators
 	}
-	return data, Run(s.Inputs, rules, data)
+	return data, Validate(s.Inputs, rules, data)
 }

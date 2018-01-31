@@ -2,13 +2,13 @@ package domain
 
 import "fmt"
 
-// ValidationError represents an error related to invalid input values.
+// ValidationError defines the behavior of error related to invalid input values.
 type ValidationError interface {
 	error
 
-	// HasError ...
+	// HasError returns true if the input value has at least one error.
 	HasError(input Input) bool
-	// InputWithErrors returns map of form inputs and their errors.
+	// InputWithErrors returns a map of form inputs with at least one error and their errors.
 	InputWithErrors() map[Input][]error
 }
 
@@ -37,10 +37,8 @@ func (dataValidationError) Error() string {
 	return "validation error"
 }
 
-// HasError ...
 func (err dataValidationError) HasError(input Input) bool {
 	for _, result := range err.results {
-		// check only a Name because the original input already can have not empty value
 		if result.input.Name == input.Name {
 			return result.HasError()
 		}
@@ -48,7 +46,6 @@ func (err dataValidationError) HasError(input Input) bool {
 	return false
 }
 
-// InputWithErrors ...
 func (err dataValidationError) InputWithErrors() map[Input][]error {
 	m := make(map[Input][]error, len(err.results))
 	for _, r := range err.results {
@@ -78,7 +75,7 @@ type inputValidationResult struct {
 	errors []error
 }
 
-// HasError returns true if the result contains at least one, not nil error.
+// HasError returns true if the result contains at least one error.
 func (r inputValidationResult) HasError() bool {
 	for _, err := range r.errors {
 		if err != nil {

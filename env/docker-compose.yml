@@ -15,7 +15,7 @@ services:
       args: { QUICK: "true" }
       context: ../.
       dockerfile: ./env/Dockerfile
-    command: [ "migrate", "up" ]
+    command: [ "migrate", "up", "--demo" ]
     depends_on:
     - db
     env_file: .env

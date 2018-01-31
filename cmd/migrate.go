@@ -81,7 +81,7 @@ func chooseDirectionAndLimit(args []string) (migrate.MigrationDirection, int) {
 			var err error
 			limit, err = strconv.Atoi(args[1])
 			if err != nil {
-				log.Fatalf("limit arg should be valid integer: %s", err)
+				log.Fatalf("limit arg must be a valid integer: %s", err)
 			}
 		}
 	}

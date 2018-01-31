@@ -24,7 +24,7 @@ type application struct {
 	Shutdown       func(code int)
 }
 
-// Run executes the application logic.
+// Validate executes the application logic.
 func (app application) Run() {
 	cmd.RootCmd.AddCommand(&cobra.Command{
 		Use:   "version",

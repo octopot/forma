@@ -6,6 +6,8 @@ import (
 	"errors"
 	"testing"
 
+	deep "github.com/pkg/errors"
+
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/service"
@@ -93,7 +95,9 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			request, response := tc.data()
-			assert.Equal(t, response, api.HandlePostV1(request))
+			actual := api.HandlePostV1(request)
+			actual.Error = deep.Cause(actual.Error)
+			assert.Equal(t, response, actual)
 		})
 	}
 }

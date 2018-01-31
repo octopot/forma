@@ -3,9 +3,11 @@ package domain
 import (
 	"fmt"
 	"strings"
+	"unicode/utf8"
 )
 
-func Run(inputs []Input, rules map[string][]Validator, data map[string][]string) ValidationError {
+// Validate gets input metadata, validation rules and checks the input data.
+func Validate(inputs []Input, rules map[string][]Validator, data map[string][]string) ValidationError {
 	index := make(map[string]int, len(inputs))
 	for i, input := range inputs {
 		index[input.Name] = i
@@ -28,13 +30,13 @@ func Run(inputs []Input, rules map[string][]Validator, data map[string][]string)
 	return validation.AsError()
 }
 
-// Validator defines basic behavior of input validators.
+// Validator defines the basic behavior of input validators.
 type Validator interface {
 	// Validate validates the input values.
 	Validate(values []string) error
 }
 
-// The ValidatorFunc type is an adapter to allow the use of ordinary functions as a validator.
+// ValidatorFunc type is an adapter to allow the use of ordinary functions as a validator.
 type ValidatorFunc func(values []string) error
 
 // Validate calls fn(values).
@@ -42,14 +44,14 @@ func (fn ValidatorFunc) Validate(values []string) error {
 	return fn(values)
 }
 
-// LengthValidator ...
+// LengthValidator returns the validator to check an input value length.
 func LengthValidator(min, max int) ValidatorFunc {
 	return func(values []string) error {
 		for i, value := range values {
-			if min != 0 && len(value) < min {
+			if min != 0 && utf8.RuneCountInString(value) < min {
 				return validationError{true, i, value, fmt.Sprintf("value length is less than %d", min)}
 			}
-			if max != 0 && len(value) > max {
+			if max != 0 && utf8.RuneCountInString(value) > max {
 				return validationError{true, i, value, fmt.Sprintf("value length is greater than %d", max)}
 			}
 		}
@@ -57,7 +59,7 @@ func LengthValidator(min, max int) ValidatorFunc {
 	}
 }
 
-// RequireValidator ...
+// RequireValidator returns the validator to check an input value for a not-empty.
 func RequireValidator() ValidatorFunc {
 	return func(values []string) error {
 		if len(values) == 0 {
@@ -72,7 +74,7 @@ func RequireValidator() ValidatorFunc {
 	}
 }
 
-// TypeValidator ...
+// TypeValidator returns the validator to check an input value for compliance the type.
 // It can raise the panic if the input type is unsupported.
 func TypeValidator(inputType string, strict bool) ValidatorFunc {
 	return func(values []string) error {

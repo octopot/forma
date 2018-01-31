@@ -1,6 +1,9 @@
 package service
 
-import "github.com/kamilsk/form-api/transfer/api/v1"
+import (
+	"github.com/kamilsk/form-api/errors"
+	"github.com/kamilsk/form-api/transfer/api/v1"
+)
 
 // New returns a new instance of Form API service.
 func New(dao Storage) *FormAPI {
@@ -31,6 +34,8 @@ func (s *FormAPI) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	}
 	verified, response.Error = response.Schema.Apply(request.Data)
 	if response.Error != nil {
+		response.Error = errors.Validation(errors.InvalidFormDataMessage, response.Error,
+			"trying to add data for schema %q", request.UUID)
 		return response
 	}
 	response.ID, response.Error = s.dao.AddData(request.UUID, verified)

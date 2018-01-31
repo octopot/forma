@@ -58,7 +58,7 @@ Flags:
 ```bash
 $ go get -d -u github.com/kamilsk/form-api
 $ cd $GOPATH/src/github.com/kamilsk/form-api
-$ make test install
+$ make deps generate test install
 ```
 
 #### Mirror
@@ -71,6 +71,7 @@ $ egg bitbucket.org/kamilsk/form-api
 
 ## Feedback
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/form-api)
 [![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)
 [![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
 

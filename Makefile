@@ -21,7 +21,6 @@ code-quality-report:
 	time make code-quality-check | tail +7 | tee report.out | pbcopy
 
 
-
 .PHONY: tools
 tools:
 	if ! command -v dep > /dev/null; then \
@@ -46,23 +45,6 @@ generate: tools
 .PHONY: static
 static: tools
 	go-bindata -o static/bindata.go -pkg static -ignore "^.+\.go$$" -ignore "static/fixtures" static/...
-
-# .PHONY: test
-# test: generate static
-# 	go test ./...
-
-# .PHONY: test-detailed
-# test-detailed: generate static
-# 	go test -cover -v ./...
-
-# .PHONY: test-with-race
-# test-with-race: generate static
-# 	go test -race ./...
-
-# .PHONY: test-formatted
-# test-formatted: generate static
-# 	go test -cover ./... | column -t | sort -r
-
 
 
 .PHONY: pull-github-tpl

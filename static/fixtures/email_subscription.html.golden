@@ -1,24 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="no-js" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Email subscription</title>
-    <meta http-equiv="refresh" content="3600;url=https://kamil.samigullin.info/">
+    <meta http-equiv="refresh" content="60;url=https://kamil.samigullin.info/">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <style>
         html, body { height: 100%; }
         body { display: flex; align-items: center; background-color: #f5f5f5; }
-        form { width: 100%; max-width: 600px; margin: 0 auto; padding: 1rem; }
+        .card { width: 100%; max-width: 600px; margin: 0 auto; }
+        .card .progress { height: 100%; }
+        .no-js .progress { display: none; }
     </style>
+    <script>window.START = Date.now();</script>
 </head>
-<body><form lang="en" title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded"><div class="form-group row"><label for="email" class="col-sm-3 col-form-label col-form-label-lg">Email</label>
+<body><div class="card">
+    <div class="card-header">Email subscription</div>
+    <div class="card-body">
+        <form lang="en" title="Email subscription" action="https://kamil.samigullin.info/" method="post" enctype="application/x-www-form-urlencoded"><div class="form-group row"><label for="name" class="col-sm-3 col-form-label col-form-label-lg">Full Name</label>
+                    <div class="col-sm-9">
+                    <input class="form-control form-control-lg is-valid" id="name" name="name" type="text" title="Full Name" placeholder="Your first and second name..." value="Kamil Samigullin"></div></div><div class="form-group row"><label for="email" class="col-sm-3 col-form-label col-form-label-lg">Email</label>
+                    <div class="col-sm-9">
+                    <input class="form-control form-control-lg is-invalid" id="email" name="email" type="email" title="Email" placeholder="Your email..." value="is invalid" maxlength="64" required></div></div><input name="_redirect" type="hidden" value="https://kamil.samigullin.info/">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <input class="btn btn-danger" type="submit">
+                </div>
                 <div class="col-sm-9">
-                <input class="form-control form-control-lg is-invalid" id="email" name="email" type="email" title="Email" placeholder="Your email..." value="is invalid" maxlength="64" required></div></div><div class="form-group row"><label for="name" class="col-sm-3 col-form-label col-form-label-lg">Full Name</label>
-                <div class="col-sm-9">
-                <input class="form-control form-control-lg is-valid" id="name" name="name" type="text" title="Full Name" placeholder="Your first and second name..." value="Kamil Samigullin"></div></div><input name="_redirect" type="hidden" value="https://kamil.samigullin.info/">
-        <input class="btn btn-danger" type="submit">
-    </form><script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                    <div class="progress text-center">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                             style="width: 100%">60</div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div><script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
@@ -27,5 +45,26 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
+<script>
+(function ($, start) {
+    'use strict';
+    const $progress = $('.card .progress-bar');
+    var timeout, timer, correction;
+    correction = Math.round((Date.now() - start) / 1000);
+    timeout = timer = parseInt($progress.text());
+    timer -= correction;
+    setInterval(function () {
+        timer--;
+        const percentage = Math.round(10000 * timer / timeout) / 100;
+        $progress.text(timer).css('width', percentage + '%');
+        if (percentage < 40 && $progress.hasClass('bg-warning')) {
+            $progress.removeClass('bg-warning').addClass('bg-danger');
+        } else if (percentage < 80 && $progress.hasClass('bg-success')) {
+            $progress.removeClass('bg-success').addClass('bg-warning');
+        }
+    }, 1000);
+    $('html').attr('class', 'js');
+}(window.jQuery, window.START))
+</script>
 </body>
 </html>

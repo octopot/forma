@@ -42,6 +42,13 @@ func TestErrorTemplate(t *testing.T) {
 				EncodingType: "application/x-www-form-urlencoded",
 				Inputs: []domain.Input{
 					{
+						ID:          "name",
+						Name:        "name",
+						Type:        domain.TextType,
+						Title:       "Full Name",
+						Placeholder: "Your first and second name...",
+					},
+					{
 						ID:          "email",
 						Name:        "email",
 						Type:        domain.EmailType,
@@ -50,17 +57,10 @@ func TestErrorTemplate(t *testing.T) {
 						MaxLength:   64,
 						Required:    true,
 					},
-					{
-						ID:          "name",
-						Name:        "name",
-						Type:        domain.TextType,
-						Title:       "Full Name",
-						Placeholder: "Your first and second name...",
-					},
 				},
 			}
 			_, err := schema.Apply(map[string][]string{"email": {"is invalid"}, "name": {"Kamil Samigullin"}})
-			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Hour, Redirect: schema.Action}
+			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Minute, Redirect: schema.Action}
 		}, "./fixtures/email_subscription.html.golden"},
 	}
 

@@ -4,6 +4,7 @@
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![Build Status](https://travis-ci.org/kamilsk/form-api.svg?branch=master)](https://travis-ci.org/kamilsk/semaphore)
+[![Coverage Status](https://coveralls.io/repos/github/kamilsk/form-api/badge.svg)](https://coveralls.io/github/kamilsk/form-api)
 [![GoDoc](https://godoc.org/github.com/kamilsk/form-api?status.svg)](https://godoc.org/github.com/kamilsk/form-api)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 

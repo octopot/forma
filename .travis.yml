@@ -16,13 +16,21 @@ matrix:
 sudo: false
 
 before_install:
+- wget -q -O dep https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64
+- chmod +x dep && mv dep "${GOPATH}"/bin
 - make tools
+- go get github.com/mattn/goveralls
+- export GO_TEST_COVERAGE_FILENAME='coverage.out'
 
 install:
-- make deps
+- make deps generate
 
 script:
-- make test-with-race
+- make test-with-coverage-profile ARGS='-timeout=1s'
+
+after_success:
+- goveralls -service=travis-ci -coverprofile="${GO_TEST_COVERAGE_FILENAME}"
+- echo $TRAVIS_GO_VERSION ":" $TRAVIS_TAG
 
 notifications:
   slack: octolab:1eMS7IqOArBipiu31jYVd0cN

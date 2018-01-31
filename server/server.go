@@ -7,6 +7,8 @@ import (
 	"path"
 	"time"
 
+	deep "github.com/pkg/errors"
+
 	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/errors"
 	"github.com/kamilsk/form-api/server/middleware"
@@ -106,11 +108,12 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 						}
 					}
 
+					cause := deep.Cause(err).(domain.ValidationError)
 					rw.WriteHeader(http.StatusBadRequest)
 					s.templates.errorTpl.Execute(rw, static.ErrorPageContext{
 						Schema:   response.Schema,
-						Error:    err.Cause().(domain.ValidationError),
-						Delay:    5 * time.Second,
+						Error:    cause,
+						Delay:    30 * time.Duration(len(cause.InputWithErrors())) * time.Second,
 						Redirect: redirect,
 					})
 				}

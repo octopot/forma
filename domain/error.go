@@ -52,7 +52,9 @@ func (err dataValidationError) HasError(input Input) bool {
 func (err dataValidationError) InputWithErrors() map[Input][]error {
 	m := make(map[Input][]error, len(err.results))
 	for _, r := range err.results {
-		m[r.input] = r.errors
+		if r.HasError() {
+			m[r.input] = r.errors
+		}
 	}
 	return m
 }

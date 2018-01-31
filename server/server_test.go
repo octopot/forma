@@ -135,6 +135,41 @@ func TestServer_PostV1(t *testing.T) {
 			req, _ := http.NewRequest(http.MethodPost, HOST, nil)
 			return req
 		}, http.StatusBadRequest},
+		{http.StatusText(http.StatusBadRequest) + ", invalid input", func(out io.Writer) *http.Request {
+			req, _ := http.NewRequest(http.MethodPost, HOST, strings.NewReader("email=invalid"))
+			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+			req = req.WithContext(context.WithValue(req.Context(),
+				middleware.SchemaKey{}, UUID))
+			data, err := func() (map[string][]string, error) {
+				data := map[string][]string{"email": {"invalid"}}
+				_, err := domain.Schema{Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}}}.Validate(data)
+				return data, errors.Validation("", err, "")
+			}()
+			service.EXPECT().
+				HandlePostV1(v1.PostRequest{UUID: UUID, Data: data}).
+				Return(v1.PostResponse{Error: err})
+			return req
+		}, http.StatusBadRequest},
+		{http.StatusText(http.StatusInternalServerError), func(out io.Writer) *http.Request {
+			req, _ := http.NewRequest(http.MethodPost, HOST, strings.NewReader("email=test@my.email"))
+			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+			req = req.WithContext(context.WithValue(req.Context(),
+				middleware.SchemaKey{}, FAKE))
+			service.EXPECT().
+				HandlePostV1(v1.PostRequest{UUID: FAKE, Data: map[string][]string{"email": {"test@my.email"}}}).
+				Return(v1.PostResponse{Error: errors.Database("", nil, "")})
+			return req
+		}, http.StatusInternalServerError},
+		{http.StatusText(http.StatusNotFound), func(out io.Writer) *http.Request {
+			req, _ := http.NewRequest(http.MethodPost, HOST, strings.NewReader("email=test@my.email"))
+			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+			req = req.WithContext(context.WithValue(req.Context(),
+				middleware.SchemaKey{}, ZERO))
+			service.EXPECT().
+				HandlePostV1(v1.PostRequest{UUID: ZERO, Data: map[string][]string{"email": {"test@my.email"}}}).
+				Return(v1.PostResponse{Error: errors.NotFound("", nil, "")})
+			return req
+		}, http.StatusNotFound},
 		{http.StatusText(http.StatusFound), func(out io.Writer) *http.Request {
 			req, _ := http.NewRequest(http.MethodPost, HOST, strings.NewReader("email=test@my.email"))
 			req.Header.Set("Content-Type", "application/x-www-form-urlencoded")

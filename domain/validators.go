@@ -84,13 +84,6 @@ func TypeValidator(inputType string, strict bool) ValidatorFunc {
 					return validationError{true, i, value, "value is not a valid email"}
 				}
 				if strict {
-					// TODO v2: support `strict`
-					// - net.LookupMX
-					// - smtp.Dial
-					// - smtp.Client.Hello("checkmail.me")
-					// - smtp.Client.Mail(...)
-					// - smtp.Client.Rcpt(value)
-					// see https://github.com/badoux/checkmail as example
 				}
 			}
 		case HiddenType, TextType:

@@ -13,12 +13,6 @@ import (
 	"github.com/spf13/viper"
 )
 
-// TODO v2: refactoring
-// - do not use log.Fatalf
-
-// TODO v3: implement
-// - MongoDB
-
 var migrateCmd = &cobra.Command{
 	Use:   "migrate",
 	Short: "Apply database migration",

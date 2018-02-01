@@ -14,7 +14,6 @@
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <style>
-        #examples > .row { padding-top: 10px; padding-bottom: 20px; }
         .ribbon img { position: absolute; top: 0; right: 0; border: 0; }
         .product-device {
             position: absolute;
@@ -50,8 +49,7 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="https://www.octolab.org/">
-        <img class="d-inline-block align-top" height="30"
-             src="https://idea.octolab.org/img/logo/ffffff.292x78.png" alt="OctoLab Open(Source)">
+        <img class="d-inline-block align-top" height="30" src="img/octolab.png" alt="OctoLab Open(Source)">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
         <span class="navbar-toggler-icon"></span>
@@ -82,12 +80,10 @@
                 </div>
             </li>
             <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
-            <li class="nav-item"><span class="nav-link disabled">Forma (coming soon)</span></li>
+            <li class="nav-item"><span class="nav-link disabled">Forma - send your HTML forms to the Cloud (coming soon)</span></li>
         </ul>
         <a class="ribbon" href="https://github.com/kamilsk/form-api">
-            <img src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
-                 alt="Fork me on GitHub"
-                 data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png">
+            <img src="img/fork.png" alt="Fork me on GitHub">
         </a>
     </div>
 </nav>
@@ -107,155 +103,161 @@
 
 
 <main class="container-fluid">
-    <div class="row align-items-center">
-        <div class="col col-sm-7">
-            <div id="examples" class="container">
-                <div class="row">
-                    <div class="col">
-                        <h1>Live examples</h1>
-                        <hr>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>Different languages</h2>
-                        <div class="card text-center">
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#demo-form-en" data-toggle="tab">EN</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#demo-form-ru" data-toggle="tab">RU</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body text-left">
-                                <div class="tab-content">
-                                    <div id="demo-form-en" class="tab-pane fade show active">
-                                        <form lang="en" id="41059676-6cb6-42bc-9fb5-8df1699b6881" title="GitHub demo page"
-                                              action="https://form.octolab.net/api/v1/41059676-6cb6-42bc-9fb5-8df1699b6881"
-                                              method="post" enctype="application/x-www-form-urlencoded">
-                                            <div class="form-group row">
-                                                <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Name</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
-                                                           class="form-control form-control-lg" name="name" type="text"
-                                                           title="Name" placeholder="Name..." maxlength="25" required>
-                                                </div>
+    <div class="row">
+        <div class="col">
+            <h1>Live examples</h1>
+            <hr>
+            <div class="row align-items-center">
+                <div class="col-md-7">
+
+
+
+
+
+                    <h2>Different languages</h2>
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#demo-form-en" data-toggle="tab">EN</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#demo-form-ru" data-toggle="tab">RU</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body text-left">
+                            <div class="tab-content">
+                                <div id="demo-form-en" class="tab-pane fade show active">
+                                    <form lang="en" id="41059676-6cb6-42bc-9fb5-8df1699b6881" title="GitHub demo page"
+                                          action="https://form.octolab.net/api/v1/41059676-6cb6-42bc-9fb5-8df1699b6881"
+                                          method="post" enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
+                                                   class="col-sm-2 col-form-label">Name</label>
+                                            <div class="col-sm-10">
+                                                <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
+                                                       class="form-control" name="name" type="text"
+                                                       title="Name" placeholder="Name..." maxlength="25" required>
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Feedback</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
-                                                           class="form-control form-control-lg" name="feedback" type="text"
-                                                           title="Feedback" placeholder="Your feedback..." maxlength="255"
-                                                           required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
+                                                   class="col-sm-2 col-form-label">Feedback</label>
+                                            <div class="col-sm-10">
+                                                <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
+                                                       class="form-control" name="feedback" type="text"
+                                                       title="Feedback" placeholder="Your feedback..." maxlength="255"
+                                                       required>
                                             </div>
-                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
-                                            <input name="_timeout" type="hidden" value="60">
-                                            <input class="btn btn-dark" type="submit">
-                                        </form>
-                                    </div>
-                                    <div id="demo-form-ru" class="tab-pane fade">
-                                        <form lang="ru" id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1" title="GitHub демо"
-                                              action="https://form.octolab.net/api/v1/41d33b3d-26fe-435c-9402-c8e4a1f87cc1"
-                                              method="post" enctype="application/x-www-form-urlencoded">
-                                            <div class="form-group row">
-                                                <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Имя</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
-                                                           class="form-control form-control-lg" name="name" type="text"
-                                                           title="Имя" placeholder="Имя..." maxlength="25" required>
-                                                </div>
+                                        </div>
+                                        <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                        <input name="_timeout" type="hidden" value="60">
+                                        <input class="btn btn-dark" type="submit">
+                                    </form>
+                                </div>
+                                <div id="demo-form-ru" class="tab-pane fade">
+                                    <form lang="ru" id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1" title="GitHub демо"
+                                          action="https://form.octolab.net/api/v1/41d33b3d-26fe-435c-9402-c8e4a1f87cc1"
+                                          method="post" enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
+                                                   class="col-sm-2 col-form-label">Имя</label>
+                                            <div class="col-sm-10">
+                                                <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
+                                                       class="form-control" name="name" type="text"
+                                                       title="Имя" placeholder="Имя..." maxlength="25" required>
                                             </div>
-                                            <div class="form-group row">
-                                                <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Комментарий</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
-                                                           class="form-control form-control-lg" name="feedback" type="text"
-                                                           title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
-                                                           required>
-                                                </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
+                                                   class="col-sm-2 col-form-label">Комментарий</label>
+                                            <div class="col-sm-10">
+                                                <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
+                                                       class="form-control" name="feedback" type="text"
+                                                       title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
+                                                       required>
                                             </div>
-                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
-                                            <input name="_timeout" type="hidden" value="60">
-                                            <input class="btn btn-dark" type="submit">
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                        <input name="_timeout" type="hidden" value="60">
+                                        <input class="btn btn-dark" type="submit">
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <h2>Different behavior</h2>
-                        <div class="card text-center">
-                            <div class="card-header">
-                                <ul class="nav nav-tabs card-header-tabs">
-                                    <li class="nav-item">
-                                        <a class="nav-link active" href="#demo-form-valid" data-toggle="tab">Valid</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="#demo-form-invalid" data-toggle="tab">Invalid</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="card-body text-left">
-                                <div class="tab-content">
-                                    <div id="demo-form-valid" class="tab-pane fade show active">
-                                        <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
-                                              action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
-                                              method="post" enctype="application/x-www-form-urlencoded">
-                                            <div class="form-group row">
-                                                <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
-                                                           class="form-control form-control-lg is-valid" name="email" type="email"
-                                                           title="Email" maxlength="64" value="test@my.email" required readonly>
-                                                </div>
+
+
+
+
+                    <h2>Different behavior</h2>
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <ul class="nav nav-tabs card-header-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#demo-form-valid" data-toggle="tab">Valid</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#demo-form-invalid" data-toggle="tab">Invalid</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body text-left">
+                            <div class="tab-content">
+                                <div id="demo-form-valid" class="tab-pane fade show active">
+                                    <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
+                                          action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+                                          method="post" enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                   class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                       class="form-control is-valid" name="email" type="email"
+                                                       title="Email" maxlength="64" value="test@my.email" required readonly>
                                             </div>
-                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
-                                            <input name="_timeout" type="hidden" value="60">
-                                            <button class="btn btn-success" type="submit">Try to send valid data</button>
-                                        </form>
-                                    </div>
-                                    <div id="demo-form-invalid" class="tab-pane fade">
-                                        <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
-                                              action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
-                                              method="post" enctype="application/x-www-form-urlencoded">
-                                            <div class="form-group row">
-                                                <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
-                                                       class="col-sm-2 col-form-label col-form-label-lg">Email</label>
-                                                <div class="col-sm-10">
-                                                    <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
-                                                           class="form-control form-control-lg is-invalid" name="email" type="email"
-                                                           title="Email" maxlength="64" value="my.email" required readonly>
-                                                </div>
+                                        </div>
+                                        <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                        <input name="_timeout" type="hidden" value="60">
+                                        <button class="btn btn-success" type="submit">Try to send valid data</button>
+                                    </form>
+                                </div>
+                                <div id="demo-form-invalid" class="tab-pane fade">
+                                    <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
+                                          action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+                                          method="post" enctype="application/x-www-form-urlencoded">
+                                        <div class="form-group row">
+                                            <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                   class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                       class="form-control is-invalid" name="email" type="email"
+                                                       title="Email" maxlength="64" value="my.email" required readonly>
                                             </div>
-                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
-                                            <input name="_timeout" type="hidden" value="60">
-                                            <button class="btn btn-danger" type="submit">Try to send invalid data</button>
-                                        </form>
-                                    </div>
+                                        </div>
+                                        <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                        <input name="_timeout" type="hidden" value="60">
+                                        <button class="btn btn-danger" type="submit">Try to send invalid data</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+
+
+
+
+
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <a href="https://m.do.co/c/b2a387de5da4" title="https://www.digitalocean.com/"
+                       rel="noopener nofollow">
+                        <img src="img/digitalocean.svg" alt="Powered by DigitalOcean">
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="col col-sm-3 offset-sm-1">
-            <a href="https://m.do.co/c/b2a387de5da4" title="https://www.digitalocean.com/" rel="noopener nofollow">
-                <img src="banner.svg" alt="Powered by DigitalOcean">
-            </a>
         </div>
     </div>
 </main>

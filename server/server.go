@@ -104,6 +104,14 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 				case clientErr.IsInvalidInput():
 
 					{ // domain logic
+						// add form namespace to make its elements unique
+						response.Schema.ID = string(uuid)
+						for i := range response.Schema.Inputs {
+							response.Schema.Inputs[i].ID = string(uuid) + "_" + response.Schema.Inputs[i].Name
+						}
+						// replace fallback by current API call
+						response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
+						// add URL marker
 						u, err := url.Parse(redirect)
 						if err == nil {
 							u.Query().Set(string(uuid), "failure")
@@ -128,6 +136,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	}
 
 	{ // domain logic
+		// add URL marker
 		u, err := url.Parse(redirect)
 		if err == nil {
 			u.Query().Set(string(uuid), "success")

@@ -12,9 +12,257 @@
         gtag('js', new Date());
         gtag('config', 'UA-109817251-15');
     </script>
-    <style></style>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    <style>
+        #examples > .row { padding-top: 10px; padding-bottom: 20px; }
+        .ribbon img { position: absolute; top: 0; right: 0; border: 0; }
+        .product-device {
+            position: absolute;
+            right: 10%;
+            bottom: -30%;
+            width: 300px;
+            height: 540px;
+            background-color: #333;
+            border-radius: 21px;
+            -webkit-transform: rotate(30deg);
+            transform: rotate(30deg);
+        }
+        .product-device::before {
+            position: absolute;
+            top: 10%;
+            right: 10px;
+            bottom: 10%;
+            left: 10px;
+            content: "";
+            background-color: rgba(255, 255, 255, .1);
+            border-radius: 5px;
+        }
+        .product-device-2 {
+            top: -25%;
+            right: auto;
+            bottom: 0;
+            left: 5%;
+            background-color: #e5e5e5;
+        }
+        .overflow-hidden { overflow: hidden; }
+    </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <a class="navbar-brand" href="https://www.octolab.org/">
+        <img class="d-inline-block align-top" height="30"
+             src="https://idea.octolab.org/img/logo/ffffff.292x78.png" alt="OctoLab Open(Source)">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div id="menu" class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a id="feedback-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Feedback</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="https://gitter.im/kamilsk/form-api">Gitter</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="https://twitter.com/ikamilsk">@kamilsk</a>
+                    <a class="dropdown-item" href="https://twitter.com/octolab_inc">@octolab</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item"
+                       href="mailto:feedback@octolab.org?subject=Form%20API%20(from%20GitHub%20page)">
+                        feedback@octolab.org
+                    </a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a id="github-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">GitHub</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="https://github.com/kamilsk/form-api">Project</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="https://github.com/kamilsk">Kamil Samigullin</a>
+                    <a class="dropdown-item" href="https://github.com/octolab">OctoLab</a>
+                </div>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
+            <li class="nav-item"><span class="nav-link disabled">Forma (coming soon)</span></li>
+        </ul>
+        <a class="ribbon" href="https://github.com/kamilsk/form-api">
+            <img src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67"
+                 alt="Fork me on GitHub"
+                 data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png">
+        </a>
+    </div>
+</nav>
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
+    <div class="col-md-5 p-lg-5 mx-auto my-5">
+        <h1 class="display-4 font-weight-normal">Form API</h1>
+        <p class="lead font-weight-normal">Data Collector as a Service &mdash; <br> a server for your HTML forms written
+            on <a href="https://golang.org/">Go</a>.</p>
+        <small>Part of <strong>Hugs Platform</strong>, made with <i class="fas fa-heart" style="color: red;"></i>️ by
+            <a href="https://www.octolab.org/" title="OctoLab Open(Source)">OctoLab</a></small>
+    </div>
+    <div class="product-device box-shadow d-none d-md-block"></div>
+    <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+</div>
+
+
+
+
+<main class="container-fluid">
+    <div class="row align-items-center">
+        <div class="col col-sm-7">
+            <div id="examples" class="container">
+                <div class="row">
+                    <div class="col">
+                        <h1>Live examples</h1>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h2>Different languages</h2>
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#demo-form-en" data-toggle="tab">EN</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#demo-form-ru" data-toggle="tab">RU</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body text-left">
+                                <div class="tab-content">
+                                    <div id="demo-form-en" class="tab-pane fade show active">
+                                        <form lang="en" id="41059676-6cb6-42bc-9fb5-8df1699b6881" title="GitHub demo page"
+                                              action="https://form.octolab.net/api/v1/41059676-6cb6-42bc-9fb5-8df1699b6881"
+                                              method="post" enctype="application/x-www-form-urlencoded">
+                                            <div class="form-group row">
+                                                <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Name</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_name"
+                                                           class="form-control form-control-lg" name="name" type="text"
+                                                           title="Name" placeholder="Name..." maxlength="25" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Feedback</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41059676-6cb6-42bc-9fb5-8df1699b6881_feedback"
+                                                           class="form-control form-control-lg" name="feedback" type="text"
+                                                           title="Feedback" placeholder="Your feedback..." maxlength="255"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                            <input name="_timeout" type="hidden" value="60">
+                                            <input class="btn btn-dark" type="submit">
+                                        </form>
+                                    </div>
+                                    <div id="demo-form-ru" class="tab-pane fade">
+                                        <form lang="ru" id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1" title="GitHub демо"
+                                              action="https://form.octolab.net/api/v1/41d33b3d-26fe-435c-9402-c8e4a1f87cc1"
+                                              method="post" enctype="application/x-www-form-urlencoded">
+                                            <div class="form-group row">
+                                                <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Имя</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_name"
+                                                           class="form-control form-control-lg" name="name" type="text"
+                                                           title="Имя" placeholder="Имя..." maxlength="25" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label for="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Комментарий</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41d33b3d-26fe-435c-9402-c8e4a1f87cc1_feedback"
+                                                           class="form-control form-control-lg" name="feedback" type="text"
+                                                           title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                            <input name="_timeout" type="hidden" value="60">
+                                            <input class="btn btn-dark" type="submit">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <h2>Different behavior</h2>
+                        <div class="card text-center">
+                            <div class="card-header">
+                                <ul class="nav nav-tabs card-header-tabs">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="#demo-form-valid" data-toggle="tab">Valid</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#demo-form-invalid" data-toggle="tab">Invalid</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="card-body text-left">
+                                <div class="tab-content">
+                                    <div id="demo-form-valid" class="tab-pane fade show active">
+                                        <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
+                                              action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+                                              method="post" enctype="application/x-www-form-urlencoded">
+                                            <div class="form-group row">
+                                                <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                           class="form-control form-control-lg is-valid" name="email" type="email"
+                                                           title="Email" maxlength="64" value="test@my.email" required readonly>
+                                                </div>
+                                            </div>
+                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                            <input name="_timeout" type="hidden" value="60">
+                                            <button class="btn btn-success" type="submit">Try to send valid data</button>
+                                        </form>
+                                    </div>
+                                    <div id="demo-form-invalid" class="tab-pane fade">
+                                        <form lang="en" id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" title="Email subscription"
+                                              action="https://form.octolab.net/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+                                              method="post" enctype="application/x-www-form-urlencoded">
+                                            <div class="form-group row">
+                                                <label for="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                       class="col-sm-2 col-form-label col-form-label-lg">Email</label>
+                                                <div class="col-sm-10">
+                                                    <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email"
+                                                           class="form-control form-control-lg is-invalid" name="email" type="email"
+                                                           title="Email" maxlength="64" value="my.email" required readonly>
+                                                </div>
+                                            </div>
+                                            <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+                                            <input name="_timeout" type="hidden" value="60">
+                                            <button class="btn btn-danger" type="submit">Try to send invalid data</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-sm-3 offset-sm-1">
+            <a href="https://m.do.co/c/b2a387de5da4" title="https://www.digitalocean.com/" rel="noopener nofollow">
+                <img src="banner.svg" alt="Powered by DigitalOcean">
+            </a>
+        </div>
+    </div>
+</main>
+
+
+
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>

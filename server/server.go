@@ -18,7 +18,10 @@ import (
 )
 
 const (
+	// RedirectKey is used to overwrite default redirect link and serves as a fallback for Referer header.
 	RedirectKey = "_redirect"
+	// TimeoutKey is used to overwrite default error fix timeout.
+	TimeoutKey = "_timeout"
 )
 
 // New returns a new instance of Form API server.

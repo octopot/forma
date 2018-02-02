@@ -13,7 +13,10 @@
         .card .progress { height: 100%; }
         .no-js .progress { display: none; }
     </style>
-    <script>window.START = Date.now();</script>
+    <script>
+        window.START = Date.now();
+        (function (node) { var c = node.classList; c.remove('no-js'); c.add('js'); }(window.document.documentElement));
+    </script>
 </head>
 <body>
 {{- $ := . -}}
@@ -87,7 +90,6 @@
             $progress.removeClass('bg-success').addClass('bg-warning');
         }
     }, 1000);
-    $('html').attr('class', 'js');
 }(window.jQuery, window.START))
 </script>
 </body>

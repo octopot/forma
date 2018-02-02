@@ -5,6 +5,7 @@
 .goreleaser.yml export-ignore
 .travis.yml     export-ignore
 
+/docs/          export-ignore
 /env/           export-ignore
 /makes/         export-ignore
 /Makefile       export-ignore

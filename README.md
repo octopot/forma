@@ -1,5 +1,5 @@
-> # Form API [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://github.com/kamilsk/form-api&via=ikamilsk&hashtags=go,service,data-collector)
-> [![Analytics](https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel)](https://github.com/kamilsk/form-api)
+> # Form API [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://kamilsk.github.io/form-api/&via=ikamilsk&hashtags=go,service,data-collector)
+> [![Analytics](https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel)](https://kamilsk.github.io/form-api/)
 > Data Collector as a Service.
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
@@ -65,7 +65,7 @@ Flags:
 
 ```bash
 $ go get -d -u github.com/kamilsk/form-api
-$ cd $GOPATH/src/github.com/kamilsk/form-api
+$ cd ${GOPATH}/src/github.com/kamilsk/form-api
 $ make deps generate test install
 ```
 

@@ -11,9 +11,12 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
         gtag('config', 'UA-109817251-15');
+
+        (function (node) { var c = node.classList; c.remove('no-js'); c.add('js'); }(window.document.documentElement));
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
     <style>
+        .msg { position: fixed; bottom: 0; right: 1rem; }
         .ribbon img { position: absolute; top: 0; right: 0; border: 0; }
         .product-device {
             position: absolute;
@@ -108,7 +111,7 @@
                 <span class="nav-link disabled">Forma - send your HTML forms to the Cloud (coming soon)</span>
             </li>
         </ul>
-        <a class="ribbon" href="https://github.com/kamilsk/form-api">
+        <a class="ribbon" href="https://github.com/kamilsk/form-api/fork">
             <img src="img/fork.png" alt="Fork me on GitHub">
         </a>
     </div>
@@ -125,8 +128,36 @@
     <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
 </div>
 <main class="container-fluid">
+
+
+
     <div class="row">
-        <div class="col">
+        <div class="col p-4 text-center">
+            <h1>Motivation</h1>
+            <div class="row p-3">
+                <div class="col-md-4">
+                    <h2><i class="fas fa-code-branch"></i></h2>
+                    <h3>Open Source</h3>
+                    <p>...</p>
+                </div>
+                <div class="col-md-4">
+                    <h2><i class="far fa-file-code"></i></h2>
+                    <h3>Static Site Generators</h3>
+                    <p>...</p>
+                </div>
+                <div class="col-md-4">
+                    <h2><i class="fas fa-server"></i></h2>
+                    <h3>Performance and Scalability</h3>
+                    <p>...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col p-4">
             <h1>Live examples</h1>
             <div class="row align-items-center">
                 <div class="col-md-7">
@@ -306,7 +337,7 @@
 
 
     <div class="row">
-        <div class="col">
+        <div class="col p-4">
             <h1 class="text-right">Up and running</h1>
             <p class="p-2">Coming soon...</p>
         </div>
@@ -315,7 +346,7 @@
 
 
     <div class="row">
-        <div class="col">
+        <div class="col p-4">
             <h1 class="text-center">Roadmap</h1>
             <p class="p-2">Coming soon...</p>
         </div>
@@ -341,6 +372,40 @@
 <script>
 (function ($) {
     'use strict';
+    const location = new URL(window.location.href),
+          body = $('body'),
+          success = 'success',
+          failure = 'failure';
+    $('.example form').each(function (i, node) {
+        const value = location.searchParams.get(node.id);
+        if (value) {
+            var msg, title;
+            switch (value) {
+                case success:
+                    title = 'Form "' + node.title + '" was processed successfully!';
+                    msg = $('<div class="msg alert alert-success alert-dismissible fade show"/>');
+                    msg.append($('<h4 class="alert-heading"/>').text(title));
+                    msg.append($('<p>Aww yeah, you did the right thing!</p>'));
+                    break;
+                case failure:
+                    title = 'Form "' + node.title + '" was processed unsuccessfully';
+                    msg = $('<div class="msg alert alert-danger alert-dismissible fade show"/>');
+                    msg.append($('<h4 class="alert-heading"/>').text(title));
+                    msg.append($('<p>Oops! But this also happens 😉</p>'));
+                    break;
+                default:
+                    return;
+            }
+            msg.append($('<hr>'));
+            msg.append($('<p class="mb-0">As you can see it was very simple! 🤗</p>'));
+            msg.append(
+                $('<button type="button" class="close" data-dismiss="alert"/>')
+                    .append($('<span>&times;</span>'))
+            );
+            body.append(msg);
+            setTimeout(function () { msg.alert('close'); }, 5000)
+        }
+    });
 }(window.jQuery))
 </script>
 </body>

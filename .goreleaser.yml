@@ -24,7 +24,7 @@ brew:
   github:
     name:  homebrew-tap
     owner: kamilsk
-  homepage: https://github.com/kamilsk/form-api
+  homepage: https://kamilsk.github.io/form-api/
 
 build:
   binary: form-api

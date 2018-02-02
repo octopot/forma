@@ -114,7 +114,9 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 						// add URL marker
 						u, err := url.Parse(redirect)
 						if err == nil {
-							u.Query().Set(string(uuid), "failure")
+							query := u.Query()
+							query.Set(string(uuid), "failure")
+							u.RawQuery = query.Encode()
 							redirect = u.String()
 						}
 					}
@@ -139,7 +141,9 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		// add URL marker
 		u, err := url.Parse(redirect)
 		if err == nil {
-			u.Query().Set(string(uuid), "success")
+			query := u.Query()
+			query.Set(string(uuid), "success")
+			u.RawQuery = query.Encode()
 			redirect = u.String()
 		}
 	}

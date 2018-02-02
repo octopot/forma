@@ -12,12 +12,14 @@
 
 ```bash
 $ make deps up demo && make status
+
      Name                    Command               State                Ports             
 ------------------------------------------------------------------------------------------
 env_db_1          docker-entrypoint.sh postgres    Up       0.0.0.0:5432->5432/tcp        
 env_migration_1   form-api migrate up              Exit 0                                 
 env_server_1      /bin/sh -c envsubst '$SERV ...   Up       80/tcp, 0.0.0.0:8080->8080/tcp
 env_service_1     form-api run --with-profiler     Up       0.0.0.0:8081->8080/tcp        
+
 $ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 $ curl -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \

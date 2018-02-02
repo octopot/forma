@@ -5,6 +5,19 @@
     <title>Form API demo page</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="https://www.octolab.org/img/icon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="https://www.octolab.org/img/icon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://www.octolab.org/img/icon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="https://www.octolab.org/img/icon/favicon-16x16.png">
+    <link rel="mask-icon" href="https://www.octolab.org/img/icon/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="https://www.octolab.org/img/icon/favicon.ico">
+
+    <meta name="msapplication-TileColor" content="#00a300">
+    <meta name="msapplication-TileImage" content="/img/icon/mstile-144x144.png">
+    <meta name="msapplication-config" content="/img/icon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109817251-15"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -15,68 +28,11 @@
         (function (node) { var c = node.classList; c.remove('no-js'); c.add('js'); }(window.document.documentElement));
     </script>
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
-    <style>
-        .msg { position: fixed; bottom: 0; right: 1rem; }
-        .ribbon img { position: absolute; top: 0; right: 0; border: 0; }
-        .product-device {
-            position: absolute;
-            right: 10%;
-            bottom: -30%;
-            width: 300px;
-            height: 540px;
-            background-color: #333;
-            border-radius: 21px;
-            -webkit-transform: rotate(30deg);
-            transform: rotate(30deg);
-        }
-        .product-device::before {
-            position: absolute;
-            top: 10%;
-            right: 10px;
-            bottom: 10%;
-            left: 10px;
-            content: "";
-            background-color: rgba(255, 255, 255, .1);
-            border-radius: 5px;
-        }
-        .product-device-2 {
-            top: -25%;
-            right: auto;
-            bottom: 0;
-            left: 5%;
-            background-color: #e5e5e5;
-        }
-        .overflow-hidden { overflow: hidden; }
-        .example {
-            position: relative;
-            padding: 1rem;
-            margin: 10px 0 0;
-            border: solid #f7f7f9;
-            border-width: .2rem 0 0;
-        }
-        @media (min-width: 576px) {
-            .example {
-                padding: 1.5rem;
-                border-width: .2rem;
-            }
-        }
-        .example .title { position: absolute; top: 12px; right: 12px; padding: 9px; }
-        .highlight { margin: 0 0 40px; padding: 1rem; background-color: #f7f7f9; }
-        .highlight pre { margin: 0; padding: 0; }
-        .highlight code { margin: 0; padding: 0; }
-        footer {
-            padding: 2.5rem 0;
-            color: #999;
-            text-align: center;
-            background-color: #f9f9f9;
-            border-top: .05rem solid #e5e5e5;
-        }
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <a class="navbar-brand" href="https://www.octolab.org/">
-        <img class="d-inline-block align-top" height="30" src="img/octolab.png" alt="OctoLab Open(Source)">
+        <img class="d-inline-block align-top" height="30" src="img/octolab.png" alt="OctoLab Open(src Source)">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
         <span class="navbar-toggler-icon"></span>
@@ -108,7 +64,7 @@
             </li>
             <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
             <li class="nav-item">
-                <span class="nav-link disabled">Forma - send your HTML forms to the Cloud (coming soon)</span>
+                <span class="nav-link disabled">FormA - send your HTML forms to the Cloud (coming soon)</span>
             </li>
         </ul>
         <a class="ribbon" href="https://github.com/kamilsk/form-api/fork">
@@ -122,7 +78,7 @@
         <p class="lead font-weight-normal">Data Collector as a Service &mdash; <br> a server for your HTML forms written
             on <a href="https://golang.org/">Go</a>.</p>
         <small>Part of <strong>Hugs Platform</strong>, made with <i class="fas fa-heart" style="color: red;"></i>️ by
-            <a href="https://www.octolab.org/" title="OctoLab Open(Source)">OctoLab</a></small>
+            <a href="https://www.octolab.org/" title="OctoLab Open(src Source)">OctoLab</a></small>
     </div>
     <div class="product-device box-shadow d-none d-md-block"></div>
     <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
@@ -347,8 +303,77 @@
 
     <div class="row">
         <div class="col p-4">
-            <h1 class="text-center">Roadmap</h1>
-            <p class="p-2">Coming soon...</p>
+            <h1 class="text-center">
+                Roadmap<br>
+                <i class="fas fa-road"></i>
+            </h1>
+
+
+
+            <section id="cd-timeline" class="cd-container">
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img complete">
+                        <i class="far fa-calendar-check"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>MVP, v1.0</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img">
+                        <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>CRUD, v2.0</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img">
+                        <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>GUI, v3.0</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img">
+                        <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>API v2, v4.0</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img">
+                        <i class="far fa-calendar"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>Extensibility, v5.0</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+
+                <div class="cd-timeline-block">
+                    <div class="cd-timeline-img">
+                        <i class="fas fa-flag-checkered"></i>
+                    </div>
+                    <div class="cd-timeline-content">
+                        <h2>FormA, SaaS</h2>
+                        <p>...</p>
+                    </div>
+                </div>
+            </section>
+
+
+
         </div>
     </div>
 </main>
@@ -369,44 +394,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script>
-(function ($) {
-    'use strict';
-    const location = new URL(window.location.href),
-          body = $('body'),
-          success = 'success',
-          failure = 'failure';
-    $('.example form').each(function (i, node) {
-        const value = location.searchParams.get(node.id);
-        if (value) {
-            var msg, title;
-            switch (value) {
-                case success:
-                    title = 'Form "' + node.title + '" was processed successfully!';
-                    msg = $('<div class="msg alert alert-success alert-dismissible fade show"/>');
-                    msg.append($('<h4 class="alert-heading"/>').text(title));
-                    msg.append($('<p>Aww yeah, you did the right thing!</p>'));
-                    break;
-                case failure:
-                    title = 'Form "' + node.title + '" was processed unsuccessfully';
-                    msg = $('<div class="msg alert alert-danger alert-dismissible fade show"/>');
-                    msg.append($('<h4 class="alert-heading"/>').text(title));
-                    msg.append($('<p>Oops! But this also happens 😉</p>'));
-                    break;
-                default:
-                    return;
-            }
-            msg.append($('<hr>'));
-            msg.append($('<p class="mb-0">As you can see it was very simple! 🤗</p>'));
-            msg.append(
-                $('<button type="button" class="close" data-dismiss="alert"/>')
-                    .append($('<span>&times;</span>'))
-            );
-            body.append(msg);
-            setTimeout(function () { msg.alert('close'); }, 5000)
-        }
-    });
-}(window.jQuery))
-</script>
+<script src="action.js"></script>
 </body>
 </html>

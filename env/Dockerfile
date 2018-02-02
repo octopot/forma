@@ -14,7 +14,7 @@ RUN echo "os: ${GOOS}", "arch: ${GOARCH}", "cgo: ${CGO_ENABLED}" \
  && if [ -z "${QUICK}" ]; \
     then \
       echo "downloading dep..."; \
-      wget -q -O dep https://github.com/golang/dep/releases/download/v0.3.2/dep-linux-amd64; \
+      wget -q -O dep https://github.com/golang/dep/releases/download/v0.4.1/dep-linux-amd64; \
       echo "moving dep..."; \
       chmod +x dep && mv dep /go/bin; \
       echo "running dep..."; \

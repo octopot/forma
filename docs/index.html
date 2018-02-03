@@ -80,13 +80,10 @@
         <small>Part of <strong>Hugs Platform</strong>, made with <i class="fas fa-heart" style="color: red;"></i>️ by
             <a href="https://www.octolab.org/" title="OctoLab Open(src Source)">OctoLab</a></small>
     </div>
-    <div class="product-device box-shadow d-none d-md-block"></div>
-    <div class="product-device product-device-2 box-shadow d-none d-md-block"></div>
+    <div class="device box-shadow d-none d-md-block"></div>
+    <div class="device device-2 box-shadow d-none d-md-block"></div>
 </div>
 <main class="container-fluid">
-
-
-
     <div class="row">
         <div class="col p-4 text-center">
             <h1>Motivation</h1>
@@ -94,24 +91,32 @@
                 <div class="col-md-4">
                     <h2><i class="fas fa-code-branch"></i></h2>
                     <h3>Open Source</h3>
-                    <p>...</p>
+                    <p>We found some services like <strong>Wufoo</strong> and <strong>Paperclip</strong> are useful.
+                        However, they are proprietary, closed and paid. Also, we want to have full control of our data.
+                        With love for open source, we start to create something similar from scratch and share it with
+                        our community.</p>
                 </div>
                 <div class="col-md-4">
                     <h2><i class="far fa-file-code"></i></h2>
-                    <h3>Static Site Generators</h3>
-                    <p>...</p>
+                    <h3>Static Sites</h3>
+                    <p>We use static site generators like awesome <a href="https://gohugo.io/"><strong>Hugo</strong></a>
+                        in our everyday work. We chose to get missing functionality from microservices like the
+                        <strong>Form API</strong>. You can use it wherever you want - on simple landing pages or sites
+                        based on <strong>Hugo</strong> or <a href="https://www.gatsbyjs.org/"><strong>Gatsby</strong></a>,
+                        or product from the <a href="https://www.staticgen.com/"><strong>StaticGen</strong></a> list.
                 </div>
                 <div class="col-md-4">
                     <h2><i class="fas fa-server"></i></h2>
-                    <h3>Performance and Scalability</h3>
-                    <p>...</p>
+                    <h3>Performance</h3>
+                    <p>We focused on performance and simplicity because the service is self-hosted and we
+                        do not want to spend much money, time and effort to host and maintain it. Therefore, we apply
+                        efficient solutions, such as <a href="https://golang.org/"><strong>Go</strong></a>,
+                        <a href="https://nginx.org/"><strong>nginx</strong></a> and
+                        <a href="https://www.postgresql.org/"><strong>PostgreSQL</strong></a>.</p>
                 </div>
             </div>
         </div>
     </div>
-
-
-
     <div class="row">
         <div class="col p-4">
             <h1>Live examples</h1>
@@ -192,29 +197,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="highlight">
-                        <pre><code class="language-xml" data-lang="xml" data-target="demo-form-en">
-&lt;form lang=&quot;en&quot; title=&quot;GitHub demo page&quot;
+                    <div class="clipboard"><button class="btn-alert" title="Show alerts">Alert</button></div>
+                    <div class="highlight highlight-source-xml">
+                        <pre><code class="language-xml" data-lang="xml" data-target="demo-form-en">&lt;form lang=&quot;en&quot; title=&quot;GitHub demo page&quot;
       action=&quot;https://kamilsk.github.io/form-api/&quot;
       method=&quot;post&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
     &lt;input name=&quot;name&quot; type=&quot;text&quot; title=&quot;Name&quot;
            placeholder=&quot;Name...&quot; maxlength=&quot;25&quot; required=&quot;1&quot;/&gt;
     &lt;input name=&quot;feedback&quot; type=&quot;text&quot; title=&quot;Feedback&quot;
            placeholder=&quot;Your feedback...&quot; maxlength=&quot;255&quot; required=&quot;1&quot;/&gt;
-&lt;/form&gt;
-                        </code></pre>
-                        <pre class="d-none"><code class="language-xml" data-lang="xml" data-target="demo-form-ru">
-&lt;form lang=&quot;en&quot; title=&quot;GitHub демо&quot;
+&lt;/form&gt;</code></pre>
+                        <pre class="d-none"><code class="language-xml" data-lang="xml" data-target="demo-form-ru">&lt;form lang=&quot;en&quot; title=&quot;GitHub демо&quot;
       action=&quot;https://kamilsk.github.io/form-api/&quot;
       method=&quot;post&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
     &lt;input name=&quot;name&quot; type=&quot;text&quot; title=&quot;Имя&quot;
            placeholder=&quot;Имя...&quot; maxlength=&quot;25&quot; required=&quot;1&quot;/&gt;
     &lt;input name=&quot;feedback&quot; type=&quot;text&quot; title=&quot;Комментарий&quot;
            placeholder=&quot;Ваш комментарий...&quot; maxlength=&quot;255&quot; required=&quot;1&quot;/&gt;
-&lt;/form&gt;
-                        </code></pre>
+&lt;/form&gt;</code></pre>
                     </div>
-                    <div class="example">
+                    <div class="example mt-4">
                         <div class="card text-center">
                             <div class="card-header">
                                 <ul class="nav nav-tabs card-header-tabs">
@@ -269,15 +271,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="highlight">
-                        <pre><code class="language-xml" data-lang="xml">
-&lt;form lang=&quot;en&quot; title=&quot;Email subscription&quot;
+                    <div class="clipboard"><button class="btn-alert" title="Show alerts">Alert</button></div>
+                    <div class="highlight highlight-source-xml">
+                        <pre><code class="language-xml" data-lang="xml">&lt;form lang=&quot;en&quot; title=&quot;Email subscription&quot;
       action=&quot;https://kamilsk.github.io/form-api/&quot;
       method=&quot;post&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
   &lt;input name=&quot;email&quot; type=&quot;email&quot; title=&quot;Email&quot;
          maxlength=&quot;64&quot; required=&quot;1&quot;/&gt;
-&lt;/form&gt;
-                        </code></pre>
+&lt;/form&gt;</code></pre>
                     </div>
                 </div>
                 <div class="col-md-3 offset-md-1">
@@ -285,7 +286,121 @@
                        rel="noopener nofollow">
                         <img src="img/digitalocean.svg" alt="Powered by DigitalOcean">
                     </a>
+                    <br><br><br>
+                    <img src="img/octopus.octolab.png" alt="OctoLab">
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col p-4">
+            <h1>Up and running</h1>
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h2>from source code</h2>
+                    <div class="highlight highlight-source-shell mt-3 mb-3">
+                        <pre><code class="language-shell" data-lang="shell">$ go get -d -u github.com/kamilsk/form-api
+$ cd ${GOPATH}/src/github.com/kamilsk/form-api
+
+# test it
+$ make deps generate test
+
+# run it
+$ make up &amp;&amp; make demo &amp;&amp; make status
+
+     Name                    Command               State                Ports
+------------------------------------------------------------------------------------------
+env_db_1          docker-entrypoint.sh postgres    Up       0.0.0.0:5432-&gt;5432/tcp
+env_migration_1   form-api migrate up              Exit 0
+env_server_1      /bin/sh -c envsubst '$SERV ...   Up       80/tcp, 0.0.0.0:8080-&gt;8080/tcp
+env_service_1     form-api run --with-profiler     Up       0.0.0.0:8081-&gt;8080/tcp
+
+# check it
+$ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+$ curl -H &quot;Content-Type: application/x-www-form-urlencoded&quot; \
+       --data-urlencode &quot;email=test@my.email&quot; \
+       http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4</code></pre>
+                    </div>
+                    <h6>Requirements</h6>
+                    <ul>
+                        <li>Docker 17.09.0-ce or above</li>
+                        <li>Docker Compose 1.16.1 or above</li>
+                        <li>Go 1.9.2 or above</li>
+                        <li>GNU Make 3.81 or above</li>
+                    </ul>
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <img src="img/octopus.clean.png" alt="Installation from source code">
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-md-7">
+                    <h2>using Docker</h2>
+                    <div class="highlight highlight-source-shell mt-3 mb-3">
+                        <pre><code class="language-shell" data-lang="shell">$ docker network create -d bridge form-api
+$ docker run --rm -d \
+             --env-file .env \
+             --network form-api \
+             --name form-api-db \
+             -h db \
+             -p 5432:5432 \
+             postgres:10-alpine
+$ docker run --rm -it \
+             --env-file .env \
+             --network form-api \
+             --name form-api-migration \
+             --link form-api-db:db \
+             -h migration \
+             kamilsk/form-api:latest migrate up --demo
+$ docker run --rm -d \
+             --env-file .env \
+             --network form-api \
+             --name form-api-service \
+             --link form-api-db:db \
+             -h service \
+             -p 8080:8080 \
+             kamilsk/form-api:latest</code></pre>
+                    </div>
+                    <h6>Images</h6>
+                    <ul>
+                        <li><a href="https://hub.docker.com/_/postgres/">postgres:10-alpine</a></li>
+                        <li><a href="https://hub.docker.com/r/kamilsk/form-api/">kamilsk/form-api:latest</a></li>
+                        <li>
+                            <a href="https://hub.docker.com/r/kamilsk/nginx/">kamilsk/nginx:alpine</a> - optional,
+                            if you want HTTPS via <a href="https://letsencrypt.org/">Let's Encrypt</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-3 offset-md-1">
+                    <img src="img/octopus.docker.png" alt="Using Docker">
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-12">
+            <h3 class="text-center">and now you are ready to taste it</h3>
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img class="d-block w-100" src="img/environment/542c258a16b56800cb3158771d093a7e.png"
+                             alt="JetBrains Editor-based REST Client">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/environment/eb8f85918ef4bf5e028e814f2a446936.png"
+                             alt="Insomnia REST client">
+                    </div>
+                    <div class="carousel-item">
+                        <img class="d-block w-100" src="img/environment/1f7905d21966b59aa85b46cb36d6d33d.png"
+                             alt="Google pprof integration">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carousel" data-slide="prev">
+                    <span class="carousel-control-prev-icon"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel" data-slide="next">
+                    <span class="carousel-control-next-icon"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
         </div>
     </div>
@@ -294,70 +409,53 @@
 
     <div class="row">
         <div class="col p-4">
-            <h1 class="text-right">Up and running</h1>
-            <p class="p-2">Coming soon...</p>
-        </div>
-    </div>
+            <h1 class="text-center">Roadmap<br><i class="fas fa-road"></i></h1>
 
 
 
-    <div class="row">
-        <div class="col p-4">
-            <h1 class="text-center">
-                Roadmap<br>
-                <i class="fas fa-road"></i>
-            </h1>
-
-
-
-            <section id="cd-timeline" class="cd-container">
+            <section id="cd-timeline">
                 <div class="cd-timeline-block">
                     <div class="cd-timeline-img complete">
                         <i class="far fa-calendar-check"></i>
                     </div>
                     <div class="cd-timeline-content">
                         <h2>MVP, v1.0</h2>
-                        <p>...</p>
                     </div>
                 </div>
 
                 <div class="cd-timeline-block">
                     <div class="cd-timeline-img">
-                        <i class="far fa-calendar"></i>
+                        <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="cd-timeline-content">
                         <h2>CRUD, v2.0</h2>
-                        <p>...</p>
                     </div>
                 </div>
 
                 <div class="cd-timeline-block">
                     <div class="cd-timeline-img">
-                        <i class="far fa-calendar"></i>
+                        <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="cd-timeline-content">
                         <h2>GUI, v3.0</h2>
-                        <p>...</p>
                     </div>
                 </div>
 
                 <div class="cd-timeline-block">
                     <div class="cd-timeline-img">
-                        <i class="far fa-calendar"></i>
+                        <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="cd-timeline-content">
                         <h2>API v2, v4.0</h2>
-                        <p>...</p>
                     </div>
                 </div>
 
                 <div class="cd-timeline-block">
                     <div class="cd-timeline-img">
-                        <i class="far fa-calendar"></i>
+                        <i class="far fa-calendar-alt"></i>
                     </div>
                     <div class="cd-timeline-content">
                         <h2>Extensibility, v5.0</h2>
-                        <p>...</p>
                     </div>
                 </div>
 
@@ -367,7 +465,6 @@
                     </div>
                     <div class="cd-timeline-content">
                         <h2>FormA, SaaS</h2>
-                        <p>...</p>
                     </div>
                 </div>
             </section>
@@ -385,6 +482,7 @@
     <p>Feel free to support us at</p>
     <a href="https://www.patreon.com/octolab"><img height="50" src="img/patreon.svg" alt="Patreon"></a>
 </footer>
+<div id="messages"></div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -394,6 +492,15 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-<script src="action.js"></script>
+<template id="message">
+    <div class="alert {{ type }} alert-dismissible fade show">
+        <h4 class="alert-heading">{{ title }}</h4>
+        <p>{{ desc }}</p>
+        <hr>
+        <p class="mb-0">As you can see it was very simple! 🤗</p>
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    </div>
+</template>
+<script src="script.js"></script>
 </body>
 </html>

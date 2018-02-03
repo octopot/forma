@@ -21,7 +21,7 @@ services:
     env_file: .env
     restart: on-failure
 
-  server: # https://hub.docker.com/_/nginx/
+  server: # https://hub.docker.com/r/kamilsk/nginx/
     image: kamilsk/nginx:alpine
     entrypoint: |
       /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \

@@ -66,6 +66,11 @@ func TestChiRouter(t *testing.T) {
 				Do(func(rw http.ResponseWriter, _ *http.Request) { rw.WriteHeader(http.StatusFound) })
 			return request
 		}, http.StatusFound},
+		{"GET /api/v1/{UUID}/heartbeat", func() *http.Request {
+			return &http.Request{Method: http.MethodGet, URL: &url.URL{
+				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String() + "/heartbeat",
+			}}
+		}, http.StatusNotImplemented},
 
 		{"POST /api/v2/schema", func() *http.Request {
 			return &http.Request{Method: http.MethodPost, URL: &url.URL{

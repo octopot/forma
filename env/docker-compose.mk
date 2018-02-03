@@ -98,8 +98,8 @@ logs-service: docker-compose
 
 
 .PHONY: demo
-demo:
-	make docker-compose COMMAND='exec service form-api migrate --demo up'
+demo: COMMAND = exec service form-api migrate --demo up
+demo: docker-compose
 
 
 

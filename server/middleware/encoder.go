@@ -11,6 +11,7 @@ import (
 // Encoder injects required response encoder to the request context.
 func Encoder(next http.HandlerFunc) http.HandlerFunc {
 	return func(rw http.ResponseWriter, req *http.Request) {
+		// Accept: */*
 		// Accept: text/html
 		// Accept: image/*
 		// Accept: text/html, application/xhtml+xml, application/xml; q=0.9, */*; q=0.8
@@ -25,7 +26,7 @@ func Encoder(next http.HandlerFunc) http.HandlerFunc {
 }
 
 func fallback(value string, fallbackValues ...string) string {
-	if value == "" {
+	if value == "" || value == "*/*" {
 		for _, value := range fallbackValues {
 			if value != "" {
 				return value

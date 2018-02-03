@@ -8,10 +8,10 @@
 [![GoDoc](https://godoc.org/github.com/kamilsk/form-api?status.svg)](https://godoc.org/github.com/kamilsk/form-api)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## Usage
+## Quick start
 
 ```bash
-$ make deps up demo && make status
+$ make deps up && make demo && make status
 
      Name                    Command               State                Ports             
 ------------------------------------------------------------------------------------------
@@ -54,14 +54,31 @@ Flags:
 
 ## Installation
 
-### Requirements
+### Brew
 
-- Docker 17.09.0-ce or above
-- Docker Compose 1.16.1 or above
-- Go 1.9.2 or above
-- GNU Make 3.81 or above
+```bash
+$ brew install kamilsk/tap/form-api
+```
 
-### From source
+### Binary
+
+```bash
+$ export FAPI_V=1.0.4   # all available versions are on https://github.com/kamilsk/form-api/releases
+$ export REQ_OS=Linux   # macOS and Windows are also available
+$ export REQ_ARCH=64bit # 32bit is also available
+$ wget -q -O form-api.tar.gz \
+       https://github.com/kamilsk/form-api/releases/download/${FAPI_V}/form-api_${FAPI_V}_${REQ_OS}-${REQ_ARCH}.tar.gz
+$ tar xf form-api.tar.gz -C "${GOPATH}"/bin/
+$ rm form-api.tar.gz
+```
+
+### Docker Hub
+
+```bash
+$ docker pull kamilsk/form-api:latest
+```
+
+### From source code
 
 ```bash
 $ go get -d -u github.com/kamilsk/form-api
@@ -77,6 +94,13 @@ $ egg bitbucket.org/kamilsk/form-api
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.
 
+#### Requirements
+
+- Docker 17.09.0-ce or above
+- Docker Compose 1.16.1 or above
+- Go 1.9.2 or above
+- GNU Make 3.81 or above
+
 ## Feedback
 
 [![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/form-api)
@@ -90,9 +114,7 @@ $ egg bitbucket.org/kamilsk/form-api
   - [ ] v2: CRUD
   - [ ] v3: GUI
   - [ ] v4: API v2
-  - [ ] v5: Scalability
-  - [ ] v6: Integrability
-  - [ ] v7: Performance and Redundancy
-  - [ ] v8: Complexity
+  - [ ] v5: Extensibility
+  - [ ] FormA, SaaS
 - tested on Go 1.9
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

@@ -19,8 +19,10 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 
+	notImplemented := func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) }
+
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+		r.Post("/", notImplemented)
 
 		r.Route("/{UUID}", func(r chi.Router) {
 			r.Use(func(next http.Handler) http.Handler {
@@ -30,16 +32,18 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 			})
 
 			r.Get("/", common.Encoder(api.GetV1))
-			r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
-			r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			r.Put("/", notImplemented)
+			r.Delete("/", notImplemented)
 
 			r.Post("/", api.PostV1)
+
+			r.Get("/heartbeat", notImplemented)
 		})
 	})
 
 	r.Route("/api/v2", func(r chi.Router) {
 		r.Route("/schema", func(r chi.Router) {
-			r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			r.Post("/", notImplemented)
 
 			r.Route("/{UUID}", func(r chi.Router) {
 				r.Use(func(next http.Handler) http.Handler {
@@ -48,16 +52,16 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 					})
 				})
 
-				r.Get("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
-				r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
-				r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Get("/", notImplemented)
+				r.Put("/", notImplemented)
+				r.Delete("/", notImplemented)
 
-				r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Post("/", notImplemented)
 			})
 		})
 
 		r.Route("/template", func(r chi.Router) {
-			r.Post("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+			r.Post("/", notImplemented)
 
 			r.Route("/{UUID}", func(r chi.Router) {
 				r.Use(func(next http.Handler) http.Handler {
@@ -66,9 +70,9 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 					})
 				})
 
-				r.Get("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
-				r.Put("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
-				r.Delete("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+				r.Get("/", notImplemented)
+				r.Put("/", notImplemented)
+				r.Delete("/", notImplemented)
 			})
 		})
 	})
@@ -85,7 +89,7 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 			})
 		})
 
-		r.Get("/", func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) })
+		r.Get("/", notImplemented)
 	})
 
 	if withProfiler {

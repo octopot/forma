@@ -52,4 +52,12 @@
         });
         showMessages();
     });
+
+    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        const target = $(e.target).attr('href').substr(1);
+        $('pre[data-target="' + target + '"').each(function (i, node) {
+            $(node).removeClass('d-none');
+            $(node).siblings('pre').addClass('d-none');
+        });
+    });
 }(window.jQuery));

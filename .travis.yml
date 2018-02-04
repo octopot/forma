@@ -1,15 +1,11 @@
 language: go
 
 go:
-- 1.7.x
-- 1.8.x
 - 1.9.x
 - master
 
 matrix:
   allow_failures:
-  - go: 1.7.x # problems with go generate
-  - go: 1.8.x # problems with go generate
   - go: master
   fast_finish: true
 

@@ -36,8 +36,6 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 			r.Delete("/", notImplemented)
 
 			r.Post("/", api.PostV1)
-
-			r.Get("/heartbeat", notImplemented)
 		})
 	})
 

@@ -94,7 +94,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	)
 	request := v1.PostRequest{UUID: uuid, Data: req.PostForm}
 	response := s.service.HandlePostV1(request)
-	redirect := fallback(req.Referer(), req.PostFormValue(RedirectKey), response.Schema.Action)
+	redirect := fallback(req.PostFormValue(RedirectKey), req.Referer(), response.Schema.Action)
 	if response.Error != nil {
 		if err, is := response.Error.(errors.ApplicationError); is {
 			if clientErr, is := err.IsClientError(); is {

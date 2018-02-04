@@ -13,11 +13,11 @@
     <link rel="icon" type="image/png" sizes="16x16" href="https://www.octolab.org/img/icon/favicon-16x16.png">
     <link rel="mask-icon" href="https://www.octolab.org/img/icon/safari-pinned-tab.svg" color="#5bbad5">
     <link rel="shortcut icon" href="https://www.octolab.org/img/icon/favicon.ico">
-
     <meta name="msapplication-TileColor" content="#00a300">
-    <meta name="msapplication-TileImage" content="/img/icon/mstile-144x144.png">
-    <meta name="msapplication-config" content="/img/icon/browserconfig.xml">
+    <meta name="msapplication-TileImage" content="https://www.octolab.org/img/icon/mstile-144x144.png">
+    <meta name="msapplication-config" content="https://www.octolab.org/img/icon/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109817251-15"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -91,7 +91,7 @@
                 <div class="col-md-4">
                     <h2><i class="fas fa-code-branch"></i></h2>
                     <h3>Open Source</h3>
-                    <p>We found some services like <strong>Wufoo</strong> and <strong>Paperclip</strong> are useful.
+                    <p>We found some services like <strong>Wufoo</strong> and <strong>Pageclip</strong> are useful.
                         However, they are proprietary, closed and paid. Also, we want to have full control of our data.
                         With love for open source, we start to create something similar from scratch and share it with
                         our community.</p>
@@ -199,7 +199,7 @@
                     </div>
                     <div class="clipboard"><button class="btn-alert" title="Show alerts">Alert</button></div>
                     <div class="highlight highlight-source-xml">
-                        <pre><code class="language-xml" data-lang="xml" data-target="demo-form-en">&lt;form lang=&quot;en&quot; title=&quot;GitHub demo page&quot;
+                        <pre data-target="demo-form-en"><code class="language-xml" data-lang="xml">&lt;form lang=&quot;en&quot; title=&quot;GitHub demo page&quot;
       action=&quot;https://kamilsk.github.io/form-api/&quot;
       method=&quot;post&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
     &lt;input name=&quot;name&quot; type=&quot;text&quot; title=&quot;Name&quot;
@@ -207,7 +207,7 @@
     &lt;input name=&quot;feedback&quot; type=&quot;text&quot; title=&quot;Feedback&quot;
            placeholder=&quot;Your feedback...&quot; maxlength=&quot;255&quot; required=&quot;1&quot;/&gt;
 &lt;/form&gt;</code></pre>
-                        <pre class="d-none"><code class="language-xml" data-lang="xml" data-target="demo-form-ru">&lt;form lang=&quot;en&quot; title=&quot;GitHub демо&quot;
+                        <pre class="d-none" data-target="demo-form-ru"><code class="language-xml" data-lang="xml">&lt;form lang=&quot;ru&quot; title=&quot;GitHub демо&quot;
       action=&quot;https://kamilsk.github.io/form-api/&quot;
       method=&quot;post&quot; enctype=&quot;application/x-www-form-urlencoded&quot;&gt;
     &lt;input name=&quot;name&quot; type=&quot;text&quot; title=&quot;Имя&quot;
@@ -367,7 +367,7 @@ $ docker run --rm -d \
                         <li><a href="https://hub.docker.com/r/kamilsk/form-api/">kamilsk/form-api:latest</a></li>
                         <li>
                             <a href="https://hub.docker.com/r/kamilsk/nginx/">kamilsk/nginx:alpine</a> - optional,
-                            if you want HTTPS via <a href="https://letsencrypt.org/">Let's Encrypt</a>
+                            if you want to use HTTPS via <a href="https://letsencrypt.org/">Let's Encrypt</a>
                         </li>
                     </ul>
                 </div>
@@ -404,80 +404,62 @@ $ docker run --rm -d \
             </div>
         </div>
     </div>
-
-
-
     <div class="row">
         <div class="col p-4">
             <h1 class="text-center">Roadmap<br><i class="fas fa-road"></i></h1>
-
-
-
-            <section id="cd-timeline">
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img complete">
+            <section id="timeline">
+                <div class="block">
+                    <div class="icon complete">
                         <i class="far fa-calendar-check"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>MVP, v1.0</h2>
                     </div>
                 </div>
-
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img">
+                <div class="block">
+                    <div class="icon">
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>CRUD, v2.0</h2>
                     </div>
                 </div>
-
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img">
+                <div class="block">
+                    <div class="icon">
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>GUI, v3.0</h2>
                     </div>
                 </div>
-
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img">
+                <div class="block">
+                    <div class="icon">
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>API v2, v4.0</h2>
                     </div>
                 </div>
-
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img">
+                <div class="block">
+                    <div class="icon">
                         <i class="far fa-calendar-alt"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>Extensibility, v5.0</h2>
                     </div>
                 </div>
-
-                <div class="cd-timeline-block">
-                    <div class="cd-timeline-img">
+                <div class="block">
+                    <div class="icon">
                         <i class="fas fa-flag-checkered"></i>
                     </div>
-                    <div class="cd-timeline-content">
+                    <div class="content">
                         <h2>FormA, SaaS</h2>
                     </div>
                 </div>
             </section>
-
-
-
         </div>
     </div>
 </main>
-
-
-
-
 <footer>
     <p>Feel free to support us at</p>
     <a href="https://www.patreon.com/octolab"><img height="50" src="img/patreon.svg" alt="Patreon"></a>

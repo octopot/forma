@@ -63,7 +63,7 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export FAPI_V=1.0.4   # all available versions are on https://github.com/kamilsk/form-api/releases
+$ export FAPI_V=1.0.5   # all available versions are on https://github.com/kamilsk/form-api/releases
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
 $ wget -q -O form-api.tar.gz \

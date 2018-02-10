@@ -29,11 +29,11 @@ tools:
 	if ! command -v mockgen > /dev/null; then \
 	    go get github.com/golang/mock/mockgen; \
 	fi
+	# quick fix of https://github.com/kamilsk/form-api/issues/70
+	# https://github.com/jteeuwen/go-bindata/compare/master...a-urth:master
 	if ! command -v go-bindata > /dev/null; then \
-	    # quick fix of https://github.com/kamilsk/form-api/issues/70
-	    # https://github.com/jteeuwen/go-bindata/compare/master...a-urth:master
 	    go get -d github.com/a-urth/go-bindata/go-bindata; \
-	    cd $GOPATH/src/github.com/a-urth/go-bindata && git checkout df38da164efcd92b3da59d8199c91ab90d2556bc; \
+	    cd $GOPATH/src/github.com/a-urth/go-bindata && git checkout df38da1; \
 	    go install github.com/a-urth/go-bindata/go-bindata; \
 	fi
 

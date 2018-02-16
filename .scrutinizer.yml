@@ -12,7 +12,6 @@ build:
         override:
         - go-scrutinizer-run
         - golint-run
-        # - govet-run # have fails
 
   tests:
     override:

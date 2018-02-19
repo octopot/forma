@@ -38,7 +38,7 @@ build:
   - linux
   - windows
   ldflags: -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
-  main:    .
+  main: .
 
 checksum: { name_template: checksums.txt }
 

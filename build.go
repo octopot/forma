@@ -1,7 +1,9 @@
 package main
 
+import "time"
+
 var (
 	commit  = "none"
-	date    = "unknown"
+	date    = time.Now().Format(time.UnixDate)
 	version = "dev"
 )

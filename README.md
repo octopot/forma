@@ -115,6 +115,6 @@ $ egg bitbucket.org/kamilsk/form-api
   - [ ] v3: GUI
   - [ ] v4: API v2
   - [ ] v5: Extensibility
-  - [ ] FormA, SaaS
-- tested on Go 1.9 and 1.10
+  - [ ] Forma, SaaS
+- tested on Go 1.9
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

@@ -30,14 +30,14 @@ var migrateCmd = &cobra.Command{
 			AssetDir: static.AssetDir,
 			Dir:      "static/migrations",
 		})
-		if isTrue(cmd.Flag("demo").Value) {
+		if asBool(cmd.Flag("demo").Value) {
 			src = append(src, &migrate.AssetMigrationSource{
 				Asset:    static.Asset,
 				AssetDir: static.AssetDir,
 				Dir:      "static/migrations/demo",
 			})
 		}
-		if isTrue(cmd.Flag("dry-run").Value) {
+		if asBool(cmd.Flag("dry-run").Value) {
 			dryRun(layer.Connection(), layer.Dialect(), src, direction, limit)
 		} else {
 			run(layer.Connection(), layer.Dialect(), src, direction, limit)
@@ -57,11 +57,16 @@ func init() {
 		v.SetDefault("schema", "public")
 	}
 	{
-		migrateCmd.Flags().String("table", v.GetString("table"), "migration table name")
-		migrateCmd.Flags().String("schema", v.GetString("schema"), "migration schema")
-		migrateCmd.Flags().Int("limit", 0, "limit the number of migrations (0 = unlimited)")
-		migrateCmd.Flags().Bool("dry-run", false, "do not apply migration, just print them")
-		migrateCmd.Flags().Bool("demo", false, "create fake data for demo purpose")
+		migrateCmd.Flags().String("table", v.GetString("table"),
+			"migration table name")
+		migrateCmd.Flags().String("schema", v.GetString("schema"),
+			"migration schema")
+		migrateCmd.Flags().Int("limit", 0,
+			"limit the number of migrations (0 = unlimited)")
+		migrateCmd.Flags().Bool("dry-run", false,
+			"do not apply migration, just print them")
+		migrateCmd.Flags().Bool("demo", false,
+			"create fake data for demo purpose")
 	}
 	db(migrateCmd)
 }

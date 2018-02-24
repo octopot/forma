@@ -4,7 +4,7 @@ SUPPORTED_VERSIONS = 1.9 latest
 include makes/env.mk
 include makes/local.mk
 include makes/docker.mk
-include cmd/Makefile
+include env/cmd.make
 include env/docker.make
 include env/docker-compose.make
 

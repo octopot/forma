@@ -24,7 +24,7 @@ before_install:
 - make tools
 
 install:
-- make deps generate
+- make generate
 
 script:
 - make test-with-coverage-profile ARGS='-timeout=1s'

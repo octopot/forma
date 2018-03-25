@@ -12,7 +12,6 @@ services:
 
   migration: # https://hub.docker.com/r/kamilsk/form-api/
     build:
-      args: { QUICK: "true" }
       context: ../.
       dockerfile: ./env/Dockerfile
     command: [ "migrate", "up", "--with-demo" ]
@@ -23,6 +22,8 @@ services:
 
   server: # https://hub.docker.com/r/kamilsk/nginx/
     image: kamilsk/nginx:alpine
+    depends_on:
+    - service
     entrypoint: |
       /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \
                   < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf \
@@ -40,12 +41,11 @@ services:
 
   service: # https://hub.docker.com/r/kamilsk/form-api/
     build:
-      args: { QUICK: "true" }
       context: ../.
       dockerfile: ./env/Dockerfile
     command: [ "run", "--with-profiler" ]
     depends_on:
-    - db
+    - migration
     env_file: .env
     restart: always
     ports:

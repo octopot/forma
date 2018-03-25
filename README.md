@@ -11,7 +11,7 @@
 ## Quick start
 
 ```bash
-$ make deps up && make demo && make status
+$ make up && make demo && make status
 
      Name                    Command               State                Ports             
 ------------------------------------------------------------------------------------------

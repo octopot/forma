@@ -23,9 +23,6 @@ code-quality-report:
 
 .PHONY: tools
 tools:
-	if ! command -v dep > /dev/null; then \
-	    go get github.com/golang/dep/cmd/dep; \
-	fi
 	if ! command -v mockgen > /dev/null; then \
 	    go get github.com/golang/mock/mockgen; \
 	fi
@@ -36,10 +33,6 @@ tools:
 	    cd $(GOPATH)/src/github.com/a-urth/go-bindata && git checkout df38da1; \
 	    go install github.com/a-urth/go-bindata/go-bindata; \
 	fi
-
-.PHONY: deps
-deps: tools
-	dep ensure -v
 
 .PHONY: generate
 generate: tools

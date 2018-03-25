@@ -1,20 +1,9 @@
-.PHONY: docker-build-fast dbf
-docker-build-fast:
-	docker build -f env/Dockerfile \
-	             -t kamilsk/form-api:latest \
-	             --force-rm --no-cache --pull --rm \
-	             --build-arg QUICK=true \
-	             .
-dbf: docker-build-fast
-
 .PHONY: docker-build
 docker-build:
 	docker build -f env/Dockerfile \
 	             -t kamilsk/form-api:latest \
 	             --force-rm --no-cache --pull --rm \
 	             .
-
-
 
 .PHONY: docker-push
 docker-push:

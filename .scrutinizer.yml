@@ -1,7 +1,7 @@
 build:
   dependencies:
     override:
-    - make deps generate
+    - make generate
 
   environment:
     go: go1.9

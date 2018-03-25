@@ -1,7 +1,7 @@
 .PHONY: docker-compose
 docker-compose:
 	cp -n env/.example.env env/.env || true
-	cp env/.env .env # because https://docs.docker.com/compose/env-file/
+	cp -n env/.env .env             || true # because https://docs.docker.com/compose/env-file/
 	docker-compose -f env/docker-compose.yml $(COMMAND)
 
 

@@ -98,7 +98,7 @@ logs-service: docker-compose
 
 
 .PHONY: demo
-demo: COMMAND = exec service form-api migrate --demo up
+demo: COMMAND = exec service form-api migrate up --with-demo
 demo: docker-compose
 
 

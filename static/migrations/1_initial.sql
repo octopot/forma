@@ -1,6 +1,6 @@
 -- +migrate Up
 
-CREATE EXTENSION "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- +migrate StatementBegin
 CREATE FUNCTION update_timestamp() RETURNS TRIGGER AS $update_timestamp$
@@ -49,5 +49,3 @@ DROP TABLE "form_schema";
 DROP TYPE STATUS;
 
 DROP FUNCTION update_timestamp();
-
-DROP EXTENSION "uuid-ossp";

@@ -30,7 +30,7 @@ var migrateCmd = &cobra.Command{
 			AssetDir: static.AssetDir,
 			Dir:      "static/migrations",
 		})
-		if asBool(cmd.Flag("demo").Value) {
+		if asBool(cmd.Flag("with-demo").Value) {
 			src = append(src, &migrate.AssetMigrationSource{
 				Asset:    static.Asset,
 				AssetDir: static.AssetDir,
@@ -65,7 +65,7 @@ func init() {
 			"limit the number of migrations (0 = unlimited)")
 		migrateCmd.Flags().Bool("dry-run", false,
 			"do not apply migration, just print them")
-		migrateCmd.Flags().Bool("demo", false,
+		migrateCmd.Flags().Bool("with-demo", false,
 			"create fake data for demo purpose")
 	}
 	db(migrateCmd)

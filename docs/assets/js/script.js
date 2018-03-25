@@ -1,5 +1,8 @@
 (function ($) {
     'use strict';
+
+    $('body').append('<div id="messages"/>');
+
     const
         location = new URL(window.location.href),
         messages = $('#messages'), tpl = $('#message'),

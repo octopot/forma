@@ -1,4 +1,4 @@
-FROM golang:1.9 AS build
+FROM golang:1.10 AS build
 
 ARG QUICK
 
@@ -32,7 +32,7 @@ LABEL maintainer="Kamil Samigullin <kamil@samigullin.info>"
 COPY --from=build /go/bin/form-api /usr/local/bin/
 
 ENV BIND "0.0.0.0"
-ENV PORT "8080"
+ENV PORT "80"
 
 ENTRYPOINT [ "form-api" ]
 CMD        [ "run" ]

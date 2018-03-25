@@ -3,6 +3,7 @@ footer {
     background-color: #f9f9f9; border-top: .05rem solid #e5e5e5;
     color: #999; text-align: center;
 }
+footer .fa-heart { color: red; }
 img { max-width: 100%; }
 
 .clipboard {
@@ -45,11 +46,14 @@ img { max-width: 100%; }
     position: absolute; top: 12px; right: 12px;
     padding: 9px;
 }
-.highlight          { padding: 1rem; background-color: #f7f7f9; }
+.highlight       { padding: 1rem; background-color: #f7f7f9; }
 .highlight pre,
-.highlight code     { margin: 0; padding: 0; }
-.overflow-hidden    { overflow: hidden; }
-.ribbon img         { position: absolute; top: 0; right: 0; }
+.highlight code  { margin: 0; padding: 0; }
+.overflow-hidden { overflow: hidden; }
+
+#header                   { border-radius: 0; }
+#header .navbar-brand img { height: 30px; }
+#header .ribbon img       { position: absolute; top: 0; right: 0; }
 
 #messages { position: fixed; bottom: 1rem; right: 1rem; z-index: 10; width: 40%; max-width: 512px; }
 

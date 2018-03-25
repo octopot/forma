@@ -2,10 +2,11 @@
 <html class="no-js" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Form API demo page</title>
+    <title>Form API | Data Collector as a Service</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <!--<link rel="stylesheet" href="assets/css/material-kit.min.css">-->
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <link rel="apple-touch-icon" sizes="180x180" href="https://www.octolab.org/img/icon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="https://www.octolab.org/img/icon/favicon-32x32.png">
@@ -30,48 +31,50 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-    <a class="navbar-brand" href="https://www.octolab.org/">
-        <img class="d-inline-block align-top" height="30" src="img/octolab.png" alt="OctoLab Open(src Source)">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div id="menu" class="collapse navbar-collapse">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item dropdown">
-                <a id="feedback-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Feedback</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="https://gitter.im/kamilsk/form-api">Gitter</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="https://twitter.com/ikamilsk">@kamilsk</a>
-                    <a class="dropdown-item" href="https://twitter.com/octolab_inc">@octolab</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item"
-                       href="mailto:feedback@octolab.org?subject=Form%20API%20(from%20GitHub%20page)">
-                        feedback@octolab.org
-                    </a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a id="github-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">GitHub</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" href="https://github.com/kamilsk/form-api">Project</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="https://github.com/kamilsk">Kamil Samigullin</a>
-                    <a class="dropdown-item" href="https://github.com/octolab">OctoLab</a>
-                </div>
-            </li>
-            <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
-            <li class="nav-item">
-                <span class="nav-link disabled">Forma - send your HTML forms to the Cloud (coming soon)</span>
-            </li>
-        </ul>
+<nav id="header" class="navbar navbar-dark navbar-expand-lg bg-dark sticky-top">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" href="https://www.octolab.org/">
+                <img class="d-inline-block align-top" src="assets/img/octolab.png" alt="OctoLab Open(src Source)">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#menu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div id="menu" class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item dropdown">
+                    <a id="feedback-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Feedback</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="https://gitter.im/kamilsk/form-api">Gitter</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://twitter.com/ikamilsk">@kamilsk</a>
+                        <a class="dropdown-item" href="https://twitter.com/octolab_inc">@octolab</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item"
+                           href="mailto:feedback@octolab.org?subject=Form%20API%20(from%20GitHub%20page)">
+                            feedback@octolab.org
+                        </a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a id="github-links" class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">GitHub</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="https://github.com/kamilsk/form-api">Project</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="https://github.com/kamilsk">Kamil Samigullin</a>
+                        <a class="dropdown-item" href="https://github.com/octolab">OctoLab</a>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="https://www.patreon.com/octolab">Patreon</a></li>
+            </ul>
+        </div>
         <a class="ribbon" href="https://github.com/kamilsk/form-api/fork">
-            <img src="img/fork.png" alt="Fork me on GitHub">
+            <img src="assets/img/fork.png" alt="Fork me on GitHub">
         </a>
     </div>
 </nav>
+
 <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
     <div class="col-md-5 p-lg-5 mx-auto my-5">
         <h1 class="display-4 font-weight-normal">Form API</h1>
@@ -83,6 +86,7 @@
     <div class="device box-shadow d-none d-md-block"></div>
     <div class="device device-2 box-shadow d-none d-md-block"></div>
 </div>
+
 <main class="container-fluid">
     <div class="row">
         <div class="col p-4 text-center">
@@ -284,10 +288,10 @@
                 <div class="col-md-3 offset-md-1">
                     <a href="https://m.do.co/c/b2a387de5da4" title="https://www.digitalocean.com/"
                        rel="noopener nofollow">
-                        <img src="img/digitalocean.svg" alt="Powered by DigitalOcean">
+                        <img src="assets/img/digitalocean.svg" alt="Powered by DigitalOcean">
                     </a>
                     <br><br><br>
-                    <img src="img/octopus.octolab.png" alt="OctoLab">
+                    <img src="assets/img/octopus.octolab.png" alt="OctoLab">
                 </div>
             </div>
         </div>
@@ -330,7 +334,7 @@ $ curl -H &quot;Content-Type: application/x-www-form-urlencoded&quot; \
                     </ul>
                 </div>
                 <div class="col-md-3 offset-md-1">
-                    <img src="img/octopus.clean.png" alt="Installation from source code">
+                    <img src="assets/img/octopus.clean.png" alt="Installation from source code">
                 </div>
             </div>
             <div class="row align-items-center">
@@ -351,7 +355,7 @@ $ docker run --rm -it \
              --name form-api-migration \
              --link form-api-db:db \
              -h migration \
-             kamilsk/form-api:latest migrate up --demo
+             kamilsk/form-api:latest migrate up --with-demo
 $ docker run --rm -d \
              --env-file .env \
              --network form-api \
@@ -372,7 +376,7 @@ $ docker run --rm -d \
                     </ul>
                 </div>
                 <div class="col-md-3 offset-md-1">
-                    <img src="img/octopus.docker.png" alt="Using Docker">
+                    <img src="assets/img/octopus.docker.png" alt="Using Docker">
                 </div>
             </div>
         </div>
@@ -381,15 +385,15 @@ $ docker run --rm -d \
             <div id="carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img class="d-block w-100" src="img/environment/542c258a16b56800cb3158771d093a7e.png"
+                        <img class="d-block w-100" src="assets/img/environment/542c258a16b56800cb3158771d093a7e.png"
                              alt="JetBrains Editor-based REST Client">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="img/environment/eb8f85918ef4bf5e028e814f2a446936.png"
+                        <img class="d-block w-100" src="assets/img/environment/eb8f85918ef4bf5e028e814f2a446936.png"
                              alt="Insomnia REST client">
                     </div>
                     <div class="carousel-item">
-                        <img class="d-block w-100" src="img/environment/1f7905d21966b59aa85b46cb36d6d33d.png"
+                        <img class="d-block w-100" src="assets/img/environment/1f7905d21966b59aa85b46cb36d6d33d.png"
                              alt="Google pprof integration">
                     </div>
                 </div>
@@ -460,20 +464,12 @@ $ docker run --rm -d \
         </div>
     </div>
 </main>
-<footer>
+
+<footer class="text-center">
     <p>Feel free to support us at</p>
-    <a href="https://www.patreon.com/octolab"><img height="50" src="img/patreon.svg" alt="Patreon"></a>
+    <a href="https://www.patreon.com/octolab"><img height="50" src="assets/img/patreon.svg" alt="Patreon"></a>
 </footer>
-<div id="messages"></div>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-        crossorigin="anonymous"></script>
+
 <template id="message">
     <div class="alert {{ type }} alert-dismissible fade show">
         <h4 class="alert-heading">{{ title }}</h4>
@@ -483,6 +479,18 @@ $ docker run --rm -d \
         <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
     </div>
 </template>
-<script src="script.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="assets/js/bootstrap-material-design.min.js"></script>
+<script src="assets/js/material-kit.min.js"></script>
+<script src="assets/js/script.js"></script>
 </body>
 </html>

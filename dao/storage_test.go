@@ -19,7 +19,7 @@ const (
 )
 
 func TestMust_WithInvalidConfiguration(t *testing.T) {
-	var configs = []dao.Configurator{dao.Connection("", "")}
+	var configs = []dao.Configurator{dao.Connection("", "", 0, 0)}
 	assert.Panics(t, func() { dao.Must(configs...) })
 }
 
@@ -75,7 +75,7 @@ func TestStorage(t *testing.T) {
 		Times(1).
 		Return(nil)
 
-	var configs = []dao.Configurator{dao.Connection(t.Name(), DSN)}
+	var configs = []dao.Configurator{dao.Connection(t.Name(), DSN, 1, 1)}
 	sql.Register(t.Name(), drv)
 	service, err := dao.New(configs...)
 	assert.NoError(t, err)

@@ -28,10 +28,12 @@ func New(configs ...Configurator) (*Storage, error) {
 }
 
 // Connection returns database connection Configurator.
-func Connection(driver, dsn string) Configurator {
+func Connection(driver, dsn string, open, idle int) Configurator {
 	return func(instance *Storage) error {
 		var err error
 		instance.conn, err = sql.Open(driver, dsn)
+		instance.conn.SetMaxOpenConns(open)
+		instance.conn.SetMaxIdleConns(idle)
 		return err
 	}
 }

@@ -34,6 +34,8 @@ func db(cmd *cobra.Command) {
 		func() error { return v.BindEnv("user") },
 		func() error { return v.BindEnv("pass") },
 		func() error { return v.BindEnv("name") },
+		func() error { return v.BindEnv("open_conn") },
+		func() error { return v.BindEnv("idle_conn") },
 		func() error { return v.BindEnv("timeout") },
 		func() error { return v.BindEnv("ssl_mode") },
 	)
@@ -43,6 +45,8 @@ func db(cmd *cobra.Command) {
 		v.SetDefault("user", "postgres")
 		v.SetDefault("pass", "postgres")
 		v.SetDefault("name", "postgres")
+		v.SetDefault("open_conn", 1)
+		v.SetDefault("idle_conn", 1)
 		v.SetDefault("timeout", 1)
 		v.SetDefault("ssl_mode", "disable")
 	}
@@ -57,6 +61,10 @@ func db(cmd *cobra.Command) {
 			"database user password")
 		cmd.Flags().String("db_name", v.GetString("name"),
 			"database name")
+		cmd.Flags().Int("db_open_conn", v.GetInt("open_conn"),
+			"maximum number of open connections to the database")
+		cmd.Flags().Int("db_idle_conn", v.GetInt("idle_conn"),
+			"maximum number of connections in the idle connection pool")
 		cmd.Flags().Int("db_timeout", v.GetInt("timeout"),
 			"connection timeout in seconds")
 		cmd.Flags().String("db_ssl_mode", v.GetString("ssl_mode"),
@@ -64,7 +72,7 @@ func db(cmd *cobra.Command) {
 	}
 }
 
-func dsn(cmd *cobra.Command) (driver, dsn string) {
+func dsn(cmd *cobra.Command) (driver, dsn string, open, idle int) {
 	uri := &url.URL{
 		Scheme: "postgres",
 		User:   url.UserPassword(cmd.Flag("db_user").Value.String(), cmd.Flag("db_pass").Value.String()),
@@ -77,7 +85,7 @@ func dsn(cmd *cobra.Command) (driver, dsn string) {
 			return query.Encode()
 		}(),
 	}
-	return uri.Scheme, uri.String()
+	return uri.Scheme, uri.String(), asInt(cmd.Flag("db_open_conn").Value), asInt(cmd.Flag("db_idle_conn").Value)
 }
 
 func asBool(value fmt.Stringer) bool {

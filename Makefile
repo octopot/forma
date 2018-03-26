@@ -7,6 +7,7 @@ include makes/docker.mk
 include env/cmd.mk
 include env/docker.mk
 include env/docker-compose.mk
+include env/tools.mk
 
 .PHONY: code-quality-check
 code-quality-check: ARGS = \
@@ -21,36 +22,13 @@ code-quality-report:
 	time make code-quality-check | tail +7 | tee report.out | pbcopy
 
 
-.PHONY: tools
-tools:
-	if ! command -v mockgen > /dev/null; then \
-	    go get github.com/golang/mock/mockgen; \
-	fi
-	# quick fix of https://github.com/kamilsk/form-api/issues/70
-	# https://github.com/jteeuwen/go-bindata/compare/master...a-urth:master
-	if ! command -v go-bindata > /dev/null; then \
-	    go get -d github.com/a-urth/go-bindata/go-bindata; \
-	    cd $(GOPATH)/src/github.com/a-urth/go-bindata && git checkout df38da1; \
-	    go install github.com/a-urth/go-bindata/go-bindata; \
-	fi
-
-.PHONY: generate
-generate: tools
-	find . -name mock_*.go | grep -v ./vendor | xargs rm || true
-	go generate ./...
-
-.PHONY: static
-static: tools
-	go-bindata -o static/bindata.go -pkg static -ignore "^.+\.go$$" -ignore "static/fixtures" static/...
-
-
 .PHONY: pull-github-tpl
 pull-github-tpl:
 	rm -rf .github
 	git clone git@github.com:kamilsk/shared.git .github
 	( \
 	  cd .github && \
-	  git checkout github-tpl-go-v1 && \
+	  git checkout github-tpl-go && \
 	  echo '- ' $$(cat README.md | head -n1 | awk '{print $$3}') 'at revision' $$(git rev-parse HEAD) \
 	)
 	rm -rf .github/.git .github/README.md
@@ -61,7 +39,23 @@ pull-makes:
 	git clone git@github.com:kamilsk/shared.git makes
 	( \
 	  cd makes && \
-	  git checkout makefile-go-v1 && \
+	  git checkout makefile-go && \
 	  echo '- ' $$(cat README.md | head -n1 | awk '{print $$3}') 'at revision' $$(git rev-parse HEAD) \
 	)
 	rm -rf makes/.git
+
+.PHONY: pull-template
+pull-template:
+	rm -rf template
+	git clone git@bitbucket.org:octotpl/materialkit.git template
+	( \
+	  cd template && \
+	  git checkout 2.x && \
+	  git describe --tags \
+	)
+	( \
+	  cp -n template/Template/assets/css/material-kit.min.css docs/assets/css/ && \
+	  cp -n template/Template/assets/js/bootstrap-material-design.min.js docs/assets/js/ \
+	  cp -n template/Template/assets/js/material-kit.min.js docs/assets/js/ \
+	)
+	rm -rf template/.git

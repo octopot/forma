@@ -21,8 +21,14 @@ LABEL maintainer="Kamil Samigullin <kamil@samigullin.info>"
 
 COPY --from=build /go/bin/form-api /usr/local/bin/
 
-ENV BIND "0.0.0.0"
-ENV PORT "80"
+ENV BIND            "0.0.0.0"
+ENV PORT            "80"
+ENV PROFILE_PORT    "8090"
+ENV MONITORING_PORT "8091"
+
+EXPOSE ${PORT}
+EXPOSE ${PROFILE_PORT}
+EXPOSE ${MONITORIGN_PORT}
 
 ENTRYPOINT [ "form-api" ]
 CMD        [ "run" ]

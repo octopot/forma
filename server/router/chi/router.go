@@ -2,7 +2,6 @@ package chi
 
 import (
 	"net/http"
-	"net/http/pprof"
 
 	common "github.com/kamilsk/form-api/server/middleware"
 
@@ -12,7 +11,7 @@ import (
 )
 
 // NewRouter returns configured `github.com/go-chi/chi` router.
-func NewRouter(api router.Server, withProfiler bool) http.Handler {
+func NewRouter(api router.Server) http.Handler {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Recoverer)
@@ -25,11 +24,7 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 		r.Post("/", notImplemented)
 
 		r.Route("/{UUID}", func(r chi.Router) {
-			r.Use(func(next http.Handler) http.Handler {
-				return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-					common.Schema(chi.URLParam(req, "UUID"), rw, req, next)
-				})
-			})
+			r.Use(ctxPacker(common.Schema, "UUID"))
 
 			r.Get("/", common.Encoder(api.GetV1))
 			r.Put("/", notImplemented)
@@ -44,11 +39,7 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 			r.Post("/", notImplemented)
 
 			r.Route("/{UUID}", func(r chi.Router) {
-				r.Use(func(next http.Handler) http.Handler {
-					return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-						common.Schema(chi.URLParam(req, "UUID"), rw, req, next)
-					})
-				})
+				r.Use(ctxPacker(common.Schema, "UUID"))
 
 				r.Get("/", notImplemented)
 				r.Put("/", notImplemented)
@@ -62,11 +53,7 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 			r.Post("/", notImplemented)
 
 			r.Route("/{UUID}", func(r chi.Router) {
-				r.Use(func(next http.Handler) http.Handler {
-					return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-						common.Template(chi.URLParam(req, "UUID"), rw, req, next)
-					})
-				})
+				r.Use(ctxPacker(common.Template, "UUID"))
 
 				r.Get("/", notImplemented)
 				r.Put("/", notImplemented)
@@ -76,29 +63,11 @@ func NewRouter(api router.Server, withProfiler bool) http.Handler {
 	})
 
 	r.Route("/schema/{SCM_UUID}/template/{TPL_UUID}", func(r chi.Router) {
-		r.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-				common.Schema(chi.URLParam(req, "SCM_UUID"), rw, req, next)
-			})
-		})
-		r.Use(func(next http.Handler) http.Handler {
-			return http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-				common.Schema(chi.URLParam(req, "TPL_UUID"), rw, req, next)
-			})
-		})
+		r.Use(ctxPacker(common.Schema, "SCM_UUID"))
+		r.Use(ctxPacker(common.Template, "TPL_UUID"))
 
 		r.Get("/", notImplemented)
 	})
-
-	if withProfiler {
-		r.Route("/debug/pprof", func(r chi.Router) {
-			r.Get("/", pprof.Index)
-			r.Get("/cmdline", pprof.Cmdline)
-			r.Get("/profile", pprof.Profile)
-			r.Get("/symbol", pprof.Symbol)
-			r.Get("/trace", pprof.Trace)
-		})
-	}
 
 	return r
 }

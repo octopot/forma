@@ -25,7 +25,7 @@ func TestChiRouter(t *testing.T) {
 
 	var (
 		api    = NewMockServer(ctrl)
-		router = chi.NewRouter(api, true)
+		router = chi.NewRouter(api)
 	)
 
 	tests := []struct {

@@ -20,6 +20,20 @@ services:
     env_file: .env
     restart: on-failure
 
+  service: # https://hub.docker.com/r/kamilsk/form-api/
+    build:
+      context: ../.
+      dockerfile: ./env/Dockerfile
+    command: [ "run", "--with-profiler", "--with-monitoring" ]
+    depends_on:
+    - migration
+    env_file: .env
+    restart: always
+    ports:
+    - 8080:${PORT}
+    - 8090:8090
+    - 8091:8091
+
   server: # https://hub.docker.com/r/kamilsk/nginx/
     image: kamilsk/nginx:alpine
     depends_on:
@@ -31,25 +45,13 @@ services:
                   && /entrypoint.sh"
     env_file: .env
     ports:
-    - 8080:${DOMAIN_PORT}
+    - 80:${DOMAIN_PORT}
     restart: always
     volumes:
     - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
     - ./etc/service.conf:/etc/nginx/conf.d/service.template:ro
     - certificates:/etc/nginx/ssl
     - le_challenge:/usr/share/sites/${DOMAIN_NAME}
-
-  service: # https://hub.docker.com/r/kamilsk/form-api/
-    build:
-      context: ../.
-      dockerfile: ./env/Dockerfile
-    command: [ "run", "--with-profiler" ]
-    depends_on:
-    - migration
-    env_file: .env
-    restart: always
-    ports:
-    - 8081:${PORT}
 
 volumes:
   pgdata:

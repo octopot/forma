@@ -3,16 +3,16 @@ package errors
 const (
 	// ClientErrorCode is a code of a client error.
 	ClientErrorCode = iota
-	// InvalidInputCode is a code of the client error when data provided by a user is invalid.
+	// InvalidInputCode is a code of a client error when data provided by a user is invalid.
 	InvalidInputCode
-	// ResourceNotFoundCode is a code of the client error when the requested resource does not exist.
+	// ResourceNotFoundCode is a code of a client error when the requested resource does not exist.
 	ResourceNotFoundCode
 
 	// ClientErrorMessage is a default message of a client error.
 	ClientErrorMessage = "error"
 	// InvalidFormDataMessage is a default message of the case when form data are invalid.
 	InvalidFormDataMessage = "form data contain an error"
-	// SchemaNotFoundMessage is a default message of the case when a schema does not exist.
+	// SchemaNotFoundMessage is a default message of the case when a Schema does not exist.
 	SchemaNotFoundMessage = "schema not found"
 )
 

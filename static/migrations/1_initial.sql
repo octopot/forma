@@ -9,7 +9,8 @@ BEGIN
   NEW.updated_at := current_timestamp;
   RETURN NEW;
   -- [42883] ERROR: could not identify an equality operator for type xml
-  --   IF NEW.* IS DISTINCT FROM OLD.* THEN
+  --   IF NEW.* IS DISTINCT FROM OLD.*
+  --   THEN
   --     NEW.updated_at := current_timestamp;
   --     RETURN NEW;
   --   ELSE

@@ -1,6 +1,6 @@
 ### API v1
 
-POST http://admin:admin@localhost:8080/api/v1
+POST http://localhost:8080/api/v1
 Content-Type: application/xml
 
 <form lang="en" title="Email subscription"
@@ -15,7 +15,7 @@ Accept: application/xml
 
 ###
 
-PUT http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
 <form lang="en" title="Email subscription"
@@ -25,7 +25,7 @@ Content-Type: application/xml
 
 ###
 
-DELETE http://admin:admin@localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
@@ -36,7 +36,7 @@ email=test@my.email
 
 ### API v2
 
-POST http://admin:admin@localhost:8080/api/v2/schema
+POST http://localhost:8080/api/v2/schema
 Content-Type: application/xml
 
 <form lang="en" title="Email subscription"
@@ -51,7 +51,7 @@ Accept: application/xml
 
 ###
 
-PUT http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 Content-Type: application/xml
 
 <form lang="en" title="Email subscription"
@@ -61,7 +61,7 @@ Content-Type: application/xml
 
 ###
 
-DELETE http://admin:admin@localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 
 ###
 
@@ -72,7 +72,7 @@ email=test@my.email
 
 ###
 
-POST http://admin:admin@localhost:8080/api/v2/template
+POST http://localhost:8080/api/v2/template
 Content-Type: text/html
 
 <form id="form-{{ .ID }}" lang="{{ .Language }}" title="{{ .Title }}"
@@ -93,7 +93,7 @@ Accept: text/html
 
 ###
 
-PUT http://admin:admin@localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+PUT http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
 Content-Type: text/html
 
 <form id="form-{{ .ID }}" lang="{{ .Language }}" title="{{ .Title }}"
@@ -109,7 +109,7 @@ Content-Type: text/html
 
 ###
 
-DELETE http://admin:admin@localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+DELETE http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
 
 ###
 
@@ -118,40 +118,26 @@ Accept: text/html
 
 ### Profiling
 
-GET http://admin:admin@localhost:8080/debug/pprof/cmdline
+GET http://localhost:8090/pprof/cmdline
 
 ###
 
-GET http://admin:admin@localhost:8080/debug/pprof/profile
+GET http://localhost:8090/pprof/profile
 
 ###
 
-GET http://admin:admin@localhost:8080/debug/pprof/symbol
+GET http://localhost:8090/pprof/symbol
 
 ###
 
-GET http://admin:admin@localhost:8080/debug/pprof/trace
+GET http://localhost:8090/pprof/trace
 
 ###
 
-GET http://admin:admin@localhost:8080/debug/pprof
+GET http://localhost:8090/debug/pprof/
+
+### Monitoring
+
+GET http://localhost:8091/vars
 
 ###
-
-GET http://admin:admin@localhost:8080/debug/pprof/goroutine
-
-###
-
-GET http://admin:admin@localhost:8080/debug/pprof/threadcreate
-
-###
-
-GET http://admin:admin@localhost:8080/debug/pprof/heap
-
-###
-
-GET http://admin:admin@localhost:8080/debug/pprof/block
-
-###
-
-GET http://admin:admin@localhost:8080/debug/pprof/mutex

@@ -7,7 +7,7 @@ import (
 	"github.com/kamilsk/form-api/domain"
 )
 
-// Schema validates form schema UUID and injects it to the request context.
+// Schema validates the passed Schema ID and injects it to the request context.
 func Schema(uuid string, rw http.ResponseWriter, req *http.Request, next http.Handler) {
 	if !domain.UUID(uuid).IsValid() {
 		rw.WriteHeader(http.StatusBadRequest)

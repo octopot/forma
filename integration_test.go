@@ -36,7 +36,7 @@ func TestAPI_GetV1(t *testing.T) {
 		storage = NewMockStorage(ctrl)
 	)
 
-	handler := chi.NewRouter(server.New(HOST, "", service.New(storage)), false)
+	handler := chi.NewRouter(server.New(HOST, "", service.New(storage)))
 	srv := httptest.NewServer(handler)
 	defer srv.Close()
 

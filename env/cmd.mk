@@ -33,5 +33,5 @@ migrate-down: run
 
 
 .PHONY: server
-server: COMMAND = run --with-profiler
+server: COMMAND = run --port=8080 --with-profiler --with-monitoring
 server: run

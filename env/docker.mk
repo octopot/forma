@@ -19,11 +19,18 @@ docker-refresh:
 
 
 
+.PHONY: publish
+publish: docker-build docker-push
+
+
+
 .PHONY: docker-start
 docker-start:
 	docker run --rm -d \
 	           --name form-api-dev \
 	           --publish 8080:8080 \
+	           --publish 8090:8090 \
+	           --publish 8091:8091 \
 	           kamilsk/form-api:latest
 
 .PHONY: docker-logs

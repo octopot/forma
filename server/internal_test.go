@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestExtend(t *testing.T) {
+func Test_extend(t *testing.T) {
 	tests := []struct {
 		name     string
 		url      url.URL
@@ -26,7 +26,7 @@ func TestExtend(t *testing.T) {
 	}
 }
 
-func TestFallback(t *testing.T) {
+func Test_fallback(t *testing.T) {
 	tests := []struct {
 		name           string
 		value          string
@@ -46,7 +46,7 @@ func TestFallback(t *testing.T) {
 	}
 }
 
-func TestMust(t *testing.T) {
+func Test_must(t *testing.T) {
 	tests := []struct {
 		name      string
 		base, tpl string

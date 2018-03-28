@@ -111,10 +111,10 @@ $ egg bitbucket.org/kamilsk/form-api
 
 - brief roadmap
   - [x] v1: MVP
-  - [ ] v2: CRUD
-  - [ ] v3: GUI
-  - [ ] v4: API v2
-  - [ ] v5: Extensibility
+  - [ ] v2: API v2
+  - [ ] v3: Client Side
+  - [ ] v4: CRUD
+  - [ ] v5: GUI
   - [ ] Forma, SaaS
 - tested on Go 1.9 and 1.10
 - made with ❤️ by [OctoLab](https://www.octolab.org/)

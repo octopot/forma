@@ -83,7 +83,7 @@ $ docker pull kamilsk/form-api:latest
 ```bash
 $ go get -d -u github.com/kamilsk/form-api
 $ cd ${GOPATH}/src/github.com/kamilsk/form-api
-$ make deps generate test install
+$ make generate test install
 ```
 
 #### Mirror
@@ -101,12 +101,6 @@ $ egg bitbucket.org/kamilsk/form-api
 - Go 1.9.2 or above
 - GNU Make 3.81 or above
 
-## Feedback
-
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/form-api)
-[![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)
-[![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
-
 ## Notes
 
 - brief roadmap
@@ -117,4 +111,11 @@ $ egg bitbucket.org/kamilsk/form-api
   - [ ] v5: GUI
   - [ ] Forma, SaaS
 - tested on Go 1.9 and 1.10
-- made with ❤️ by [OctoLab](https://www.octolab.org/)
+
+---
+
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/kamilsk/form-api)
+[![@kamilsk](https://img.shields.io/badge/author-%40kamilsk-blue.svg)](https://twitter.com/ikamilsk)
+[![@octolab](https://img.shields.io/badge/sponsor-%40octolab-blue.svg)](https://twitter.com/octolab_inc)
+
+made with ❤️ by [OctoLab](https://www.octolab.org/)

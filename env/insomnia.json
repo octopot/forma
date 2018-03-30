@@ -33,14 +33,6 @@
       "_type": "environment"
     },
     {
-      "_id": "jar_fc543b864a154a039352aa1ad1600b55",
-      "created": 1511170173901,
-      "modified": 1511170173901,
-      "name": "Default Jar",
-      "parentId": "wrk_39a96856d52d428db3215427df4d62b9",
-      "_type": "cookie_jar"
-    },
-    {
       "_id": "fld_fbfb77044dc74277815d8e338d69441c",
       "created": 1522238681819,
       "description": "",

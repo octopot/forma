@@ -34,7 +34,9 @@ var runCmd = &cobra.Command{
 			server.New(
 				cmd.Flag("base-url").Value.String(),
 				cmd.Flag("tpl-dir").Value.String(),
-				service.New(dao.Must(dao.Connection(dsn(cmd)))),
+				service.New(
+					dao.Must(dao.Connection(dsn(cmd))),
+				),
 			),
 		)
 		srv := &http.Server{Addr: addr, Handler: handler,

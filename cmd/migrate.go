@@ -37,11 +37,11 @@ var migrateCmd = &cobra.Command{
 				Dir:      "static/migrations/demo",
 			})
 		}
+		var runner = run
 		if asBool(cmd.Flag("dry-run").Value) {
-			dryRun(layer.Connection(), layer.Dialect(), src, direction, limit)
-		} else {
-			run(layer.Connection(), layer.Dialect(), src, direction, limit)
+			runner = dryRun
 		}
+		runner(layer.Connection(), layer.Dialect(), src, direction, limit)
 	},
 }
 

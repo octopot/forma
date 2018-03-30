@@ -24,7 +24,8 @@ func AddData(db *sql.DB, uuid domain.UUID, verified map[string][]string) (int64,
 			"trying to marshal data `%#v` into JSON with the schema %q", verified, uuid)
 	}
 	var id int64
-	err = db.QueryRow(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`, uuid, encoded).Scan(&id)
+	err = db.QueryRow(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`, uuid, encoded).
+		Scan(&id)
 	if err != nil {
 		return 0, errors.Database(errors.ServerErrorMessage, err,
 			"trying to insert JSON `%s` with the schema %q", encoded, uuid)
@@ -36,8 +37,8 @@ func AddData(db *sql.DB, uuid domain.UUID, verified map[string][]string) (int64,
 func Schema(db *sql.DB, uuid domain.UUID) (domain.Schema, error) {
 	var (
 		schema domain.Schema
-		blob      = [1024]byte{}
-		raw        = blob[:0]
+		blob   = [1024]byte{}
+		raw    = blob[:0]
 	)
 	row := db.QueryRow(`SELECT "schema" FROM "form_schema" WHERE "uuid" = $1 AND "status" = 'enabled'`, uuid)
 	if err := row.Scan(&raw); err != nil {

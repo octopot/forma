@@ -9,7 +9,7 @@ env:
 
 .PHONY: up
 up: env
-	docker-compose $(DC_FILE) up --no-recreate -d
+	docker-compose $(DC_FILE) up -d
 	docker-compose $(DC_FILE) rm -f
 
 .PHONY: fresh-up
@@ -36,7 +36,7 @@ status: env
 
 .PHONY: up-db
 up-db:
-	docker-compose $(DC_FILE) up --no-recreate -d db
+	docker-compose $(DC_FILE) up -d db
 
 .PHONY: start-db
 start-db: env
@@ -67,7 +67,7 @@ restore:
 
 .PHONY: up-migration
 up-migration:
-	docker-compose $(DC_FILE) up --no-recreate -d migration
+	docker-compose $(DC_FILE) up --build -d migration
 
 .PHONY: start-migration
 start-migration: env
@@ -80,7 +80,7 @@ log-migration: env
 
 .PHONY: up-service
 up-service:
-	docker-compose $(DC_FILE) up --no-recreate -d service
+	docker-compose $(DC_FILE) up --build -d service
 
 .PHONY: start-service
 start-service: env
@@ -101,7 +101,7 @@ demo: env
 
 .PHONY: up-server
 up-server:
-	docker-compose $(DC_FILE) up --no-recreate -d server
+	docker-compose $(DC_FILE) up -d server
 
 .PHONY: start-server
 start-server: env

@@ -1,4 +1,4 @@
-LDFLAGS  ?= -ldflags '-s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)'
+LDFLAGS     ?= -ldflags '-s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)'
 BUILD_FILES ?= main.go build.go
 
 

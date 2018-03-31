@@ -1,37 +1,34 @@
-.PHONY: run
-run: LDFLAGS = -s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)
-run:
-	go run -ldflags '$(LDFLAGS)' main.go build.go $(COMMAND)
+LDFLAGS  ?= -ldflags '-s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)'
+BUILD_FILES ?= main.go build.go
 
 
 .PHONY: cmd-help
-cmd-help: COMMAND = help
-cmd-help: run
+cmd-help:
+	go run $(LDFLAGS) $(BUILD_FILES) help
 
 .PHONY: cmd-help-migrate
-cmd-help-migrate: COMMAND = migrate --help
-cmd-help-migrate: run
+cmd-help-migrate:
+	go run $(LDFLAGS) $(BUILD_FILES) migrate --help
 
 .PHONY: cmd-help-run
-cmd-help-run: COMMAND = run --help
-cmd-help-run: run
+cmd-help-run:
+	go run $(LDFLAGS) $(BUILD_FILES) run --help
 
 .PHONY: cmd-version
-cmd-version: COMMAND = version
-cmd-version: run
+cmd-version:
+	go run $(LDFLAGS) $(BUILD_FILES) version
+
+.PHONY: cmd-migrate-up
+cmd-migrate-up: FLAGS =
+cmd-migrate-up:
+	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up 1
+
+.PHONY: cmd-migrate-down
+cmd-migrate-down: FLAGS = --with-demo
+cmd-migrate-down:
+	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) down 1
 
 
-.PHONY: migrate-up
-migrate-up: FLAGS   =
-migrate-up: COMMAND = migrate $(FLAGS) up 1
-migrate-up: run
-
-.PHONY: migrate-down
-migrate-down: FLAGS   =
-migrate-down: COMMAND = migrate $(FLAGS) down 1
-migrate-down: run
-
-
-.PHONY: server
-server: COMMAND = run --port=8080 --with-profiler --with-monitoring
-server: run
+.PHONY: dev-server
+dev-server:
+	go run $(LDFLAGS) $(BUILD_FILES) run --port=8080 --with-profiler --with-monitoring

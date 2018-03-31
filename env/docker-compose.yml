@@ -14,7 +14,7 @@ services:
     build:
       context: ../.
       dockerfile: ./env/Dockerfile
-    command: [ "migrate", "up", "--with-demo" ]
+    command: [ "migrate", "up" ]
     depends_on:
     - db
     env_file: .env

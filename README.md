@@ -11,14 +11,13 @@
 ## Quick start
 
 ```bash
-$ make up && make demo && make status
+$ make up demo status
 
-     Name                    Command               State                Ports             
-------------------------------------------------------------------------------------------
-env_db_1          docker-entrypoint.sh postgres    Up       0.0.0.0:5432->5432/tcp        
-env_migration_1   form-api migrate up              Exit 0                                 
-env_server_1      /bin/sh -c envsubst '$SERV ...   Up       80/tcp, 0.0.0.0:8080->8080/tcp
-env_service_1     form-api run --with-profiler     Up       0.0.0.0:8081->8080/tcp        
+    Name                   Command               State                                  Ports
+-----------------------------------------------------------------------------------------------------------------------------
+env_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
+env_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
+env_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
 
 $ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
 $ curl -H "Content-Type: application/x-www-form-urlencoded" \
@@ -50,6 +49,8 @@ Available Commands:
 
 Flags:
   -h, --help   help for this command
+
+Use " [command] --help" for more information about a command.
 ```
 
 ## Installation
@@ -63,13 +64,12 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export FAPI_V=1.0.5   # all available versions are on https://github.com/kamilsk/form-api/releases
+$ export VER=1.1.2      # all available versions are on https://github.com/kamilsk/form-api/releases
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
 $ wget -q -O form-api.tar.gz \
-       https://github.com/kamilsk/form-api/releases/download/${FAPI_V}/form-api_${FAPI_V}_${REQ_OS}-${REQ_ARCH}.tar.gz
-$ tar xf form-api.tar.gz -C "${GOPATH}"/bin/
-$ rm form-api.tar.gz
+       https://github.com/kamilsk/form-api/releases/download/"${VER}/form-api_${VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
+$ tar xf form-api.tar.gz -C "${GOPATH}"/bin/ && rm form-api.tar.gz
 ```
 
 ### Docker Hub
@@ -81,15 +81,13 @@ $ docker pull kamilsk/form-api:latest
 ### From source code
 
 ```bash
-$ go get -d -u github.com/kamilsk/form-api
-$ cd ${GOPATH}/src/github.com/kamilsk/form-api
-$ make generate test install
+$ egg github.com/kamilsk/form-api@^1.0.0 -- make generate test install
 ```
 
 #### Mirror
 
 ```bash
-$ egg bitbucket.org/kamilsk/form-api
+$ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make generate test install
 ```
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.

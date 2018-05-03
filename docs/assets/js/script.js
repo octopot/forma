@@ -8,11 +8,11 @@
         messages = $('#messages'), tpl = $('#message'),
         success = 'success',
         failure = 'failure';
-    var hashMap = {};
+    let hashMap = {};
 
     function showMessage(id, value) {
         const node = $('#' + id);
-        var type, title, desc, message;
+        let type, title, desc, message;
         switch (value) {
             case success:
                 type = 'alert-success';
@@ -36,7 +36,7 @@
     }
 
     function showMessages() {
-        for (var id in hashMap) {
+        for (let id in hashMap) {
             if (hashMap.hasOwnProperty(id)) { showMessage(id, hashMap[id]); }
         }
         hashMap = {}

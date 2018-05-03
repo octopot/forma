@@ -18,16 +18,16 @@ func Dialect() string {
 
 // AddData inserts form data and returns their ID.
 func AddData(db *sql.DB, uuid domain.UUID, verified map[string][]string) (int64, error) {
+	var id int64
 	encoded, err := json.Marshal(verified)
 	if err != nil {
-		return 0, errors.Serialization(errors.ServerErrorMessage, err,
+		return id, errors.Serialization(errors.ServerErrorMessage, err,
 			"trying to marshal data `%#v` into JSON with the schema %q", verified, uuid)
 	}
-	var id int64
 	err = db.QueryRow(`INSERT INTO "form_data" ("uuid", "data") VALUES ($1, $2) RETURNING "id"`, uuid, encoded).
 		Scan(&id)
 	if err != nil {
-		return 0, errors.Database(errors.ServerErrorMessage, err,
+		return id, errors.Database(errors.ServerErrorMessage, err,
 			"trying to insert JSON `%s` with the schema %q", encoded, uuid)
 	}
 	return id, nil

@@ -104,7 +104,7 @@ $ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make generate test install
 - brief roadmap
   - [x] v1: MVP
   - [ ] v2: API v2
-  - [ ] v3: Client Side
+  - [ ] v3: CSI
   - [ ] v4: CRUD
   - [ ] v5: GUI
   - [ ] Forma, SaaS

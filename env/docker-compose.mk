@@ -3,7 +3,7 @@ DC_FILE := -f env/docker-compose.yml
 
 .PHONY: env
 env:
-	cp -n env/.example.env env/.env || true # for containers
+	cp -n env/.env.example env/.env || true # for containers
 	cp -n env/.env .env             || true # for docker compose file, https://docs.docker.com/compose/env-file/
 
 

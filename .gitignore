@@ -1,23 +1,10 @@
-# goreleaser
-/dist/
-
 # go test and code quality report
 *.out
-
-# mockgen
-/**/mock_*.go
 
 # database
 /static/migrations/*
 !/static/migrations/1_initial.sql
-!/static/migrations/demo
-/static/migrations/demo/*
-!/static/migrations/demo/data.sql
-/env/backup.sql
+/env/backup.db
 
 # environment
 *.env
-!/env/.example.env
-
-# Material Kit template
-/template/

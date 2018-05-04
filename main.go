@@ -17,29 +17,34 @@ const (
 	failed  = 1
 )
 
-func main() { application{Stderr: os.Stderr, Stdout: os.Stdout, Shutdown: os.Exit}.Run() }
+func main() { application{Cmd: cmd.RootCmd, Output: os.Stderr, Shutdown: os.Exit}.Run() }
 
 type application struct {
-	Stderr, Stdout io.Writer
-	Shutdown       func(code int)
+	Cmd interface {
+		AddCommand(...*cobra.Command)
+		Execute() error
+	}
+	Output   io.Writer
+	Shutdown func(code int)
 }
 
 // Run executes the application logic.
 func (app application) Run() {
-	cmd.RootCmd.AddCommand(&cobra.Command{
+	app.Cmd.AddCommand(&cobra.Command{
 		Use:   "version",
 		Short: "Show application version",
 		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Fprintf(app.Stderr,
+			fmt.Fprintf(app.Output,
 				"Version %s (commit: %s, build date: %s, go version: %s, compiler: %s, platform: %s)\n",
 				version, commit, date, runtime.Version(), runtime.Compiler, runtime.GOOS+"/"+runtime.GOARCH)
 		},
+		Version: version,
 	})
-	if err := cmd.RootCmd.Execute(); err != nil {
-		fmt.Fprintln(app.Stderr, err)
+	if err := app.Cmd.Execute(); err != nil {
+		// so, when `issue` project will be ready
+		// I have to integrate it to open GitHub issues
+		// with stack trace from terminal
 		app.Shutdown(failed)
-		return
 	}
 	app.Shutdown(success)
-	return
 }

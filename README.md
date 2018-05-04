@@ -4,11 +4,18 @@
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![Build Status](https://travis-ci.org/kamilsk/form-api.svg?branch=master)](https://travis-ci.org/kamilsk/form-api)
-[![Coverage Status](https://coveralls.io/repos/github/kamilsk/form-api/badge.svg)](https://coveralls.io/github/kamilsk/form-api)
-[![GoDoc](https://godoc.org/github.com/kamilsk/form-api?status.svg)](https://godoc.org/github.com/kamilsk/form-api)
+[![Code Coverage](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
+[![Code Quality](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Quick start
+
+Requirements: 
+
+- Docker 17.09.0-ce or above
+- Docker Compose 1.16.1 or above
+- Go 1.9.2 or above
+- GNU Make 3.81 or above
 
 ```bash
 $ make up demo status
@@ -39,18 +46,19 @@ $ form-api --help
 Form API
 
 Usage:
-   [command]
+  form-api [command]
 
 Available Commands:
+  completion  Print Bash or Zsh completion
   help        Help about any command
   migrate     Apply database migration
   run         Start HTTP server
   version     Show application version
 
 Flags:
-  -h, --help   help for this command
+  -h, --help   help for form-api
 
-Use " [command] --help" for more information about a command.
+Use "form-api [command] --help" for more information about a command.
 ```
 
 ## Installation
@@ -64,7 +72,7 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export VER=1.1.2      # all available versions are on https://github.com/kamilsk/form-api/releases
+$ export VER=1.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
 $ wget -q -O form-api.tar.gz \
@@ -81,23 +89,26 @@ $ docker pull kamilsk/form-api:latest
 ### From source code
 
 ```bash
-$ egg github.com/kamilsk/form-api@^1.0.0 -- make generate test install
+$ egg github.com/kamilsk/form-api@^1.0.0 -- make test install
 ```
 
 #### Mirror
 
 ```bash
-$ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make generate test install
+$ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make test install
 ```
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.
 
-#### Requirements
+### Bash and Zsh completions
 
-- Docker 17.09.0-ce or above
-- Docker Compose 1.16.1 or above
-- Go 1.9.2 or above
-- GNU Make 3.81 or above
+You can find completion files [here](https://github.com/kamilsk/shared/tree/dotfiles/bash_completion.d) or
+build your own using these commands
+
+```bash
+$ form-api completion bash > /path/to/bash_completion.d/form-api.sh
+$ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
+```
 
 ## Notes
 

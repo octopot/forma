@@ -14,7 +14,7 @@ import (
 var RootCmd = &cobra.Command{Use: "form-api", Short: "Form API"}
 
 func init() {
-	RootCmd.AddCommand(migrateCmd, runCmd)
+	RootCmd.AddCommand(completionCmd, migrateCmd, runCmd)
 }
 
 func must(actions ...func() error) {

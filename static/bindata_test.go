@@ -49,7 +49,7 @@ func TestAssetDir(t *testing.T) {
 		expected []string
 	}{
 		{"root", "static", []string{"migrations", "templates"}},
-		{"migrations", "static/migrations", []string{"1_initial.sql", "demo"}},
+		{"migrations", "static/migrations", []string{"1_initial.sql"}},
 		{"templates", "static/templates", []string{"error.html", "redirect.html"}},
 		{"not found", "static/templates/unknown", nil},
 	}

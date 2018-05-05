@@ -1,116 +1,123 @@
-DC_FILE := -f env/docker-compose.yml
-
+COMPOSE ?= docker-compose -f env/docker-compose.base.yml -f env/docker-compose.dev.yml -p form-api
 
 .PHONY: env
 env:
-	cp -n env/.env.example env/.env || true # for containers
-	cp -n env/.env .env             || true # for docker compose file, https://docs.docker.com/compose/env-file/
+	cp -n env/.env{.example,} || true # for containers
+	cp -n env/.env .env       || true # for docker compose file, https://docs.docker.com/compose/env-file/
 
+.PHONY: rm-env
+rm-env:
+	find . -name .env | xargs rm -f || true
+
+
+.PHONY: config
+config:
+	$(COMPOSE) config
 
 .PHONY: up
 up: env
-	docker-compose $(DC_FILE) up -d
-	docker-compose $(DC_FILE) rm -f
+	$(COMPOSE) up -d
+	$(COMPOSE) rm -f
 
 .PHONY: fresh-up
 fresh-up: env
-	docker-compose $(DC_FILE) up --build --force-recreate -d
-	docker-compose $(DC_FILE) rm -f
+	$(COMPOSE) up --build --force-recreate -d
+	$(COMPOSE) rm -f
 
 .PHONY: down
 down: env
-	docker-compose $(DC_FILE) down
+	$(COMPOSE) down
 
 .PHONY: clean-down
 clean-down: env
-	docker-compose $(DC_FILE) down --volumes --rmi local
+	$(COMPOSE) down --volumes --rmi local
 
 .PHONY: clear
 clear: env
-	docker-compose $(DC_FILE) rm -f
+	$(COMPOSE) rm -f
 
 .PHONY: status
 status: env
-	docker-compose $(DC_FILE) ps
+	$(COMPOSE) ps
 
 
 .PHONY: up-db
 up-db:
-	docker-compose $(DC_FILE) up -d db
+	$(COMPOSE) up -d db
 
 .PHONY: start-db
 start-db: env
-	docker-compose $(DC_FILE) start db
+	$(COMPOSE) start db
 
 .PHONY: stop-db
 stop-db: env
-	docker-compose $(DC_FILE) stop db
+	$(COMPOSE) stop db
 
 .PHONY: log-db
 log-db: env
-	docker-compose $(DC_FILE) logs -f db
+	$(COMPOSE) logs -f db
 
 .PHONY: psql
 psql: env
-	docker-compose $(DC_FILE) exec db /bin/sh -c 'su - postgres -c psql'
+	$(COMPOSE) exec db /bin/sh -c 'su - postgres -c psql'
 
-.PHONY: backup
-backup: env
-	docker-compose $(DC_FILE) exec db \
-	  /bin/sh -c 'su - postgres -c "pg_dump --clean $${POSTGRES_DB}"' > ./env/backup.sql
+.PHONY: backup-db
+backup-db: env
+	$(COMPOSE) exec db /bin/sh -c 'su - postgres -c "pg_dump --format=custom --file=/tmp/backup.db $${POSTGRES_DB}"'
+	docker cp $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/backup.db ./env/
+	$(COMPOSE) exec db rm /tmp/backup.db
 
-.PHONY: restore
-restore:
-	cat ./env/backup.sql | docker exec -i $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1) \
-	  /bin/sh -c 'cat > /tmp/backup.sql && su - postgres -c "psql $${POSTGRES_DB} < /tmp/backup.sql"'
+.PHONY: restore-db
+restore-db:
+	docker cp ./env/clean.sql $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/
+	docker cp ./env/backup.db $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/
+	$(COMPOSE) exec db /bin/sh -c 'su - postgres -c "psql $${POSTGRES_DB} < /tmp/clean.sql"'
+	$(COMPOSE) exec db /bin/sh -c 'su - postgres -c "pg_restore -Fc -d $${POSTGRES_DB} /tmp/backup.db"'
+	$(COMPOSE) exec db rm /tmp/backup.db /tmp/clean.sql
 
 
 .PHONY: up-migration
 up-migration:
-	docker-compose $(DC_FILE) up --build -d migration
+	$(COMPOSE) up --build -d migration
 
 .PHONY: start-migration
 start-migration: env
-	docker-compose $(DC_FILE) start migration
+	$(COMPOSE) start migration
 
 .PHONY: log-migration
 log-migration: env
-	docker-compose $(DC_FILE) logs -f migration
+	$(COMPOSE) logs -f migration
 
 
 .PHONY: up-service
 up-service:
-	docker-compose $(DC_FILE) up --build -d service
+	$(COMPOSE) up --build -d service
 
 .PHONY: start-service
 start-service: env
-	docker-compose $(DC_FILE) start service
+	$(COMPOSE) start service
 
 .PHONY: stop-service
 stop-service: env
-	docker-compose $(DC_FILE) stop service
+	$(COMPOSE) stop service
 
 .PHONY: log-service
 log-service: env
-	docker-compose $(DC_FILE) logs -f service
-
-.PHONY: demo
-demo: env
-	docker-compose $(DC_FILE) exec service form-api migrate up --with-demo
+	$(COMPOSE) logs -f service
 
 
 .PHONY: up-server
 up-server:
-	docker-compose $(DC_FILE) up -d server
+	$(COMPOSE) up -d server
 
 .PHONY: start-server
 start-server: env
-	docker-compose $(DC_FILE) start server
+	$(COMPOSE) start server
 
 .PHONY: stop-server
 stop-server: env
-	docker-compose $(DC_FILE) stop server
+	$(COMPOSE) stop server
 
 .PHONY: log-server
 log-server: env
-	docker-compose $(DC_FILE) logs -f server
+	$(COMPOSE) logs -f server

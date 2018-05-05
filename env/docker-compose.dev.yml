@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  db:
+    ports:
+    - ${LOCAL_DB_PORT}:5432
+    volumes:
+    - pgdata:${PGDATA}
+
+  migration:
+    image: kamilsk/form-api:latest # https://hub.docker.com/r/kamilsk/form-api/
+
+  service:
+    image: kamilsk/form-api:latest # https://hub.docker.com/r/kamilsk/form-api/
+    ports:
+    - ${LOCAL_SERVICE_HTTP_PORT}:${PORT}
+    - ${LOCAL_SERVICE_PROFILING_PORT}:8090
+    - ${LOCAL_SERVICE_MONITORING_PORT}:8091
+
+  server:
+    entrypoint: |
+      /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \
+                  < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf \
+                  && echo $$BASIC_USER:`(echo $$BASIC_PASS | openssl passwd -crypt -stdin -noverify)` >> /etc/nginx/.htpasswd \
+                  && /entrypoint.sh"
+    ports:
+    - ${LOCAL_SERVER_HTTP_PORT}:${DOMAIN_PORT}
+    volumes:
+    - certificates:/etc/nginx/ssl
+    - le_challenge:/usr/share/sites/${DOMAIN_NAME}
+
+volumes:
+  pgdata:
+    driver: local
+
+  certificates:
+    driver: local
+
+  le_challenge:
+    driver: local

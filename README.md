@@ -138,6 +138,7 @@ $ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
   - [ ] v4: CRUD
   - [ ] v5: GUI
   - [ ] Forma, SaaS
+- [research](../../tree/research)
 - tested on Go 1.9 and 1.10
 
 ---

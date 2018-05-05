@@ -42,7 +42,7 @@ status: env
 
 
 .PHONY: up-db
-up-db:
+up-db: env
 	$(COMPOSE) up -d db
 
 .PHONY: start-db
@@ -68,7 +68,7 @@ backup-db: env
 	$(COMPOSE) exec db rm /tmp/backup.db
 
 .PHONY: restore-db
-restore-db:
+restore-db: env
 	docker cp ./env/clean.sql $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/
 	docker cp ./env/backup.db $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/
 	$(COMPOSE) exec db /bin/sh -c 'su - postgres -c "psql $${POSTGRES_DB} < /tmp/clean.sql"'
@@ -77,7 +77,7 @@ restore-db:
 
 
 .PHONY: up-migration
-up-migration:
+up-migration: env
 	$(COMPOSE) up --build -d migration
 
 .PHONY: start-migration
@@ -90,7 +90,7 @@ log-migration: env
 
 
 .PHONY: up-service
-up-service:
+up-service: env
 	$(COMPOSE) up --build -d service
 
 .PHONY: start-service
@@ -107,7 +107,7 @@ log-service: env
 
 
 .PHONY: up-server
-up-server:
+up-server: env
 	$(COMPOSE) up -d server
 
 .PHONY: start-server

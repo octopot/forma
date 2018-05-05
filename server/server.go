@@ -50,7 +50,7 @@ type Server struct {
 	}
 }
 
-// GetV1 is responsible for `GET /api/v1/{UUID}` request handling.
+// GetV1 is responsible for `GET /api/v1/{Schema.ID}` request handling.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
 		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
@@ -83,7 +83,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	enc.Encode(response.Schema)
 }
 
-// PostV1 is responsible for `POST /api/v1/{UUID}` request handling.
+// PostV1 is responsible for `POST /api/v1/{Schema.ID}` request handling.
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)

@@ -19,7 +19,7 @@ import (
 var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Start HTTP server",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		runtime.GOMAXPROCS(asInt(cmd.Flag("cpus").Value))
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 
@@ -45,7 +45,7 @@ var runCmd = &cobra.Command{
 			WriteTimeout:      asDuration(cmd.Flag("write-timeout").Value),
 			IdleTimeout:       asDuration(cmd.Flag("idle-timeout").Value)}
 		log.Println("starting server at", addr)
-		log.Fatal(srv.ListenAndServe())
+		return srv.ListenAndServe()
 	},
 }
 

@@ -20,16 +20,35 @@ Requirements:
 ```bash
 $ make up demo status
 
-    Name                   Command               State                                  Ports
------------------------------------------------------------------------------------------------------------------------------
-env_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
-env_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-env_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
+       Name                     Command               State                                  Ports
+----------------------------------------------------------------------------------------------------------------------------------
+form-api_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
+form-api_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
+form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
 
 $ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
-$ curl -H "Content-Type: application/x-www-form-urlencoded" \
+# <form id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" lang="en" title="Email subscription"
+#       action="http://localhost/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4" method="post"
+#       enctype="application/x-www-form-urlencoded">
+#       <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email" name="email" type="email" title="Email"
+#              maxlength="64" required="true"></input>
+# </form>
+$ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \
        http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+# > POST /api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4 HTTP/1.1
+# > Host: localhost:8080
+# > User-Agent: curl/7.54.0
+# > Accept: */*
+# > Content-Type: application/x-www-form-urlencoded
+# > Content-Length: 21
+# >
+# < HTTP/1.1 302 Found
+# < Location: https://kamil.samigullin.info/?41ca5e09-3ce2-4094-b108-3ecc257c6fa4=success
+# < Date: Sat, 05 May 2018 09:34:47 GMT
+# < Content-Length: 0
+# <
+$
 ```
 
 ## Specification

@@ -9,6 +9,7 @@ import (
 	_ "github.com/lib/pq"
 
 	"github.com/kamilsk/form-api/cmd"
+	"github.com/kamilsk/form-api/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -30,6 +31,16 @@ type application struct {
 
 // Run executes the application logic.
 func (app application) Run() {
+	var err error
+	defer func() {
+		errors.Recover(&err)
+		if err != nil {
+			// so, when `issue` project will be ready
+			// I have to integrate it to open GitHub issues
+			// with stack trace from terminal
+			app.Shutdown(failed)
+		}
+	}()
 	app.Cmd.AddCommand(&cobra.Command{
 		Use:   "version",
 		Short: "Show application version",
@@ -40,10 +51,7 @@ func (app application) Run() {
 		},
 		Version: version,
 	})
-	if err := app.Cmd.Execute(); err != nil {
-		// so, when `issue` project will be ready
-		// I have to integrate it to open GitHub issues
-		// with stack trace from terminal
+	if err = app.Cmd.Execute(); err != nil {
 		app.Shutdown(failed)
 	}
 	app.Shutdown(success)

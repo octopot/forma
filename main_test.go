@@ -48,6 +48,19 @@ func TestApplication_Run(t *testing.T) {
 			},
 			failed,
 		},
+		{
+			"panicked run",
+			func() interface {
+				AddCommand(...*cobra.Command)
+				Execute() error
+			} {
+				cmd := &CmdMock{}
+				cmd.On("AddCommand", mock.Anything)
+				cmd.On("Execute").Run(func(mock.Arguments) { panic("something unexpected") })
+				return cmd
+			},
+			failed,
+		},
 	}
 	for _, test := range tests {
 		tc := test

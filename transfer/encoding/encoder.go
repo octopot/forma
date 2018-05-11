@@ -20,6 +20,7 @@ const (
 	XML = "application/xml"
 )
 
+// This var is related to `Offers`.
 var supported = map[string]func(io.Writer) Encoder{
 	HTML: func(stream io.Writer) Encoder { return htmlEncoder{stream} },
 	JSON: func(stream io.Writer) Encoder { return json.NewEncoder(stream) },
@@ -27,7 +28,12 @@ var supported = map[string]func(io.Writer) Encoder{
 	XML:  func(stream io.Writer) Encoder { return xml.NewEncoder(stream) },
 }
 
-// IsSupported returns true if provided content type is supported by encoder.
+// Offers returns supported content types.
+func Offers() []string {
+	return []string{HTML, JSON, TEXT, XML}
+}
+
+// IsSupported returns true if the provided content type is supported by encoder.
 func IsSupported(contentType string) bool {
 	_, ok := supported[contentType]
 	return ok

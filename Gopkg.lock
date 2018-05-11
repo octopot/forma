@@ -24,6 +24,15 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/golang/gddo"
+  packages = [
+    "httputil",
+    "httputil/header"
+  ]
+  revision = "416d5fc8c9c85e9ec9252a70d01e069f4b287ff0"
+
+[[projects]]
+  branch = "master"
   name = "github.com/golang/mock"
   packages = ["gomock"]
   revision = "22bbf0ddf08105dfa364d0a2fa619dfa71014af5"
@@ -196,6 +205,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "98960b1e2a90b9e6889a111755c019bd1c913da8383b639de54e6bb157c57451"
+  inputs-digest = "37a3175d02b0e8142902e2ff9b9e1b6e26e57bfcac9852e80be9b1466393a265"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -3,35 +3,27 @@ package middleware
 import (
 	"context"
 	"net/http"
-	"strings"
 
+	"github.com/golang/gddo/httputil"
 	"github.com/kamilsk/form-api/transfer/encoding"
 )
+
+// Notes:
+// - related issue https://github.com/golang/go/issues/19307
 
 // Encoder injects required response encoder to the request context.
 func Encoder(next http.HandlerFunc) http.HandlerFunc {
 	return func(rw http.ResponseWriter, req *http.Request) {
-		// Accept: */*
-		// Accept: text/html
-		// Accept: image/*
-		// Accept: text/html, application/xhtml+xml, application/xml; q=0.9, */*; q=0.8
-		accept := fallback(req.Header.Get("Accept"), encoding.XML)
-		contentType := strings.TrimSpace(strings.Split(strings.Split(accept, ";")[0], ",")[0])
+		var contentType string
+		if req.Header.Get("Accept") == "" {
+			contentType = encoding.XML
+		} else {
+			contentType = httputil.NegotiateContentType(req, encoding.Offers(), "")
+		}
 		if !encoding.IsSupported(contentType) {
 			rw.WriteHeader(http.StatusNotAcceptable)
 			return
 		}
 		next(rw, req.WithContext(context.WithValue(req.Context(), EncoderKey{}, encoding.NewEncoder(rw, contentType))))
 	}
-}
-
-func fallback(value string, fallbackValues ...string) string {
-	if value == "" || value == "*/*" {
-		for _, value := range fallbackValues {
-			if value != "" {
-				return value
-			}
-		}
-	}
-	return value
 }

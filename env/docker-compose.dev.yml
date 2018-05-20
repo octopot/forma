@@ -31,7 +31,7 @@ services:
     - ${LOCAL_SERVER_HTTP_PORT}:${DOMAIN_PORT}
     volumes:
     - certificates:/etc/nginx/ssl
-    - le_challenge:/usr/share/sites/${DOMAIN_NAME}
+    - letsencrypt:/etc/letsencrypt
 
 volumes:
   pgdata:
@@ -39,6 +39,5 @@ volumes:
 
   certificates:
     driver: local
-
-  le_challenge:
+  letsencrypt:
     driver: local

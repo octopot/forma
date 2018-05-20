@@ -6,9 +6,7 @@ services:
     env_file: .env
 
   migration:
-    build:
-      context: ../.
-      dockerfile: ./env/Dockerfile
+    image: kamilsk/form-api:1.x # https://hub.docker.com/r/kamilsk/form-api/
     command: [ "migrate", "up" ]
     depends_on:
     - db
@@ -16,9 +14,7 @@ services:
     restart: on-failure
 
   service:
-    build:
-      context: ../.
-      dockerfile: ./env/Dockerfile
+    image: kamilsk/form-api:1.x # https://hub.docker.com/r/kamilsk/form-api/
     command: [ "run", "--with-profiler", "--with-monitoring" ]
     depends_on:
     - migration

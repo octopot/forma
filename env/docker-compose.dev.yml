@@ -8,10 +8,14 @@ services:
     - pgdata:${PGDATA}
 
   migration:
-    image: kamilsk/form-api:latest # https://hub.docker.com/r/kamilsk/form-api/
+    build:
+      context: ../.
+      dockerfile: ./env/Dockerfile
 
   service:
-    image: kamilsk/form-api:latest # https://hub.docker.com/r/kamilsk/form-api/
+    build:
+      context: ../.
+      dockerfile: ./env/Dockerfile
     ports:
     - ${LOCAL_SERVICE_HTTP_PORT}:${PORT}
     - ${LOCAL_SERVICE_PROFILING_PORT}:8090

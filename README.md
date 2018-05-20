@@ -48,7 +48,6 @@ $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
 # < Date: Sat, 05 May 2018 09:34:47 GMT
 # < Content-Length: 0
 # <
-$
 ```
 
 ## Specification
@@ -102,7 +101,7 @@ $ tar xf form-api.tar.gz -C "${GOPATH}"/bin/ && rm form-api.tar.gz
 ### Docker Hub
 
 ```bash
-$ docker pull kamilsk/form-api:latest
+$ docker pull kamilsk/form-api:1.x
 ```
 
 ### From source code

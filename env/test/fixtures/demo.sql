@@ -1,5 +1,5 @@
 DO $$
-DECLARE   demoUser "form_schema"."user"%TYPE := uuid_generate_v4();
+DECLARE   demoUser "form_schema"."user"%TYPE := '00000000-0000-4000-8000-000000000000';
   DECLARE email    "form_data"."uuid"%TYPE := '41ca5e09-3ce2-4094-b108-3ecc257c6fa4';
   DECLARE githubEn "form_data"."uuid"%TYPE := '41059676-6cb6-42bc-9fb5-8df1699b6881';
   DECLARE githubRu "form_data"."uuid"%TYPE := '41d33b3d-26fe-435c-9402-c8e4a1f87cc1';

@@ -1,6 +1,8 @@
 package server
 
 import (
+	"encoding/base64"
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -85,6 +87,10 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 
 // PostV1 is responsible for `POST /api/v1/{Schema.ID}` request handling.
 func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
+	type feedback struct {
+		ID     string `json:"id"`
+		Result string `json:"result"`
+	}
 	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
@@ -114,9 +120,10 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 						// add URL marker
 						u, err := url.Parse(redirect)
 						if err == nil {
-							query := u.Query()
-							query.Set(string(uuid), "failure")
-							u.RawQuery = query.Encode()
+							u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+								raw, _ := json.Marshal(feedback{ID: string(uuid), Result: "failure"})
+								return raw
+							}())
 							redirect = u.String()
 						}
 					}
@@ -141,9 +148,10 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		// add URL marker
 		u, err := url.Parse(redirect)
 		if err == nil {
-			query := u.Query()
-			query.Set(string(uuid), "success")
-			u.RawQuery = query.Encode()
+			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+				raw, _ := json.Marshal(feedback{ID: string(uuid), Result: "success"})
+				return raw
+			}())
 			redirect = u.String()
 		}
 	}

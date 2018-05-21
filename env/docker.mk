@@ -5,6 +5,8 @@ docker-build:
 	docker build -f env/Dockerfile \
 	             -t kamilsk/form-api:$(IMAGE_VERSION) \
 	             -t kamilsk/form-api:latest \
+	             -t quay.io/kamilsk/form-api:$(IMAGE_VERSION) \
+	             -t quay.io/kamilsk/form-api:latest \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
@@ -12,6 +14,8 @@ docker-build:
 docker-push:
 	docker push kamilsk/form-api:$(IMAGE_VERSION)
 	docker push kamilsk/form-api:latest
+	docker push quay.io/kamilsk/form-api:$(IMAGE_VERSION)
+	docker push quay.io/kamilsk/form-api:latest
 
 .PHONY: docker-refresh
 docker-refresh:

@@ -42,8 +42,8 @@ var migrateCmd = &cobra.Command{
 			raw, err := ioutil.ReadFile("env/test/fixtures/demo.sql")
 			switch {
 			case err == nil:
-				result, err := layer.Connection().Exec(string(raw))
-				log.Printf("demo: %#+v : %#+v", result, err)
+				_, err := layer.Connection().Exec(string(raw))
+				log.Printf("demo: error is %#+v", err)
 			case os.IsNotExist(err):
 				log.Println("demo is available only during development")
 			default:

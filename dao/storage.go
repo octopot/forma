@@ -65,3 +65,8 @@ func (l *Storage) AddData(uuid domain.UUID, verified map[string][]string) (int64
 func (l *Storage) Schema(uuid domain.UUID) (domain.Schema, error) {
 	return postgres.Schema(l.conn, uuid)
 }
+
+// UUID returns a new generated unique identifier.
+func (l *Storage) UUID() (domain.UUID, error) {
+	return postgres.UUID(l.conn)
+}

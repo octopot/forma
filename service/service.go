@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/kamilsk/form-api/domain"
 	"github.com/kamilsk/form-api/errors"
 	"github.com/kamilsk/form-api/transfer/api/v1"
 )
@@ -28,6 +29,18 @@ func (s *FormAPI) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 		response v1.PostResponse
 		verified map[string][]string
 	)
+
+	{ // TODO encrypt/decrypt marker
+		marker := domain.UUID(request.EncryptedMarker)
+		if !marker.IsValid() {
+			marker, response.Error = s.dao.UUID()
+			if response.Error != nil {
+				return response
+			}
+		}
+		response.EncryptedMarker = string(marker)
+	}
+
 	response.Schema, response.Error = s.dao.Schema(request.UUID)
 	if response.Error != nil {
 		return response
@@ -38,6 +51,11 @@ func (s *FormAPI) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 			"trying to add data for schema %q", request.UUID)
 		return response
 	}
+
+	// issue #110: add cookie
+	// TODO use context column
+	verified["_token"] = []string{response.EncryptedMarker}
+
 	response.ID, response.Error = s.dao.AddData(request.UUID, verified)
 	return response
 }

@@ -4,13 +4,15 @@ import "github.com/kamilsk/form-api/domain"
 
 // PostRequest represents `POST /api/v1/{Schema.ID}` request.
 type PostRequest struct {
-	UUID domain.UUID
-	Data map[string][]string
+	EncryptedMarker string
+	UUID            domain.UUID
+	Data            map[string][]string
 }
 
 // PostResponse represents `POST /api/v1/{Schema.ID}` response.
 type PostResponse struct {
-	ID     int64
-	Error  error
-	Schema domain.Schema
+	EncryptedMarker string
+	ID              int64
+	Error           error
+	Schema          domain.Schema
 }

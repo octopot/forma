@@ -8,4 +8,6 @@ type Storage interface {
 	AddData(domain.UUID, map[string][]string) (int64, error)
 	// Schema returns the form schema with provided UUID.
 	Schema(domain.UUID) (domain.Schema, error)
+	// UUID returns a new generated unique identifier.
+	UUID() (domain.UUID, error)
 }

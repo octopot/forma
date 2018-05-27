@@ -20,10 +20,9 @@ import (
 )
 
 const (
-	// RedirectKey is used to overwrite default redirect link and serves as a fallback for Referer header.
-	RedirectKey = "_redirect"
-	// TimeoutKey is used to overwrite default error fix timeout.
-	TimeoutKey = "_timeout"
+	tokenCookieName = "token"
+	redirectKey     = "_redirect"
+	timeoutKey      = "_timeout"
 )
 
 // New returns a new instance of Form API server.
@@ -98,9 +97,23 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 	var (
 		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
 	)
-	request := v1.PostRequest{UUID: uuid, Data: req.PostForm}
-	response := s.service.HandlePostV1(request)
-	redirect := fallback(req.PostFormValue(RedirectKey), req.Referer(), response.Schema.Action)
+
+	// TODO: move to middleware layer
+	// TODO: support opts.Anonymously()
+	cookie, err := req.Cookie(tokenCookieName)
+	if err != nil {
+		cookie = &http.Cookie{Name: tokenCookieName}
+	}
+
+	response := s.service.HandlePostV1(v1.PostRequest{EncryptedMarker: cookie.Value, UUID: uuid, Data: req.PostForm})
+
+	// TODO: move to middleware layer
+	// TODO: support opts.Anonymously()
+	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
+	cookie.Secure, cookie.HttpOnly = true, true
+	http.SetCookie(rw, cookie)
+
+	redirect := fallback(req.PostFormValue(redirectKey), req.Referer(), response.Schema.Action)
 	if response.Error != nil {
 		if err, is := response.Error.(errors.ApplicationError); is {
 			if clientErr, is := err.IsClientError(); is {

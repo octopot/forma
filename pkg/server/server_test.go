@@ -1,5 +1,5 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package server_test -destination $PWD/server/mock_contract_test.go github.com/kamilsk/form-api/server Service
+//go:generate mockgen -package server_test -destination $PWD/pkg/server/mock_contract_test.go github.com/kamilsk/form-api/pkg/server Service
 package server_test
 
 import (
@@ -11,12 +11,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/errors"
-	"github.com/kamilsk/form-api/server"
-	"github.com/kamilsk/form-api/server/middleware"
-	"github.com/kamilsk/form-api/transfer/api/v1"
-	"github.com/kamilsk/form-api/transfer/encoding"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/server"
+	"github.com/kamilsk/form-api/pkg/server/middleware"
+	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
+	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -147,7 +147,9 @@ func TestServer_PostV1(t *testing.T) {
 			}()
 			service.EXPECT().
 				HandlePostV1(v1.PostRequest{UUID: UUID, Data: data}).
-				Return(v1.PostResponse{Error: err})
+				Return(v1.PostResponse{Error: err, Schema: domain.Schema{
+					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}},
+				}})
 			return req
 		}, http.StatusBadRequest},
 		{http.StatusText(http.StatusInternalServerError), func(out io.Writer) *http.Request {

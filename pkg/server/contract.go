@@ -1,6 +1,6 @@
 package server
 
-import "github.com/kamilsk/form-api/transfer/api/v1"
+import "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 
 // Service defines the behavior of Form API service.
 type Service interface {

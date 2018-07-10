@@ -11,12 +11,12 @@ import (
 
 	deep "github.com/pkg/errors"
 
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/errors"
-	"github.com/kamilsk/form-api/server/middleware"
-	"github.com/kamilsk/form-api/static"
-	"github.com/kamilsk/form-api/transfer/api/v1"
-	"github.com/kamilsk/form-api/transfer/encoding"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/server/middleware"
+	"github.com/kamilsk/form-api/pkg/static"
+	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
+	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 )
 
 const (

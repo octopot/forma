@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kamilsk/form-api/dao"
-	"github.com/kamilsk/form-api/static"
+	"github.com/kamilsk/form-api/pkg/dao"
+	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

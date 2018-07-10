@@ -8,10 +8,10 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/kamilsk/form-api/dao"
-	"github.com/kamilsk/form-api/server"
-	"github.com/kamilsk/form-api/server/router/chi"
-	"github.com/kamilsk/form-api/service"
+	"github.com/kamilsk/form-api/pkg/dao"
+	"github.com/kamilsk/form-api/pkg/server"
+	"github.com/kamilsk/form-api/pkg/server/router/chi"
+	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

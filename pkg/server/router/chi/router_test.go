@@ -1,5 +1,5 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package chi_test -destination $PWD/server/router/chi/mock_contract_test.go github.com/kamilsk/form-api/server/router Server
+//go:generate mockgen -package chi_test -destination $PWD/pkg/server/router/chi/mock_contract_test.go github.com/kamilsk/form-api/pkg/server/router Server
 package chi_test
 
 import (
@@ -10,8 +10,8 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/server/router/chi"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/stretchr/testify/assert"
 )
 

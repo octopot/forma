@@ -1,3 +1,8 @@
+.PHONY: mocks
+mocks:
+	find . -name "mock_*.go" | grep -v ./vendor | xargs rm || true
+	go generate -run="mockgen" ./...
+
 .PHONY: tools
 tools:
 	if ! command -v go-bindata > /dev/null; then \
@@ -12,11 +17,6 @@ tools:
 .PHONY: generate
 generate: tools mocks
 
-.PHONY: mocks
-mocks:
-	find . -name mock_*.go | grep -v ./vendor | xargs rm || true
-	go generate -run="mockgen" ./...
-
 .PHONY: static
 static: tools
-	go-bindata -o static/bindata.go -pkg static -ignore "\.go$$" -ignore "static/fixtures" static/...
+	go-bindata -o pkg/static/bindata.go -pkg static -ignore "\.go$$" -ignore "fixtures" -prefix pkg/ pkg/static/...

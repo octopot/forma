@@ -2,9 +2,9 @@ OPEN_BROWSER       =
 SUPPORTED_VERSIONS = 1.9 1.10 latest
 
 
-include makes/env.mk
-include makes/docker.mk
-include makes/local.mk
+include env/makefiles/env.mk
+include env/makefiles/docker.mk
+include env/makefiles/local.mk
 include env/cmd.mk
 include env/docker.mk
 include env/docker-compose.mk

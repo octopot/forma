@@ -13,12 +13,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/errors"
-	"github.com/kamilsk/form-api/server"
-	"github.com/kamilsk/form-api/server/router/chi"
-	"github.com/kamilsk/form-api/service"
-	"github.com/kamilsk/form-api/transfer/encoding"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/server"
+	"github.com/kamilsk/form-api/pkg/server/router/chi"
+	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 

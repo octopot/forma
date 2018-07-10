@@ -1,6 +1,6 @@
 package service
 
-import "github.com/kamilsk/form-api/domain"
+import "github.com/kamilsk/form-api/pkg/domain"
 
 // Storage defines the behavior of Data Access Object.
 type Storage interface {

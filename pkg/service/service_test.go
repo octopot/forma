@@ -1,5 +1,5 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package service_test -destination $PWD/service/mock_contract_test.go github.com/kamilsk/form-api/service Storage
+//go:generate mockgen -package service_test -destination $PWD/pkg/service/mock_contract_test.go github.com/kamilsk/form-api/pkg/service Storage
 package service_test
 
 import (
@@ -9,9 +9,9 @@ import (
 	deep "github.com/pkg/errors"
 
 	"github.com/golang/mock/gomock"
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/service"
-	"github.com/kamilsk/form-api/transfer/api/v1"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 )
 
@@ -95,6 +95,14 @@ func TestFormAPI_HandlePostV1(t *testing.T) {
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
 			dao.EXPECT().UUID().Return(UUID, nil)
 			_, response.Error = response.Schema.Apply(request.Data)
+			return request, response
+		}},
+		{"token generation error", func() (v1.PostRequest, v1.PostResponse) {
+			var (
+				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
+				response = v1.PostResponse{Error: errors.New("token generation")}
+			)
+			dao.EXPECT().UUID().Return(domain.UUID(""), response.Error)
 			return request, response
 		}},
 	}

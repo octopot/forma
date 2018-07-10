@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/errors"
-	"github.com/kamilsk/form-api/transfer/api/v1"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
 // New returns a new instance of Form API service.

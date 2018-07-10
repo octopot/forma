@@ -302,6 +302,10 @@ metaScan:
 					errorMessage = "go-import meta tag content attribute does not have three fields"
 					continue metaScan
 				}
+				if fields[1] == "mod" {
+					// vgo adds a special mod vcs type; we can skip this
+					continue
+				}
 				if im != nil {
 					im = nil
 					errorMessage = "more than one go-import meta tag found"
@@ -374,6 +378,9 @@ func getDynamic(ctx context.Context, client *http.Client, importPath, etag strin
 	proto := im.repo[:i]
 	clonePath := im.repo[i+len("://"):]
 	repo := strings.TrimSuffix(clonePath, "."+im.vcs)
+	if !IsValidRemotePath(repo) {
+		return nil, fmt.Errorf("bad path from meta: %s", repo)
+	}
 	dirName := importPath[len(im.projectRoot):]
 
 	resolvedPath := repo + dirName

@@ -5,8 +5,8 @@ import (
 	"encoding/json"
 	"encoding/xml"
 
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/errors"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/errors"
 )
 
 const dialect = "postgres"

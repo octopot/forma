@@ -8,8 +8,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/transfer/encoding"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 

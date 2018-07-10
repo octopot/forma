@@ -1,6 +1,6 @@
 package v1
 
-import "github.com/kamilsk/form-api/domain"
+import "github.com/kamilsk/form-api/pkg/domain"
 
 // PostRequest represents `POST /api/v1/{Schema.ID}` request.
 type PostRequest struct {

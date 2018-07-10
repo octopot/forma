@@ -4,9 +4,15 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/kamilsk/form-api/domain"
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
 )
+
+func TestOffers(t *testing.T) {
+	for _, offer := range Offers() {
+		assert.Contains(t, supported, offer)
+	}
+}
 
 func TestHTMLEncoder_Encode(t *testing.T) {
 	t.Run("marshal fails", func(t *testing.T) {

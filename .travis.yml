@@ -9,6 +9,7 @@ go:
 matrix:
   allow_failures:
   - go: master
+  - go: 1.x
   fast_finish: true
 
 sudo: false

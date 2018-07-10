@@ -1,0 +1,10 @@
+// protoc -I pkg/grpc/ pkg/grpc/input.proto --go_out=plugins=grpc:pkg/grpc
+syntax = "proto3";
+
+message ReadInputRequest {}
+
+message ReadInputResponse {}
+
+service Input {
+    rpc Read (ReadInputRequest) returns (stream ReadInputResponse) {}
+}

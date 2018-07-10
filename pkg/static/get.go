@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/kamilsk/form-api/domain"
+	"github.com/kamilsk/form-api/pkg/domain"
 )
 
 // ErrorPageContext contains data for `error.html` template.

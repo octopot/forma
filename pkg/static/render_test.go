@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/kamilsk/form-api/domain"
-	"github.com/kamilsk/form-api/static"
+	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
 )
 

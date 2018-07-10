@@ -6,7 +6,7 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/kamilsk/form-api/static"
+	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
 )
 

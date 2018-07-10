@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/kamilsk/form-api/domain"
+	"github.com/kamilsk/form-api/pkg/domain"
 )
 
 // Schema validates the passed Schema ID and injects it to the request context.

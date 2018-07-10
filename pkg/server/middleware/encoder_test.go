@@ -5,8 +5,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kamilsk/form-api/server/middleware"
-	"github.com/kamilsk/form-api/transfer/encoding"
+	"github.com/kamilsk/form-api/pkg/server/middleware"
+	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 

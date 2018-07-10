@@ -7,34 +7,19 @@
 
 ## Articles
 
-### News
-
-- [ ] An experimental API for submitting custom elements in a native `<form>`
-  - https://twitter.com/notwaldorf/status/984357067493445632
-  - https://custom-elements-in-forms.glitch.me
-
 ### Inspiration
 
 - [ ] [New in Symfony 4.1: HTTP header improvements](https://symfony.com/blog/new-in-symfony-4-1-http-header-improvements)
 - [ ] [New in Symfony 4.1: Serializer improvements](https://symfony.com/blog/new-in-symfony-4-1-serializer-improvements)
+- [ ] [Happier HTML5 Form Validation](https://daverupert.com/2017/11/happier-html5-forms/)
+
+## Review
 
 ### Validation
 
-- [ ] [Happier HTML5 Form Validation](https://daverupert.com/2017/11/happier-html5-forms/)
-
-## Investigation
-
-- [ ] [github.com/asaskevich/govalidator](https://github.com/asaskevich/govalidator)
-- [ ] [npm:superstruct](https://github.com/ianstormtaylor/superstruct)
-
-## Solutions
-
-- [ ] The Validator Component
-  - https://symfony.com/doc/current/components/validator.html
-  - https://github.com/symfony/symfony/tree/master/src/Symfony/Component/Validator
-- [ ] Validation Constraints Reference
-  - https://symfony.com/doc/current/reference/constraints.html
-  - https://github.com/symfony/symfony/tree/master/src/Symfony/Component/Validator/Constraints
+- [ ] [github.com/asaskevich/govalidator](https://github.com/asaskevich/govalidator/)
+- [ ] [npm:superstruct](https://github.com/ianstormtaylor/superstruct/)
+- [ ] [composer:symfony/validator](https://github.com/symfony/validator/)
 
 ---
 

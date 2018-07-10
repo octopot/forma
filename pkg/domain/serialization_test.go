@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kamilsk/form-api/domain"
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 )

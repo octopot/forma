@@ -92,6 +92,17 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/mailru/easyjson"
+  packages = [
+    ".",
+    "buffer",
+    "jlexer",
+    "jwriter"
+  ]
+  revision = "3fdea8d05856a0c8df22ed4bc71b3219245e4485"
+
+[[projects]]
+  branch = "master"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   revision = "bb74f1db0675b241733089d5a1faa5dd8b0ef57b"
@@ -103,10 +114,10 @@
   version = "v1.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/pkg/errors"
   packages = ["."]
-  revision = "816c9085562cd7ee03e7f8188a1cfd942858cded"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
 
 [[projects]]
   name = "github.com/pmezard/go-difflib"
@@ -139,10 +150,10 @@
   version = "v1.2.0"
 
 [[projects]]
-  branch = "master"
   name = "github.com/spf13/cobra"
   packages = ["."]
-  revision = "a114f312e075f65bf30d6d9a1430113f857e543b"
+  revision = "ef82de70bb3f60c65fb8eebacbb2d122ef517385"
+  version = "v0.0.3"
 
 [[projects]]
   branch = "master"
@@ -189,7 +200,13 @@
     "internal/timeseries",
     "trace"
   ]
-  revision = "292b43bbf7cb8d35ddf40f8d5100ef3837cced3f"
+  revision = "d0887baf81f4598189d4e12a37c6da86f0bba4d0"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/sync"
+  packages = ["errgroup"]
+  revision = "1d60e4601c6fd243af51cc01ddf169918a5407ca"
 
 [[projects]]
   branch = "master"
@@ -271,6 +288,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "251c33b146be18e533d257b788c4b527950ca856195fcbc0e79fa2d9e6ad5d2e"
+  inputs-digest = "f2c0105ca4a0a694a08258837b88d83d7ffbcfac0b2086e494d55f220770ef10"
   solver-name = "gps-cdcl"
   solver-version = 1

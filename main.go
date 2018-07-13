@@ -12,6 +12,9 @@ import (
 	"github.com/kamilsk/form-api/cmd"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/spf13/cobra"
+
+	_ "github.com/mailru/easyjson"
+	_ "golang.org/x/sync/errgroup"
 )
 
 const (

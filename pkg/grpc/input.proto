@@ -5,6 +5,11 @@ message ReadInputRequest {}
 
 message ReadInputResponse {}
 
+message ListenInputRequest {}
+
+message ListenInputResponse {}
+
 service Input {
-    rpc Read (ReadInputRequest) returns (stream ReadInputResponse) {}
+    rpc Read (ReadInputRequest) returns (ReadInputResponse) {}
+    rpc Listen (ListenInputRequest) returns (stream ListenInputResponse) {}
 }

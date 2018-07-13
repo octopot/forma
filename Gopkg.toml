@@ -19,16 +19,16 @@
   branch = "master"
 
 [[constraint]]
-  name = "github.com/pkg/errors"
-  branch = "master"
-
-[[constraint]]
   name = "github.com/rubenv/sql-migrate"
   branch = "master"
 
 [[constraint]]
+  name = "github.com/pkg/errors"
+  version = "*"
+
+[[constraint]]
   name = "github.com/spf13/cobra"
-  branch = "master"
+  version = "*"
 
 [[constraint]]
   name = "github.com/spf13/viper"
@@ -36,7 +36,15 @@
 
 [[constraint]]
   name = "github.com/stretchr/testify"
-  version = "^1.1.4"
+  version = "^1.2.0"
+
+[[constraint]]
+  name = "github.com/mailru/easyjson"
+  branch = "master"
+
+[[constraint]]
+  name = "golang.org/x/sync"
+  branch = "master"
 
 [[constraint]]
   name = "google.golang.org/grpc"

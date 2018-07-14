@@ -31,4 +31,5 @@ filter:
   - 'vendor/'
   - '*_test.go'
   - '*_easyjson.go'
-  - 'static/bindata.go'
+  - '*.pb.go'
+  - 'pkg/static/bindata.go'

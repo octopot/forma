@@ -1,4 +1,4 @@
-package pkg
+package draft
 
 type Signer interface {
 	Token() string

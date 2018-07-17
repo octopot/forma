@@ -1,5 +1,6 @@
-// protoc -I pkg/grpc/ pkg/grpc/schema.proto --go_out=plugins=grpc:pkg/grpc
+// protoc -Ipkg/grpc/ --go_out=plugins=grpc:pkg/grpc schema.proto
 syntax = "proto3";
+package grpc;
 
 message CreateSchemaRequest {}
 

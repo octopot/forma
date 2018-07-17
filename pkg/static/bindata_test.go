@@ -16,7 +16,10 @@ func TestAsset(t *testing.T) {
 		asset  string
 		golden string
 	}{
-		{"init migration", "static/migrations/1_initial.sql", "./migrations/1_initial.sql"},
+		{"prepare migration", "static/migrations/1_prepare.sql", "./migrations/1_prepare.sql"},
+		{"account migration", "static/migrations/2_account.sql", "./migrations/2_account.sql"},
+		{"domain migration", "static/migrations/3_domain.sql", "./migrations/3_domain.sql"},
+		{"audit migration", "static/migrations/4_audit.sql", "./migrations/4_audit.sql"},
 		{"error template", "static/templates/error.html", "./templates/error.html"},
 		{"redirect template", "static/templates/redirect.html", "./templates/redirect.html"},
 	}
@@ -49,7 +52,12 @@ func TestAssetDir(t *testing.T) {
 		expected []string
 	}{
 		{"root", "static", []string{"migrations", "templates"}},
-		{"migrations", "static/migrations", []string{"1_initial.sql"}},
+		{"migrations", "static/migrations", []string{
+			"1_prepare.sql",
+			"2_account.sql",
+			"3_domain.sql",
+			"4_audit.sql",
+		}},
 		{"templates", "static/templates", []string{"error.html", "redirect.html"}},
 		{"not found", "static/templates/unknown", nil},
 	}

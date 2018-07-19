@@ -11,13 +11,13 @@ Content-Type: application/xml
 
 ###
 
-GET http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+GET http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 Accept: application/xml
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
-PUT http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 Content-Type: application/xml
 
@@ -28,12 +28,12 @@ Content-Type: application/xml
 
 ###
 
-DELETE http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
-POST http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+POST http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 Content-Type: application/x-www-form-urlencoded
 Cookie: identifier=10000000-2000-4000-8000-160000000000
 
@@ -52,13 +52,13 @@ Content-Type: application/xml
 
 ###
 
-GET http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+GET http://localhost:8080/api/v2/schema/10000000-2000-4000-8000-160000000004
 Accept: application/xml
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
-PUT http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+PUT http://localhost:8080/api/v2/schema/10000000-2000-4000-8000-160000000004
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 Content-Type: application/xml
 
@@ -69,12 +69,12 @@ Content-Type: application/xml
 
 ###
 
-DELETE http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+DELETE http://localhost:8080/api/v2/schema/10000000-2000-4000-8000-160000000004
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
-POST http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
+POST http://localhost:8080/api/v2/schema/10000000-2000-4000-8000-160000000004
 Content-Type: application/x-www-form-urlencoded
 Cookie: identifier=10000000-2000-4000-8000-160000000000
 
@@ -99,13 +99,13 @@ Content-Type: text/html
 
 ###
 
-GET http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+GET http://localhost:8080/api/v2/template/10000000-2000-4000-8000-160000000007
 Accept: text/html
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
-PUT http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+PUT http://localhost:8080/api/v2/template/10000000-2000-4000-8000-160000000007
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 Content-Type: text/html
 
@@ -122,13 +122,13 @@ Content-Type: text/html
 
 ###
 
-DELETE http://localhost:8080/api/v2/template/4405940a-03c2-4840-b66d-937c59f109c1
+DELETE http://localhost:8080/api/v2/template/10000000-2000-4000-8000-160000000007
 Authorization: Bearer 10000000-2000-4000-8000-160000000003
 
 ###
 
 # TODO set token
-GET http://localhost:8080/api/v2/schema/41ca5e09-3ce2-4094-b108-3ecc257c6fa4/template/4405940a-03c2-4840-b66d-937c59f109c1
+GET http://localhost:8080/api/v2/schema/10000000-2000-4000-8000-160000000004/template/10000000-2000-4000-8000-160000000007
 Accept: text/html
 
 ### Profiling

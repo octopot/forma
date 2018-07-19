@@ -138,6 +138,10 @@ GET http://localhost:8090/debug/pprof/
 
 ### Monitoring
 
+GET http://localhost:8091/monitoring
+
+###
+
 GET http://localhost:8091/vars
 
 ###

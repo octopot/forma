@@ -12,6 +12,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/server"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -113,6 +114,7 @@ func startProfiler() {
 func startMonitoring() {
 	mux := &http.ServeMux{}
 	expvar.Handler()
+	mux.Handle("/monitoring", promhttp.Handler())
 	mux.Handle("/vars", expvar.Handler())
 	_ = http.ListenAndServe(":8091", mux)
 }

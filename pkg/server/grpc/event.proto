@@ -1,0 +1,29 @@
+// protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc event.proto
+syntax = "proto3";
+package grpc;
+
+message ReadInputRequest {}
+
+message ReadInputResponse {}
+
+message ListenInputRequest {}
+
+message ListenInputResponse {}
+
+service Input {
+    rpc Read (ReadInputRequest) returns (ReadInputResponse) {}
+    rpc Listen (ListenInputRequest) returns (stream ListenInputResponse) {}
+}
+
+message ReadLogRequest {}
+
+message ReadLogResponse {}
+
+message ListenLogRequest {}
+
+message ListenLogResponse {}
+
+service Log {
+    rpc Read (ReadLogRequest) returns (ReadLogResponse) {}
+    rpc Listen (ListenLogRequest) returns (stream ListenLogResponse) {}
+}

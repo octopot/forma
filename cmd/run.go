@@ -3,10 +3,13 @@ package cmd
 import (
 	"expvar"
 	"log"
+	"net"
 	"net/http"
 	"net/http/pprof"
 	"runtime"
 	"time"
+
+	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 
 	"github.com/kamilsk/form-api/pkg/dao"
 	"github.com/kamilsk/form-api/pkg/server"
@@ -15,6 +18,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"google.golang.org/grpc"
 )
 
 var runCmd = &cobra.Command{
@@ -24,6 +28,9 @@ var runCmd = &cobra.Command{
 		runtime.GOMAXPROCS(asInt(cmd.Flag("cpus").Value))
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 
+		if err := startGRPC(); err != nil {
+			return err
+		}
 		if asBool(cmd.Flag("with-profiler").Value) {
 			go startProfiler()
 		}
@@ -101,14 +108,21 @@ func init() {
 	db(runCmd)
 }
 
-func startProfiler() {
-	mux := &http.ServeMux{}
-	mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
-	mux.HandleFunc("/pprof/profile", pprof.Profile)
-	mux.HandleFunc("/pprof/symbol", pprof.Symbol)
-	mux.HandleFunc("/pprof/trace", pprof.Trace)
-	mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
-	_ = http.ListenAndServe(":8090", mux)
+func startGRPC() error {
+	listener, err := net.Listen("tcp", ":8092")
+	if err != nil {
+		return err
+	}
+	go func() {
+		srv := grpc.NewServer()
+		pb.RegisterSchemaServer(srv, pb.NewSchemaServer())
+		pb.RegisterTemplateServer(srv, pb.NewTemplateServer())
+		pb.RegisterInputServer(srv, pb.NewInputServer())
+		pb.RegisterLogServer(srv, pb.NewLogServer())
+		log.Println("starting gRPC at", listener.Addr())
+		_ = srv.Serve(listener) // TODO log critical
+	}()
+	return nil
 }
 
 func startMonitoring() {
@@ -116,5 +130,19 @@ func startMonitoring() {
 	expvar.Handler()
 	mux.Handle("/monitoring", promhttp.Handler())
 	mux.Handle("/vars", expvar.Handler())
-	_ = http.ListenAndServe(":8091", mux)
+	log.Println("starting monitoring at [::]:8091")
+	// TODO use net.Listen and http.Serve instead of http.ListenAndServe
+	_ = http.ListenAndServe(":8091", mux) // TODO log critical
+}
+
+func startProfiler() {
+	mux := &http.ServeMux{}
+	mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
+	mux.HandleFunc("/pprof/profile", pprof.Profile)
+	mux.HandleFunc("/pprof/symbol", pprof.Symbol)
+	mux.HandleFunc("/pprof/trace", pprof.Trace)
+	mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
+	log.Println("starting profiler at [::]:8090")
+	// TODO use net.Listen and http.Serve instead of http.ListenAndServe
+	_ = http.ListenAndServe(":8090", mux) // TODO log critical
 }

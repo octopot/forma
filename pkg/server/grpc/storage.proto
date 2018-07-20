@@ -1,0 +1,49 @@
+// protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc storage.proto
+syntax = "proto3";
+package grpc;
+
+message CreateSchemaRequest {}
+
+message CreateSchemaResponse {}
+
+message ReadSchemaRequest {}
+
+message ReadSchemaResponse {}
+
+message UpdateSchemaRequest {}
+
+message UpdateSchemaResponse {}
+
+message DeleteSchemaRequest {}
+
+message DeleteSchemaResponse {}
+
+service Schema {
+    rpc Create (CreateSchemaRequest) returns (CreateSchemaResponse) {}
+    rpc Read (ReadSchemaRequest) returns (ReadSchemaResponse) {}
+    rpc Update (UpdateSchemaRequest) returns (UpdateSchemaResponse) {}
+    rpc Delete (DeleteSchemaRequest) returns (DeleteSchemaResponse) {}
+}
+
+message CreateTemplateRequest {}
+
+message CreateTemplateResponse {}
+
+message ReadTemplateRequest {}
+
+message ReadTemplateResponse {}
+
+message UpdateTemplateRequest {}
+
+message UpdateTemplateResponse {}
+
+message DeleteTemplateRequest {}
+
+message DeleteTemplateResponse {}
+
+service Template {
+    rpc Create (CreateTemplateRequest) returns (CreateTemplateResponse) {}
+    rpc Read (ReadTemplateRequest) returns (ReadTemplateResponse) {}
+    rpc Update (UpdateTemplateRequest) returns (UpdateTemplateResponse) {}
+    rpc Delete (DeleteTemplateRequest) returns (DeleteTemplateResponse) {}
+}

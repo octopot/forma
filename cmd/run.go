@@ -28,14 +28,18 @@ var runCmd = &cobra.Command{
 		runtime.GOMAXPROCS(asInt(cmd.Flag("cpus").Value))
 		addr := cmd.Flag("bind").Value.String() + ":" + cmd.Flag("port").Value.String()
 
-		if err := startGRPC(); err != nil {
+		if err := startGRPC(":8092"); err != nil {
 			return err
 		}
-		if asBool(cmd.Flag("with-profiler").Value) {
-			go startProfiler()
-		}
 		if asBool(cmd.Flag("with-monitoring").Value) {
-			go startMonitoring()
+			if err := startMonitoring(":8091"); err != nil {
+				return err
+			}
+		}
+		if asBool(cmd.Flag("with-profiler").Value) {
+			if err := startProfiler(":8090"); err != nil {
+				return err
+			}
 		}
 
 		handler := chi.NewRouter(
@@ -108,8 +112,8 @@ func init() {
 	db(runCmd)
 }
 
-func startGRPC() error {
-	listener, err := net.Listen("tcp", ":8092")
+func startGRPC(address string) error {
+	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		return err
 	}
@@ -119,30 +123,41 @@ func startGRPC() error {
 		pb.RegisterTemplateServer(srv, pb.NewTemplateServer())
 		pb.RegisterInputServer(srv, pb.NewInputServer())
 		pb.RegisterLogServer(srv, pb.NewLogServer())
-		log.Println("starting gRPC at", listener.Addr())
-		_ = srv.Serve(listener) // TODO log critical
+		log.Println("start gRPC at", listener.Addr())
+		_ = srv.Serve(listener) // TODO issue#139
 	}()
 	return nil
 }
 
-func startMonitoring() {
-	mux := &http.ServeMux{}
-	expvar.Handler()
-	mux.Handle("/monitoring", promhttp.Handler())
-	mux.Handle("/vars", expvar.Handler())
-	log.Println("starting monitoring at [::]:8091")
-	// TODO use net.Listen and http.Serve instead of http.ListenAndServe
-	_ = http.ListenAndServe(":8091", mux) // TODO log critical
+func startMonitoring(address string) error {
+	listener, err := net.Listen("tcp", address)
+	if err != nil {
+		return err
+	}
+	go func() {
+		mux := &http.ServeMux{}
+		mux.Handle("/monitoring", promhttp.Handler())
+		mux.Handle("/vars", expvar.Handler())
+		log.Println("start monitor at", listener.Addr())
+		_ = http.Serve(listener, mux) // TODO issue#139
+	}()
+	return nil
 }
 
-func startProfiler() {
-	mux := &http.ServeMux{}
-	mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
-	mux.HandleFunc("/pprof/profile", pprof.Profile)
-	mux.HandleFunc("/pprof/symbol", pprof.Symbol)
-	mux.HandleFunc("/pprof/trace", pprof.Trace)
-	mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
-	log.Println("starting profiler at [::]:8090")
-	// TODO use net.Listen and http.Serve instead of http.ListenAndServe
-	_ = http.ListenAndServe(":8090", mux) // TODO log critical
+func startProfiler(address string) error {
+	listener, err := net.Listen("tcp", address)
+	if err != nil {
+		return err
+	}
+	go func() {
+		mux := &http.ServeMux{}
+		mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
+		mux.HandleFunc("/pprof/profile", pprof.Profile)
+		mux.HandleFunc("/pprof/symbol", pprof.Symbol)
+		mux.HandleFunc("/pprof/trace", pprof.Trace)
+		mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
+		log.Println("start profiler at", listener.Addr())
+		_ = http.Serve(listener, mux) // TODO issue#139
+	}()
+	return nil
 }

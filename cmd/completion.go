@@ -16,7 +16,7 @@ var completionCmd = &cobra.Command{
 	Short: "Print Bash or Zsh completion",
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			return fmt.Errorf("one argument is required, received %d arg(s)", len(args))
+			return fmt.Errorf("please provide only %q or %q as an argument", bashFormat, zshFormat)
 		}
 		if args[0] != bashFormat && args[0] != zshFormat {
 			return fmt.Errorf("only %q and %q formats are supported, received %q", bashFormat, zshFormat, args[0])

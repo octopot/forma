@@ -14,7 +14,7 @@ import (
 
 func TestSecret_Printing(t *testing.T) {
 	type password struct {
-		XMLName struct{}      `json:"-" xml:"password" yaml:"-"`
+		XMLName struct{}      `json:"-"        xml:"password"   yaml:"-"`
 		Value   config.Secret `json:"password" xml:"value,attr" yaml:"password"`
 	}
 	secret := password{Value: "secret"}

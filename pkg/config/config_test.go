@@ -1,6 +1,7 @@
 package config_test
 
 import (
+	"encoding/json"
 	"flag"
 	"io/ioutil"
 	"os"
@@ -13,13 +14,15 @@ import (
 
 var update = flag.Bool("update", false, "update .golden files")
 
-func TestYAMLSerialization(t *testing.T) {
+func TestApplicationConfig_Dumping(t *testing.T) {
 	testCases := []struct {
-		name string
-		in   string
-		out  string
+		name    string
+		in      string
+		out     string
+		marshal func(interface{}) ([]byte, error)
 	}{
-		{"simple configuration", "fixtures/simple.yml", "fixtures/simple.yml.golden"},
+		{"YAML dump", "fixtures/config.yml", "fixtures/dump.yml.golden", yaml.Marshal},
+		{"JSON dump", "fixtures/config.yml", "fixtures/dump.json.golden", json.Marshal},
 	}
 
 	for _, test := range testCases {
@@ -32,7 +35,7 @@ func TestYAMLSerialization(t *testing.T) {
 			err = yaml.UnmarshalStrict(raw, &cnf)
 			assert.NoError(t, err)
 
-			actual, err := yaml.Marshal(cnf)
+			actual, err := tc.marshal(cnf)
 			assert.NoError(t, err)
 
 			if *update {

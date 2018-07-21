@@ -2,6 +2,7 @@ package config_test
 
 import (
 	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"strings"
 	"testing"
@@ -13,7 +14,8 @@ import (
 
 func TestSecret_Printing(t *testing.T) {
 	type password struct {
-		Value config.Secret `yaml:"password" json:"password"`
+		XMLName struct{}      `json:"-" xml:"password" yaml:"-"`
+		Value   config.Secret `json:"password" xml:"value,attr" yaml:"password"`
 	}
 	secret := password{Value: "secret"}
 
@@ -31,6 +33,9 @@ func TestSecret_Printing(t *testing.T) {
 		}},
 		{"json marshal", func(pass password) ([]byte, error) {
 			return json.Marshal(pass)
+		}},
+		{"xml marshal", func(pass password) ([]byte, error) {
+			return xml.Marshal(pass)
 		}},
 		{"yaml marshal", func(pass password) ([]byte, error) {
 			return yaml.Marshal(pass)

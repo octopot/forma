@@ -16,6 +16,11 @@ func (Secret) MarshalJSON() ([]byte, error) {
 	return []byte(`"***"`), nil
 }
 
+// MarshalText implements `encoding.TextMarshaler`
+func (Secret) MarshalText() (text []byte, err error) {
+	return []byte("***"), nil
+}
+
 // MarshalYAML implements `gopkg.in/yaml.Marshaler`.
 func (Secret) MarshalYAML() (interface{}, error) {
 	return "***", nil

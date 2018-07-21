@@ -17,7 +17,7 @@ import (
 
 const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
-func TestFormAPI_HandleGetV1(t *testing.T) {
+func TestForma_HandleGetV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
@@ -46,7 +46,7 @@ func TestFormAPI_HandleGetV1(t *testing.T) {
 	}
 }
 
-func TestFormAPI_HandlePostV1(t *testing.T) {
+func TestForma_HandlePostV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 

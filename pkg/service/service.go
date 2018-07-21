@@ -6,25 +6,25 @@ import (
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
-// New returns a new instance of Form API service.
-func New(dao Storage) *FormAPI {
-	return &FormAPI{dao: dao}
+// New returns a new instance of the Forma service.
+func New(dao Storage) *Forma {
+	return &Forma{dao: dao}
 }
 
-// FormAPI is the primary application service.
-type FormAPI struct {
+// Forma is the primary application service.
+type Forma struct {
 	dao Storage
 }
 
 // HandleGetV1 handles an input request.
-func (s *FormAPI) HandleGetV1(request v1.GetRequest) v1.GetResponse {
+func (s *Forma) HandleGetV1(request v1.GetRequest) v1.GetResponse {
 	var response v1.GetResponse
 	response.Schema, response.Error = s.dao.Schema(request.UUID)
 	return response
 }
 
 // HandlePostV1 handles an input request.
-func (s *FormAPI) HandlePostV1(request v1.PostRequest) v1.PostResponse {
+func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	var (
 		response v1.PostResponse
 		verified map[string][]string

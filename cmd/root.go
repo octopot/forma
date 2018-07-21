@@ -11,7 +11,7 @@ import (
 )
 
 // RootCmd is the entry point.
-var RootCmd = &cobra.Command{Use: "form-api", Short: "Form API"}
+var RootCmd = &cobra.Command{Use: "form-api", Short: "Forma"}
 
 func init() {
 	RootCmd.AddCommand(completionCmd, controlCmd, migrateCmd, runCmd)

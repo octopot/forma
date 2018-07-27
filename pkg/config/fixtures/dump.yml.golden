@@ -3,6 +3,7 @@ config:
     dsn: '***'
   grpc:
     interface: 127.0.0.1:8092
+    timeout: 0s
     token: '***'
   migration:
     table: migration

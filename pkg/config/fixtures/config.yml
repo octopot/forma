@@ -6,6 +6,8 @@ config:
 
   grpc:
     interface: 127.0.0.1:8092
+    timeout:   0
+    token:     secret
 
   migration:
     table:     migration

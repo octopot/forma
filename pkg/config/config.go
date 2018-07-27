@@ -34,8 +34,9 @@ func (cnf *DBConfig) DriverName() string {
 
 // GRPCConfig contains configuration related to gRPC server.
 type GRPCConfig struct {
-	Interface string `json:"interface" xml:"interface" yaml:"interface"`
-	Token     Secret `json:"token"     xml:"token"     yaml:"token"`
+	Interface string        `json:"interface" xml:"interface" yaml:"interface"`
+	Timeout   time.Duration `json:"timeout"   xml:"timeout"   yaml:"timeout"`
+	Token     Secret        `json:"token"     xml:"token"     yaml:"token"`
 }
 
 // MigrationConfig contains configuration related to migrations.
@@ -59,7 +60,7 @@ type ProfilerConfig struct {
 	Interface string `json:"interface" xml:"interface" yaml:"interface"`
 }
 
-// ServerConfig contains configuration related to the Forma server.
+// ServerConfig contains configuration related to the server.
 type ServerConfig struct {
 	Interface         string        `json:"interface"           xml:"interface"           yaml:"interface"`
 	CPUCount          uint          `json:"cpus"                xml:"cpus"                yaml:"cpus"`

@@ -26,9 +26,10 @@ type RedirectPageContext struct {
 
 // LoadTemplate loads the template from a custom location or fallback it to `bindata`.
 func LoadTemplate(base, tpl string) ([]byte, error) {
-	data, err := ioutil.ReadFile(filepath.Join(base, tpl))
+	path := filepath.Join(base, tpl)
+	data, err := ioutil.ReadFile(path)
 	if err != nil && os.IsNotExist(err) {
-		return Asset("static/templates/" + tpl)
+		return Asset(path)
 	}
 	return data, err
 }

@@ -15,9 +15,9 @@ func TestLoadTemplate(t *testing.T) {
 		golden    string
 	}{
 		{"error template", "./templates", "error.html", "./templates/error.html"},
-		{"error template, bindata", "/", "error.html", "./templates/error.html"},
+		{"error template, bindata", "static/templates", "error.html", "./templates/error.html"},
 		{"redirect template", "./templates", "redirect.html", "./templates/redirect.html"},
-		{"redirect template, bindata", "/", "redirect.html", "./templates/redirect.html"},
+		{"redirect template, bindata", "static/templates", "redirect.html", "./templates/redirect.html"},
 	}
 
 	for _, test := range tests {

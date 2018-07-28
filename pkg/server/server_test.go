@@ -36,21 +36,21 @@ func TestNew(t *testing.T) {
 	)
 
 	tests := []struct {
-		name     string
-		args     struct{ baseURL, tplPath string }
-		panicked bool
+		name             string
+		baseURL, tplPath string
+		panicked         bool
 	}{
-		{"base URL is invalid", struct{ baseURL, tplPath string }{baseURL: "http://192.168.0.%31/"}, true},
-		{"successful instance", struct{ baseURL, tplPath string }{baseURL: HOST, tplPath: "/"}, false},
+		{"base URL is invalid", "http://192.168.0.%31/", "static/templates", true},
+		{"successful instance", HOST, "static/templates", false},
 	}
 
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			if tc.panicked {
-				assert.Panics(t, func() { server.New(tc.args.baseURL, tc.args.tplPath, service) })
+				assert.Panics(t, func() { server.New(tc.baseURL, tc.tplPath, service) })
 			} else {
-				assert.NotNil(t, server.New(tc.args.baseURL, tc.args.tplPath, service))
+				assert.NotNil(t, server.New(tc.baseURL, tc.tplPath, service))
 			}
 		})
 	}
@@ -64,7 +64,7 @@ func TestServer_GetV1(t *testing.T) {
 		service = NewMockService(ctrl)
 	)
 
-	srv := server.New(HOST, "", service)
+	srv := server.New(HOST, "static/templates", service)
 
 	tests := []struct {
 		name    string
@@ -124,7 +124,7 @@ func TestServer_PostV1(t *testing.T) {
 		service = NewMockService(ctrl)
 	)
 
-	srv := server.New(HOST, "", service)
+	srv := server.New(HOST, "static/templates", service)
 
 	tests := []struct {
 		name    string

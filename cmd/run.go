@@ -84,7 +84,7 @@ func init() {
 		v.SetDefault("write_timeout", time.Duration(0))
 		v.SetDefault("idle_timeout", time.Duration(0))
 		v.SetDefault("base_url", "http://localhost/")
-		v.SetDefault("template_dir", "")
+		v.SetDefault("template_dir", "static/templates")
 	}
 	{
 		runCmd.Flags().Int("cpus", v.GetInt("max_cpus"),

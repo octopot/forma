@@ -19,6 +19,10 @@
   branch = "master"
 
 [[constraint]]
+  name = "github.com/mitchellh/mapstructure"
+  branch = "master"
+
+[[constraint]]
   name = "github.com/pkg/errors"
   branch = "master"
 

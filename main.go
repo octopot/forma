@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/cobra"
 
 	_ "github.com/mailru/easyjson"
+	_ "github.com/mitchellh/mapstructure"
 	_ "golang.org/x/sync/errgroup"
 )
 

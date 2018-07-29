@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -22,7 +21,6 @@ var (
 
 func init() {
 	var (
-		cnf  = config.GRPCConfig{}
 		file = ""
 		v    = viper.New()
 	)
@@ -35,9 +33,10 @@ func init() {
 	{
 		flags := controlCmd.PersistentFlags()
 		flags.StringVarP(&file, "file", "f", file, "entity source (default is stdin)")
-		flags.StringVarP(&cnf.Interface, "host", "H", "127.0.0.1:8092", "gRPC host")
-		flags.DurationVarP(&cnf.Timeout, "timeout", "t", time.Second, "connection timeout")
-		flags.StringVarP((*string)(&cnf.Token), "token", "", v.GetString("forma_token"), "user access token")
+		flags.StringVarP(&cnf.Union.GRPCConfig.Interface, "host", "H", "127.0.0.1:8092", "gRPC server host")
+		flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout, "timeout", "t", time.Second, "connection timeout")
+		flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
+			"token", "", v.GetString("forma_token"), "user access token")
 	}
 	controlCmd.AddCommand(
 		&cobra.Command{

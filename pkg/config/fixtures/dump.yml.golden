@@ -1,6 +1,9 @@
 config:
   db:
     dsn: '***'
+    idle: 1
+    open: 1
+    lifetime: 0s
   grpc:
     interface: 127.0.0.1:8092
     timeout: 0s
@@ -25,4 +28,4 @@ config:
     write-timeout: 1s
     idle-timeout: 1s
     base-url: http://localhost/
-    tpl-dir: ""
+    tpl-dir: static/templates

@@ -14,6 +14,8 @@ const (
 var completionCmd = &cobra.Command{
 	Use:   "completion",
 	Short: "Print Bash or Zsh completion",
+
+	// TODO issue#150 start
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
 			return fmt.Errorf("please provide only %q or %q as an argument", bashFormat, zshFormat)
@@ -23,6 +25,8 @@ var completionCmd = &cobra.Command{
 		}
 		return nil
 	},
+	// TODO issue#150 end
+
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if args[0] == bashFormat {
 			return cmd.Parent().GenBashCompletion(cmd.OutOrStdout())

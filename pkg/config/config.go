@@ -19,7 +19,10 @@ type ApplicationConfig struct {
 
 // DBConfig contains configuration related to database.
 type DBConfig struct {
-	DSN Secret `json:"dsn" xml:"dsn" yaml:"dsn"`
+	DSN         Secret        `json:"dsn"      xml:"dsn"      yaml:"dsn"`
+	MaxIdle     int           `json:"idle"     xml:"idle"     yaml:"idle"`
+	MaxOpen     int           `json:"open"     xml:"open"     yaml:"open"`
+	MaxLifetime time.Duration `json:"lifetime" xml:"lifetime" yaml:"lifetime"`
 
 	dsn *url.URL
 }

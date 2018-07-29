@@ -21,10 +21,8 @@ var migrateCmd = &cobra.Command{
 	Args:  cobra.RangeArgs(0, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		direction, limit := chooseDirectionAndLimit(args)
-		{
-			migrate.SetTable(cmd.Flag("table").Value.String())
-			migrate.SetSchema(cmd.Flag("schema").Value.String())
-		}
+		migrate.SetTable(cnf.Union.MigrationConfig.Table)
+		migrate.SetSchema(cnf.Union.MigrationConfig.Schema)
 		layer := dao.Must(dao.Connection(dsn(cmd)))
 		src := &migrate.AssetMigrationSource{
 			Asset:    static.Asset,
@@ -32,13 +30,13 @@ var migrateCmd = &cobra.Command{
 			Dir:      "static/migrations",
 		}
 		var runner = run
-		if asBool(cmd.Flag("dry-run").Value) {
+		if cnf.Union.MigrationConfig.DryRun {
 			runner = dryRun
 		}
 		if err := runner(layer.Connection(), layer.Dialect(), src, direction, limit); err != nil {
 			return err
 		}
-		if direction == migrate.Up && asBool(cmd.Flag("with-demo").Value) {
+		if direction == migrate.Up && cnf.Union.MigrationConfig.WithDemo {
 			raw, err := ioutil.ReadFile("env/test/fixtures/demo.sql")
 			switch {
 			case err == nil:
@@ -60,23 +58,26 @@ func init() {
 	must(
 		func() error { return v.BindEnv("table") },
 		func() error { return v.BindEnv("schema") },
+		func() error {
+			v.SetDefault("table", "migration")
+			v.SetDefault("schema", "public")
+			return nil
+		},
+		func() error {
+			flags := migrateCmd.Flags()
+			flags.StringVarP(&cnf.Union.MigrationConfig.Table,
+				"table", "t", v.GetString("table"), "migration table name")
+			flags.StringVarP(&cnf.Union.MigrationConfig.Schema,
+				"schema", "s", v.GetString("schema"), "migration schema")
+			flags.UintVarP(&cnf.Union.MigrationConfig.Limit,
+				"limit", "l", 0, "limit the number of migrations (0 = unlimited)")
+			flags.BoolVarP(&cnf.Union.MigrationConfig.DryRun,
+				"dry-run", "", false, "do not apply migration, just print them")
+			flags.BoolVarP(&cnf.Union.MigrationConfig.WithDemo,
+				"with-demo", "", false, "create fake data for demo purpose")
+			return nil
+		},
 	)
-	{
-		v.SetDefault("table", "migration")
-		v.SetDefault("schema", "public")
-	}
-	{
-		migrateCmd.Flags().String("table", v.GetString("table"),
-			"migration table name")
-		migrateCmd.Flags().String("schema", v.GetString("schema"),
-			"migration schema")
-		migrateCmd.Flags().Int("limit", 0,
-			"limit the number of migrations (0 = unlimited)")
-		migrateCmd.Flags().Bool("dry-run", false,
-			"do not apply migration, just print them")
-		migrateCmd.Flags().Bool("with-demo", false,
-			"create fake data for demo purpose")
-	}
 	db(migrateCmd)
 }
 

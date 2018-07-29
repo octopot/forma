@@ -7,6 +7,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -25,7 +26,7 @@ func init() {
 		v    = viper.New()
 	)
 	{
-		must(
+		fn.Must(
 			func() error { return v.BindEnv("forma_token") },
 		)
 		v.SetDefault("forma_token", "")

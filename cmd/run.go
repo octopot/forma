@@ -16,6 +16,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/server"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -69,7 +70,7 @@ var runCmd = &cobra.Command{
 
 func init() {
 	v := viper.New()
-	must(
+	fn.Must(
 		func() error { return v.BindEnv("max_cpus") },
 
 		// TODO issue#140 start

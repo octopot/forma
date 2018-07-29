@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/kamilsk/form-api/pkg/config"
+	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -11,7 +12,7 @@ var cnf = config.ApplicationConfig{}
 func db(cmd *cobra.Command) {
 	v := viper.New()
 	v.SetEnvPrefix("db")
-	must(
+	fn.Must(
 
 		// TODO issue#140 start
 		func() error { return v.BindEnv("host") },

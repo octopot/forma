@@ -80,6 +80,12 @@
 
 [[projects]]
   branch = "master"
+  name = "github.com/kamilsk/go-kit"
+  packages = ["pkg/fn"]
+  revision = "c4a06f93eaecb1ce90c8246c1f7ed8af368e567d"
+
+[[projects]]
+  branch = "master"
   name = "github.com/lib/pq"
   packages = [
     ".",
@@ -336,6 +342,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a25465a5cb8da7c4073c3fed4b5e5935d646553e16871424f0ca717c3ea40d20"
+  inputs-digest = "404dd4b05b065cc4eb9f0eecb282c9353b8f1c836bb0f17eaae1e1d6fb080133"
   solver-name = "gps-cdcl"
   solver-version = 1

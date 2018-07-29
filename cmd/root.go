@@ -15,17 +15,6 @@ func init() {
 	RootCmd.AddCommand(completionCmd, controlCmd, migrateCmd, runCmd)
 }
 
-// TODO issue#147 start
-func must(actions ...func() error) {
-	for _, action := range actions {
-		if err := action(); err != nil {
-			panic(err)
-		}
-	}
-}
-
-// TODO issue#147 end
-
 // TODO issue#140 start
 func dsn(cmd *cobra.Command) (driver, dsn string, open, idle int) {
 	uri := &url.URL{

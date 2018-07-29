@@ -10,6 +10,7 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/dao"
 	"github.com/kamilsk/form-api/pkg/static"
+	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -55,7 +56,7 @@ var migrateCmd = &cobra.Command{
 func init() {
 	v := viper.New()
 	v.SetEnvPrefix("migration")
-	must(
+	fn.Must(
 		func() error { return v.BindEnv("table") },
 		func() error { return v.BindEnv("schema") },
 		func() error {

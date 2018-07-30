@@ -2,10 +2,12 @@ package dao
 
 import (
 	"database/sql"
+	"net/url"
 
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/dao/postgres"
 	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/pkg/errors"
 )
 
 // Must returns a new instance of the Storage or panics if it cannot configure it.
@@ -21,7 +23,7 @@ func Must(configs ...Configurator) *Storage {
 func New(configs ...Configurator) (*Storage, error) {
 	instance := &Storage{}
 	for _, configure := range configs {
-		if err := configure(instance); err != nil {
+		if err := errors.WithStack(configure(instance)); err != nil {
 			return nil, err
 		}
 	}
@@ -29,10 +31,13 @@ func New(configs ...Configurator) (*Storage, error) {
 }
 
 // Connection returns database connection Configurator.
-func Connection(driver, dsn string, cnf config.DBConfig) Configurator {
+func Connection(cnf config.DBConfig) Configurator {
 	return func(instance *Storage) error {
-		var err error
-		instance.conn, err = sql.Open(driver, dsn)
+		uri, err := url.Parse(string(cnf.DSN))
+		if err != nil {
+			return err
+		}
+		instance.conn, err = sql.Open(uri.Scheme, string(cnf.DSN))
 		instance.conn.SetMaxOpenConns(cnf.MaxOpen)
 		instance.conn.SetMaxIdleConns(cnf.MaxIdle)
 		instance.conn.SetConnMaxLifetime(cnf.MaxLifetime)

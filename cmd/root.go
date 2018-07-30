@@ -1,10 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"net/url"
-	"strconv"
 
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/spf13/cobra"
 )
 
@@ -16,25 +15,20 @@ func init() {
 }
 
 // TODO issue#140 start
-func dsn(cmd *cobra.Command) (driver, dsn string, open, idle int) {
+func dsn(cmd *cobra.Command) (driver, dsn string, config config.DBConfig) {
 	uri := &url.URL{
 		Scheme: "postgres",
-		User:   url.UserPassword(cmd.Flag("db_user").Value.String(), cmd.Flag("db_pass").Value.String()),
-		Host:   cmd.Flag("db_host").Value.String() + ":" + cmd.Flag("db_port").Value.String(),
-		Path:   "/" + cmd.Flag("db_name").Value.String(),
+		User:   url.UserPassword(cmd.Flag("db-user").Value.String(), cmd.Flag("db-pass").Value.String()),
+		Host:   cmd.Flag("db-host").Value.String() + ":" + cmd.Flag("db-port").Value.String(),
+		Path:   "/" + cmd.Flag("db-name").Value.String(),
 		RawQuery: func() string {
 			query := url.Values{}
-			query.Add("connect_timeout", cmd.Flag("db_timeout").Value.String())
-			query.Add("sslmode", cmd.Flag("db_ssl_mode").Value.String())
+			query.Add("connect_timeout", cmd.Flag("db-timeout").Value.String())
+			query.Add("sslmode", cmd.Flag("db-ssl-mode").Value.String())
 			return query.Encode()
 		}(),
 	}
-	return uri.Scheme, uri.String(), asInt(cmd.Flag("db_open_conn").Value), asInt(cmd.Flag("db_idle_conn").Value)
-}
-
-func asInt(value fmt.Stringer) int {
-	integer, _ := strconv.ParseInt(value.String(), 10, 0)
-	return int(integer)
+	return uri.Scheme, uri.String(), cnf.Union.DBConfig
 }
 
 // TODO issue#140 end

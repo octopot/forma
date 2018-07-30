@@ -3,6 +3,7 @@ package dao
 import (
 	"database/sql"
 
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/dao/postgres"
 	"github.com/kamilsk/form-api/pkg/domain"
 )
@@ -28,12 +29,13 @@ func New(configs ...Configurator) (*Storage, error) {
 }
 
 // Connection returns database connection Configurator.
-func Connection(driver, dsn string, open, idle int) Configurator {
+func Connection(driver, dsn string, cnf config.DBConfig) Configurator {
 	return func(instance *Storage) error {
 		var err error
 		instance.conn, err = sql.Open(driver, dsn)
-		instance.conn.SetMaxOpenConns(open)
-		instance.conn.SetMaxIdleConns(idle)
+		instance.conn.SetMaxOpenConns(cnf.MaxOpen)
+		instance.conn.SetMaxIdleConns(cnf.MaxIdle)
+		instance.conn.SetConnMaxLifetime(cnf.MaxLifetime)
 		return err
 	}
 }

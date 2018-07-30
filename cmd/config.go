@@ -50,25 +50,23 @@ func db(cmd *cobra.Command) {
 			flags := cmd.Flags()
 
 			// TODO issue#140 start
-			flags.String("db_host", v.GetString("host"), "database host")
-			flags.Int("db_port", v.GetInt("port"), "database port")
-			flags.String("db_user", v.GetString("user"), "database user name")
-			flags.String("db_pass", v.GetString("pass"), "database user password")
-			flags.String("db_name", v.GetString("name"), "database name")
-			flags.Int("db_timeout", v.GetInt("timeout"), "connection timeout in seconds")
+			flags.String("db-host", v.GetString("host"), "database host")
+			flags.Int("db-port", v.GetInt("port"), "database port")
+			flags.String("db-user", v.GetString("user"), "database user name")
+			flags.String("db-pass", v.GetString("pass"), "database user password")
+			flags.String("db-name", v.GetString("name"), "database name")
+			flags.Int("db-timeout", v.GetInt("timeout"), "connection timeout in seconds")
 			flags.String("db_ssl_mode", v.GetString("ssl_mode"), "ssl mode")
 			// TODO issue#140 end
 			flags.StringVarP((*string)(&cnf.Union.DBConfig.DSN),
 				"dsn", "", v.GetString("dsn"), "data source name")
 
-			// TODO issue#148 start
 			flags.IntVarP(&cnf.Union.DBConfig.MaxOpen,
-				"db_open_conn", "", v.GetInt("open_conn"), "maximum number of open connections to the database")
+				"db-open-conn", "", v.GetInt("open_conn"), "maximum number of open connections to the database")
 			flags.IntVarP(&cnf.Union.DBConfig.MaxIdle,
-				"db_idle_conn", "", v.GetInt("idle_conn"), "maximum number of connections in the idle connection pool")
+				"db-idle-conn", "", v.GetInt("idle_conn"), "maximum number of connections in the idle connection pool")
 			flags.DurationVarP(&cnf.Union.DBConfig.MaxLifetime,
-				"db_conn_max_lt", "", v.GetDuration("conn_max_lt"), "maximum amount of time a connection may be reused")
-			// TODO issue#148 end
+				"db-conn-max-lt", "", v.GetDuration("conn_max_lt"), "maximum amount of time a connection may be reused")
 			return nil
 		},
 	)

@@ -25,20 +25,26 @@ func init() {
 		file = ""
 		v    = viper.New()
 	)
-	{
-		fn.Must(
-			func() error { return v.BindEnv("forma_token") },
-		)
-		v.SetDefault("forma_token", "")
-	}
-	{
-		flags := controlCmd.PersistentFlags()
-		flags.StringVarP(&file, "file", "f", file, "entity source (default is stdin)")
-		flags.StringVarP(&cnf.Union.GRPCConfig.Interface, "host", "H", "127.0.0.1:8092", "gRPC server host")
-		flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout, "timeout", "t", time.Second, "connection timeout")
-		flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
-			"token", "", v.GetString("forma_token"), "user access token")
-	}
+	fn.Must(
+		func() error { return v.BindEnv("forma_token") },
+		func() error { return v.BindEnv("grpc_host") },
+		func() error {
+			v.SetDefault("forma_token", "")
+			v.SetDefault("grpc_host", "127.0.0.1:8092")
+			return nil
+		},
+		func() error {
+			flags := controlCmd.PersistentFlags()
+			flags.StringVarP(&file, "file", "f", file, "entity source (default is stdin)")
+			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
+				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
+			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,
+				"timeout", "t", time.Second, "connection timeout")
+			flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
+				"token", "", v.GetString("forma_token"), "user access token")
+			return nil
+		},
+	)
 	controlCmd.AddCommand(
 		&cobra.Command{
 			Use:   "create",

@@ -17,7 +17,7 @@ config:
   monitoring:
     enabled: true
     interface: 127.0.0.1:8091
-  profiler:
+  profiling:
     enabled: true
     interface: 127.0.0.1:8090
   server:

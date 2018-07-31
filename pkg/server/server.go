@@ -11,6 +11,7 @@ import (
 
 	deep "github.com/pkg/errors"
 
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/server/middleware"
@@ -27,8 +28,8 @@ const (
 
 // New returns a new instance of the Forma server.
 // It can raise the panic if base URL is invalid or HTML templates are not available.
-func New(baseURL, tplPath string, service Service) *Server {
-	u, err := url.Parse(baseURL)
+func New(cnf config.ServerConfig, service Service) *Server {
+	u, err := url.Parse(cnf.BaseURL)
 	if err != nil {
 		panic(err)
 	}
@@ -36,8 +37,8 @@ func New(baseURL, tplPath string, service Service) *Server {
 		errorTpl    *template.Template
 		redirectTpl *template.Template
 	}{
-		errorTpl:    template.Must(template.New("error").Parse(must(tplPath, "error.html"))),
-		redirectTpl: template.Must(template.New("redirect").Parse(must(tplPath, "redirect.html"))),
+		errorTpl:    template.Must(template.New("error").Parse(must(cnf.TemplateDir, "error.html"))),
+		redirectTpl: template.Must(template.New("redirect").Parse(must(cnf.TemplateDir, "redirect.html"))),
 	}}
 }
 

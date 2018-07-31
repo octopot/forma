@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/server"
@@ -48,9 +49,9 @@ func TestNew(t *testing.T) {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			if tc.panicked {
-				assert.Panics(t, func() { server.New(tc.baseURL, tc.tplPath, service) })
+				assert.Panics(t, func() { server.New(config.ServerConfig{BaseURL: tc.baseURL, TemplateDir: tc.tplPath}, service) })
 			} else {
-				assert.NotNil(t, server.New(tc.baseURL, tc.tplPath, service))
+				assert.NotNil(t, server.New(config.ServerConfig{BaseURL: tc.baseURL, TemplateDir: tc.tplPath}, service))
 			}
 		})
 	}
@@ -64,7 +65,7 @@ func TestServer_GetV1(t *testing.T) {
 		service = NewMockService(ctrl)
 	)
 
-	srv := server.New(HOST, "static/templates", service)
+	srv := server.New(config.ServerConfig{BaseURL: HOST, TemplateDir: "static/templates"}, service)
 
 	tests := []struct {
 		name    string
@@ -124,7 +125,7 @@ func TestServer_PostV1(t *testing.T) {
 		service = NewMockService(ctrl)
 	)
 
-	srv := server.New(HOST, "static/templates", service)
+	srv := server.New(config.ServerConfig{BaseURL: HOST, TemplateDir: "static/templates"}, service)
 
 	tests := []struct {
 		name    string

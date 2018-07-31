@@ -13,9 +13,9 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/server"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
@@ -38,7 +38,7 @@ func TestAPI_GetV1(t *testing.T) {
 		storage = NewMockStorage(ctrl)
 	)
 
-	handler := chi.NewRouter(server.New(HOST, "", service.New(storage)))
+	handler := chi.NewRouter(config.ServerConfig{BaseURL: HOST, TemplateDir: "static/templates"}, service.New(storage))
 	srv := httptest.NewServer(handler)
 	defer srv.Close()
 

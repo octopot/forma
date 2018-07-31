@@ -2,7 +2,6 @@ package dao
 
 import (
 	"database/sql"
-	"net/url"
 
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/dao/postgres"
@@ -33,14 +32,13 @@ func New(configs ...Configurator) (*Storage, error) {
 // Connection returns database connection Configurator.
 func Connection(cnf config.DBConfig) Configurator {
 	return func(instance *Storage) error {
-		uri, err := url.Parse(string(cnf.DSN))
-		if err != nil {
-			return err
+		var err error
+		instance.conn, err = sql.Open(cnf.DriverName(), string(cnf.DSN))
+		if err == nil {
+			instance.conn.SetMaxOpenConns(cnf.MaxOpen)
+			instance.conn.SetMaxIdleConns(cnf.MaxIdle)
+			instance.conn.SetConnMaxLifetime(cnf.MaxLifetime)
 		}
-		instance.conn, err = sql.Open(uri.Scheme, string(cnf.DSN))
-		instance.conn.SetMaxOpenConns(cnf.MaxOpen)
-		instance.conn.SetMaxIdleConns(cnf.MaxIdle)
-		instance.conn.SetConnMaxLifetime(cnf.MaxLifetime)
 		return err
 	}
 }

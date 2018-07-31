@@ -29,12 +29,6 @@ var runCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		runtime.GOMAXPROCS(int(cnf.Union.ServerConfig.CPUCount))
 
-		// TODO issue#149 start
-		cnf.Union.GRPCConfig.Interface = ":8092"
-		cnf.Union.MonitoringConfig.Interface = ":8091"
-		cnf.Union.ProfilerConfig.Interface = ":8090"
-		// TODO issue#149 end
-
 		if err := startGRPCServer(cnf.Union.GRPCConfig); err != nil {
 			return err
 		}
@@ -43,16 +37,15 @@ var runCmd = &cobra.Command{
 				return err
 			}
 		}
-		if cnf.Union.ProfilerConfig.Enabled {
-			if err := startProfiler(cnf.Union.ProfilerConfig); err != nil {
+		if cnf.Union.ProfilingConfig.Enabled {
+			if err := startProfiler(cnf.Union.ProfilingConfig); err != nil {
 				return err
 			}
 		}
 
 		handler := chi.NewRouter(
 			server.New(
-				cnf.Union.ServerConfig.BaseURL,
-				cnf.Union.ServerConfig.TemplateDir,
+				cnf.Union.ServerConfig,
 				service.New(
 					dao.Must(dao.Connection(cnf.Union.DBConfig)),
 				),
@@ -73,6 +66,9 @@ func init() {
 		func() error { return v.BindEnv("idle_timeout") },
 		func() error { return v.BindEnv("base_url") },
 		func() error { return v.BindEnv("template_dir") },
+		func() error { return v.BindEnv("profiling_host") },
+		func() error { return v.BindEnv("monitoring_host") },
+		func() error { return v.BindEnv("grpc_host") },
 		func() error {
 			v.SetDefault("max_cpus", 1)
 			v.SetDefault("host", "127.0.0.1:80")
@@ -82,6 +78,9 @@ func init() {
 			v.SetDefault("idle_timeout", time.Duration(0))
 			v.SetDefault("base_url", "http://localhost/")
 			v.SetDefault("template_dir", "static/templates")
+			v.SetDefault("profiling_host", "127.0.0.1:8090")
+			v.SetDefault("monitoring_host", "127.0.0.1:8091")
+			v.SetDefault("grpc_host", "127.0.0.1:8092")
 			return nil
 		},
 		func() error {
@@ -106,10 +105,16 @@ func init() {
 				"base-url", "", v.GetString("base_url"), "hostname (and path) to the root")
 			flags.StringVarP(&cnf.Union.ServerConfig.TemplateDir,
 				"tpl-dir", "", v.GetString("template_dir"), "filesystem path to custom template directory")
-			flags.BoolVarP(&cnf.Union.ProfilerConfig.Enabled,
-				"with-profiler", "", false, "enable pprof on /pprof/* and /debug/pprof/")
+			flags.BoolVarP(&cnf.Union.ProfilingConfig.Enabled,
+				"with-profiling", "", false, "enable pprof on /pprof/* and /debug/pprof/")
+			flags.StringVarP(&cnf.Union.ProfilingConfig.Interface,
+				"profiling-host", "", v.GetString("profiling_host"), "profiling host")
 			flags.BoolVarP(&cnf.Union.MonitoringConfig.Enabled,
 				"with-monitoring", "", false, "enable prometheus on /monitoring and expvar on /vars")
+			flags.StringVarP(&cnf.Union.MonitoringConfig.Interface,
+				"monitoring-host", "", v.GetString("monitoring_host"), "monitoring host")
+			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
+				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
 			return nil
 		},
 	)
@@ -165,7 +170,7 @@ func startMonitoring(cnf config.MonitoringConfig) error {
 	return nil
 }
 
-func startProfiler(cnf config.ProfilerConfig) error {
+func startProfiler(cnf config.ProfilingConfig) error {
 	listener, err := net.Listen("tcp", cnf.Interface)
 	if err != nil {
 		return err

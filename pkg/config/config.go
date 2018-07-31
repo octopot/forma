@@ -12,7 +12,7 @@ type ApplicationConfig struct {
 		GRPCConfig       `json:"grpc"       xml:"grpc"       yaml:"grpc"`
 		MigrationConfig  `json:"migration"  xml:"migration"  yaml:"migration"`
 		MonitoringConfig `json:"monitoring" xml:"monitoring" yaml:"monitoring"`
-		ProfilerConfig   `json:"profiler"   xml:"profiler"   yaml:"profiler"`
+		ProfilingConfig  `json:"profiling"  xml:"profiling"  yaml:"profiling"`
 		ServerConfig     `json:"server"     xml:"server"     yaml:"server"`
 	} `json:"config" xml:"config" yaml:"config"`
 }
@@ -28,6 +28,7 @@ type DBConfig struct {
 }
 
 // DriverName returns database driver name.
+// Not thread-safe call.
 func (cnf *DBConfig) DriverName() string {
 	if cnf.dsn == nil {
 		cnf.dsn, _ = url.Parse(string(cnf.DSN))
@@ -57,8 +58,8 @@ type MonitoringConfig struct {
 	Interface string `json:"interface" xml:"interface" yaml:"interface"`
 }
 
-// ProfilerConfig contains configuration related to profiler.
-type ProfilerConfig struct {
+// ProfilingConfig contains configuration related to profiler.
+type ProfilingConfig struct {
 	Enabled   bool   `json:"enabled"   xml:"enabled"   yaml:"enabled"`
 	Interface string `json:"interface" xml:"interface" yaml:"interface"`
 }

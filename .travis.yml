@@ -7,10 +7,6 @@ go:
 - 1.10.x
 
 matrix:
-
-  allow_failures:
-  - go: 1.x # go1.11beta1 has a bug
-
   fast_finish: true
 
 sudo: false

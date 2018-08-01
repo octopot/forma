@@ -12,10 +12,10 @@ import (
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 
 	"github.com/kamilsk/form-api/pkg/config"
-	"github.com/kamilsk/form-api/pkg/dao"
 	"github.com/kamilsk/form-api/pkg/server"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
@@ -47,7 +47,7 @@ var runCmd = &cobra.Command{
 			server.New(
 				cnf.Union.ServerConfig,
 				service.New(
-					dao.Must(dao.Connection(cnf.Union.DBConfig)),
+					storage.Must(storage.Connection(cnf.Union.DBConfig)),
 				),
 			),
 		)

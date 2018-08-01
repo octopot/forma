@@ -1,11 +1,11 @@
-package dao
+package storage
 
 import (
 	"database/sql"
 
 	"github.com/kamilsk/form-api/pkg/config"
-	"github.com/kamilsk/form-api/pkg/dao/postgres"
 	"github.com/kamilsk/form-api/pkg/domain"
+	"github.com/kamilsk/form-api/pkg/storage/postgres"
 	"github.com/pkg/errors"
 )
 

@@ -13,12 +13,12 @@ func NewLogServer() LogServer {
 type logServer struct {
 }
 
-func (*logServer) Read(context.Context, *ReadLogRequest) (*ReadLogResponse, error) {
+func (*logServer) Read(context.Context, *ReadLogsRequest) (*ReadLogsResponse, error) {
 	log.Println("LogServer.Read was called")
-	return &ReadLogResponse{}, nil
+	return &ReadLogsResponse{}, nil
 }
 
-func (*logServer) Listen(*ListenLogRequest, Log_ListenServer) error {
+func (*logServer) Listen(*ListenLogsRequest, Log_ListenServer) error {
 	log.Println("LogServer.Listen was called")
 	return nil
 }

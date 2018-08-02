@@ -1,22 +1,55 @@
-// protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc storage.proto
 syntax = "proto3";
+
 package grpc;
 
-message CreateSchemaRequest {}
+import public "common.proto";
+import "google/protobuf/timestamp.proto";
 
-message CreateSchemaResponse {}
+message CreateSchemaRequest {
+    string definition = 3;
+}
 
-message ReadSchemaRequest {}
+message CreateSchemaResponse {
+    string id = 1;
+    google.protobuf.Timestamp created_at = 4;
 
-message ReadSchemaResponse {}
+    Error err = 15;
+}
 
-message UpdateSchemaRequest {}
+message ReadSchemaRequest {
+    string id = 1;
+}
 
-message UpdateSchemaResponse {}
+message ReadSchemaResponse {
+    string id = 1;
+    string definition = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
 
-message DeleteSchemaRequest {}
+    Error err = 15;
+}
 
-message DeleteSchemaResponse {}
+message UpdateSchemaRequest {
+    string id = 1;
+    string definition = 3;
+}
+
+message UpdateSchemaResponse {
+    google.protobuf.Timestamp updated_at = 5;
+
+    Error err = 15;
+}
+
+message DeleteSchemaRequest {
+    string id = 1;
+}
+
+message DeleteSchemaResponse {
+    google.protobuf.Timestamp deleted_at = 6;
+
+    Error err = 15;
+}
 
 service Schema {
     rpc Create (CreateSchemaRequest) returns (CreateSchemaResponse) {}
@@ -25,25 +58,84 @@ service Schema {
     rpc Delete (DeleteSchemaRequest) returns (DeleteSchemaResponse) {}
 }
 
-message CreateTemplateRequest {}
+message CreateTemplateRequest {
+    string definition = 3;
+}
 
-message CreateTemplateResponse {}
+message CreateTemplateResponse {
+    string id = 1;
+    google.protobuf.Timestamp created_at = 4;
 
-message ReadTemplateRequest {}
+    Error err = 15;
+}
 
-message ReadTemplateResponse {}
+message ReadTemplateRequest {
+    string id = 1;
+}
 
-message UpdateTemplateRequest {}
+message ReadTemplateResponse {
+    string id = 1;
+    string definition = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
 
-message UpdateTemplateResponse {}
+    Error err = 15;
+}
 
-message DeleteTemplateRequest {}
+message UpdateTemplateRequest {
+    string id = 1;
+    string definition = 3;
+}
 
-message DeleteTemplateResponse {}
+message UpdateTemplateResponse {
+    google.protobuf.Timestamp updated_at = 5;
+
+    Error err = 15;
+}
+
+message DeleteTemplateRequest {
+    string id = 1;
+}
+
+message DeleteTemplateResponse {
+    google.protobuf.Timestamp deleted_at = 6;
+
+    Error err = 15;
+}
 
 service Template {
     rpc Create (CreateTemplateRequest) returns (CreateTemplateResponse) {}
     rpc Read (ReadTemplateRequest) returns (ReadTemplateResponse) {}
     rpc Update (UpdateTemplateRequest) returns (UpdateTemplateResponse) {}
     rpc Delete (DeleteTemplateRequest) returns (DeleteTemplateResponse) {}
+}
+
+message InputEntry {
+    string id = 1;
+    string schema_id = 2;
+    bytes data = 3;
+    google.protobuf.Timestamp created_at = 4;
+}
+
+message InputFilter {
+    string schema_id = 2;
+    TimestampRange created_at = 4;
+}
+
+message ReadInputRequest {
+    oneof filter {
+        string id = 1;
+        InputFilter condition = 2;
+    }
+}
+
+message ReadInputResponse {
+    repeated InputEntry entries = 1;
+
+    Error err = 15;
+}
+
+service Input {
+    rpc Read (ReadInputRequest) returns (ReadInputResponse) {}
 }

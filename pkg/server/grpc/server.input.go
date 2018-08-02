@@ -17,8 +17,3 @@ func (*inputServer) Read(context.Context, *ReadInputRequest) (*ReadInputResponse
 	log.Println("InputServer.Read was called")
 	return &ReadInputResponse{}, nil
 }
-
-func (*inputServer) Listen(*ListenInputRequest, Input_ListenServer) error {
-	log.Println("InputServer.Listen was called")
-	return nil
-}

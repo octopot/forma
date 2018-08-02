@@ -1,29 +1,50 @@
-// protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc event.proto
 syntax = "proto3";
+
 package grpc;
 
-message ReadInputRequest {}
+import public "common.proto";
+import "google/protobuf/timestamp.proto";
 
-message ReadInputResponse {}
-
-message ListenInputRequest {}
-
-message ListenInputResponse {}
-
-service Input {
-    rpc Read (ReadInputRequest) returns (ReadInputResponse) {}
-    rpc Listen (ListenInputRequest) returns (stream ListenInputResponse) {}
+message LogEntry {
+    uint32 id = 1;
+    string schema_id = 3;
+    string input_id = 4;
+    string template_id = 5;
+    string identifier = 6;
+    int32 code = 7;
+    bytes context = 8;
+    google.protobuf.Timestamp created_at = 9;
 }
 
-message ReadLogRequest {}
+message LogFilter {
+    string schema_id = 3;
+    string input_id = 4;
+    string template_id = 5;
+    string identifier = 6;
+    int32 code = 7;
+    TimestampRange created_at = 9;
 
-message ReadLogResponse {}
+    uint32 limit = 15;
+}
 
-message ListenLogRequest {}
+message ReadLogsRequest {
+    oneof filter {
+        uint32 id = 1;
+        LogFilter condition = 2;
+    }
+}
 
-message ListenLogResponse {}
+message ReadLogsResponse {
+    repeated LogEntry logs = 1;
+
+    Error err = 15;
+}
+
+message ListenLogsRequest {
+    LogFilter filter = 1;
+}
 
 service Log {
-    rpc Read (ReadLogRequest) returns (ReadLogResponse) {}
-    rpc Listen (ListenLogRequest) returns (stream ListenLogResponse) {}
+    rpc Read (ReadLogsRequest) returns (ReadLogsResponse) {}
+    rpc Listen (ListenLogsRequest) returns (stream LogEntry) {}
 }

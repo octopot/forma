@@ -127,8 +127,8 @@ func init() {
 		func() error { return v.BindEnv("forma_token") },
 		func() error { return v.BindEnv("grpc_host") },
 		func() error {
-			v.SetDefault("forma_token", "")
-			v.SetDefault("grpc_host", "127.0.0.1:8092")
+			v.SetDefault("forma_token", defaults["forma_token"])
+			v.SetDefault("grpc_host", defaults["grpc_host"])
 			return nil
 		},
 		func() error {

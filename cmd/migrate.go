@@ -60,8 +60,8 @@ func init() {
 		func() error { return v.BindEnv("table") },
 		func() error { return v.BindEnv("schema") },
 		func() error {
-			v.SetDefault("table", "migration")
-			v.SetDefault("schema", "public")
+			v.SetDefault("table", defaults["table"])
+			v.SetDefault("schema", defaults["schema"])
 			return nil
 		},
 		func() error {

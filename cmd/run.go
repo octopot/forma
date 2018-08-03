@@ -7,7 +7,6 @@ import (
 	"net/http"
 	"net/http/pprof"
 	"runtime"
-	"time"
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 
@@ -70,17 +69,17 @@ func init() {
 		func() error { return v.BindEnv("monitoring_host") },
 		func() error { return v.BindEnv("grpc_host") },
 		func() error {
-			v.SetDefault("max_cpus", 1)
-			v.SetDefault("host", "127.0.0.1:80")
-			v.SetDefault("read_timeout", time.Duration(0))
-			v.SetDefault("read_header_timeout", time.Duration(0))
-			v.SetDefault("write_timeout", time.Duration(0))
-			v.SetDefault("idle_timeout", time.Duration(0))
-			v.SetDefault("base_url", "http://localhost/")
-			v.SetDefault("template_dir", "static/templates")
-			v.SetDefault("profiling_host", "127.0.0.1:8090")
-			v.SetDefault("monitoring_host", "127.0.0.1:8091")
-			v.SetDefault("grpc_host", "127.0.0.1:8092")
+			v.SetDefault("max_cpus", defaults["max_cpus"])
+			v.SetDefault("host", defaults["host"])
+			v.SetDefault("read_timeout", defaults["read_timeout"])
+			v.SetDefault("read_header_timeout", defaults["read_header_timeout"])
+			v.SetDefault("write_timeout", defaults["write_timeout"])
+			v.SetDefault("idle_timeout", defaults["idle_timeout"])
+			v.SetDefault("base_url", defaults["base_url"])
+			v.SetDefault("template_dir", defaults["template_dir"])
+			v.SetDefault("profiling_host", defaults["profiling_host"])
+			v.SetDefault("monitoring_host", defaults["monitoring_host"])
+			v.SetDefault("grpc_host", defaults["grpc_host"])
 			return nil
 		},
 		func() error {

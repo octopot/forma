@@ -1,13 +1,37 @@
 package cmd
 
 import (
+	"time"
+
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
-var cnf = config.ApplicationConfig{}
+var (
+	cnf      = config.ApplicationConfig{}
+	defaults = map[string]interface{}{
+		"dsn":                 "postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable",
+		"open_conn":           1,
+		"idle_conn":           1,
+		"conn_max_lt":         0,
+		"table":               "migration",
+		"schema":              "public",
+		"max_cpus":            1,
+		"host":                "127.0.0.1:80",
+		"profiling_host":      "127.0.0.1:8090",
+		"monitoring_host":     "127.0.0.1:8091",
+		"grpc_host":           "127.0.0.1:8092",
+		"read_timeout":        time.Duration(0),
+		"read_header_timeout": time.Duration(0),
+		"write_timeout":       time.Duration(0),
+		"idle_timeout":        time.Duration(0),
+		"base_url":            "http://localhost/",
+		"template_dir":        "static/templates",
+		"forma_token":         "",
+	}
+)
 
 func db(cmd *cobra.Command) {
 	v := viper.New()
@@ -18,10 +42,10 @@ func db(cmd *cobra.Command) {
 		func() error { return v.BindEnv("idle_conn") },
 		func() error { return v.BindEnv("conn_max_lt") },
 		func() error {
-			v.SetDefault("dsn", "postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable")
-			v.SetDefault("open_conn", 1)
-			v.SetDefault("idle_conn", 1)
-			v.SetDefault("conn_max_lt", 0)
+			v.SetDefault("dsn", defaults["dsn"])
+			v.SetDefault("open_conn", defaults["open_conn"])
+			v.SetDefault("idle_conn", defaults["idle_conn"])
+			v.SetDefault("conn_max_lt", defaults["conn_max_lt"])
 			return nil
 		},
 		func() error {

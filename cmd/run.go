@@ -131,7 +131,7 @@ func startHTTPServer(cnf config.ServerConfig, handler http.Handler) error {
 		WriteTimeout:      cnf.WriteTimeout,
 		IdleTimeout:       cnf.IdleTimeout,
 	}
-	log.Println("start HTTP server at", listener.Addr())
+	log.Println("start web server at", listener.Addr())
 	return srv.Serve(listener)
 }
 
@@ -162,7 +162,7 @@ func startMonitoring(cnf config.MonitoringConfig) error {
 		mux := &http.ServeMux{}
 		mux.Handle("/monitoring", promhttp.Handler())
 		mux.Handle("/vars", expvar.Handler())
-		log.Println("start monitor at", listener.Addr())
+		log.Println("start monitoring server at", listener.Addr())
 		_ = http.Serve(listener, mux) // TODO issue#139
 		listener.Close()
 	}()
@@ -181,7 +181,7 @@ func startProfiler(cnf config.ProfilingConfig) error {
 		mux.HandleFunc("/pprof/symbol", pprof.Symbol)
 		mux.HandleFunc("/pprof/trace", pprof.Trace)
 		mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
-		log.Println("start profiler at", listener.Addr())
+		log.Println("start profiling server at", listener.Addr())
 		_ = http.Serve(listener, mux) // TODO issue#139
 		listener.Close()
 	}()

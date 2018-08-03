@@ -33,4 +33,4 @@ demo: cmd-migrate-up
 
 .PHONY: dev-server
 dev-server:
-	go run $(LDFLAGS) $(BUILD_FILES) run --port=8080 --with-profiler --with-monitoring
+	go run $(LDFLAGS) $(BUILD_FILES) run -H 127.0.0.1:8080 --with-profiling --with-monitoring

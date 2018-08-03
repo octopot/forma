@@ -15,7 +15,7 @@ services:
 
   service:
     image: kamilsk/form-api:1.x # https://hub.docker.com/r/kamilsk/form-api/
-    command: [ "run", "--with-profiler", "--with-monitoring" ]
+    command: [ "run", "--with-profiling", "--with-monitoring" ]
     depends_on:
     - migration
     env_file: .env

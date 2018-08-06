@@ -1,4 +1,4 @@
-> # Forma [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://kamilsk.github.io/form-api/&via=ikamilsk&hashtags=go,service,data-collector)
+> # Forma [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://kamilsk.github.io/form-api/&via=ikamilsk&hashtags=go,service,data-collector,form-handler)
 > [![Analytics](https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel)](https://kamilsk.github.io/form-api/)
 > Data Collector as a Service &mdash; your personal server for HTML forms.
 
@@ -8,9 +8,30 @@
 [![Code Quality](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
+## Roadmap
+
+- [x] v1: [MVP](https://github.com/kamilsk/form-api/projects/1)
+  - [**May 31, 2018**](https://github.com/kamilsk/form-api/milestone/1)
+  - Main concepts and working prototype.
+- [ ] v2: [API v2 and CLI CRUD](https://github.com/kamilsk/form-api/projects/2)
+  - [**August 31, 2018**](https://github.com/kamilsk/form-api/milestone/2)
+  - Command line interface for create, read, update and delete operations above gRPC.
+  - Template system and Edge Side Includes/Server Side Includes support.
+- [ ] v3: [DSL for validation and CSI](https://github.com/kamilsk/form-api/projects/3)
+  - [**September 30, 2018**](https://github.com/kamilsk/form-api/milestone/3)
+  - Client-side integration.
+  - Domain-specific language to define validation rules.
+- [ ] v4: [GUI CRUD](https://github.com/kamilsk/form-api/projects/4)
+  - [**October 31, 2018**](https://github.com/kamilsk/form-api/milestone/4)
+  - Graphical user interface and admin panel to perform create, read, update and delete operations.
+- [ ] Forma, SaaS
+  - **December 31, 2018**
+  - Ready to apply on Cloud.
+  - Move to [OctoLab](https://github.com/octolab/) organization and rename project to `forma`.
+
 ## Quick start
 
-Requirements: 
+Requirements:
 
 - Docker 17.09.0-ce or above
 - Docker Compose 1.16.1 or above
@@ -128,23 +149,16 @@ $ form-api completion bash > /path/to/bash_completion.d/form-api.sh
 $ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
 ```
 
-## Notes
-
-- brief roadmap
-  - [x] v1: MVP
-  - [ ] v2: API v2
-  - [ ] v3: CSI
-  - [ ] v4: CRUD
-  - [ ] v5: GUI
-  - [ ] Forma, SaaS
-- [research](../../tree/research)
-- tested on Go 1.9 and 1.10
-
 ### Update
 
 This application is in a state of [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) and under active
 development. [SemVer](https://semver.org/) is used for releases, and you can easily be updated within minor versions,
 but major versions can be not [BC](https://en.wikipedia.org/wiki/Backward_compatibility)-safe.
+
+## Notes
+
+- [research](../../tree/research)
+- tested on Go 1.9 and 1.10
 
 ---
 

@@ -1,8 +1,7 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )
 
@@ -18,10 +17,10 @@ var completionCmd = &cobra.Command{
 	// TODO issue#150 start
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
-			return fmt.Errorf("please provide only %q or %q as an argument", bashFormat, zshFormat)
+			return errors.Errorf("please provide only %q or %q as an argument", bashFormat, zshFormat)
 		}
 		if args[0] != bashFormat && args[0] != zshFormat {
-			return fmt.Errorf("only %q and %q formats are supported, received %q", bashFormat, zshFormat, args[0])
+			return errors.Errorf("only %q and %q formats are supported, received %q", bashFormat, zshFormat, args[0])
 		}
 		return nil
 	},

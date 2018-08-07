@@ -4,8 +4,9 @@ import (
 	"context"
 	"io"
 	"io/ioutil"
-	"log"
 	"os"
+	"reflect"
+	"strings"
 	"time"
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
@@ -18,7 +19,7 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
-)
+	)
 
 type schema struct {
 	Kind    string                 `yaml:"kind"`
@@ -104,6 +105,29 @@ func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
 	}
 }
 
+func convert(entity interface{}) map[string]interface{} {
+	t := reflect.ValueOf(entity).Elem().Type()
+	m := make(map[string]interface{}, t.NumField())
+	for i := 0; i < t.NumField(); i++ {
+		f := t.Field(i)
+		v, ok := f.Tag.Lookup("json")
+		if !ok {
+			continue
+		}
+		p := strings.Split(v, ",")
+		if p[0] == "-" {
+			continue
+		}
+		switch f.Type.String() {
+		case "[]uint8":
+			m[p[0]] = "binary"
+		default:
+			m[p[0]] = f.Type.String()
+		}
+	}
+	return m
+}
+
 var (
 	controlCmd = &cobra.Command{
 		Use:   "ctl",
@@ -121,13 +145,13 @@ var (
 			if err != nil {
 				return err
 			}
-			log.Printf("`ctl create` was called, in:%#v out:%#v\n", entity, response)
+			cmd.Printf("`ctl %s` was called, in:%#v out:%#v\n", cmd.Use, entity, response)
 			return nil
 		},
 	}
-	getCmd = &cobra.Command{
-		Use:   "get",
-		Short: "Get some kind",
+	readCmd = &cobra.Command{
+		Use:   "read",
+		Short: "Read some kind",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			entity, err := entities.new(cmd)
 			if err != nil {
@@ -137,7 +161,7 @@ var (
 			if err != nil {
 				return err
 			}
-			log.Printf("`ctl get` was called, in:%#v out:%#v\n", entity, response)
+			cmd.Printf("`ctl %s` was called, in:%#v out:%#v\n", cmd.Use, entity, response)
 			return nil
 		},
 	}
@@ -153,7 +177,7 @@ var (
 			if err != nil {
 				return err
 			}
-			log.Printf("`ctl update` was called, in:%#v out:%#v\n", entity, response)
+			cmd.Printf("`ctl %s` was called, in:%#v out:%#v\n", cmd.Use, entity, response)
 			return nil
 		},
 	}
@@ -169,7 +193,36 @@ var (
 			if err != nil {
 				return err
 			}
-			log.Printf("`ctl delete` was called, in:%#v out:%#v\n", entity, response)
+			cmd.Printf("`ctl %s` was called, in:%#v out:%#v\n", cmd.Use, entity, response)
+			return nil
+		},
+	}
+	schemaCmd = &cobra.Command{
+		Use:   "schema",
+		Short: "Print schema of another control command",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var (
+				target   *cobra.Command
+				builders map[string]func() interface{}
+				found    bool
+			)
+			use := cmd.Flag("for").Value.String()
+			for target, builders = range entities {
+				if strings.EqualFold(target.Use, use) {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return errors.Errorf("unknown control command %q", use)
+			}
+			for kind, builder := range builders {
+				yaml.NewEncoder(cmd.OutOrStdout()).Encode(schema{
+					Kind:    kind,
+					Payload: convert(builder()),
+				})
+				cmd.Println()
+			}
 			return nil
 		},
 	}
@@ -195,6 +248,8 @@ func init() {
 				"timeout", "t", time.Second, "connection timeout")
 			flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
 				"token", "", v.GetString("forma_token"), "user access token")
+			schemaCmd.Flags().String("for", "", "which command: create, read, update or delete")
+			schemaCmd.MarkFlagRequired("for")
 			return nil
 		},
 		func() error {
@@ -203,7 +258,7 @@ func init() {
 					"Schema":   func() interface{} { return &pb.CreateSchemaRequest{} },
 					"Template": func() interface{} { return &pb.CreateTemplateRequest{} },
 				},
-				getCmd: {
+				readCmd: {
 					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
 					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
 				},
@@ -219,5 +274,5 @@ func init() {
 			return nil
 		},
 	)
-	controlCmd.AddCommand(createCmd, getCmd, updateCmd, deleteCmd)
+	controlCmd.AddCommand(createCmd, readCmd, updateCmd, deleteCmd)
 }

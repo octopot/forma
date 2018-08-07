@@ -29,6 +29,12 @@
   - Ready to apply on Cloud.
   - Move to [OctoLab](https://github.com/octolab/) organization and rename project to `forma`.
 
+## Motivation
+
+- We need better integration with static site generators like [Hugo](https://gohugo.io/).
+- We want cheaper products than [Formata](https://www.formata.io/) or [FormKeep](https://formkeep.com/).
+- We have to full control over our users' data and protect it from third parties.
+
 ## Quick start
 
 Requirements:
@@ -100,6 +106,16 @@ Flags:
 Use "form-api [command] --help" for more information about a command.
 ```
 
+#### Bash and Zsh completions
+
+You can find completion files [here](https://github.com/kamilsk/shared/tree/dotfiles/bash_completion.d) or
+build your own using these commands
+
+```bash
+$ form-api completion bash > /path/to/bash_completion.d/form-api.sh
+$ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
+```
+
 ## Installation
 
 ### Brew
@@ -139,17 +155,7 @@ $ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make test install
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.
 
-### Bash and Zsh completions
-
-You can find completion files [here](https://github.com/kamilsk/shared/tree/dotfiles/bash_completion.d) or
-build your own using these commands
-
-```bash
-$ form-api completion bash > /path/to/bash_completion.d/form-api.sh
-$ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
-```
-
-### Update
+## Update
 
 This application is in a state of [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) and under active
 development. [SemVer](https://semver.org/) is used for releases, and you can easily be updated within minor versions,

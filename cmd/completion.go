@@ -22,6 +22,6 @@ var completionCmd = &cobra.Command{
 }
 
 func init() {
-	completionCmd.Flags().StringVarP(new(string), "format", "f", zshFormat, "supported formats are bash and zsh")
+	completionCmd.Flags().StringVarP(new(string), "format", "f", zshFormat, "output format, one of: bash|zsh")
 	fn.Must(func() error { return completionCmd.MarkFlagRequired("format") })
 }

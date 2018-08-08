@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"context"
+	"encoding/json"
 	"io"
 	"io/ioutil"
 	"os"
@@ -19,6 +20,11 @@ import (
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"gopkg.in/yaml.v2"
+)
+
+const (
+	yamlFormat = "yaml"
+	jsonFormat = "json"
 )
 
 type schema struct {
@@ -135,8 +141,10 @@ func edit(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return err
 	}
-	cmd.Printf("`ctl %s` was called, in:%#v out:%#v\n", cmd.Use, entity, response)
-	return nil
+	if cmd.Flag("output").Value.String() == jsonFormat {
+		return json.NewEncoder(cmd.OutOrStdout()).Encode(response)
+	}
+	return yaml.NewEncoder(cmd.OutOrStdout()).Encode(response)
 }
 
 var entities factory
@@ -186,9 +194,9 @@ func init() {
 			return nil
 		},
 		func() error {
-			name := ""
 			flags := controlCmd.PersistentFlags()
-			flags.StringVarP(&name, "filename", "f", name, "entity source (default is standard input)")
+			flags.StringVarP(new(string), "filename", "f", "", "entity source (default is standard input)")
+			flags.StringVarP(new(string), "output", "o", yamlFormat, "output format, one of: json|yaml")
 			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
 				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
 			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,

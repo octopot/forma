@@ -29,7 +29,7 @@ type schema struct {
 type factory map[*cobra.Command]map[string]func() interface{}
 
 func (f factory) new(cmd *cobra.Command) (interface{}, error) {
-	data, err := f.data(cmd.Flag("file").Value.String())
+	data, err := f.data(cmd.Flag("filename").Value.String())
 	if err != nil {
 		return nil, err
 	}
@@ -44,25 +44,25 @@ func (f factory) new(cmd *cobra.Command) (interface{}, error) {
 	return entity, nil
 }
 
-func (f factory) data(file string) (schema, error) {
+func (f factory) data(name string) (schema, error) {
 	var (
 		err error
 		out schema
 		raw []byte
 		src io.Reader = os.Stdin
 	)
-	if file != "" {
-		if src, err = os.Open(file); err != nil {
-			return out, errors.Wrapf(err, "trying to open file %q", file)
+	if name != "" {
+		if src, err = os.Open(name); err != nil {
+			return out, errors.Wrapf(err, "trying to open file %q", name)
 		}
 	} else {
-		file = "/dev/stdin"
+		name = "/dev/stdin"
 	}
 	if raw, err = ioutil.ReadAll(src); err != nil {
-		return out, errors.Wrapf(err, "trying to read file %q", file)
+		return out, errors.Wrapf(err, "trying to read file %q", name)
 	}
 	err = yaml.Unmarshal(raw, &out)
-	return out, errors.Wrapf(err, "trying to decode file %q as YAML", file)
+	return out, errors.Wrapf(err, "trying to decode file %q as YAML", name)
 }
 
 func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
@@ -186,9 +186,9 @@ func init() {
 			return nil
 		},
 		func() error {
-			file := ""
+			name := ""
 			flags := controlCmd.PersistentFlags()
-			flags.StringVarP(&file, "file", "f", file, "entity source (default is stdin)")
+			flags.StringVarP(&name, "filename", "f", name, "entity source (default is standard input)")
 			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
 				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
 			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,

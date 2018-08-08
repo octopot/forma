@@ -112,8 +112,8 @@ You can find completion files [here](https://github.com/kamilsk/shared/tree/dotf
 build your own using these commands
 
 ```bash
-$ form-api completion bash > /path/to/bash_completion.d/form-api.sh
-$ form-api completion zsh  > /path/to/zsh-completions/_form-api.zsh
+$ form-api completion -f bash > /path/to/bash_completion.d/form-api.sh
+$ form-api completion -f zsh  > /path/to/zsh-completions/_form-api.zsh
 ```
 
 ## Installation

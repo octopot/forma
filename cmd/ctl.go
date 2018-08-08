@@ -196,8 +196,7 @@ func init() {
 			flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
 				"token", "", v.GetString("forma_token"), "user access token")
 			schemaCmd.Flags().String("for", "", "which command: create, read, update or delete")
-			schemaCmd.MarkFlagRequired("for")
-			return nil
+			return schemaCmd.MarkFlagRequired("for")
 		},
 		func() error {
 			entities = factory{

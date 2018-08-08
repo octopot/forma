@@ -137,6 +137,10 @@ func edit(cmd *cobra.Command, _ []string) error {
 	if err != nil {
 		return err
 	}
+	if dry, _ := cmd.Flags().GetBool("dry-run"); dry {
+		cmd.Printf("%T would be sent with data: ", entity)
+		return json.NewEncoder(cmd.OutOrStdout()).Encode(entity)
+	}
 	response, err := call(cnf.Union.GRPCConfig, entity)
 	if err != nil {
 		return err
@@ -197,6 +201,7 @@ func init() {
 			flags := controlCmd.PersistentFlags()
 			flags.StringVarP(new(string), "filename", "f", "", "entity source (default is standard input)")
 			flags.StringVarP(new(string), "output", "o", yamlFormat, "output format, one of: json|yaml")
+			flags.Bool("dry-run", false, "if true, only print the object that would be sent, without sending it")
 			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
 				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
 			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,

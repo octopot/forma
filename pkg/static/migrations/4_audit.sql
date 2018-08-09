@@ -5,7 +5,7 @@ CREATE TABLE "log" (
   "account_id"  UUID      NOT NULL,
   "schema_id"   UUID      NOT NULL,
   "input_id"    UUID      NOT NULL,
-  "template_id" UUID      NOT NULL,
+  "template_id" UUID      NULL     DEFAULT NULL,
   "identifier"  UUID      NOT NULL,
   "code"        INTEGER   NOT NULL,
   "context"     JSONB     NOT NULL,

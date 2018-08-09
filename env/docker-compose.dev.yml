@@ -17,18 +17,18 @@ services:
       context: ../.
       dockerfile: ./env/Dockerfile
     ports:
-    - ${LOCAL_SERVICE_HTTP_PORT}:${PORT}
+    - ${LOCAL_SERVICE_WEB_PORT}:80
     - ${LOCAL_SERVICE_PROFILING_PORT}:8090
     - ${LOCAL_SERVICE_MONITORING_PORT}:8091
+    - ${LOCAL_SERVICE_GRPC_PORT}:8092
 
   server:
     entrypoint: |
-      /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \
-                  < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf \
-                  && echo $$BASIC_USER:`(echo $$BASIC_PASS | openssl passwd -crypt -stdin -noverify)` >> /etc/nginx/.htpasswd \
+      /bin/sh -c "echo $$BASIC_USER:`(echo $$BASIC_PASS | openssl passwd -crypt -stdin -noverify)` >> /etc/nginx/.htpasswd \
                   && /entrypoint.sh"
     ports:
-    - ${LOCAL_SERVER_HTTP_PORT}:${DOMAIN_PORT}
+    - ${LOCAL_SERVER_HTTP_PORT}:8080
+    - ${LOCAL_SERVER_HTTPS_PORT}:443
     volumes:
     - certificates:/etc/nginx/ssl
     - letsencrypt:/etc/letsencrypt

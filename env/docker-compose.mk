@@ -1,4 +1,4 @@
-COMPOSE ?= docker-compose -f env/docker-compose.base.yml -f env/docker-compose.dev.yml -p form-api
+COMPOSE ?= docker-compose -f env/docker-compose.base.yml -f env/docker-compose.dev.yml -p forma
 
 .PHONY: env
 env:
@@ -83,6 +83,10 @@ up-migration: env
 .PHONY: start-migration
 start-migration: env
 	$(COMPOSE) start migration
+
+.PHONY: stop-migration
+stop-migration: env
+	$(COMPOSE) stop migration
 
 .PHONY: log-migration
 log-migration: env

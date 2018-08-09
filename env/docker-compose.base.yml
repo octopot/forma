@@ -24,12 +24,8 @@ services:
     image: kamilsk/nginx:alpine # https://hub.docker.com/r/kamilsk/nginx/
     depends_on:
     - service
-    entrypoint: |
-      /bin/sh -c "envsubst '$$SERVICE_HOST $$SERVICE_PORT $$DOMAIN_NAME $$DOMAIN_PORT' \
-                  < /etc/nginx/conf.d/service.template > /etc/nginx/conf.d/service.conf \
-                  && /entrypoint.sh"
     env_file: .env
     restart: on-failure
     volumes:
     - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
-    - ./etc/service.conf:/etc/nginx/conf.d/service.template:ro
+    - ./etc/service.conf:/etc/nginx/conf.d/service.conf:ro

@@ -1,6 +1,10 @@
 package driver
 
-import "github.com/kamilsk/form-api/pkg/storage"
+import (
+	"time"
+
+	"github.com/kamilsk/form-api/pkg/storage"
+)
 
 // CreateSchema TODO
 type CreateSchema struct {
@@ -66,4 +70,17 @@ type TemplateEditor interface {
 	Read(*storage.Token, ReadTemplate) (storage.Template, error)
 	Update(*storage.Token, UpdateTemplate) (storage.Template, error)
 	Delete(*storage.Token, DeleteTemplate) (storage.Template, error)
+}
+
+// InputFilter TODO
+type InputFilter struct {
+	SchemaID string
+	From     time.Time
+	To       time.Time
+}
+
+// InputReader TODO
+type InputReader interface {
+	DataByID(*storage.Token, string) (storage.Input, error)
+	DataByFilter(*storage.Token, InputFilter) ([]storage.Input, error)
 }

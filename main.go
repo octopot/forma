@@ -7,11 +7,11 @@ import (
 	"runtime"
 	"time"
 
-	_ "github.com/lib/pq"
-
 	"github.com/kamilsk/form-api/cmd"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/spf13/cobra"
+
+	_ "github.com/lib/pq"
 
 	_ "github.com/mailru/easyjson"
 	_ "golang.org/x/sync/errgroup"

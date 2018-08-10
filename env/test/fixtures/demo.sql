@@ -40,31 +40,28 @@ BEGIN
   INSERT INTO "token" ("id", "user_id", "expired_at")
   VALUES (demoToken, demoUser, NULL);
 
-  INSERT INTO "schema" ("id", "account_id", "content")
+  INSERT INTO "schema" ("id", "account_id", "language", "title", "definition")
   VALUES
-    (subscribe, demoAccount, '
-    <form lang="en" title="Email subscription" action="https://kamil.samigullin.info/" method="post"
-          enctype="application/x-www-form-urlencoded">
+    (subscribe, demoAccount, 'en', 'Email subscription', '
+    <form action="https://kamil.samigullin.info/" enctype="application/x-www-form-urlencoded" method="post">
         <input name="email" type="email" title="Email" maxlength="64" required="1"/>
     </form>'),
-    (feedbackEn, demoAccount, '
-    <form lang="en" title="GitHub demo page" action="https://kamilsk.github.io/form-api/" method="post"
-          enctype="application/x-www-form-urlencoded">
+    (feedbackEn, demoAccount, 'en', 'GitHub demo page', '
+    <form action="https://kamilsk.github.io/form-api/" enctype="application/x-www-form-urlencoded" method="post">
         <input name="name" type="text" title="Name" placeholder="Name..." maxlength="25" required="1"/>
         <input name="feedback" type="text" title="Feedback" placeholder="Your feedback..." maxlength="255"
                required="1"/>
     </form>'),
-    (feedbackRu, demoAccount, '
-    <form lang="ru" title="GitHub демо" action="https://kamilsk.github.io/form-api/" method="post"
-          enctype="application/x-www-form-urlencoded">
+    (feedbackRu, demoAccount, 'ru', 'GitHub демо', '
+    <form action="https://kamilsk.github.io/form-api/" enctype="application/x-www-form-urlencoded" method="post">
         <input name="name" type="text" title="Имя" placeholder="Имя..." maxlength="25" required="1"/>
         <input name="feedback" type="text" title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
                required="1"/>
     </form>');
 
-  INSERT INTO "template" ("id", "account_id", "content")
+  INSERT INTO "template" ("id", "account_id", "title", "definition")
   VALUES
-    (subscribeTpl, demoAccount, '{{- define "forma.body" -}}
+    (subscribeTpl, demoAccount, 'Subscribe template', '{{- define "forma.body" -}}
     <div class="row">
         {{- with .Schema.Input "email" -}}
             <div class="col-md-8">
@@ -88,7 +85,7 @@ BEGIN
         <button class="btn btn-primary btn-block" type="submit">Subscribe</button>
     </div>
 {{- end -}}'),
-    (feedbackTpl, demoAccount, '{{- define "forma.body" -}}
+    (feedbackTpl, demoAccount, 'Feedback template', '{{- define "forma.body" -}}
     {{- with .Schema.Input "name" -}}
         <div class="form-group row">
             <label for="{{ .ID }}"

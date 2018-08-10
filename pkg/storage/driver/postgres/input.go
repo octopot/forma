@@ -1,9 +1,9 @@
 package postgres
 
 import (
+	"bytes"
 	"context"
 	"database/sql"
-	"strings"
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage"
@@ -42,17 +42,19 @@ func (i input) DataByID(token *storage.Token, id string) (storage.Input, error) 
 func (i input) DataByFilter(token *storage.Token, filter driver.InputFilter) ([]storage.Input, error) {
 	args := make([]interface{}, 0, 3)
 	args = append(args, filter.SchemaID)
-	builder := strings.Builder{}
-	builder.WriteString(`SELECT "id", "schema_id", "data", "created_at" FROM "input" WHERE "schema_id" = $1`)
+	// go 1.10
+	// builder := strings.Builder{}
+	builder := bytes.NewBuffer(make([]byte, 0, 82+35))
+	_, _ = builder.WriteString(`SELECT "id", "schema_id", "data", "created_at" FROM "input" WHERE "schema_id" = $1`)
 	switch {
 	case !filter.From.IsZero() && !filter.To.IsZero():
-		builder.WriteString(` AND "created_at" BETWEEN $2 AND $3`)
+		_, _ = builder.WriteString(` AND "created_at" BETWEEN $2 AND $3`)
 		args = append(args, filter.From, filter.To)
 	case !filter.From.IsZero():
-		builder.WriteString(` AND "created_at" >= $2`)
+		_, _ = builder.WriteString(` AND "created_at" >= $2`)
 		args = append(args, filter.From)
 	case !filter.To.IsZero():
-		builder.WriteString(` AND "created_at" <= $2`)
+		_, _ = builder.WriteString(` AND "created_at" <= $2`)
 		args = append(args, filter.To)
 	}
 	var entities = make([]storage.Input, 0, 8)

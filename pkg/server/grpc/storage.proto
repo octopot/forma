@@ -6,12 +6,14 @@ import public "common.proto";
 import "google/protobuf/timestamp.proto";
 
 message CreateSchemaRequest {
-    string definition = 3;
+    string language = 3;
+    string title = 4;
+    string definition = 5;
 }
 
 message CreateSchemaResponse {
     string id = 1;
-    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp created_at = 6;
 
     Error err = 15;
 }
@@ -22,21 +24,25 @@ message ReadSchemaRequest {
 
 message ReadSchemaResponse {
     string id = 1;
-    string definition = 3;
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-    google.protobuf.Timestamp deleted_at = 6;
+    string language = 3;
+    string title = 4;
+    string definition = 5;
+    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp updated_at = 7;
+    google.protobuf.Timestamp deleted_at = 8;
 
     Error err = 15;
 }
 
 message UpdateSchemaRequest {
     string id = 1;
-    string definition = 3;
+    string language = 3;
+    string title = 4;
+    string definition = 5;
 }
 
 message UpdateSchemaResponse {
-    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp updated_at = 7;
 
     Error err = 15;
 }
@@ -46,7 +52,7 @@ message DeleteSchemaRequest {
 }
 
 message DeleteSchemaResponse {
-    google.protobuf.Timestamp deleted_at = 6;
+    google.protobuf.Timestamp deleted_at = 8;
 
     Error err = 15;
 }
@@ -59,12 +65,13 @@ service Schema {
 }
 
 message CreateTemplateRequest {
-    string definition = 3;
+    string title = 3;
+    string definition = 4;
 }
 
 message CreateTemplateResponse {
     string id = 1;
-    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp created_at = 5;
 
     Error err = 15;
 }
@@ -75,17 +82,19 @@ message ReadTemplateRequest {
 
 message ReadTemplateResponse {
     string id = 1;
-    string definition = 3;
-    google.protobuf.Timestamp created_at = 4;
-    google.protobuf.Timestamp updated_at = 5;
-    google.protobuf.Timestamp deleted_at = 6;
+    string title = 3;
+    string definition = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+    google.protobuf.Timestamp deleted_at = 7;
 
     Error err = 15;
 }
 
 message UpdateTemplateRequest {
     string id = 1;
-    string definition = 3;
+    string title = 3;
+    string definition = 4;
 }
 
 message UpdateTemplateResponse {
@@ -99,7 +108,7 @@ message DeleteTemplateRequest {
 }
 
 message DeleteTemplateResponse {
-    google.protobuf.Timestamp deleted_at = 6;
+    google.protobuf.Timestamp deleted_at = 7;
 
     Error err = 15;
 }

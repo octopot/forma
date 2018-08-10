@@ -1,21 +1,26 @@
 -- +migrate Up
 
 CREATE TABLE "schema" (
-  "id"         UUID      NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  "account_id" UUID      NOT NULL,
-  "definition" TEXT      NOT NULL,
-  "created_at" TIMESTAMP NOT NULL             DEFAULT now(),
-  "updated_at" TIMESTAMP NULL                 DEFAULT NULL,
-  "deleted_at" TIMESTAMP NULL                 DEFAULT NULL
+  "id"         UUID         NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+  "account_id" UUID         NOT NULL,
+  "language"   CHAR(2)      NOT NULL, -- ISO 639-1
+  "title"      VARCHAR(256) NOT NULL,
+  "definition" TEXT         NOT NULL,
+  "created_at" TIMESTAMP    NOT NULL             DEFAULT now(),
+  "updated_at" TIMESTAMP    NULL                 DEFAULT NULL,
+  "deleted_at" TIMESTAMP    NULL                 DEFAULT NULL,
+  UNIQUE ("account_id", "title")
 );
 
 CREATE TABLE "template" (
-  "id"         UUID      NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
-  "account_id" UUID      NOT NULL,
-  "definition" TEXT      NOT NULL,
-  "created_at" TIMESTAMP NOT NULL             DEFAULT now(),
-  "updated_at" TIMESTAMP NULL                 DEFAULT NULL,
-  "deleted_at" TIMESTAMP NULL                 DEFAULT NULL
+  "id"         UUID         NOT NULL PRIMARY KEY DEFAULT uuid_generate_v4(),
+  "account_id" UUID         NOT NULL,
+  "title"      VARCHAR(256) NOT NULL,
+  "definition" TEXT         NOT NULL,
+  "created_at" TIMESTAMP    NOT NULL             DEFAULT now(),
+  "updated_at" TIMESTAMP    NULL                 DEFAULT NULL,
+  "deleted_at" TIMESTAMP    NULL                 DEFAULT NULL,
+  UNIQUE ("account_id", "title")
 );
 
 CREATE TABLE "input" (

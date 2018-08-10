@@ -34,8 +34,8 @@ func (s schema) Create(token *storage.Token, data driver.CreateSchema) (storage.
 	query := `INSERT INTO "schema" ("account_id", "language", "title", "definition") VALUES ($1, $2, $3, $4)
 	          RETURNING "id", "created_at"`
 	row := s.conn.QueryRowContext(s.ctx, query, entity.AccountID, entity.Language, entity.Title, entity.Definition)
-	if row.Scan(&entity.ID, &entity.CreatedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if err := row.Scan(&entity.ID, &entity.CreatedAt); err != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to create a schema %q", token.UserID, token.User.AccountID, entity.Title)
 	}
 	return entity, nil
@@ -47,9 +47,9 @@ func (s schema) Read(token *storage.Token, data driver.ReadSchema) (storage.Sche
 	query := `SELECT "language", "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
 	          WHERE "id" = $1 AND "account_id" = $2`
 	row := s.conn.QueryRowContext(s.ctx, query, entity.ID, entity.AccountID)
-	if row.Scan(&entity.Language, &entity.Title, &entity.Definition,
-		&entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if err := row.Scan(&entity.Language, &entity.Title, &entity.Definition,
+		&entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read the schema %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
@@ -75,8 +75,8 @@ func (s schema) Update(token *storage.Token, data driver.UpdateSchema) (storage.
 	          RETURNING "updated_at"`
 	row := s.conn.QueryRowContext(s.ctx, query, entity.Language, entity.Title, entity.Definition,
 		entity.ID, entity.AccountID)
-	if row.Scan(&entity.UpdatedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if scanErr := row.Scan(&entity.UpdatedAt); scanErr != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to update the schema %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
@@ -95,8 +95,8 @@ func (s schema) Delete(token *storage.Token, data driver.DeleteSchema) (storage.
 	          WHERE "id" = $1 AND "account_id" = $2
 	          RETURNING "deleted_at"`
 	row := s.conn.QueryRowContext(s.ctx, query, entity.ID, entity.AccountID)
-	if row.Scan(&entity.DeletedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to delete the schema %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil

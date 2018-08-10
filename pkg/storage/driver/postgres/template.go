@@ -33,8 +33,8 @@ func (t template) Create(token *storage.Token, data driver.CreateTemplate) (stor
 	query := `INSERT INTO "template" ("account_id", "title", "definition") VALUES ($1, $2, $3)
 	          RETURNING "id", "created_at"`
 	row := t.conn.QueryRowContext(t.ctx, query, entity.AccountID, entity.Title, entity.Definition)
-	if row.Scan(&entity.ID, &entity.CreatedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if err := row.Scan(&entity.ID, &entity.CreatedAt); err != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to create a template %q", token.UserID, token.User.AccountID, entity.Title)
 	}
 	return entity, nil
@@ -46,8 +46,9 @@ func (t template) Read(token *storage.Token, data driver.ReadTemplate) (storage.
 	query := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "template"
 	          WHERE "id" = $1 AND "account_id" = $2`
 	row := t.conn.QueryRowContext(t.ctx, query, entity.ID, entity.AccountID)
-	if row.Scan(&entity.Title, &entity.Definition, &entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if err := row.Scan(&entity.Title, &entity.Definition,
+		&entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read the template %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
@@ -70,8 +71,8 @@ func (t template) Update(token *storage.Token, data driver.UpdateTemplate) (stor
 	          RETURNING "updated_at"`
 	row := t.conn.QueryRowContext(t.ctx, query, entity.Title, entity.Definition,
 		entity.ID, entity.AccountID)
-	if row.Scan(&entity.UpdatedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if scanErr := row.Scan(&entity.UpdatedAt); scanErr != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to update the template %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
@@ -90,8 +91,8 @@ func (t template) Delete(token *storage.Token, data driver.DeleteTemplate) (stor
 	          WHERE "id" = $1 AND "account_id" = $2
 	          RETURNING "deleted_at"`
 	row := t.conn.QueryRowContext(t.ctx, query, entity.ID, entity.AccountID)
-	if row.Scan(&entity.DeletedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to delete the template %q", token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil

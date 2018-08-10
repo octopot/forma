@@ -30,8 +30,8 @@ func (i input) DataByID(token *storage.Token, id string) (storage.Input, error) 
 	var entity = storage.Input{ID: id}
 	query := `SELECT "schema_id", "data", "created_at" FROM "input" WHERE "id" = $1`
 	row := i.conn.QueryRowContext(i.ctx, query, entity.ID)
-	if row.Scan(&entity.SchemaID, &entity.Data, &entity.CreatedAt) != nil {
-		return entity, errors.Database(errors.ServerErrorMessage, row.Scan(),
+	if err := row.Scan(&entity.SchemaID, &entity.Data, &entity.CreatedAt); err != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read the input %q", token.UserID, token.User.AccountID, id)
 	}
 	return entity, nil
@@ -65,8 +65,8 @@ func (i input) DataByFilter(token *storage.Token, filter driver.InputFilter) ([]
 	}
 	for rows.Next() {
 		var entity storage.Input
-		if rows.Scan(&entity.ID, &entity.SchemaID, &entity.Data, &entity.CreatedAt) != nil {
-			return nil, errors.Database(errors.ServerErrorMessage, err,
+		if scanErr := rows.Scan(&entity.ID, &entity.SchemaID, &entity.Data, &entity.CreatedAt); scanErr != nil {
+			return nil, errors.Database(errors.ServerErrorMessage, scanErr,
 				"user %q of account %q tried to read inputs by criteria %+v", token.UserID, token.User.AccountID, filter)
 		}
 		entities = append(entities, entity)

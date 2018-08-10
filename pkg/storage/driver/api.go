@@ -6,6 +6,11 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage"
 )
 
+// UserManager TODO
+type UserManager interface {
+	Token(string) (*storage.Token, error)
+}
+
 // CreateSchema TODO
 type CreateSchema struct {
 	Language   string
@@ -81,6 +86,6 @@ type InputFilter struct {
 
 // InputReader TODO
 type InputReader interface {
-	DataByID(*storage.Token, string) (storage.Input, error)
-	DataByFilter(*storage.Token, InputFilter) ([]storage.Input, error)
+	ReadByID(*storage.Token, string) (storage.Input, error)
+	ReadByFilter(*storage.Token, InputFilter) ([]storage.Input, error)
 }

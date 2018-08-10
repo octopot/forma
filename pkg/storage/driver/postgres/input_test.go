@@ -10,10 +10,10 @@ import (
 func TestNewInputContext(t *testing.T) {
 	ctx := context.Background()
 	_, _ = postgres.NewInputContext(nil, ctx)
-	t.Run("by ID", func(t *testing.T) {
+	t.Run("read by ID", func(t *testing.T) {
 		// TODO
 	})
-	t.Run("by filter", func(t *testing.T) {
+	t.Run("read by filter", func(t *testing.T) {
 		// TODO
 	})
 }

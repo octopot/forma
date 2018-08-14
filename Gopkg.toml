@@ -58,6 +58,10 @@
   name = "google.golang.org/grpc"
   version = "^1.13.0"
 
+[[contraint]]
+  name = "gopkg.in/DATA-DOG/go-sqlmock.v1"
+  branch = "master"
+
 [[constraint]]
   name = "gopkg.in/yaml.v2"
   branch = "v2"

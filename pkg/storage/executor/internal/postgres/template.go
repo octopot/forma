@@ -5,12 +5,11 @@ import (
 	"database/sql"
 
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
 
 // NewTemplateContext TODO
-func NewTemplateContext(conn *sql.Conn, ctx context.Context) executor.TemplateEditor {
+func NewTemplateContext(conn *sql.Conn, ctx context.Context) template {
 	return template{conn, ctx}
 }
 

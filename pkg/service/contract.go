@@ -2,12 +2,17 @@ package service
 
 import "github.com/kamilsk/form-api/pkg/domain"
 
-// Storage defines the behavior of Data Access Object.
+// Storage TODO
 type Storage interface {
 	// AddData inserts form data and returns their ID.
 	AddData(domain.UUID, map[string][]string) (int64, error)
 	// Schema returns the form schema with provided UUID.
 	Schema(domain.UUID) (domain.Schema, error)
-	// UUID returns a new generated unique identifier.
-	UUID() (domain.UUID, error)
+	// Template returns the form template with provided UUID.
+	// Template(domain.UUID) (domain.Template, error)
+}
+
+// ProtectedStorage TODO
+type ProtectedStorage interface {
+	Storage
 }

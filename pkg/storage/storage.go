@@ -51,6 +51,10 @@ type Storage struct {
 	conn *sql.DB
 }
 
+//
+// TODO refactoring
+//
+
 // Connection returns current database connection.
 func (l *Storage) Connection() *sql.DB {
 	return l.conn

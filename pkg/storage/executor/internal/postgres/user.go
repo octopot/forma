@@ -5,12 +5,11 @@ import (
 	"database/sql"
 
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
 
 // NewUserContext TODO
-func NewUserContext(conn *sql.Conn, ctx context.Context) executor.UserManager {
+func NewUserContext(conn *sql.Conn, ctx context.Context) manager {
 	return manager{conn, ctx}
 }
 

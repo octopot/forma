@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
@@ -30,16 +29,16 @@ func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 		verified map[string][]string
 	)
 
-	{ // TODO encrypt/decrypt marker
-		marker := domain.UUID(request.EncryptedMarker)
-		if !marker.IsValid() {
-			marker, response.Error = s.dao.UUID()
-			if response.Error != nil {
-				return response
-			}
-		}
-		response.EncryptedMarker = string(marker)
-	}
+	//{ // TODO encrypt/decrypt marker
+	//	marker := domain.UUID(request.EncryptedMarker)
+	//	if !marker.IsValid() {
+	//		marker, response.Error = s.dao.UUID()
+	//		if response.Error != nil {
+	//			return response
+	//		}
+	//	}
+	//	response.EncryptedMarker = string(marker)
+	//}
 
 	response.Schema, response.Error = s.dao.Schema(request.UUID)
 	if response.Error != nil {

@@ -4,12 +4,12 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/storage/executor/postgres"
+	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
-func TestNewSchemaContext(t *testing.T) {
+func TestNewTemplateContext(t *testing.T) {
 	ctx := context.Background()
-	_ = postgres.NewSchemaContext(nil, ctx)
+	_ = postgres.NewTemplateContext(nil, ctx)
 	t.Run("create", func(t *testing.T) {
 		// TODO
 	})

@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/storage/executor/postgres"
+	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestNewInputContext(t *testing.T) {

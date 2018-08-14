@@ -1,91 +1,35 @@
 package executor
 
-import (
-	"time"
+import "github.com/kamilsk/form-api/pkg/storage/query"
 
-	"github.com/kamilsk/form-api/pkg/storage"
+const (
+	postgresDialect = "postgres"
+	mysqlDialect    = "mysql"
 )
 
 // UserManager TODO
 type UserManager interface {
-	Token(string) (*storage.Token, error)
-}
-
-// CreateSchema TODO
-type CreateSchema struct {
-	Language   string
-	Title      string
-	Definition string
-}
-
-// ReadSchema TODO
-type ReadSchema struct {
-	ID string
-}
-
-// UpdateSchema TODO
-type UpdateSchema struct {
-	ID         string
-	Language   string
-	Title      string
-	Definition string
-}
-
-// DeleteSchema TODO
-type DeleteSchema struct {
-	ID          string
-	Permanently bool
+	Token(string) (*query.Token, error)
 }
 
 // SchemaEditor TODO
 type SchemaEditor interface {
-	Create(*storage.Token, CreateSchema) (storage.Schema, error)
-	Read(*storage.Token, ReadSchema) (storage.Schema, error)
-	Update(*storage.Token, UpdateSchema) (storage.Schema, error)
-	Delete(*storage.Token, DeleteSchema) (storage.Schema, error)
-}
-
-// CreateTemplate TODO
-type CreateTemplate struct {
-	Title      string
-	Definition string
-}
-
-// ReadTemplate TODO
-type ReadTemplate struct {
-	ID string
-}
-
-// UpdateTemplate TODO
-type UpdateTemplate struct {
-	ID         string
-	Title      string
-	Definition string
-}
-
-// DeleteTemplate TODO
-type DeleteTemplate struct {
-	ID          string
-	Permanently bool
+	Create(*query.Token, query.CreateSchema) (query.Schema, error)
+	Read(*query.Token, query.ReadSchema) (query.Schema, error)
+	Update(*query.Token, query.UpdateSchema) (query.Schema, error)
+	Delete(*query.Token, query.DeleteSchema) (query.Schema, error)
 }
 
 // TemplateEditor TODO
 type TemplateEditor interface {
-	Create(*storage.Token, CreateTemplate) (storage.Template, error)
-	Read(*storage.Token, ReadTemplate) (storage.Template, error)
-	Update(*storage.Token, UpdateTemplate) (storage.Template, error)
-	Delete(*storage.Token, DeleteTemplate) (storage.Template, error)
-}
-
-// InputFilter TODO
-type InputFilter struct {
-	SchemaID string
-	From     time.Time
-	To       time.Time
+	Create(*query.Token, query.CreateTemplate) (query.Template, error)
+	Read(*query.Token, query.ReadTemplate) (query.Template, error)
+	Update(*query.Token, query.UpdateTemplate) (query.Template, error)
+	Delete(*query.Token, query.DeleteTemplate) (query.Template, error)
 }
 
 // InputReader TODO
 type InputReader interface {
-	ReadByID(*storage.Token, string) (storage.Input, error)
-	ReadByFilter(*storage.Token, InputFilter) ([]storage.Input, error)
+	ReadByID(*query.Token, string) (query.Input, error)
+	ReadByFilter(*query.Token, query.InputFilter) ([]query.Input, error)
 }

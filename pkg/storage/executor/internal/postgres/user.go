@@ -5,8 +5,8 @@ import (
 	"database/sql"
 
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
+	"github.com/kamilsk/form-api/pkg/storage/query"
 )
 
 // NewUserContext TODO
@@ -20,22 +20,22 @@ type manager struct {
 }
 
 // Token TODO
-func (m manager) Token(id string) (*storage.Token, error) {
+func (m manager) Token(id string) (*query.Token, error) {
 	var (
-		token   = storage.Token{ID: id}
-		user    = storage.User{}
-		account = storage.Account{}
+		token   = query.Token{ID: id}
+		user    = query.User{}
+		account = query.Account{}
 	)
-	query := `SELECT "t"."user_id", "t"."expired_at", "t"."created_at",
-	                 "u"."account_id", "u"."name", "u"."created_at", "u"."updated_at",
-	                 "a"."name", "a"."created_at", "a"."updated_at"
-	            FROM "token" "t"
-	           INNER JOIN "user" "u" ON "t"."user_id" = "u"."id"
-	           INNER JOIN "account" "a" ON "u"."account_id" = "a"."id"
-	           WHERE "t"."id" = $1 AND ("t"."expired_at" IS NULL OR "t"."expired_at" > now())
-	             AND "u"."deleted_at" IS NULL
-	             AND "a"."deleted_at" IS NULL`
-	row := m.conn.QueryRowContext(m.ctx, query, token.ID)
+	q := `SELECT "t"."user_id", "t"."expired_at", "t"."created_at",
+	             "u"."account_id", "u"."name", "u"."created_at", "u"."updated_at",
+	             "a"."name", "a"."created_at", "a"."updated_at"
+	        FROM "token" "t"
+	       INNER JOIN "user" "u" ON "t"."user_id" = "u"."id"
+	       INNER JOIN "account" "a" ON "u"."account_id" = "a"."id"
+	       WHERE "t"."id" = $1 AND ("t"."expired_at" IS NULL OR "t"."expired_at" > now())
+	         AND "u"."deleted_at" IS NULL
+	         AND "a"."deleted_at" IS NULL`
+	row := m.conn.QueryRowContext(m.ctx, q, token.ID)
 	if err := row.Scan(
 		&token.UserID, &token.ExpiredAt, &token.CreatedAt,
 		&user.AccountID, &user.Name, &user.CreatedAt, &user.UpdatedAt,

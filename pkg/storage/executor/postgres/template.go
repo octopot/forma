@@ -6,11 +6,11 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/form-api/pkg/storage/driver"
+	"github.com/kamilsk/form-api/pkg/storage/executor"
 )
 
 // NewTemplateContext TODO
-func NewTemplateContext(conn *sql.Conn, ctx context.Context) driver.TemplateEditor {
+func NewTemplateContext(conn *sql.Conn, ctx context.Context) executor.TemplateEditor {
 	return template{conn, ctx}
 }
 
@@ -20,7 +20,7 @@ type template struct {
 }
 
 // Create TODO
-func (t template) Create(token *storage.Token, data driver.CreateTemplate) (storage.Template, error) {
+func (t template) Create(token *storage.Token, data executor.CreateTemplate) (storage.Template, error) {
 	var entity = storage.Template{
 		AccountID:  token.User.AccountID,
 		Title:      data.Title,
@@ -37,7 +37,7 @@ func (t template) Create(token *storage.Token, data driver.CreateTemplate) (stor
 }
 
 // Read TODO
-func (t template) Read(token *storage.Token, data driver.ReadTemplate) (storage.Template, error) {
+func (t template) Read(token *storage.Token, data executor.ReadTemplate) (storage.Template, error) {
 	var entity = storage.Template{ID: data.ID, AccountID: token.User.AccountID}
 	query := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "template"
 	          WHERE "id" = $1 AND "account_id" = $2`
@@ -51,8 +51,8 @@ func (t template) Read(token *storage.Token, data driver.ReadTemplate) (storage.
 }
 
 // Update TODO
-func (t template) Update(token *storage.Token, data driver.UpdateTemplate) (storage.Template, error) {
-	entity, err := t.Read(token, driver.ReadTemplate{ID: data.ID})
+func (t template) Update(token *storage.Token, data executor.UpdateTemplate) (storage.Template, error) {
+	entity, err := t.Read(token, executor.ReadTemplate{ID: data.ID})
 	if err != nil {
 		return entity, err
 	}
@@ -75,11 +75,11 @@ func (t template) Update(token *storage.Token, data driver.UpdateTemplate) (stor
 }
 
 // Delete TODO
-func (t template) Delete(token *storage.Token, data driver.DeleteTemplate) (storage.Template, error) {
+func (t template) Delete(token *storage.Token, data executor.DeleteTemplate) (storage.Template, error) {
 	if data.Permanently {
 		// TODO
 	}
-	entity, err := t.Read(token, driver.ReadTemplate{ID: data.ID})
+	entity, err := t.Read(token, executor.ReadTemplate{ID: data.ID})
 	if err != nil {
 		return entity, err
 	}

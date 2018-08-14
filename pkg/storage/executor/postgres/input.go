@@ -7,11 +7,11 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/form-api/pkg/storage/driver"
+	"github.com/kamilsk/form-api/pkg/storage/executor"
 )
 
 // NewInputContext TODO
-func NewInputContext(conn *sql.Conn, ctx context.Context) driver.InputReader {
+func NewInputContext(conn *sql.Conn, ctx context.Context) executor.InputReader {
 	return input{conn, ctx}
 }
 
@@ -35,7 +35,7 @@ func (i input) ReadByID(token *storage.Token, id string) (storage.Input, error) 
 
 // ReadByFilter TODO
 // TODO check access
-func (i input) ReadByFilter(token *storage.Token, filter driver.InputFilter) ([]storage.Input, error) {
+func (i input) ReadByFilter(token *storage.Token, filter executor.InputFilter) ([]storage.Input, error) {
 	args := make([]interface{}, 0, 3)
 	args = append(args, filter.SchemaID)
 	// go 1.10

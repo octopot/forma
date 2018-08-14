@@ -6,11 +6,11 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/form-api/pkg/storage/driver"
+	"github.com/kamilsk/form-api/pkg/storage/executor"
 )
 
 // NewSchemaContext TODO
-func NewSchemaContext(conn *sql.Conn, ctx context.Context) driver.SchemaEditor {
+func NewSchemaContext(conn *sql.Conn, ctx context.Context) executor.SchemaEditor {
 	return schema{conn, ctx}
 }
 
@@ -20,7 +20,7 @@ type schema struct {
 }
 
 // Create TODO
-func (s schema) Create(token *storage.Token, data driver.CreateSchema) (storage.Schema, error) {
+func (s schema) Create(token *storage.Token, data executor.CreateSchema) (storage.Schema, error) {
 	var entity = storage.Schema{
 		AccountID:  token.User.AccountID,
 		Language:   data.Language,
@@ -38,7 +38,7 @@ func (s schema) Create(token *storage.Token, data driver.CreateSchema) (storage.
 }
 
 // Read TODO
-func (s schema) Read(token *storage.Token, data driver.ReadSchema) (storage.Schema, error) {
+func (s schema) Read(token *storage.Token, data executor.ReadSchema) (storage.Schema, error) {
 	var entity = storage.Schema{ID: data.ID, AccountID: token.User.AccountID}
 	query := `SELECT "language", "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
 	          WHERE "id" = $1 AND "account_id" = $2`
@@ -52,8 +52,8 @@ func (s schema) Read(token *storage.Token, data driver.ReadSchema) (storage.Sche
 }
 
 // Update TODO
-func (s schema) Update(token *storage.Token, data driver.UpdateSchema) (storage.Schema, error) {
-	entity, err := s.Read(token, driver.ReadSchema{ID: data.ID})
+func (s schema) Update(token *storage.Token, data executor.UpdateSchema) (storage.Schema, error) {
+	entity, err := s.Read(token, executor.ReadSchema{ID: data.ID})
 	if err != nil {
 		return entity, err
 	}
@@ -79,11 +79,11 @@ func (s schema) Update(token *storage.Token, data driver.UpdateSchema) (storage.
 }
 
 // Delete TODO
-func (s schema) Delete(token *storage.Token, data driver.DeleteSchema) (storage.Schema, error) {
+func (s schema) Delete(token *storage.Token, data executor.DeleteSchema) (storage.Schema, error) {
 	if data.Permanently {
 		// TODO
 	}
-	entity, err := s.Read(token, driver.ReadSchema{ID: data.ID})
+	entity, err := s.Read(token, executor.ReadSchema{ID: data.ID})
 	if err != nil {
 		return entity, err
 	}

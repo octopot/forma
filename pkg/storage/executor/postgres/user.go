@@ -6,11 +6,11 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/form-api/pkg/storage/driver"
+	"github.com/kamilsk/form-api/pkg/storage/executor"
 )
 
 // NewUserContext TODO
-func NewUserContext(conn *sql.Conn, ctx context.Context) driver.UserManager {
+func NewUserContext(conn *sql.Conn, ctx context.Context) executor.UserManager {
 	return manager{conn, ctx}
 }
 

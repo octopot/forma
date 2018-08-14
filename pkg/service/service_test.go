@@ -61,7 +61,9 @@ func TestForma_HandlePostV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
+				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+					Data: map[string][]string{"name": {"val"}},
+				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: 1, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
@@ -73,36 +75,29 @@ func TestForma_HandlePostV1(t *testing.T) {
 
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
 			dao.EXPECT().AddData(request.UUID, data).Return(response.ID, nil)
-			dao.EXPECT().UUID().Return(UUID, nil)
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
+				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+					Data: map[string][]string{"name": {"val"}},
+				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, response.Error)
-			dao.EXPECT().UUID().Return(UUID, nil)
 			return request, response
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"email": {"test.me"}}}
+				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+					Data: map[string][]string{"email": {"test.me"}},
+				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)
 			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
-			dao.EXPECT().UUID().Return(UUID, nil)
 			_, response.Error = response.Schema.Apply(request.Data)
-			return request, response
-		}},
-		{"token generation error", func() (v1.PostRequest, v1.PostResponse) {
-			var (
-				request  = v1.PostRequest{UUID: UUID, Data: map[string][]string{"name": {"val"}}}
-				response = v1.PostResponse{Error: errors.New("token generation")}
-			)
-			dao.EXPECT().UUID().Return(domain.UUID(""), response.Error)
 			return request, response
 		}},
 	}

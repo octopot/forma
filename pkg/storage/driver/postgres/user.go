@@ -10,12 +10,8 @@ import (
 )
 
 // NewUserContext TODO
-func NewUserContext(conn *sql.Conn, ctx context.Context) (driver.UserManager, context.CancelFunc) {
-	ctx, cancel := context.WithCancel(ctx)
-	return manager{conn, ctx}, func() {
-		cancel()
-		_ = conn.Close()
-	}
+func NewUserContext(conn *sql.Conn, ctx context.Context) driver.UserManager {
+	return manager{conn, ctx}
 }
 
 type manager struct {

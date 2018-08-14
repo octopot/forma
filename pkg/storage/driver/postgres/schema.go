@@ -10,12 +10,8 @@ import (
 )
 
 // NewSchemaContext TODO
-func NewSchemaContext(conn *sql.Conn, ctx context.Context) (driver.SchemaEditor, context.CancelFunc) {
-	ctx, cancel := context.WithCancel(ctx)
-	return schema{conn, ctx}, func() {
-		cancel()
-		_ = conn.Close()
-	}
+func NewSchemaContext(conn *sql.Conn, ctx context.Context) driver.SchemaEditor {
+	return schema{conn, ctx}
 }
 
 type schema struct {

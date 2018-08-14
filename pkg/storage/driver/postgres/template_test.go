@@ -9,7 +9,7 @@ import (
 
 func TestNewTemplateContext(t *testing.T) {
 	ctx := context.Background()
-	_, _ = postgres.NewTemplateContext(nil, ctx)
+	_ = postgres.NewTemplateContext(nil, ctx)
 	t.Run("create", func(t *testing.T) {
 		// TODO
 	})

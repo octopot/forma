@@ -10,12 +10,8 @@ import (
 )
 
 // NewTemplateContext TODO
-func NewTemplateContext(conn *sql.Conn, ctx context.Context) (driver.TemplateEditor, context.CancelFunc) {
-	ctx, cancel := context.WithCancel(ctx)
-	return template{conn, ctx}, func() {
-		cancel()
-		_ = conn.Close()
-	}
+func NewTemplateContext(conn *sql.Conn, ctx context.Context) driver.TemplateEditor {
+	return template{conn, ctx}
 }
 
 type template struct {

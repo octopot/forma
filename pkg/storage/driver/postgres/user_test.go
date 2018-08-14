@@ -9,7 +9,7 @@ import (
 
 func TestNewUserContext(t *testing.T) {
 	ctx := context.Background()
-	_, _ = postgres.NewUserContext(nil, ctx)
+	_ = postgres.NewUserContext(nil, ctx)
 	t.Run("token", func(t *testing.T) {
 		// TODO
 	})

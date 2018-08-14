@@ -11,12 +11,8 @@ import (
 )
 
 // NewInputContext TODO
-func NewInputContext(conn *sql.Conn, ctx context.Context) (driver.InputReader, context.CancelFunc) {
-	ctx, cancel := context.WithCancel(ctx)
-	return input{conn, ctx}, func() {
-		cancel()
-		_ = conn.Close()
-	}
+func NewInputContext(conn *sql.Conn, ctx context.Context) driver.InputReader {
+	return input{conn, ctx}
 }
 
 type input struct {

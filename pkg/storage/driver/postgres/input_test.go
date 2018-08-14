@@ -9,7 +9,7 @@ import (
 
 func TestNewInputContext(t *testing.T) {
 	ctx := context.Background()
-	_, _ = postgres.NewInputContext(nil, ctx)
+	_ = postgres.NewInputContext(nil, ctx)
 	t.Run("read by ID", func(t *testing.T) {
 		// TODO
 	})

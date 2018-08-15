@@ -1,6 +1,8 @@
 package service
 
 import (
+	"context"
+
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
@@ -19,7 +21,7 @@ type Forma struct {
 // HandleGetV1 handles an input request.
 func (s *Forma) HandleGetV1(request v1.GetRequest) v1.GetResponse {
 	var response v1.GetResponse
-	response.Schema, response.Error = s.dao.Schema(request.UUID)
+	response.Schema, response.Error = s.dao.Schema(context.Background(), request.UUID)
 	return response
 }
 
@@ -27,7 +29,7 @@ func (s *Forma) HandleGetV1(request v1.GetRequest) v1.GetResponse {
 func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	var (
 		response v1.PostResponse
-		verified map[string][]string
+		verified domain.InputData
 	)
 
 	{ // TODO encrypt/decrypt marker
@@ -41,7 +43,7 @@ func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 		response.EncryptedMarker = string(marker)
 	}
 
-	response.Schema, response.Error = s.dao.Schema(request.UUID)
+	response.Schema, response.Error = s.dao.Schema(context.Background(), request.UUID)
 	if response.Error != nil {
 		return response
 	}
@@ -56,6 +58,6 @@ func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	// TODO use context column
 	verified["_token"] = []string{response.EncryptedMarker}
 
-	response.ID, response.Error = s.dao.AddData(request.UUID, verified)
+	response.ID, response.Error = s.dao.AddData(context.Background(), request.UUID, verified)
 	return response
 }

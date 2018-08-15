@@ -3,6 +3,7 @@
 package service_test
 
 import (
+	"context"
 	"errors"
 	"testing"
 
@@ -32,7 +33,7 @@ func TestForma_HandleGetV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.GetRequest, v1.GetResponse) {
 			request, response := v1.GetRequest{UUID: UUID}, v1.GetResponse{Schema: domain.Schema{}}
-			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
+			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
 			return request, response
 		}},
 	}
@@ -64,17 +65,17 @@ func TestForma_HandlePostV1(t *testing.T) {
 				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
 					Data: map[string][]string{"name": {"val"}},
 				}
-				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: string(UUID), Schema: domain.Schema{
+				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: UUID, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
 			)
 
 			// issue #110: add cookie
 			// TODO use context column
-			data := map[string][]string{"name": {"val"}, "_token": {string(UUID)}}
+			data := domain.InputData(map[string][]string{"name": {"val"}, "_token": {string(UUID)}})
 
-			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
-			dao.EXPECT().AddData(request.UUID, data).Return(response.ID, nil)
+			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
+			dao.EXPECT().AddData(context.Background(), request.UUID, data).Return(response.ID, nil)
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
@@ -84,7 +85,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
-			dao.EXPECT().Schema(request.UUID).Return(response.Schema, response.Error)
+			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, response.Error)
 			return request, response
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
@@ -96,7 +97,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)
-			dao.EXPECT().Schema(request.UUID).Return(response.Schema, nil)
+			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
 			_, response.Error = response.Schema.Apply(request.Data)
 			return request, response
 		}},

@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"encoding/xml"
-
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
@@ -66,35 +65,41 @@ func (storage *Storage) Dialect() string {
 	return storage.exec.Dialect()
 }
 
+func (storage *Storage) connection(ctx context.Context) (*sql.Conn, func() error, error) {
+	conn, err := storage.db.Conn(ctx)
+	if err != nil {
+		return conn, nil, errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+	}
+	return conn, conn.Close, nil
+}
+
 // TODO legacy
 
 // AddData inserts a form data and returns its ID.
-func (storage *Storage) AddData(schemaID domain.UUID, verified map[string][]string) (string, error) {
-	ctx := context.Background()
-	conn, err := storage.db.Conn(ctx)
+func (storage *Storage) AddData(ctx context.Context, schemaID domain.UUID, verified domain.InputData) (domain.UUID, error) {
+	conn, closer, err := storage.connection(ctx)
 	if err != nil {
-		return "", errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+		return "", err
 	}
-	defer conn.Close()
+	defer closer()
 
 	writer := storage.exec.InputWriter(ctx, conn)
 	entity, err := writer.Write(query.WriteInput{SchemaID: string(schemaID), VerifiedData: verified})
 	if err != nil {
 		return "", err
 	}
-	return entity.ID, nil
+	return domain.UUID(entity.ID), nil
 }
 
 // Schema returns the form schema by provided ID.
-func (storage *Storage) Schema(id domain.UUID) (domain.Schema, error) {
+func (storage *Storage) Schema(ctx context.Context, id domain.UUID) (domain.Schema, error) {
 	var schema domain.Schema
 
-	ctx := context.Background()
-	conn, err := storage.db.Conn(ctx)
+	conn, closer, err := storage.connection(ctx)
 	if err != nil {
-		return schema, errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+		return schema, err
 	}
-	defer conn.Close()
+	defer closer()
 
 	reader := storage.exec.SchemaReader(ctx, conn)
 	entity, err := reader.ReadByID(string(id))
@@ -110,18 +115,17 @@ func (storage *Storage) Schema(id domain.UUID) (domain.Schema, error) {
 }
 
 // Template returns the form template by provided ID.
-func (storage *Storage) Template(id domain.UUID) (string, error) {
-	ctx := context.Background()
-	conn, err := storage.db.Conn(ctx)
+func (storage *Storage) Template(ctx context.Context, id domain.UUID) (domain.Template, error) {
+	conn, closer, err := storage.connection(ctx)
 	if err != nil {
-		return "", errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+		return "", err
 	}
-	defer conn.Close()
+	defer closer()
 
 	reader := storage.exec.TemplateReader(ctx, conn)
 	entity, err := reader.ReadByID(string(id))
 	if err != nil {
 		return "", err
 	}
-	return entity.Definition, nil
+	return domain.Template(entity.Definition), nil
 }

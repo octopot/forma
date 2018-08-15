@@ -1,5 +1,7 @@
 package domain
 
+import "net/url"
+
 const (
 	// EmailType specifies `<input type="email">`.
 	EmailType = "email"
@@ -22,3 +24,6 @@ type Input struct {
 	Required    bool   `json:"required,omitempty"    yaml:"required,omitempty"    xml:"required,attr,omitempty"`
 	Strict      bool   `json:"strict,omitempty"      yaml:"strict,omitempty"      xml:"strict,attr,omitempty"`
 }
+
+// InputData TODO
+type InputData url.Values

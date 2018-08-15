@@ -5,6 +5,7 @@
 package service_test
 
 import (
+	context "context"
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/kamilsk/form-api/pkg/domain"
 	reflect "reflect"
@@ -34,40 +35,40 @@ func (m *MockStorage) EXPECT() *MockStorageMockRecorder {
 }
 
 // AddData mocks base method
-func (m *MockStorage) AddData(arg0 domain.UUID, arg1 map[string][]string) (string, error) {
-	ret := m.ctrl.Call(m, "AddData", arg0, arg1)
-	ret0, _ := ret[0].(string)
+func (m *MockStorage) AddData(arg0 context.Context, arg1 domain.UUID, arg2 domain.InputData) (domain.UUID, error) {
+	ret := m.ctrl.Call(m, "AddData", arg0, arg1, arg2)
+	ret0, _ := ret[0].(domain.UUID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // AddData indicates an expected call of AddData
-func (mr *MockStorageMockRecorder) AddData(arg0, arg1 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddData", reflect.TypeOf((*MockStorage)(nil).AddData), arg0, arg1)
+func (mr *MockStorageMockRecorder) AddData(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddData", reflect.TypeOf((*MockStorage)(nil).AddData), arg0, arg1, arg2)
 }
 
 // Schema mocks base method
-func (m *MockStorage) Schema(arg0 domain.UUID) (domain.Schema, error) {
-	ret := m.ctrl.Call(m, "Schema", arg0)
+func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.UUID) (domain.Schema, error) {
+	ret := m.ctrl.Call(m, "Schema", arg0, arg1)
 	ret0, _ := ret[0].(domain.Schema)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Schema indicates an expected call of Schema
-func (mr *MockStorageMockRecorder) Schema(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Schema", reflect.TypeOf((*MockStorage)(nil).Schema), arg0)
+func (mr *MockStorageMockRecorder) Schema(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Schema", reflect.TypeOf((*MockStorage)(nil).Schema), arg0, arg1)
 }
 
 // Template mocks base method
-func (m *MockStorage) Template(arg0 domain.UUID) (string, error) {
-	ret := m.ctrl.Call(m, "Template", arg0)
-	ret0, _ := ret[0].(string)
+func (m *MockStorage) Template(arg0 context.Context, arg1 domain.UUID) (domain.Template, error) {
+	ret := m.ctrl.Call(m, "Template", arg0, arg1)
+	ret0, _ := ret[0].(domain.Template)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Template indicates an expected call of Template
-func (mr *MockStorageMockRecorder) Template(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Template", reflect.TypeOf((*MockStorage)(nil).Template), arg0)
+func (mr *MockStorageMockRecorder) Template(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Template", reflect.TypeOf((*MockStorage)(nil).Template), arg0, arg1)
 }

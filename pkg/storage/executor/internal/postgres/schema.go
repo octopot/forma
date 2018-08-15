@@ -9,13 +9,13 @@ import (
 )
 
 // NewSchemaContext TODO
-func NewSchemaContext(conn *sql.Conn, ctx context.Context) schemaScope {
-	return schemaScope{conn, ctx}
+func NewSchemaContext(ctx context.Context, conn *sql.Conn) schemaScope {
+	return schemaScope{ctx, conn}
 }
 
 type schemaScope struct {
-	conn *sql.Conn
 	ctx  context.Context
+	conn *sql.Conn
 }
 
 // Create TODO

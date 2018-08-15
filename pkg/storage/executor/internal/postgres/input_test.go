@@ -31,7 +31,7 @@ func TestNewInputContext(t *testing.T) {
 					AddRow("10000000-2000-4000-8000-160000000004", "{}", time.Now()),
 			)
 
-		var exec executor.InputReader = postgres.NewInputContext(conn, ctx)
+		var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
 		input, err := exec.ReadByID(token, "10000000-2000-4000-8000-160000000000")
 		assert.NoError(t, err)
 		assert.Equal(t, "10000000-2000-4000-8000-160000000004", input.SchemaID)

@@ -9,7 +9,7 @@ import (
 
 func TestNewSchemaContext(t *testing.T) {
 	ctx := context.Background()
-	_ = postgres.NewSchemaContext(nil, ctx)
+	_ = postgres.NewSchemaContext(ctx, nil)
 	t.Run("create", func(t *testing.T) {
 		// TODO
 	})

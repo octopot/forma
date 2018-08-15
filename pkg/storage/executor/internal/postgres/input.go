@@ -11,13 +11,13 @@ import (
 )
 
 // NewInputContext TODO
-func NewInputContext(conn *sql.Conn, ctx context.Context) inputScope {
-	return inputScope{conn, ctx}
+func NewInputContext(ctx context.Context, conn *sql.Conn) inputScope {
+	return inputScope{ctx, conn}
 }
 
 type inputScope struct {
-	conn *sql.Conn
 	ctx  context.Context
+	conn *sql.Conn
 }
 
 // Write TODO

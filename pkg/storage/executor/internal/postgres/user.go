@@ -9,13 +9,13 @@ import (
 )
 
 // NewUserContext TODO
-func NewUserContext(conn *sql.Conn, ctx context.Context) manager {
-	return manager{conn, ctx}
+func NewUserContext(ctx context.Context, conn *sql.Conn) manager {
+	return manager{ctx, conn}
 }
 
 type manager struct {
-	conn *sql.Conn
 	ctx  context.Context
+	conn *sql.Conn
 }
 
 // Token TODO

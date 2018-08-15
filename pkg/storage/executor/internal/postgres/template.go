@@ -9,13 +9,13 @@ import (
 )
 
 // NewTemplateContext TODO
-func NewTemplateContext(conn *sql.Conn, ctx context.Context) templateScope {
-	return templateScope{conn, ctx}
+func NewTemplateContext(ctx context.Context, conn *sql.Conn) templateScope {
+	return templateScope{ctx, conn}
 }
 
 type templateScope struct {
-	conn *sql.Conn
 	ctx  context.Context
+	conn *sql.Conn
 }
 
 // Create TODO

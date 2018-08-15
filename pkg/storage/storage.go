@@ -77,7 +77,7 @@ func (storage *Storage) AddData(schemaID domain.UUID, verified map[string][]stri
 	}
 	defer conn.Close()
 
-	writer := storage.exec.InputWriter(conn, ctx)
+	writer := storage.exec.InputWriter(ctx, conn)
 	entity, err := writer.Write(query.WriteInput{SchemaID: string(schemaID), VerifiedData: verified})
 	if err != nil {
 		return "", err
@@ -96,7 +96,7 @@ func (storage *Storage) Schema(id domain.UUID) (domain.Schema, error) {
 	}
 	defer conn.Close()
 
-	reader := storage.exec.SchemaReader(conn, ctx)
+	reader := storage.exec.SchemaReader(ctx, conn)
 	entity, err := reader.ReadByID(string(id))
 	if err != nil {
 		return schema, err
@@ -118,7 +118,7 @@ func (storage *Storage) Template(id domain.UUID) (string, error) {
 	}
 	defer conn.Close()
 
-	reader := storage.exec.TemplateReader(conn, ctx)
+	reader := storage.exec.TemplateReader(ctx, conn)
 	entity, err := reader.ReadByID(string(id))
 	if err != nil {
 		return "", err

@@ -7,7 +7,7 @@
 [![Code Quality](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
 [![Go version](https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg)](https://travis-ci.org/kamilsk/form-api)
 [![Code Coverage](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
-[![Research](https://img.shields.io/badge/research-in%20progress-yellow.svg)](../../tree/research)
+[![Research](https://img.shields.io/badge/research-in%20progress-yellow.svg)](../../tree/research/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Roadmap

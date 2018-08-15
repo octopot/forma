@@ -15,7 +15,7 @@ func TestRecover(t *testing.T) {
 	}{
 		{"error with stack trace", func() { panic(errors.Errorf("panic")) }, assert.NotEmpty},
 		{"error without stack trace", func() { panic(errors.Simple("panic")) }, assert.Empty},
-		{"not error panic", func() { panic("panic") }, assert.Empty},
+		{"not error panic", func() { panic("panic") }, assert.NotEmpty},
 	}
 	for _, test := range tests {
 		tc := test

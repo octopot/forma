@@ -1,8 +1,6 @@
 package errors
 
 import (
-	"fmt"
-
 	core "errors"
 
 	"github.com/pkg/errors"
@@ -16,11 +14,12 @@ func Errorf(format string, args ...interface{}) error {
 // Recover recovers execution flow and sets error to the passed error pointer.
 func Recover(err *error) {
 	if r := recover(); r != nil {
-		if e, is := r.(error); is {
+		switch e := (r).(type) {
+		case error:
 			*err = e
-			return
+		default:
+			*err = Errorf("panic `%#v` handled", r)
 		}
-		*err = fmt.Errorf("%v", r)
 	}
 }
 
@@ -45,6 +44,11 @@ func StackTrace(err error) errors.StackTrace {
 // WithMessage is a proxy for `github.com/pkg/errors.WithMessage`.
 func WithMessage(err error, message string) error {
 	return errors.WithMessage(err, message)
+}
+
+// WithStack is a proxy for `github.com/pkg/errors.WithStack`.
+func WithStack(err error) error {
+	return errors.WithStack(err)
 }
 
 // Wrapf is a proxy for `github.com/pkg/errors.Wrapf`.

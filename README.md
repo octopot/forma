@@ -4,10 +4,10 @@
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![Build Status](https://travis-ci.org/kamilsk/form-api.svg?branch=master)](https://travis-ci.org/kamilsk/form-api)
-[![Go version](https://img.shields.io/badge/Go->= 1.9.2-green.svg)](https://travis-ci.org/kamilsk/form-api)
+[![Go version](https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg)](https://travis-ci.org/kamilsk/form-api)
 [![Code Coverage](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
 [![Code Quality](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
-[![Research](https://img.shields.io/badge/research-in progress-yellow.svg)](../../tree/research)
+[![Research](https://img.shields.io/badge/research-in%20progress-yellow.svg)](../../tree/research)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Roadmap

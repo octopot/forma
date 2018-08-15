@@ -4,8 +4,10 @@
 
 [![Patreon](https://img.shields.io/badge/patreon-donate-orange.svg)](https://www.patreon.com/octolab)
 [![Build Status](https://travis-ci.org/kamilsk/form-api.svg?branch=master)](https://travis-ci.org/kamilsk/form-api)
+[![Go version](https://img.shields.io/badge/Go->= 1.9.2-green.svg)](https://travis-ci.org/kamilsk/form-api)
 [![Code Coverage](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
 [![Code Quality](https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master)
+[![Research](https://img.shields.io/badge/research-in progress-yellow.svg)](../../tree/research)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 ## Roadmap
@@ -48,22 +50,22 @@ Requirements:
 $ make up demo status
 
        Name                     Command               State                                  Ports
-----------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------
 form-api_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 form-api_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091->8091/tcp
+form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091
 
-$ curl http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
-# <form id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4" lang="en" title="Email subscription"
-#       action="http://localhost/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4" method="post"
+$ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
+# <form id="10000000-2000-4000-8000-160000000004" lang="en" title="Email subscription"
+#       action="http://localhost/api/v1/10000000-2000-4000-8000-160000000004" method="post"
 #       enctype="application/x-www-form-urlencoded">
-#       <input id="41ca5e09-3ce2-4094-b108-3ecc257c6fa4_email" name="email" type="email" title="Email"
+#       <input id="10000000-2000-4000-8000-160000000004_email" name="email" type="email" title="Email"
 #              maxlength="64" required="true"></input>
 # </form>
 $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \
-       http://localhost:8080/api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4
-# > POST /api/v1/41ca5e09-3ce2-4094-b108-3ecc257c6fa4 HTTP/1.1
+       http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
+# > POST /api/v1/10000000-2000-4000-8000-160000000004 HTTP/1.1
 # > Host: localhost:8080
 # > User-Agent: curl/7.54.0
 # > Accept: */*
@@ -71,7 +73,7 @@ $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
 # > Content-Length: 21
 # >
 # < HTTP/1.1 302 Found
-# < Location: https://kamil.samigullin.info/?41ca5e09-3ce2-4094-b108-3ecc257c6fa4=success
+# < Location: https://kamil.samigullin.info/#eyJpZCI6IjEwMDAwMDAwLTIwMDAtNDAwMC04MDAwLTE2MDAwMDAwMDAwNCIsInJlc3VsdCI6InN1Y2Nlc3MifQ==
 # < Date: Sat, 05 May 2018 09:34:47 GMT
 # < Content-Length: 0
 # <
@@ -127,7 +129,7 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export VER=1.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases
+$ export VER=1.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases/
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
 $ wget -q -O form-api.tar.gz \
@@ -160,11 +162,6 @@ $ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make test install
 This application is in a state of [MVP](https://en.wikipedia.org/wiki/Minimum_viable_product) and under active
 development. [SemVer](https://semver.org/) is used for releases, and you can easily be updated within minor versions,
 but major versions can be not [BC](https://en.wikipedia.org/wiki/Backward_compatibility)-safe.
-
-## Notes
-
-- [research](../../tree/research)
-- tested on Go 1.9 and 1.10
 
 ---
 

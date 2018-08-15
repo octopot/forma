@@ -8,3 +8,9 @@ type InputFilter struct {
 	From     time.Time
 	To       time.Time
 }
+
+// WriteInput TODO
+type WriteInput struct {
+	SchemaID     string
+	VerifiedData map[string][]string
+}

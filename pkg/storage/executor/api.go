@@ -45,6 +45,11 @@ type InputReader interface {
 	ReadByFilter(*query.Token, query.InputFilter) ([]query.Input, error)
 }
 
+// InputWriter TODO
+type InputWriter interface {
+	Write(query.WriteInput) (query.Input, error)
+}
+
 // SchemaEditor TODO
 type SchemaEditor interface {
 	Create(*query.Token, query.CreateSchema) (query.Schema, error)

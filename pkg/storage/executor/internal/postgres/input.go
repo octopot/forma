@@ -10,31 +10,31 @@ import (
 )
 
 // NewInputContext TODO
-func NewInputContext(conn *sql.Conn, ctx context.Context) input {
-	return input{conn, ctx}
+func NewInputContext(conn *sql.Conn, ctx context.Context) inputScope {
+	return inputScope{conn, ctx}
 }
 
-type input struct {
+type inputScope struct {
 	conn *sql.Conn
 	ctx  context.Context
 }
 
 // ReadByID TODO
 // TODO check access
-func (i input) ReadByID(token *query.Token, id string) (query.Input, error) {
+func (scope inputScope) ReadByID(token *query.Token, id string) (query.Input, error) {
 	var entity = query.Input{ID: id}
 	q := `SELECT "schema_id", "data", "created_at" FROM "input" WHERE "id" = $1`
-	row := i.conn.QueryRowContext(i.ctx, q, entity.ID)
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
 	if err := row.Scan(&entity.SchemaID, &entity.Data, &entity.CreatedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
-			"user %q of account %q tried to read the input %q", token.UserID, token.User.AccountID, id)
+			"user %q of account %q tried to read the inputScope %q", token.UserID, token.User.AccountID, id)
 	}
 	return entity, nil
 }
 
 // ReadByFilter TODO
 // TODO check access
-func (i input) ReadByFilter(token *query.Token, filter query.InputFilter) ([]query.Input, error) {
+func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilter) ([]query.Input, error) {
 	args := make([]interface{}, 0, 3)
 	args = append(args, filter.SchemaID)
 	// go 1.10
@@ -53,7 +53,7 @@ func (i input) ReadByFilter(token *query.Token, filter query.InputFilter) ([]que
 		args = append(args, filter.To)
 	}
 	var entities = make([]query.Input, 0, 8)
-	rows, err := i.conn.QueryContext(i.ctx, builder.String(), args...)
+	rows, err := scope.conn.QueryContext(scope.ctx, builder.String(), args...)
 	if err != nil {
 		return nil, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read inputs by criteria %+v", token.UserID, token.User.AccountID, filter)

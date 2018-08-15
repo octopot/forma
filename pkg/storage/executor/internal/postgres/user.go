@@ -19,7 +19,7 @@ type manager struct {
 }
 
 // Token TODO
-func (m manager) Token(id string) (*query.Token, error) {
+func (scope manager) Token(id string) (*query.Token, error) {
 	var (
 		token   = query.Token{ID: id}
 		user    = query.User{}
@@ -34,7 +34,7 @@ func (m manager) Token(id string) (*query.Token, error) {
 	       WHERE "t"."id" = $1 AND ("t"."expired_at" IS NULL OR "t"."expired_at" > now())
 	         AND "u"."deleted_at" IS NULL
 	         AND "a"."deleted_at" IS NULL`
-	row := m.conn.QueryRowContext(m.ctx, q, token.ID)
+	row := scope.conn.QueryRowContext(scope.ctx, q, token.ID)
 	if err := row.Scan(
 		&token.UserID, &token.ExpiredAt, &token.CreatedAt,
 		&user.AccountID, &user.Name, &user.CreatedAt, &user.UpdatedAt,

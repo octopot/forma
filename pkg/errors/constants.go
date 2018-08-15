@@ -14,6 +14,8 @@ const (
 	InvalidFormDataMessage = "form data contain an error"
 	// SchemaNotFoundMessage is a default message of the case when a Schema does not exist.
 	SchemaNotFoundMessage = "schema not found"
+	// TemplateNotFoundMessage is a default message of the case when a Template does not exist.
+	TemplateNotFoundMessage = "template not found"
 )
 
 const (

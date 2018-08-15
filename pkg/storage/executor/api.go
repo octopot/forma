@@ -22,10 +22,19 @@ func New(dialect string) *executor {
 		exec.factory.NewInputReader = func(conn *sql.Conn, ctx context.Context) InputReader {
 			return postgres.NewInputContext(conn, ctx)
 		}
+		exec.factory.NewInputWriter = func(conn *sql.Conn, ctx context.Context) InputWriter {
+			return postgres.NewInputContext(conn, ctx)
+		}
 		exec.factory.NewSchemaEditor = func(conn *sql.Conn, ctx context.Context) SchemaEditor {
 			return postgres.NewSchemaContext(conn, ctx)
 		}
+		exec.factory.NewSchemaReader = func(conn *sql.Conn, ctx context.Context) SchemaReader {
+			return postgres.NewSchemaContext(conn, ctx)
+		}
 		exec.factory.NewTemplateEditor = func(conn *sql.Conn, ctx context.Context) TemplateEditor {
+			return postgres.NewTemplateContext(conn, ctx)
+		}
+		exec.factory.NewTemplateReader = func(conn *sql.Conn, ctx context.Context) TemplateReader {
 			return postgres.NewTemplateContext(conn, ctx)
 		}
 		exec.factory.NewUserManager = func(conn *sql.Conn, ctx context.Context) UserManager {
@@ -58,12 +67,22 @@ type SchemaEditor interface {
 	Delete(*query.Token, query.DeleteSchema) (query.Schema, error)
 }
 
+// SchemaReader TODO
+type SchemaReader interface {
+	ReadByID(string) (query.Schema, error)
+}
+
 // TemplateEditor TODO
 type TemplateEditor interface {
 	Create(*query.Token, query.CreateTemplate) (query.Template, error)
 	Read(*query.Token, query.ReadTemplate) (query.Template, error)
 	Update(*query.Token, query.UpdateTemplate) (query.Template, error)
 	Delete(*query.Token, query.DeleteTemplate) (query.Template, error)
+}
+
+// TemplateReader TODO
+type TemplateReader interface {
+	ReadByID(string) (query.Template, error)
 }
 
 // UserManager TODO
@@ -75,8 +94,11 @@ type executor struct {
 	dialect string
 	factory struct {
 		NewInputReader    func(*sql.Conn, context.Context) InputReader
+		NewInputWriter    func(*sql.Conn, context.Context) InputWriter
 		NewSchemaEditor   func(*sql.Conn, context.Context) SchemaEditor
+		NewSchemaReader   func(*sql.Conn, context.Context) SchemaReader
 		NewTemplateEditor func(*sql.Conn, context.Context) TemplateEditor
+		NewTemplateReader func(*sql.Conn, context.Context) TemplateReader
 		NewUserManager    func(*sql.Conn, context.Context) UserManager
 	}
 }
@@ -91,14 +113,29 @@ func (e *executor) InputReader(conn *sql.Conn, ctx context.Context) InputReader 
 	return e.factory.NewInputReader(conn, ctx)
 }
 
+// InputWriter TODO
+func (e *executor) InputWriter(conn *sql.Conn, ctx context.Context) InputWriter {
+	return e.factory.NewInputWriter(conn, ctx)
+}
+
 // SchemaEditor TODO
 func (e *executor) SchemaEditor(conn *sql.Conn, ctx context.Context) SchemaEditor {
 	return e.factory.NewSchemaEditor(conn, ctx)
 }
 
+// SchemaReader TODO
+func (e *executor) SchemaReader(conn *sql.Conn, ctx context.Context) SchemaReader {
+	return e.factory.NewSchemaReader(conn, ctx)
+}
+
 // TemplateEditor TODO
 func (e *executor) TemplateEditor(conn *sql.Conn, ctx context.Context) TemplateEditor {
 	return e.factory.NewTemplateEditor(conn, ctx)
+}
+
+// TemplateReader TODO
+func (e *executor) TemplateReader(conn *sql.Conn, ctx context.Context) TemplateReader {
+	return e.factory.NewTemplateReader(conn, ctx)
 }
 
 // UserManager TODO

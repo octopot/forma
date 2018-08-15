@@ -49,6 +49,21 @@ func (scope templateScope) Read(token *query.Token, data query.ReadTemplate) (qu
 	return entity, nil
 }
 
+// ReadByID TODO
+func (scope templateScope) ReadByID(id string) (query.Template, error) {
+	var entity = query.Template{ID: id}
+	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "template"
+	       WHERE "id" = $1 AND "deleted_at" IS NULL`
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
+	if err := row.Scan(&entity.Title, &entity.Definition, &entity.CreatedAt, &entity.UpdatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return entity, errors.NotFound(errors.TemplateNotFoundMessage, err, "the template %q not found", entity.ID)
+		}
+		return entity, errors.Database(errors.ServerErrorMessage, err, "trying to populate the template %q", entity.ID)
+	}
+	return entity, nil
+}
+
 // Update TODO
 func (scope templateScope) Update(token *query.Token, data query.UpdateTemplate) (query.Template, error) {
 	entity, err := scope.Read(token, query.ReadTemplate{ID: data.ID})

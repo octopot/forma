@@ -50,6 +50,28 @@ func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.
 	return entity, nil
 }
 
+// ReadByID TODO
+func (scope schemaScope) ReadByID(id string) (query.Schema, error) {
+	var entity = query.Schema{ID: id}
+	q := `SELECT "language", "title", "definition", "created_at", "updated_at" FROM "schema"
+	       WHERE "id" = $1 AND "deleted_at" IS NULL`
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
+	if err := row.Scan(&entity.Language, &entity.Title, &entity.Definition,
+		&entity.CreatedAt, &entity.UpdatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return entity, errors.NotFound(errors.SchemaNotFoundMessage, err, "the schema %q not found", entity.ID)
+		}
+		return entity, errors.Database(errors.ServerErrorMessage, err, "trying to populate the schema %q", entity.ID)
+	}
+	/*
+		if err := xml.Unmarshal(raw, &schema); err != nil {
+			return schema, errors.Serialization(errors.NeutralMessage, err,
+				"trying to unmarshal schema %q from XML `%s`", uuid, raw)
+		}
+	*/
+	return entity, nil
+}
+
 // Update TODO
 func (scope schemaScope) Update(token *query.Token, data query.UpdateSchema) (query.Schema, error) {
 	entity, err := scope.Read(token, query.ReadSchema{ID: data.ID})

@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"database/sql"
+	"encoding/json"
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
@@ -17,6 +18,24 @@ func NewInputContext(conn *sql.Conn, ctx context.Context) inputScope {
 type inputScope struct {
 	conn *sql.Conn
 	ctx  context.Context
+}
+
+// Write TODO
+func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
+	var entity = query.Input{SchemaID: data.SchemaID}
+	encoded, err := json.Marshal(data.VerifiedData)
+	if err != nil {
+		return entity, errors.Serialization(errors.ServerErrorMessage, err,
+			"trying to marshal data `%#v` for the schema %q into JSON", data.VerifiedData, data.SchemaID)
+	}
+	entity.Data = encoded
+	q := `INSERT INTO "input" ("schema_id", "data") VALUES ($1, $2) RETURNING "id", "created_at"`
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.SchemaID, entity.Data)
+	if scanErr := row.Scan(&entity.ID, &entity.CreatedAt); scanErr != nil {
+		return entity, errors.Database(errors.ServerErrorMessage, err,
+			"trying to insert input `%s` for the schema %q", entity.Data, entity.SchemaID)
+	}
+	return entity, nil
 }
 
 // ReadByID TODO

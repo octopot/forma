@@ -63,12 +63,6 @@ func (scope schemaScope) ReadByID(id string) (query.Schema, error) {
 		}
 		return entity, errors.Database(errors.ServerErrorMessage, err, "trying to populate the schema %q", entity.ID)
 	}
-	/*
-		if err := xml.Unmarshal(raw, &schema); err != nil {
-			return schema, errors.Serialization(errors.NeutralMessage, err,
-				"trying to unmarshal schema %q from XML `%s`", uuid, raw)
-		}
-	*/
 	return entity, nil
 }
 

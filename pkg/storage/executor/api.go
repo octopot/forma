@@ -15,8 +15,8 @@ const (
 )
 
 // New TODO
-func New(dialect string) *executor {
-	exec := &executor{dialect: dialect}
+func New(dialect string) *Executor {
+	exec := &Executor{dialect: dialect}
 	switch exec.dialect {
 	case postgresDialect:
 		exec.factory.NewInputReader = func(conn *sql.Conn, ctx context.Context) InputReader {
@@ -90,7 +90,8 @@ type UserManager interface {
 	Token(string) (*query.Token, error)
 }
 
-type executor struct {
+// Executor TODO
+type Executor struct {
 	dialect string
 	factory struct {
 		NewInputReader    func(*sql.Conn, context.Context) InputReader
@@ -104,41 +105,41 @@ type executor struct {
 }
 
 // Dialect TODO
-func (e *executor) Dialect() string {
+func (e *Executor) Dialect() string {
 	return e.dialect
 }
 
 // InputReader TODO
-func (e *executor) InputReader(conn *sql.Conn, ctx context.Context) InputReader {
+func (e *Executor) InputReader(conn *sql.Conn, ctx context.Context) InputReader {
 	return e.factory.NewInputReader(conn, ctx)
 }
 
 // InputWriter TODO
-func (e *executor) InputWriter(conn *sql.Conn, ctx context.Context) InputWriter {
+func (e *Executor) InputWriter(conn *sql.Conn, ctx context.Context) InputWriter {
 	return e.factory.NewInputWriter(conn, ctx)
 }
 
 // SchemaEditor TODO
-func (e *executor) SchemaEditor(conn *sql.Conn, ctx context.Context) SchemaEditor {
+func (e *Executor) SchemaEditor(conn *sql.Conn, ctx context.Context) SchemaEditor {
 	return e.factory.NewSchemaEditor(conn, ctx)
 }
 
 // SchemaReader TODO
-func (e *executor) SchemaReader(conn *sql.Conn, ctx context.Context) SchemaReader {
+func (e *Executor) SchemaReader(conn *sql.Conn, ctx context.Context) SchemaReader {
 	return e.factory.NewSchemaReader(conn, ctx)
 }
 
 // TemplateEditor TODO
-func (e *executor) TemplateEditor(conn *sql.Conn, ctx context.Context) TemplateEditor {
+func (e *Executor) TemplateEditor(conn *sql.Conn, ctx context.Context) TemplateEditor {
 	return e.factory.NewTemplateEditor(conn, ctx)
 }
 
 // TemplateReader TODO
-func (e *executor) TemplateReader(conn *sql.Conn, ctx context.Context) TemplateReader {
+func (e *Executor) TemplateReader(conn *sql.Conn, ctx context.Context) TemplateReader {
 	return e.factory.NewTemplateReader(conn, ctx)
 }
 
 // UserManager TODO
-func (e *executor) UserManager(conn *sql.Conn, ctx context.Context) UserManager {
+func (e *Executor) UserManager(conn *sql.Conn, ctx context.Context) UserManager {
 	return e.factory.NewUserManager(conn, ctx)
 }

@@ -180,7 +180,7 @@ func TestServer_PostV1(t *testing.T) {
 				middleware.SchemaKey{}, UUID))
 			service.EXPECT().
 				HandlePostV1(v1.PostRequest{UUID: UUID, Data: map[string][]string{"email": {"test@my.email"}}}).
-				Return(v1.PostResponse{ID: 1, Error: nil, Schema: domain.Schema{Action: HOST}})
+				Return(v1.PostResponse{ID: string(UUID), Error: nil, Schema: domain.Schema{Action: HOST}})
 			return req
 		}, http.StatusFound},
 	}

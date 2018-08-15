@@ -12,7 +12,7 @@ type PostRequest struct {
 // PostResponse represents `POST /api/v1/{Schema.ID}` response.
 type PostResponse struct {
 	EncryptedMarker string
-	ID              int64
+	ID              string
 	Error           error
 	Schema          domain.Schema
 }

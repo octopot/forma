@@ -24,7 +24,7 @@ var migrateCmd = &cobra.Command{
 		direction, limit := chooseDirectionAndLimit(args)
 		migrate.SetTable(cnf.Union.MigrationConfig.Table)
 		migrate.SetSchema(cnf.Union.MigrationConfig.Schema)
-		layer := storage.Must(storage.Connection(cnf.Union.DBConfig))
+		layer := storage.Must(storage.Database(cnf.Union.DBConfig))
 		src := &migrate.AssetMigrationSource{
 			Asset:    static.Asset,
 			AssetDir: static.AssetDir,
@@ -34,14 +34,14 @@ var migrateCmd = &cobra.Command{
 		if cnf.Union.MigrationConfig.DryRun {
 			runner = dryRun
 		}
-		if err := runner(layer.Connection(), layer.Dialect(), src, direction, limit); err != nil {
+		if err := runner(layer.Database(), layer.Dialect(), src, direction, limit); err != nil {
 			return err
 		}
 		if direction == migrate.Up && cnf.Union.MigrationConfig.WithDemo {
 			raw, err := ioutil.ReadFile("env/test/fixtures/demo.sql")
 			switch {
 			case err == nil:
-				_, err = layer.Connection().Exec(string(raw))
+				_, err = layer.Database().Exec(string(raw))
 				log.Printf("demo: error is %#+v", err)
 			case os.IsNotExist(err):
 				log.Println("demo is available only during development")

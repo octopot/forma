@@ -46,7 +46,7 @@ var runCmd = &cobra.Command{
 			server.New(
 				cnf.Union.ServerConfig,
 				service.New(
-					storage.Must(storage.Connection(cnf.Union.DBConfig)),
+					storage.Must(storage.Database(cnf.Union.DBConfig)),
 				),
 			),
 		)

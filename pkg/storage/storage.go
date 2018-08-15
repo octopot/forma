@@ -1,12 +1,15 @@
 package storage
 
 import (
+	"context"
 	"database/sql"
+	"encoding/xml"
 
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/storage/postgres"
-	"github.com/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/errors"
+	"github.com/kamilsk/form-api/pkg/storage/executor"
+	"github.com/kamilsk/form-api/pkg/storage/query"
 )
 
 // Must returns a new instance of the Storage or panics if it cannot configure it.
@@ -29,17 +32,18 @@ func New(configs ...Configurator) (*Storage, error) {
 	return instance, nil
 }
 
-// Connection returns database connection Configurator.
-func Connection(cnf config.DBConfig) Configurator {
-	return func(instance *Storage) error {
-		var err error
-		instance.conn, err = sql.Open(cnf.DriverName(), string(cnf.DSN))
+// Database returns Database Configurator.
+func Database(cnf config.DBConfig) Configurator {
+	return func(instance *Storage) (err error) {
+		defer errors.Recover(&err)
+		instance.db, err = sql.Open(cnf.DriverName(), string(cnf.DSN))
 		if err == nil {
-			instance.conn.SetMaxOpenConns(cnf.MaxOpen)
-			instance.conn.SetMaxIdleConns(cnf.MaxIdle)
-			instance.conn.SetConnMaxLifetime(cnf.MaxLifetime)
+			instance.db.SetMaxOpenConns(cnf.MaxOpen)
+			instance.db.SetMaxIdleConns(cnf.MaxIdle)
+			instance.db.SetConnMaxLifetime(cnf.MaxLifetime)
+			instance.exec = executor.New(cnf.DriverName())
 		}
-		return err
+		return
 	}
 }
 
@@ -48,34 +52,76 @@ type Configurator func(*Storage) error
 
 // Storage is an implementation of Data Access Object.
 type Storage struct {
-	conn *sql.DB
+	db   *sql.DB
+	exec *executor.Executor
 }
 
-//
-// TODO refactoring
-//
-
-// Connection returns current database connection.
-func (l *Storage) Connection() *sql.DB {
-	return l.conn
+// Database returns the current database handle.
+func (storage *Storage) Database() *sql.DB {
+	return storage.db
 }
 
-// Dialect returns supported database dialect.
-func (l *Storage) Dialect() string {
-	return postgres.Dialect()
+// Dialect returns a supported database dialect.
+func (storage *Storage) Dialect() string {
+	return storage.exec.Dialect()
 }
 
-// AddData inserts form data and returns their ID.
-func (l *Storage) AddData(uuid domain.UUID, verified map[string][]string) (int64, error) {
-	return postgres.AddData(l.conn, uuid, verified)
+// TODO legacy
+
+// AddData inserts a form data and returns its ID.
+func (storage *Storage) AddData(schemaID domain.UUID, verified map[string][]string) (string, error) {
+	ctx := context.Background()
+	conn, err := storage.db.Conn(ctx)
+	if err != nil {
+		return "", errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+	}
+	defer conn.Close()
+
+	writer := storage.exec.InputWriter(conn, ctx)
+	entity, err := writer.Write(query.WriteInput{SchemaID: string(schemaID), VerifiedData: verified})
+	if err != nil {
+		return "", err
+	}
+	return entity.ID, nil
 }
 
-// Schema returns the form schema with provided UUID.
-func (l *Storage) Schema(uuid domain.UUID) (domain.Schema, error) {
-	return postgres.Schema(l.conn, uuid)
+// Schema returns the form schema by provided ID.
+func (storage *Storage) Schema(id domain.UUID) (domain.Schema, error) {
+	var schema domain.Schema
+
+	ctx := context.Background()
+	conn, err := storage.db.Conn(ctx)
+	if err != nil {
+		return schema, errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+	}
+	defer conn.Close()
+
+	reader := storage.exec.SchemaReader(conn, ctx)
+	entity, err := reader.ReadByID(string(id))
+	if err != nil {
+		return schema, err
+	}
+	if decodeErr := xml.Unmarshal([]byte(entity.Definition), &schema); decodeErr != nil {
+		return schema, errors.Serialization(errors.NeutralMessage, decodeErr,
+			"trying to unmarshal the schema %q from XML `%s`", entity.ID, entity.Definition)
+	}
+	schema.Language, schema.Title = entity.Language, entity.Title
+	return schema, nil
 }
 
-// UUID returns a new generated unique identifier.
-func (l *Storage) UUID() (domain.UUID, error) {
-	return postgres.UUID(l.conn)
+// Template returns the form template by provided ID.
+func (storage *Storage) Template(id domain.UUID) (string, error) {
+	ctx := context.Background()
+	conn, err := storage.db.Conn(ctx)
+	if err != nil {
+		return "", errors.Database(errors.ServerErrorMessage, err, "trying to get connection")
+	}
+	defer conn.Close()
+
+	reader := storage.exec.TemplateReader(conn, ctx)
+	entity, err := reader.ReadByID(string(id))
+	if err != nil {
+		return "", err
+	}
+	return entity.Definition, nil
 }

@@ -64,7 +64,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
 					Data: map[string][]string{"name": {"val"}},
 				}
-				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: 1, Schema: domain.Schema{
+				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: string(UUID), Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
 			)

@@ -25,9 +25,9 @@ import (
 const (
 	HOST  = "http://form-api.dev/"
 	APIv1 = "api/v1"
-	FAKE  = domain.UUID("41ca5e09-3ce2-0094-b108-3ecc257c6fa4")
-	ZERO  = domain.UUID("00000000-0000-4000-8000-000000000000")
-	UUID  = domain.UUID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
+	FAKE  = domain.ID("41ca5e09-3ce2-0094-b108-3ecc257c6fa4")
+	ZERO  = domain.ID("00000000-0000-4000-8000-000000000000")
+	UUID  = domain.ID("41ca5e09-3ce2-4094-b108-3ecc257c6fa4")
 )
 
 func TestAPI_GetV1(t *testing.T) {

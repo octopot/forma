@@ -76,7 +76,7 @@ func (storage *Storage) connection(ctx context.Context) (*sql.Conn, func() error
 // TODO legacy
 
 // AddData inserts a form data and returns its ID.
-func (storage *Storage) AddData(ctx context.Context, schemaID domain.UUID, verified domain.InputData) (domain.UUID, error) {
+func (storage *Storage) AddData(ctx context.Context, schemaID domain.ID, verified domain.InputData) (domain.ID, error) {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
 		return "", err
@@ -88,11 +88,11 @@ func (storage *Storage) AddData(ctx context.Context, schemaID domain.UUID, verif
 	if err != nil {
 		return "", err
 	}
-	return domain.UUID(entity.ID), nil
+	return domain.ID(entity.ID), nil
 }
 
 // Schema returns the form schema by provided ID.
-func (storage *Storage) Schema(ctx context.Context, id domain.UUID) (domain.Schema, error) {
+func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema, error) {
 	var schema domain.Schema
 
 	conn, closer, err := storage.connection(ctx)
@@ -115,7 +115,7 @@ func (storage *Storage) Schema(ctx context.Context, id domain.UUID) (domain.Sche
 }
 
 // Template returns the form template by provided ID.
-func (storage *Storage) Template(ctx context.Context, id domain.UUID) (domain.Template, error) {
+func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Template, error) {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
 		return "", err

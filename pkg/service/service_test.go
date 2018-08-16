@@ -16,7 +16,7 @@ import (
 	"github.com/magiconair/properties/assert"
 )
 
-const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestForma_HandleGetV1(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -32,8 +32,8 @@ func TestForma_HandleGetV1(t *testing.T) {
 		data func() (v1.GetRequest, v1.GetResponse)
 	}{
 		{"without error", func() (v1.GetRequest, v1.GetResponse) {
-			request, response := v1.GetRequest{UUID: UUID}, v1.GetResponse{Schema: domain.Schema{}}
-			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
+			request, response := v1.GetRequest{ID: UUID}, v1.GetResponse{Schema: domain.Schema{}}
+			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
 			return request, response
 		}},
 	}
@@ -62,7 +62,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
 					Data: map[string][]string{"name": {"val"}},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: UUID, Schema: domain.Schema{
@@ -74,30 +74,30 @@ func TestForma_HandlePostV1(t *testing.T) {
 			// TODO use context column
 			data := domain.InputData(map[string][]string{"name": {"val"}, "_token": {string(UUID)}})
 
-			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
-			dao.EXPECT().AddData(context.Background(), request.UUID, data).Return(response.ID, nil)
+			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
+			dao.EXPECT().AddData(context.Background(), request.ID, data).Return(response.ID, nil)
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
 					Data: map[string][]string{"name": {"val"}},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
-			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, response.Error)
+			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, response.Error)
 			return request, response
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), UUID: UUID,
+				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
 					Data: map[string][]string{"email": {"test.me"}},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)
-			dao.EXPECT().Schema(context.Background(), request.UUID).Return(response.Schema, nil)
+			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
 			_, response.Error = response.Schema.Apply(request.Data)
 			return request, response
 		}},

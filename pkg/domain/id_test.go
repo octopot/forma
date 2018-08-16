@@ -7,10 +7,10 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestUUID(t *testing.T) {
+func TestID(t *testing.T) {
 	for _, test := range []struct {
 		name    string
-		uuid    domain.UUID
+		uuid    domain.ID
 		isValid bool
 	}{
 		{"empty", "", false},
@@ -25,6 +25,6 @@ func TestUUID(t *testing.T) {
 	} {
 		assert.Equal(t, test.uuid == "", test.uuid.IsEmpty(), test.name)
 		assert.Equal(t, test.isValid, test.uuid.IsValid(), test.name)
-		assert.Equal(t, test.uuid, domain.UUID(test.uuid.String()), test.name)
+		assert.Equal(t, test.uuid, domain.ID(test.uuid.String()), test.name)
 	}
 }

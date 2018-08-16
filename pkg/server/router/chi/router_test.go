@@ -15,7 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestChiRouter(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -38,7 +38,7 @@ func TestChiRouter(t *testing.T) {
 				Scheme: "http", Host: "dev", Path: "/api/v1",
 			}}
 		}, http.StatusNotImplemented},
-		{"GET /api/v1/{UUID}", func() *http.Request {
+		{"GET /api/v1/{ID}", func() *http.Request {
 			request := &http.Request{Method: http.MethodGet, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
 			}}
@@ -47,17 +47,17 @@ func TestChiRouter(t *testing.T) {
 				Do(func(rw http.ResponseWriter, _ *http.Request) { rw.WriteHeader(http.StatusOK) })
 			return request
 		}, http.StatusOK},
-		{"PUT /api/v1/{UUID}", func() *http.Request {
+		{"PUT /api/v1/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodPut, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"DELETE /api/v1/{UUID}", func() *http.Request {
+		{"DELETE /api/v1/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"POST /api/v1/{UUID}", func() *http.Request {
+		{"POST /api/v1/{ID}", func() *http.Request {
 			request := &http.Request{Method: http.MethodPost, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
 			}}
@@ -72,22 +72,22 @@ func TestChiRouter(t *testing.T) {
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema",
 			}}
 		}, http.StatusNotImplemented},
-		{"GET /api/v2/schema/{UUID}", func() *http.Request {
+		{"GET /api/v2/schema/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodGet, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"PUT /api/v2/schema/{UUID}", func() *http.Request {
+		{"PUT /api/v2/schema/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodPut, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"DELETE /api/v2/schema/{UUID}", func() *http.Request {
+		{"DELETE /api/v2/schema/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"POST /api/v2/schema/{UUID}", func() *http.Request {
+		{"POST /api/v2/schema/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodPost, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
 			}}
@@ -98,23 +98,23 @@ func TestChiRouter(t *testing.T) {
 				Scheme: "http", Host: "dev", Path: "/api/v2/template",
 			}}
 		}, http.StatusNotImplemented},
-		{"GET /api/v2/template/{UUID}", func() *http.Request {
+		{"GET /api/v2/template/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodGet, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"PUT /api/v2/template/{UUID}", func() *http.Request {
+		{"PUT /api/v2/template/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodPut, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
-		{"DELETE /api/v2/template/{UUID}", func() *http.Request {
+		{"DELETE /api/v2/template/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
 
-		{"GET /schema/{SCM_UUID}/template/{TPL_UUID}", func() *http.Request {
+		{"GET /schema/{SCM_ID}/template/{TPL_ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodGet, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/schema/" + UUID.String() + "/template/" + UUID.String(),
 			}}

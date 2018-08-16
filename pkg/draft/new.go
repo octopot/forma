@@ -17,8 +17,8 @@ type Encoder interface {
 }
 
 // UUID returns a new generated unique identifier.
-func UUID(db *sql.DB) (domain.UUID, error) {
-	var id domain.UUID
+func UUID(db *sql.DB) (domain.ID, error) {
+	var id domain.ID
 	row := db.QueryRow(`SELECT uuid_generate_v4()`)
 	if err := row.Scan(&id); err != nil {
 		return id, errors.Database(errors.ServerErrorMessage, err, "trying to populate UUID")

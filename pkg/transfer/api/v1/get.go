@@ -4,7 +4,7 @@ import "github.com/kamilsk/form-api/pkg/domain"
 
 // GetRequest represents `GET /api/v1/{Schema.ID}` request.
 type GetRequest struct {
-	UUID domain.UUID
+	ID domain.ID
 }
 
 // GetResponse represents `GET /api/v1/{Schema.ID}` response.

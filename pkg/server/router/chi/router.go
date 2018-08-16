@@ -23,8 +23,8 @@ func NewRouter(api router.Server) http.Handler {
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Post("/", notImplemented)
 
-		r.Route("/{UUID}", func(r chi.Router) {
-			r.Use(ctxPacker(common.Schema, "UUID"))
+		r.Route("/{ID}", func(r chi.Router) {
+			r.Use(ctxPacker(common.Schema, "ID"))
 
 			r.Get("/", common.Encoder(api.GetV1))
 			r.Put("/", notImplemented)
@@ -38,8 +38,8 @@ func NewRouter(api router.Server) http.Handler {
 		r.Route("/schema", func(r chi.Router) {
 			r.Post("/", notImplemented)
 
-			r.Route("/{UUID}", func(r chi.Router) {
-				r.Use(ctxPacker(common.Schema, "UUID"))
+			r.Route("/{ID}", func(r chi.Router) {
+				r.Use(ctxPacker(common.Schema, "ID"))
 
 				r.Get("/", notImplemented)
 				r.Put("/", notImplemented)
@@ -52,8 +52,8 @@ func NewRouter(api router.Server) http.Handler {
 		r.Route("/template", func(r chi.Router) {
 			r.Post("/", notImplemented)
 
-			r.Route("/{UUID}", func(r chi.Router) {
-				r.Use(ctxPacker(common.Template, "UUID"))
+			r.Route("/{ID}", func(r chi.Router) {
+				r.Use(ctxPacker(common.Template, "ID"))
 
 				r.Get("/", notImplemented)
 				r.Put("/", notImplemented)
@@ -62,9 +62,9 @@ func NewRouter(api router.Server) http.Handler {
 		})
 	})
 
-	r.Route("/schema/{SCM_UUID}/template/{TPL_UUID}", func(r chi.Router) {
-		r.Use(ctxPacker(common.Schema, "SCM_UUID"))
-		r.Use(ctxPacker(common.Template, "TPL_UUID"))
+	r.Route("/schema/{SCM_ID}/template/{TPL_ID}", func(r chi.Router) {
+		r.Use(ctxPacker(common.Schema, "SCM_ID"))
+		r.Use(ctxPacker(common.Template, "TPL_ID"))
 
 		r.Get("/", notImplemented)
 	})

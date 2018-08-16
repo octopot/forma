@@ -9,11 +9,11 @@ import (
 // Storage TODO
 type Storage interface {
 	// AddData inserts form data and returns their ID.
-	AddData(context.Context, domain.UUID, domain.InputData) (domain.UUID, error)
-	// Schema returns the form schema with provided UUID.
-	Schema(context.Context, domain.UUID) (domain.Schema, error)
-	// Template returns the form template with provided UUID.
-	Template(context.Context, domain.UUID) (domain.Template, error)
+	AddData(context.Context, domain.ID, domain.InputData) (domain.ID, error)
+	// Schema returns the form schema with provided ID.
+	Schema(context.Context, domain.ID) (domain.Schema, error)
+	// Template returns the form template with provided ID.
+	Template(context.Context, domain.ID) (domain.Template, error)
 }
 
 // ProtectedStorage TODO

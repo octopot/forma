@@ -55,10 +55,10 @@ type Server struct {
 // GetV1 is responsible for `GET /api/v1/{Schema.ID}` request handling.
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
 		enc  = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
 	)
-	response := s.service.HandleGetV1(v1.GetRequest{UUID: uuid})
+	response := s.service.HandleGetV1(v1.GetRequest{ID: uuid})
 	if response.Error != nil {
 		if err, is := response.Error.(errors.ApplicationError); is {
 			if _, is := err.IsClientError(); is {
@@ -96,7 +96,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	var (
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
+		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
 	)
 
 	// TODO: move to middleware layer
@@ -106,7 +106,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		cookie = &http.Cookie{Name: tokenCookieName}
 	}
 
-	response := s.service.HandlePostV1(v1.PostRequest{EncryptedMarker: cookie.Value, UUID: uuid, Data: req.PostForm})
+	response := s.service.HandlePostV1(v1.PostRequest{EncryptedMarker: cookie.Value, ID: uuid, Data: req.PostForm})
 
 	// TODO: move to middleware layer
 	// TODO: support opts.Anonymously()

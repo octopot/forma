@@ -35,9 +35,9 @@ func (m *MockStorage) EXPECT() *MockStorageMockRecorder {
 }
 
 // AddData mocks base method
-func (m *MockStorage) AddData(arg0 context.Context, arg1 domain.UUID, arg2 domain.InputData) (domain.UUID, error) {
+func (m *MockStorage) AddData(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (domain.ID, error) {
 	ret := m.ctrl.Call(m, "AddData", arg0, arg1, arg2)
-	ret0, _ := ret[0].(domain.UUID)
+	ret0, _ := ret[0].(domain.ID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -48,7 +48,7 @@ func (mr *MockStorageMockRecorder) AddData(arg0, arg1, arg2 interface{}) *gomock
 }
 
 // Schema mocks base method
-func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.UUID) (domain.Schema, error) {
+func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.ID) (domain.Schema, error) {
 	ret := m.ctrl.Call(m, "Schema", arg0, arg1)
 	ret0, _ := ret[0].(domain.Schema)
 	ret1, _ := ret[1].(error)
@@ -61,7 +61,7 @@ func (mr *MockStorageMockRecorder) Schema(arg0, arg1 interface{}) *gomock.Call {
 }
 
 // Template mocks base method
-func (m *MockStorage) Template(arg0 context.Context, arg1 domain.UUID) (domain.Template, error) {
+func (m *MockStorage) Template(arg0 context.Context, arg1 domain.ID) (domain.Template, error) {
 	ret := m.ctrl.Call(m, "Template", arg0, arg1)
 	ret0, _ := ret[0].(domain.Template)
 	ret1, _ := ret[1].(error)

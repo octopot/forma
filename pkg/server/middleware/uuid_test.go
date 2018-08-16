@@ -10,25 +10,25 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const UUID domain.UUID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
+const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
 
 func TestSchema(t *testing.T) {
 	tests := []struct {
 		name string
-		uuid domain.UUID
-		next func(uuid domain.UUID) (*domain.UUID, http.Handler)
+		uuid domain.ID
+		next func(uuid domain.ID) (*domain.ID, http.Handler)
 		code int
 	}{
-		{"invalid uuid", "abc-def-ghi", func(uuid domain.UUID) (*domain.UUID, http.Handler) {
+		{"invalid uuid", "abc-def-ghi", func(uuid domain.ID) (*domain.ID, http.Handler) {
 			return &uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
 			})
 		}, http.StatusBadRequest},
-		{"valid uuid", UUID, func(_ domain.UUID) (*domain.UUID, http.Handler) {
-			uuid := new(domain.UUID)
+		{"valid uuid", UUID, func(_ domain.ID) (*domain.ID, http.Handler) {
+			uuid := new(domain.ID)
 			return uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*uuid = req.Context().Value(middleware.SchemaKey{}).(domain.UUID)
+				*uuid = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
 			})
 		}, http.StatusOK},
 	}
@@ -49,20 +49,20 @@ func TestSchema(t *testing.T) {
 func TestTemplate(t *testing.T) {
 	tests := []struct {
 		name string
-		uuid domain.UUID
-		next func(uuid domain.UUID) (*domain.UUID, http.Handler)
+		uuid domain.ID
+		next func(uuid domain.ID) (*domain.ID, http.Handler)
 		code int
 	}{
-		{"invalid uuid", "abc-def-ghi", func(uuid domain.UUID) (*domain.UUID, http.Handler) {
+		{"invalid uuid", "abc-def-ghi", func(uuid domain.ID) (*domain.ID, http.Handler) {
 			return &uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
 			})
 		}, http.StatusBadRequest},
-		{"valid uuid", UUID, func(_ domain.UUID) (*domain.UUID, http.Handler) {
-			uuid := new(domain.UUID)
+		{"valid uuid", UUID, func(_ domain.ID) (*domain.ID, http.Handler) {
+			uuid := new(domain.ID)
 			return uuid, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*uuid = req.Context().Value(middleware.TemplateKey{}).(domain.UUID)
+				*uuid = req.Context().Value(middleware.TemplateKey{}).(domain.ID)
 			})
 		}, http.StatusOK},
 	}

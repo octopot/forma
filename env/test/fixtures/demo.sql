@@ -40,20 +40,20 @@ BEGIN
   INSERT INTO "token" ("id", "user_id", "expired_at")
   VALUES (demoToken, demoUser, NULL);
 
-  INSERT INTO "schema" ("id", "account_id", "language", "title", "definition")
+  INSERT INTO "schema" ("id", "account_id", "title", "definition")
   VALUES
-    (subscribe, demoAccount, 'en', 'Email subscription', '
-    <form action="https://kamil.samigullin.info/" enctype="application/x-www-form-urlencoded" method="post">
+    (subscribe, demoAccount, 'Email subscription', '
+    <form lang="en" action="https://kamil.samigullin.info/">
         <input name="email" type="email" title="Email" maxlength="64" required="1"/>
     </form>'),
-    (feedbackEn, demoAccount, 'en', 'GitHub demo page', '
-    <form action="https://kamilsk.github.io/form-api/" enctype="application/x-www-form-urlencoded" method="post">
+    (feedbackEn, demoAccount, 'GitHub demo', '
+    <form lang="en" action="https://kamilsk.github.io/form-api/">
         <input name="name" type="text" title="Name" placeholder="Name..." maxlength="25" required="1"/>
         <input name="feedback" type="text" title="Feedback" placeholder="Your feedback..." maxlength="255"
                required="1"/>
     </form>'),
-    (feedbackRu, demoAccount, 'ru', 'GitHub демо', '
-    <form action="https://kamilsk.github.io/form-api/" enctype="application/x-www-form-urlencoded" method="post">
+    (feedbackRu, demoAccount, 'GitHub демо', '
+    <form lang="ru" action="https://kamilsk.github.io/form-api/">
         <input name="name" type="text" title="Имя" placeholder="Имя..." maxlength="25" required="1"/>
         <input name="feedback" type="text" title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
                required="1"/>
@@ -110,19 +110,5 @@ BEGIN
     <input name="_timeout" type="hidden" value="60">
     <input class="btn btn-dark" type="submit">
 {{- end -}}');
-
-  INSERT INTO "input" ("schema_id", "data")
-  VALUES
-    (subscribe, '{
-      "email": ["test@my.email"]
-    }' :: JSONB),
-    (feedbackEn, '{
-      "name": ["C. Northcote Parkinson"],
-      "feedback": ["Work contracts to fit in the time we give it."]
-    }' :: JSONB),
-    (feedbackRu, '{
-      "name": ["Сирил Норткот Паркинсон"],
-      "feedback": ["Работа заполняет время, отпущенное на неё."]
-    }' :: JSONB);
 END;
 $$;

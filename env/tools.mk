@@ -1,18 +1,3 @@
-.PHONY: grpc
-grpc:
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc common.proto
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc storage.proto
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc event.proto
-
-.PHONY: json
-json:
-	go generate -run="easyjson" ./...
-
-.PHONY: mocks
-mocks:
-	find . -name "mock_*.go" | grep -v ./vendor | xargs rm || true
-	go generate -run="mockgen" ./...
-
 .PHONY: tools
 tools:
 	if ! command -v easyjson > /dev/null; then \
@@ -27,9 +12,24 @@ tools:
 	    go get github.com/golang/mock/mockgen; \
 	fi
 
-.PHONY: generate
-generate: tools json mocks
+.PHONY: json
+json:
+	go generate -run="easyjson" ./...
+
+.PHONY: mocks
+mocks:
+	find . -name "mock_*.go" | grep -v ./vendor | xargs rm || true
+	go generate -run="mockgen" ./...
+
+.PHONY: protobuf
+protobuf:
+	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc common.proto
+	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc storage.proto
+	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc event.proto
 
 .PHONY: static
-static: tools
+static:
 	go-bindata -o pkg/static/bindata.go -pkg static -ignore "\.go$$" -ignore "fixtures" -prefix pkg/ pkg/static/...
+
+.PHONY: generate
+generate: tools json mocks protobuf static

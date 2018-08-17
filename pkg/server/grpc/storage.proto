@@ -6,14 +6,14 @@ import public "common.proto";
 import "google/protobuf/timestamp.proto";
 
 message CreateSchemaRequest {
-    string language = 3;
-    string title = 4;
-    string definition = 5;
+    string id = 1;
+    string title = 3;
+    string definition = 4;
 }
 
 message CreateSchemaResponse {
     string id = 1;
-    google.protobuf.Timestamp created_at = 6;
+    google.protobuf.Timestamp created_at = 5;
 
     Error err = 15;
 }
@@ -24,25 +24,23 @@ message ReadSchemaRequest {
 
 message ReadSchemaResponse {
     string id = 1;
-    string language = 3;
-    string title = 4;
-    string definition = 5;
-    google.protobuf.Timestamp created_at = 6;
-    google.protobuf.Timestamp updated_at = 7;
-    google.protobuf.Timestamp deleted_at = 8;
+    string title = 3;
+    string definition = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+    google.protobuf.Timestamp deleted_at = 7;
 
     Error err = 15;
 }
 
 message UpdateSchemaRequest {
     string id = 1;
-    string language = 3;
-    string title = 4;
-    string definition = 5;
+    string title = 3;
+    string definition = 4;
 }
 
 message UpdateSchemaResponse {
-    google.protobuf.Timestamp updated_at = 7;
+    google.protobuf.Timestamp updated_at = 6;
 
     Error err = 15;
 }
@@ -52,7 +50,7 @@ message DeleteSchemaRequest {
 }
 
 message DeleteSchemaResponse {
-    google.protobuf.Timestamp deleted_at = 8;
+    google.protobuf.Timestamp deleted_at = 7;
 
     Error err = 15;
 }
@@ -65,6 +63,7 @@ service Schema {
 }
 
 message CreateTemplateRequest {
+    string id = 1;
     string title = 3;
     string definition = 4;
 }

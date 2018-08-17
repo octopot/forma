@@ -6,6 +6,7 @@ import (
 	"database/sql"
 	"encoding/json"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
@@ -40,7 +41,7 @@ func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
 
 // ReadByID TODO
 // TODO check access
-func (scope inputScope) ReadByID(token *query.Token, id string) (query.Input, error) {
+func (scope inputScope) ReadByID(token *query.Token, id domain.ID) (query.Input, error) {
 	var entity = query.Input{ID: id}
 	q := `SELECT "schema_id", "data", "created_at" FROM "input" WHERE "id" = $1`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)

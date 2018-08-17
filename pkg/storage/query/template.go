@@ -1,5 +1,7 @@
 package query
 
+import "github.com/kamilsk/form-api/pkg/domain"
+
 // CreateTemplate TODO
 type CreateTemplate struct {
 	Title      string
@@ -8,18 +10,18 @@ type CreateTemplate struct {
 
 // ReadTemplate TODO
 type ReadTemplate struct {
-	ID string
+	ID domain.ID
 }
 
 // UpdateTemplate TODO
 type UpdateTemplate struct {
-	ID         string
+	ID         domain.ID
 	Title      string
 	Definition string
 }
 
 // DeleteTemplate TODO
 type DeleteTemplate struct {
-	ID          string
+	ID          domain.ID
 	Permanently bool
 }

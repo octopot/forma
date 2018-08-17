@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
@@ -14,7 +15,7 @@ import (
 )
 
 func TestInputReader(t *testing.T) {
-	token, id := Token(), "10000000-2000-4000-8000-160000000000"
+	token, id := Token(), domain.ID("10000000-2000-4000-8000-160000000000")
 	t.Run("read by ID", func(t *testing.T) {
 		t.Run("success", func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())
@@ -69,7 +70,7 @@ func TestInputReader(t *testing.T) {
 }
 
 func TestInputWriter(t *testing.T) {
-	var id = "10000000-2000-4000-8000-160000000000"
+	id := domain.ID("10000000-2000-4000-8000-160000000000")
 	t.Run("write", func(t *testing.T) {
 		t.Run("success", func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())

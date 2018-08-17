@@ -84,7 +84,7 @@ func (storage *Storage) AddData(ctx context.Context, schemaID domain.ID, verifie
 	defer closer()
 
 	writer := storage.exec.InputWriter(ctx, conn)
-	entity, err := writer.Write(query.WriteInput{SchemaID: string(schemaID), VerifiedData: verified})
+	entity, err := writer.Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
 	if err != nil {
 		return "", err
 	}
@@ -102,7 +102,7 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	defer closer()
 
 	reader := storage.exec.SchemaReader(ctx, conn)
-	entity, err := reader.ReadByID(string(id))
+	entity, err := reader.ReadByID(id)
 	if err != nil {
 		return schema, err
 	}
@@ -123,7 +123,7 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	defer closer()
 
 	reader := storage.exec.TemplateReader(ctx, conn)
-	entity, err := reader.ReadByID(string(id))
+	entity, err := reader.ReadByID(id)
 	if err != nil {
 		return "", err
 	}

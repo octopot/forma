@@ -1,5 +1,7 @@
 package query
 
+import "github.com/kamilsk/form-api/pkg/domain"
+
 // CreateSchema TODO
 type CreateSchema struct {
 	Language   string
@@ -9,12 +11,12 @@ type CreateSchema struct {
 
 // ReadSchema TODO
 type ReadSchema struct {
-	ID string
+	ID domain.ID
 }
 
 // UpdateSchema TODO
 type UpdateSchema struct {
-	ID         string
+	ID         domain.ID
 	Language   string
 	Title      string
 	Definition string
@@ -22,6 +24,6 @@ type UpdateSchema struct {
 
 // DeleteSchema TODO
 type DeleteSchema struct {
-	ID          string
+	ID          domain.ID
 	Permanently bool
 }

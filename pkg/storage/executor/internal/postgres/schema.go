@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
@@ -51,7 +52,7 @@ func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.
 }
 
 // ReadByID TODO
-func (scope schemaScope) ReadByID(id string) (query.Schema, error) {
+func (scope schemaScope) ReadByID(id domain.ID) (query.Schema, error) {
 	var entity = query.Schema{ID: id}
 	q := `SELECT "language", "title", "definition", "created_at", "updated_at" FROM "schema"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`

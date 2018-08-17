@@ -18,7 +18,7 @@ func (s ID) IsValid() bool {
 	return !(s == "") && uuid.MatchString(string(s)) // IsEmpty and String were inlined manually
 }
 
-// String implements built-in `fmt.Stringer` interface and returns string representation of the ID.
+// String implements built-in `fmt.Stringer` interface and returns the underlying string value.
 func (s ID) String() string {
 	return string(s)
 }

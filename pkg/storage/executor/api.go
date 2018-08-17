@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
@@ -50,7 +51,7 @@ func New(dialect string) *Executor {
 
 // InputReader TODO
 type InputReader interface {
-	ReadByID(*query.Token, string) (query.Input, error)
+	ReadByID(*query.Token, domain.ID) (query.Input, error)
 	ReadByFilter(*query.Token, query.InputFilter) ([]query.Input, error)
 }
 
@@ -69,7 +70,7 @@ type SchemaEditor interface {
 
 // SchemaReader TODO
 type SchemaReader interface {
-	ReadByID(string) (query.Schema, error)
+	ReadByID(domain.ID) (query.Schema, error)
 }
 
 // TemplateEditor TODO
@@ -82,12 +83,12 @@ type TemplateEditor interface {
 
 // TemplateReader TODO
 type TemplateReader interface {
-	ReadByID(string) (query.Template, error)
+	ReadByID(domain.ID) (query.Template, error)
 }
 
 // UserManager TODO
 type UserManager interface {
-	Token(string) (*query.Token, error)
+	Token(domain.ID) (*query.Token, error)
 }
 
 // Executor TODO

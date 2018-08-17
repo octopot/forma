@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
@@ -19,7 +20,7 @@ type manager struct {
 }
 
 // Token TODO
-func (scope manager) Token(id string) (*query.Token, error) {
+func (scope manager) Token(id domain.ID) (*query.Token, error) {
 	var (
 		token   = query.Token{ID: id}
 		user    = query.User{}

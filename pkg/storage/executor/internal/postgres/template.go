@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 )
@@ -50,7 +51,7 @@ func (scope templateScope) Read(token *query.Token, data query.ReadTemplate) (qu
 }
 
 // ReadByID TODO
-func (scope templateScope) ReadByID(id string) (query.Template, error) {
+func (scope templateScope) ReadByID(id domain.ID) (query.Template, error) {
 	var entity = query.Template{ID: id}
 	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "template"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`

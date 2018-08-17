@@ -110,7 +110,7 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 		return schema, errors.Serialization(errors.NeutralMessage, decodeErr,
 			"trying to unmarshal the schema %q from XML `%s`", entity.ID, entity.Definition)
 	}
-	schema.Language, schema.Title = entity.Language, entity.Title
+	schema.Title = entity.Title
 	return schema, nil
 }
 

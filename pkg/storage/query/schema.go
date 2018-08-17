@@ -4,7 +4,7 @@ import "github.com/kamilsk/form-api/pkg/domain"
 
 // CreateSchema TODO
 type CreateSchema struct {
-	Language   string
+	ID         *domain.ID
 	Title      string
 	Definition string
 }
@@ -17,7 +17,6 @@ type ReadSchema struct {
 // UpdateSchema TODO
 type UpdateSchema struct {
 	ID         domain.ID
-	Language   string
 	Title      string
 	Definition string
 }

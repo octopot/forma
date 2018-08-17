@@ -23,13 +23,12 @@ type schemaScope struct {
 func (scope schemaScope) Create(token *query.Token, data query.CreateSchema) (query.Schema, error) {
 	var entity = query.Schema{
 		AccountID:  token.User.AccountID,
-		Language:   data.Language,
 		Title:      data.Title,
 		Definition: data.Definition,
 	}
-	q := `INSERT INTO "schema" ("account_id", "language", "title", "definition") VALUES ($1, $2, $3, $4)
+	q := `INSERT INTO "schema" ("id", "account_id", "title", "definition") VALUES ($1, $2, $3, $4)
 	      RETURNING "id", "created_at"`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.AccountID, entity.Language, entity.Title, entity.Definition)
+	row := scope.conn.QueryRowContext(scope.ctx, q, data.ID, entity.AccountID, entity.Title, entity.Definition)
 	if err := row.Scan(&entity.ID, &entity.CreatedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to create a schema %q", token.UserID, token.User.AccountID, entity.Title)
@@ -40,10 +39,10 @@ func (scope schemaScope) Create(token *query.Token, data query.CreateSchema) (qu
 // Read TODO
 func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.Schema, error) {
 	var entity = query.Schema{ID: data.ID, AccountID: token.User.AccountID}
-	q := `SELECT "language", "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
+	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
 	       WHERE "id" = $1 AND "account_id" = $2`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
-	if err := row.Scan(&entity.Language, &entity.Title, &entity.Definition,
+	if err := row.Scan(&entity.Title, &entity.Definition,
 		&entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read the schema %q", token.UserID, token.User.AccountID, entity.ID)
@@ -54,11 +53,10 @@ func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.
 // ReadByID TODO
 func (scope schemaScope) ReadByID(id domain.ID) (query.Schema, error) {
 	var entity = query.Schema{ID: id}
-	q := `SELECT "language", "title", "definition", "created_at", "updated_at" FROM "schema"
+	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "schema"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
-	if err := row.Scan(&entity.Language, &entity.Title, &entity.Definition,
-		&entity.CreatedAt, &entity.UpdatedAt); err != nil {
+	if err := row.Scan(&entity.Title, &entity.Definition, &entity.CreatedAt, &entity.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return entity, errors.NotFound(errors.SchemaNotFoundMessage, err, "the schema %q not found", entity.ID)
 		}
@@ -73,20 +71,16 @@ func (scope schemaScope) Update(token *query.Token, data query.UpdateSchema) (qu
 	if err != nil {
 		return entity, err
 	}
-	if data.Language != "" {
-		entity.Language = data.Language
-	}
 	if data.Title != "" {
 		entity.Title = data.Title
 	}
 	if data.Definition != "" {
 		entity.Definition = data.Definition
 	}
-	q := `UPDATE "schema" SET "language" = $1, "title" = $2, "definition" = $3
-	       WHERE "id" = $4 AND "account_id" = $5
+	q := `UPDATE "schema" SET "title" = $1, "definition" = $2
+	       WHERE "id" = $3 AND "account_id" = $4
 	   RETURNING "updated_at"`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Language, entity.Title, entity.Definition,
-		entity.ID, entity.AccountID)
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, entity.Definition, entity.ID, entity.AccountID)
 	if scanErr := row.Scan(&entity.UpdatedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to update the schema %q", token.UserID, token.User.AccountID, entity.ID)

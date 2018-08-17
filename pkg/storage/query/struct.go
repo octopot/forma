@@ -41,7 +41,6 @@ type Token struct {
 type Schema struct {
 	ID         domain.ID  `db:"id"`
 	AccountID  domain.ID  `db:"account_id"`
-	Language   string     `db:"language"`
 	Title      string     `db:"title"`
 	Definition string     `db:"definition"`
 	CreatedAt  time.Time  `db:"created_at"`

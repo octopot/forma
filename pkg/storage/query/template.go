@@ -4,6 +4,7 @@ import "github.com/kamilsk/form-api/pkg/domain"
 
 // CreateTemplate TODO
 type CreateTemplate struct {
+	ID         *domain.ID
 	Title      string
 	Definition string
 }

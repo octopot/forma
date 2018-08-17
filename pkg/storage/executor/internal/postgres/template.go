@@ -80,8 +80,7 @@ func (scope templateScope) Update(token *query.Token, data query.UpdateTemplate)
 	q := `UPDATE "template" SET "title" = $1, "definition" = $2
 	       WHERE "id" = $3 AND "account_id" = $4
 	   RETURNING "updated_at"`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, entity.Definition,
-		entity.ID, entity.AccountID)
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, entity.Definition, entity.ID, entity.AccountID)
 	if scanErr := row.Scan(&entity.UpdatedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
 			"user %q of account %q tried to update the template %q", token.UserID, token.User.AccountID, entity.ID)

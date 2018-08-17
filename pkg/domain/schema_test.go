@@ -8,7 +8,7 @@ import (
 )
 
 func TestSchema_Apply(t *testing.T) {
-	for _, tc := range []struct {
+	testCases := []struct {
 		name     string
 		schema   domain.Schema
 		values   map[string][]string
@@ -27,7 +27,9 @@ func TestSchema_Apply(t *testing.T) {
 				data  map[string][]string
 			}{false, false, map[string][]string{"name1": {"test@my.email"}}},
 		},
-	} {
+	}
+
+	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var (
@@ -51,7 +53,7 @@ func TestSchema_Apply(t *testing.T) {
 }
 
 func TestSchema_Filter(t *testing.T) {
-	for _, tc := range []struct {
+	testCases := []struct {
 		name     string
 		schema   domain.Schema
 		values   map[string][]string
@@ -77,7 +79,9 @@ func TestSchema_Filter(t *testing.T) {
 			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
 			map[string][]string{"name1": {"val1"}},
 		},
-	} {
+	}
+
+	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			assert.Equal(t, tc.expected, tc.schema.Filter(tc.values))
@@ -86,7 +90,7 @@ func TestSchema_Filter(t *testing.T) {
 }
 
 func TestSchema_Normalize(t *testing.T) {
-	for _, tc := range []struct {
+	testCases := []struct {
 		name     string
 		schema   domain.Schema
 		values   map[string][]string
@@ -96,7 +100,9 @@ func TestSchema_Normalize(t *testing.T) {
 			map[string][]string{"name1": {string([]rune{'\u200B', '\u200C'}) + " val1 " + string([]rune{'\u200D', '\u2060'})}},
 			map[string][]string{"name1": {"val1"}},
 		},
-	} {
+	}
+
+	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			assert.Equal(t, tc.expected, tc.schema.Normalize(tc.values))
@@ -105,7 +111,7 @@ func TestSchema_Normalize(t *testing.T) {
 }
 
 func TestSchema_Validate(t *testing.T) {
-	for _, tc := range []struct {
+	testCases := []struct {
 		name     string
 		schema   domain.Schema
 		values   map[string][]string
@@ -203,7 +209,9 @@ func TestSchema_Validate(t *testing.T) {
 				data  map[domain.Input][]string
 			}{},
 		},
-	} {
+	}
+
+	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
 			var err domain.ValidationError
@@ -230,6 +238,40 @@ func TestSchema_Validate(t *testing.T) {
 				assert.False(t, err.HasError(domain.Input{}))
 			} else {
 				assert.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestSchema_Input(t *testing.T) {
+	testCases := []struct {
+		name     string
+		schema   domain.Schema
+		what     string
+		expected int
+	}{
+		{
+			name:     "expect the first occurrence",
+			schema:   domain.Schema{Inputs: []domain.Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
+			what:     "first",
+			expected: 0,
+		},
+		{
+			name:     "expect not find anything",
+			schema:   domain.Schema{Inputs: []domain.Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
+			what:     "second",
+			expected: -1,
+		},
+	}
+
+	for _, tc := range testCases {
+		test := tc
+		t.Run(test.name, func(t *testing.T) {
+			input := test.schema.Input(test.what)
+			if test.expected == -1 {
+				assert.Nil(t, input, test.name)
+			} else {
+				assert.Equal(t, input, &test.schema.Inputs[test.expected], test.name)
 			}
 		})
 	}

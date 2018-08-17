@@ -6,6 +6,7 @@ import (
 )
 
 // Schema represents an HTML form.
+//go:generate easyjson -all
 type Schema struct {
 	ID           string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
 	Language     string  `json:"lang"              yaml:"lang"              xml:"lang,attr"`
@@ -96,4 +97,20 @@ func (s Schema) Validate(data map[string][]string) (map[string][]string, Validat
 		rules[input.Name] = validators
 	}
 	return data, Validate(s.Inputs, rules, data)
+}
+
+// Input searches an Input by its name in a case-insensitive manner and returns it
+// or nil if can't find it. Useful in templates:
+//
+//     {{ with .Schema.Input "email" }}
+//         {{ template "input" . }}
+//     {{ end }}
+//
+func (s Schema) Input(name string) *Input {
+	for i, input := range s.Inputs {
+		if strings.EqualFold(input.Name, name) {
+			return &s.Inputs[i]
+		}
+	}
+	return nil
 }

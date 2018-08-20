@@ -39,7 +39,7 @@ func TestInputReader(t *testing.T) {
 			input, err := exec.ReadByID(token, id)
 			assert.NoError(t, err)
 			assert.Equal(t, id, input.SchemaID)
-			assert.Equal(t, []byte(`{"input":["test"]}`), input.Data)
+			assert.Equal(t, domain.InputData{"input": {"test"}}, input.Data)
 			assert.NotEmpty(t, input.CreatedAt)
 		})
 		t.Run("database error", func(t *testing.T) {
@@ -63,9 +63,116 @@ func TestInputReader(t *testing.T) {
 			assert.Empty(t, input.Data)
 			assert.Empty(t, input.CreatedAt)
 		})
+		t.Run("serialization error", func(t *testing.T) {
+			// TODO
+		})
 	})
 	t.Run("read by filter", func(t *testing.T) {
-		// TODO
+		t.Run("success", func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			db, mock, err := sqlmock.New()
+			assert.NoError(t, err)
+			conn, err := db.Conn(ctx)
+			assert.NoError(t, err)
+			defer conn.Close()
+
+			testCases := []struct {
+				name   string
+				mocker func(sqlmock.Sqlmock)
+				filter query.InputFilter
+			}{
+				{
+					name: "by schema ID",
+					mocker: func(mock sqlmock.Sqlmock) {
+						mock.
+							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
+							WithArgs(id).
+							WillReturnRows(
+								sqlmock.
+									NewRows([]string{"id", "data", "created_at"}).
+									AddRow(id, `{"input":["test"]}`, time.Now()),
+							)
+					},
+					filter: query.InputFilter{SchemaID: id},
+				},
+				{
+					name: `by schema ID and "from" date`,
+					mocker: func(mock sqlmock.Sqlmock) {
+						mock.
+							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
+							WithArgs(id, sqlmock.AnyArg()).
+							WillReturnRows(
+								sqlmock.
+									NewRows([]string{"id", "data", "created_at"}).
+									AddRow(id, `{"input":["test"]}`, time.Now()),
+							)
+					},
+					filter: query.InputFilter{SchemaID: id, From: time.Now()},
+				},
+				{
+					name: `by schema ID and "to" date`,
+					mocker: func(mock sqlmock.Sqlmock) {
+						mock.
+							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
+							WithArgs(id, sqlmock.AnyArg()).
+							WillReturnRows(
+								sqlmock.
+									NewRows([]string{"id", "data", "created_at"}).
+									AddRow(id, `{"input":["test"]}`, time.Now()),
+							)
+					},
+					filter: query.InputFilter{SchemaID: id, To: time.Now()},
+				},
+				{
+					name: `by schema ID and "from" and "to" dates`,
+					mocker: func(mock sqlmock.Sqlmock) {
+						mock.
+							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
+							WithArgs(id, sqlmock.AnyArg(), sqlmock.AnyArg()).
+							WillReturnRows(
+								sqlmock.
+									NewRows([]string{"id", "data", "created_at"}).
+									AddRow(id, `{"input":["test"]}`, time.Now()),
+							)
+					},
+					filter: query.InputFilter{SchemaID: id, From: time.Now(), To: time.Now()},
+				},
+			}
+
+			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			for _, test := range testCases {
+				test.mocker(mock)
+				inputs, readErr := exec.ReadByFilter(token, test.filter)
+				assert.NoError(t, readErr)
+				assert.Len(t, inputs, 1)
+			}
+		})
+		t.Run("database error", func(t *testing.T) {
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			db, mock, err := sqlmock.New()
+			assert.NoError(t, err)
+			conn, err := db.Conn(ctx)
+			assert.NoError(t, err)
+			defer conn.Close()
+
+			mock.
+				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
+				WithArgs(sqlmock.AnyArg()).
+				WillReturnError(errors.Simple("test"))
+
+			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			inputs, err := exec.ReadByFilter(token, query.InputFilter{SchemaID: id})
+			assert.Error(t, err)
+			assert.Nil(t, inputs)
+		})
+		t.Run("database scan error", func(t *testing.T) {
+			// TODO
+		})
+		t.Run("serialization error", func(t *testing.T) {
+			// TODO
+		})
 	})
 }
 

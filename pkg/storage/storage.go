@@ -127,5 +127,5 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	if err != nil {
 		return "", err
 	}
-	return domain.Template(entity.Definition), nil
+	return entity.Definition, nil
 }

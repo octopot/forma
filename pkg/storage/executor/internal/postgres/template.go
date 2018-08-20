@@ -26,12 +26,13 @@ func (scope templateScope) Create(token *query.Token, data query.CreateTemplate)
 		Title:      data.Title,
 		Definition: data.Definition,
 	}
-	q := `INSERT INTO "template" ("account_id", "title", "definition") VALUES ($1, $2, $3)
+	q := `INSERT INTO "template" ("id", "account_id", "title", "definition") VALUES ($1, $2, $3, $4)
 	      RETURNING "id", "created_at"`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.AccountID, entity.Title, entity.Definition)
+	row := scope.conn.QueryRowContext(scope.ctx, q, data.ID, entity.AccountID, entity.Title, string(entity.Definition))
 	if err := row.Scan(&entity.ID, &entity.CreatedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
-			"user %q of account %q tried to create a template %q", token.UserID, token.User.AccountID, entity.Title)
+			"user %q of account %q tried to create a template %q",
+			token.UserID, token.User.AccountID, entity.Title)
 	}
 	return entity, nil
 }
@@ -45,7 +46,8 @@ func (scope templateScope) Read(token *query.Token, data query.ReadTemplate) (qu
 	if err := row.Scan(&entity.Title, &entity.Definition,
 		&entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
-			"user %q of account %q tried to read the template %q", token.UserID, token.User.AccountID, entity.ID)
+			"user %q of account %q tried to read the template %q",
+			token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
 }
@@ -74,28 +76,36 @@ func (scope templateScope) Update(token *query.Token, data query.UpdateTemplate)
 	if data.Title != "" {
 		entity.Title = data.Title
 	}
-	if data.Definition != "" {
+	if !data.Definition.IsEmpty() {
 		entity.Definition = data.Definition
 	}
 	q := `UPDATE "template" SET "title" = $1, "definition" = $2
 	       WHERE "id" = $3 AND "account_id" = $4
 	   RETURNING "updated_at"`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, entity.Definition, entity.ID, entity.AccountID)
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, string(entity.Definition), entity.ID, entity.AccountID)
 	if scanErr := row.Scan(&entity.UpdatedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
-			"user %q of account %q tried to update the template %q", token.UserID, token.User.AccountID, entity.ID)
+			"user %q of account %q tried to update the template %q",
+			token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
 }
 
 // Delete TODO
 func (scope templateScope) Delete(token *query.Token, data query.DeleteTemplate) (query.Template, error) {
-	if data.Permanently {
-		// TODO
-	}
 	entity, err := scope.Read(token, query.ReadTemplate{ID: data.ID})
 	if err != nil {
 		return entity, err
+	}
+	if data.Permanently {
+		q := `DELETE FROM "template" WHERE "id" = $1 AND "account_id" = $2 RETURNING now()`
+		row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
+		if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
+			return entity, errors.Database(errors.ServerErrorMessage, scanErr,
+				"user %q of account %q tried to delete the template %q permanently",
+				token.UserID, token.User.AccountID, entity.ID)
+		}
+		return entity, nil
 	}
 	q := `UPDATE "template" SET "deleted_at" = now()
 	       WHERE "id" = $1 AND "account_id" = $2
@@ -103,7 +113,8 @@ func (scope templateScope) Delete(token *query.Token, data query.DeleteTemplate)
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 	if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
-			"user %q of account %q tried to delete the template %q", token.UserID, token.User.AccountID, entity.ID)
+			"user %q of account %q tried to delete the template %q safely",
+			token.UserID, token.User.AccountID, entity.ID)
 	}
 	return entity, nil
 }

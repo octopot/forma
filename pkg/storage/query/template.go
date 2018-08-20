@@ -6,7 +6,7 @@ import "github.com/kamilsk/form-api/pkg/domain"
 type CreateTemplate struct {
 	ID         *domain.ID
 	Title      string
-	Definition string
+	Definition domain.Template
 }
 
 // ReadTemplate TODO
@@ -18,7 +18,7 @@ type ReadTemplate struct {
 type UpdateTemplate struct {
 	ID         domain.ID
 	Title      string
-	Definition string
+	Definition domain.Template
 }
 
 // DeleteTemplate TODO

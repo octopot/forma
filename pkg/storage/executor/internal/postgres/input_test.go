@@ -28,7 +28,7 @@ func TestInputReader(t *testing.T) {
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-				WithArgs(sqlmock.AnyArg()).
+				WithArgs(id, token.User.AccountID).
 				WillReturnRows(
 					sqlmock.
 						NewRows([]string{"schema_id", "data", "created_at"}).
@@ -53,7 +53,7 @@ func TestInputReader(t *testing.T) {
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-				WithArgs(sqlmock.AnyArg()).
+				WithArgs(id, token.User.AccountID).
 				WillReturnError(errors.Simple("test"))
 
 			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
@@ -87,7 +87,7 @@ func TestInputReader(t *testing.T) {
 					mocker: func(mock sqlmock.Sqlmock) {
 						mock.
 							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-							WithArgs(id).
+							WithArgs(id, token.User.AccountID).
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
@@ -101,7 +101,7 @@ func TestInputReader(t *testing.T) {
 					mocker: func(mock sqlmock.Sqlmock) {
 						mock.
 							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-							WithArgs(id, sqlmock.AnyArg()).
+							WithArgs(id, token.User.AccountID, sqlmock.AnyArg()).
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
@@ -115,7 +115,7 @@ func TestInputReader(t *testing.T) {
 					mocker: func(mock sqlmock.Sqlmock) {
 						mock.
 							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-							WithArgs(id, sqlmock.AnyArg()).
+							WithArgs(id, token.User.AccountID, sqlmock.AnyArg()).
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
@@ -129,7 +129,7 @@ func TestInputReader(t *testing.T) {
 					mocker: func(mock sqlmock.Sqlmock) {
 						mock.
 							ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-							WithArgs(id, sqlmock.AnyArg(), sqlmock.AnyArg()).
+							WithArgs(id, token.User.AccountID, sqlmock.AnyArg(), sqlmock.AnyArg()).
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
@@ -159,7 +159,7 @@ func TestInputReader(t *testing.T) {
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
-				WithArgs(sqlmock.AnyArg()).
+				WithArgs(id, token.User.AccountID).
 				WillReturnError(errors.Simple("test"))
 
 			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)

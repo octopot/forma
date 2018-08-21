@@ -23,7 +23,7 @@ type inputScope struct {
 
 // Write TODO
 func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
-	var entity = query.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
+	entity := query.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
 	encoded, encodeErr := json.Marshal(data.VerifiedData)
 	if encodeErr != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, encodeErr,
@@ -41,11 +41,13 @@ func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
 }
 
 // ReadByID TODO
-// TODO check access
 func (scope inputScope) ReadByID(token *query.Token, id domain.ID) (query.Input, error) {
-	var entity, encoded = query.Input{ID: id}, []byte(nil)
-	q := `SELECT "schema_id", "data", "created_at" FROM "input" WHERE "id" = $1`
-	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
+	entity, encoded := query.Input{ID: id}, []byte(nil)
+	q := `SELECT "i"."schema_id", "i"."data", "i"."created_at"
+	        FROM "input" "i"
+	  INNER JOIN "schema" "s" ON "s"."id" = "i"."schema_id"
+	       WHERE "i"."id" = $1 AND "s"."account_id" = $2`
+	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, token.User.AccountID)
 	if err := row.Scan(&entity.SchemaID, &encoded, &entity.CreatedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
 			"user %q of account %q tried to read the input %q",
@@ -60,24 +62,27 @@ func (scope inputScope) ReadByID(token *query.Token, id domain.ID) (query.Input,
 }
 
 // ReadByFilter TODO
-// TODO check access
 func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilter) ([]query.Input, error) {
-	args := append(make([]interface{}, 0, 3), filter.SchemaID)
+	q := `SELECT "i"."id", "i"."data", "i"."created_at"
+	        FROM "input" "i"
+	  INNER JOIN "schema" "s" ON "s"."id" = "i"."schema_id"
+	       WHERE "i"."schema_id" = $1 AND "s"."account_id"`
+	args := append(make([]interface{}, 0, 4), filter.SchemaID, token.User.AccountID)
 	// TODO go 1.10 builder := strings.Builder{}
-	builder := bytes.NewBuffer(make([]byte, 0, 82+35))
-	_, _ = builder.WriteString(`SELECT "id", "data", "created_at" FROM "input" WHERE "schema_id" = $1`)
+	builder := bytes.NewBuffer(make([]byte, 0, len(q)+39))
+	_, _ = builder.WriteString(q)
 	switch {
 	case !filter.From.IsZero() && !filter.To.IsZero():
-		_, _ = builder.WriteString(` AND "created_at" BETWEEN $2 AND $3`)
+		_, _ = builder.WriteString(` AND "i"."created_at" BETWEEN $2 AND $3`)
 		args = append(args, filter.From, filter.To)
 	case !filter.From.IsZero():
-		_, _ = builder.WriteString(` AND "created_at" >= $2`)
+		_, _ = builder.WriteString(` AND "i"."created_at" >= $2`)
 		args = append(args, filter.From)
 	case !filter.To.IsZero():
-		_, _ = builder.WriteString(` AND "created_at" <= $2`)
+		_, _ = builder.WriteString(` AND "i"."created_at" <= $2`)
 		args = append(args, filter.To)
 	}
-	var entities = make([]query.Input, 0, 8)
+	entities := make([]query.Input, 0, 8)
 	rows, dbErr := scope.conn.QueryContext(scope.ctx, builder.String(), args...)
 	if dbErr != nil {
 		return nil, errors.Database(errors.ServerErrorMessage, dbErr,
@@ -85,7 +90,7 @@ func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilte
 			token.UserID, token.User.AccountID, filter)
 	}
 	for rows.Next() {
-		var entity, encoded = query.Input{SchemaID: filter.SchemaID}, []byte(nil)
+		entity, encoded := query.Input{SchemaID: filter.SchemaID}, []byte(nil)
 		if scanErr := rows.Scan(&entity.ID, &encoded, &entity.CreatedAt); scanErr != nil {
 			return nil, errors.Database(errors.ServerErrorMessage, scanErr,
 				"user %q of account %q tried to read inputs by criteria %+v",

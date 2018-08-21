@@ -144,8 +144,8 @@ func TestInputReader(t *testing.T) {
 			for _, test := range testCases {
 				test.mocker(mock)
 				inputs, readErr := exec.ReadByFilter(token, test.filter)
-				assert.NoError(t, readErr)
-				assert.Len(t, inputs, 1)
+				assert.NoError(t, readErr, test.name)
+				assert.Len(t, inputs, 1, test.name)
 			}
 		})
 		t.Run("database error", func(t *testing.T) {

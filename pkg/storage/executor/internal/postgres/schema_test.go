@@ -4,22 +4,42 @@ import (
 	"context"
 	"testing"
 
+	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
-func TestNewSchemaContext(t *testing.T) {
-	ctx := context.Background()
-	_ = postgres.NewSchemaContext(ctx, nil)
+func TestSchemaEditor(t *testing.T) {
 	t.Run("create", func(t *testing.T) {
-		// TODO
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
 	})
 	t.Run("read", func(t *testing.T) {
-		// TODO
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
 	})
 	t.Run("update", func(t *testing.T) {
-		// TODO
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
 	})
 	t.Run("delete", func(t *testing.T) {
-		// TODO
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
+	})
+}
+
+func TestSchemaReader(t *testing.T) {
+	t.Run("read by ID", func(t *testing.T) {
+		ctx, cancel := context.WithCancel(context.Background())
+		defer cancel()
+
+		var _ executor.SchemaReader = postgres.NewSchemaContext(ctx, nil)
 	})
 }

@@ -6,7 +6,7 @@ import "github.com/kamilsk/form-api/pkg/domain"
 type CreateSchema struct {
 	ID         *domain.ID
 	Title      string
-	Definition string
+	Definition domain.Schema
 }
 
 // ReadSchema TODO
@@ -18,7 +18,7 @@ type ReadSchema struct {
 type UpdateSchema struct {
 	ID         domain.ID
 	Title      string
-	Definition string
+	Definition domain.Schema
 }
 
 // DeleteSchema TODO

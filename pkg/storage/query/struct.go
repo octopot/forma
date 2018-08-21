@@ -39,14 +39,14 @@ type Token struct {
 
 // Schema TODO
 type Schema struct {
-	ID         domain.ID  `db:"id"`
-	AccountID  domain.ID  `db:"account_id"`
-	Title      string     `db:"title"`
-	Definition string     `db:"definition"`
-	CreatedAt  time.Time  `db:"created_at"`
-	UpdatedAt  *time.Time `db:"updated_at"`
-	DeletedAt  *time.Time `db:"deleted_at"`
-	Account    *Account   `db:"-"`
+	ID         domain.ID     `db:"id"`
+	AccountID  domain.ID     `db:"account_id"`
+	Title      string        `db:"title"`
+	Definition domain.Schema `db:"definition"`
+	CreatedAt  time.Time     `db:"created_at"`
+	UpdatedAt  *time.Time    `db:"updated_at"`
+	DeletedAt  *time.Time    `db:"deleted_at"`
+	Account    *Account      `db:"-"`
 }
 
 // Template TODO

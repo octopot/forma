@@ -8,8 +8,8 @@ import (
 
 // Storage TODO
 type Storage interface {
-	// AddData inserts form data and returns their ID.
-	AddData(context.Context, domain.ID, domain.InputData) (domain.ID, error)
+	// PutData inserts form data and returns their ID.
+	PutData(context.Context, domain.ID, domain.InputData) (domain.ID, error)
 	// Schema returns the form schema with provided ID.
 	Schema(context.Context, domain.ID) (domain.Schema, error)
 	// Template returns the form template with provided ID.

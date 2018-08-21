@@ -75,7 +75,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 			data := domain.InputData(map[string][]string{"name": {"val"}, "_token": {string(UUID)}})
 
 			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
-			dao.EXPECT().AddData(context.Background(), request.ID, data).Return(response.ID, nil)
+			dao.EXPECT().PutData(context.Background(), request.ID, data).Return(response.ID, nil)
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {

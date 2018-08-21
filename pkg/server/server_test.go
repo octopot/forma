@@ -143,7 +143,8 @@ func TestServer_PostV1(t *testing.T) {
 				middleware.SchemaKey{}, UUID))
 			data, err := func() (map[string][]string, error) {
 				data := map[string][]string{"email": {"invalid"}}
-				_, err := domain.Schema{Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}}}.Validate(data)
+				schema := domain.Schema{Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}}}
+				_, err := schema.Validate(data)
 				return data, errors.Validation("", err, "")
 			}()
 			service.EXPECT().

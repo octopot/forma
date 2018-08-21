@@ -58,6 +58,6 @@ func (s *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	// TODO use context column
 	verified["_token"] = []string{response.EncryptedMarker}
 
-	response.ID, response.Error = s.dao.AddData(context.Background(), request.ID, verified)
+	response.ID, response.Error = s.dao.PutData(context.Background(), request.ID, verified)
 	return response
 }

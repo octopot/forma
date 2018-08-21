@@ -3,7 +3,7 @@ package storage
 import (
 	"context"
 	"database/sql"
-	"encoding/xml"
+
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
@@ -73,22 +73,21 @@ func (storage *Storage) connection(ctx context.Context) (*sql.Conn, func() error
 	return conn, conn.Close, nil
 }
 
-// TODO legacy
+// PutData inserts a form data and returns its ID.
+func (storage *Storage) PutData(ctx context.Context, schemaID domain.ID, verified domain.InputData) (domain.ID, error) {
+	var id domain.ID
 
-// AddData inserts a form data and returns its ID.
-func (storage *Storage) AddData(ctx context.Context, schemaID domain.ID, verified domain.InputData) (domain.ID, error) {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
-		return "", err
+		return id, err
 	}
 	defer closer()
 
-	writer := storage.exec.InputWriter(ctx, conn)
-	entity, err := writer.Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
+	entity, err := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
 	if err != nil {
-		return "", err
+		return id, err
 	}
-	return domain.ID(entity.ID), nil
+	return entity.ID, nil
 }
 
 // Schema returns the form schema by provided ID.
@@ -101,31 +100,26 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	}
 	defer closer()
 
-	reader := storage.exec.SchemaReader(ctx, conn)
-	entity, err := reader.ReadByID(id)
+	entity, err := storage.exec.SchemaReader(ctx, conn).ReadByID(id)
 	if err != nil {
 		return schema, err
 	}
-	if decodeErr := xml.Unmarshal([]byte(entity.Definition), &schema); decodeErr != nil {
-		return schema, errors.Serialization(errors.NeutralMessage, decodeErr,
-			"trying to unmarshal the schema %q from XML `%s`", entity.ID, entity.Definition)
-	}
-	schema.Title = entity.Title
-	return schema, nil
+	return entity.Definition, nil
 }
 
 // Template returns the form template by provided ID.
 func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Template, error) {
+	var template domain.Template
+
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
-		return "", err
+		return template, err
 	}
 	defer closer()
 
-	reader := storage.exec.TemplateReader(ctx, conn)
-	entity, err := reader.ReadByID(id)
+	entity, err := storage.exec.TemplateReader(ctx, conn).ReadByID(id)
 	if err != nil {
-		return "", err
+		return template, err
 	}
 	return entity.Definition, nil
 }

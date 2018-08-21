@@ -34,17 +34,17 @@ func (m *MockStorage) EXPECT() *MockStorageMockRecorder {
 	return m.recorder
 }
 
-// AddData mocks base method
-func (m *MockStorage) AddData(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (domain.ID, error) {
-	ret := m.ctrl.Call(m, "AddData", arg0, arg1, arg2)
+// PutData mocks base method
+func (m *MockStorage) PutData(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (domain.ID, error) {
+	ret := m.ctrl.Call(m, "PutData", arg0, arg1, arg2)
 	ret0, _ := ret[0].(domain.ID)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// AddData indicates an expected call of AddData
-func (mr *MockStorageMockRecorder) AddData(arg0, arg1, arg2 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddData", reflect.TypeOf((*MockStorage)(nil).AddData), arg0, arg1, arg2)
+// PutData indicates an expected call of PutData
+func (mr *MockStorageMockRecorder) PutData(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PutData", reflect.TypeOf((*MockStorage)(nil).PutData), arg0, arg1, arg2)
 }
 
 // Schema mocks base method

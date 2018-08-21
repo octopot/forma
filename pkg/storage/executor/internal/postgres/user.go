@@ -30,8 +30,8 @@ func (scope manager) Token(id domain.ID) (*query.Token, error) {
 	             "u"."account_id", "u"."name", "u"."created_at", "u"."updated_at",
 	             "a"."name", "a"."created_at", "a"."updated_at"
 	        FROM "token" "t"
-	       INNER JOIN "user" "u" ON "t"."user_id" = "u"."id"
-	       INNER JOIN "account" "a" ON "u"."account_id" = "a"."id"
+	  INNER JOIN "user" "u" ON "u"."id" = "t"."user_id"
+	  INNER JOIN "account" "a" ON "a"."id" = "u"."account_id"
 	       WHERE "t"."id" = $1 AND ("t"."expired_at" IS NULL OR "t"."expired_at" > now())
 	         AND "u"."deleted_at" IS NULL
 	         AND "a"."deleted_at" IS NULL`

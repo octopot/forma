@@ -15,6 +15,7 @@ func TestNew(t *testing.T) {
 
 		InputReader(context.Context, *sql.Conn) executor.InputReader
 		InputWriter(context.Context, *sql.Conn) executor.InputWriter
+		LogWriter(context.Context, *sql.Conn) executor.LogWriter
 		SchemaEditor(context.Context, *sql.Conn) executor.SchemaEditor
 		SchemaReader(context.Context, *sql.Conn) executor.SchemaReader
 		TemplateEditor(context.Context, *sql.Conn) executor.TemplateEditor
@@ -25,26 +26,19 @@ func TestNew(t *testing.T) {
 		assert.NotPanics(t, func() {
 			var exec contract = executor.New("postgres")
 			assert.NotEmpty(t, exec.Dialect())
-			exec.InputReader(nil, nil)
-			exec.InputWriter(nil, nil)
-			exec.SchemaEditor(nil, nil)
-			exec.SchemaReader(nil, nil)
-			exec.TemplateEditor(nil, nil)
-			exec.TemplateReader(nil, nil)
-			exec.UserManager(nil, nil)
+			assert.NotNil(t, exec.InputReader(nil, nil))
+			assert.NotNil(t, exec.InputWriter(nil, nil))
+			assert.NotNil(t, exec.LogWriter(nil, nil))
+			assert.NotNil(t, exec.SchemaEditor(nil, nil))
+			assert.NotNil(t, exec.SchemaReader(nil, nil))
+			assert.NotNil(t, exec.TemplateEditor(nil, nil))
+			assert.NotNil(t, exec.TemplateReader(nil, nil))
+			assert.NotNil(t, exec.UserManager(nil, nil))
 		})
 	})
 	t.Run("MySQL", func(t *testing.T) {
 		assert.Panics(t, func() {
-			var exec contract = executor.New("mysql")
-			assert.NotEmpty(t, exec.Dialect())
-			exec.InputReader(nil, nil)
-			exec.InputWriter(nil, nil)
-			exec.SchemaEditor(nil, nil)
-			exec.SchemaReader(nil, nil)
-			exec.TemplateEditor(nil, nil)
-			exec.TemplateReader(nil, nil)
-			exec.UserManager(nil, nil)
+			var _ contract = executor.New("mysql")
 		})
 	})
 }

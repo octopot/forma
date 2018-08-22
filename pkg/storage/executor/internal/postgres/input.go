@@ -24,11 +24,11 @@ type inputScope struct {
 // Write TODO
 func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
 	entity := query.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
-	encoded, encodeErr := json.Marshal(data.VerifiedData)
+	encoded, encodeErr := json.Marshal(entity.Data)
 	if encodeErr != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, encodeErr,
 			"trying to marshal data `%#v` for the schema %q into JSON",
-			data.VerifiedData, data.SchemaID)
+			entity.Data, entity.SchemaID)
 	}
 	q := `INSERT INTO "input" ("schema_id", "data") VALUES ($1, $2) RETURNING "id", "created_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.SchemaID, encoded)

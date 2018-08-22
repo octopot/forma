@@ -18,3 +18,14 @@ type WriteInput struct {
 	SchemaID     domain.ID
 	VerifiedData domain.InputData
 }
+
+// WriteLog TODO
+type WriteLog struct {
+	AccountID  domain.ID
+	SchemaID   domain.ID
+	InputID    domain.ID
+	TemplateID *domain.ID
+	Identifier string
+	Code       uint16
+	Context    domain.Context
+}

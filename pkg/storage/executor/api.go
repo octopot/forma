@@ -26,6 +26,9 @@ func New(dialect string) *Executor {
 		exec.factory.NewInputWriter = func(ctx context.Context, conn *sql.Conn) InputWriter {
 			return postgres.NewInputContext(ctx, conn)
 		}
+		exec.factory.NewLogWriter = func(ctx context.Context, conn *sql.Conn) LogWriter {
+			return postgres.NewLogContext(ctx, conn)
+		}
 		exec.factory.NewSchemaEditor = func(ctx context.Context, conn *sql.Conn) SchemaEditor {
 			return postgres.NewSchemaContext(ctx, conn)
 		}
@@ -58,6 +61,11 @@ type InputReader interface {
 // InputWriter TODO
 type InputWriter interface {
 	Write(query.WriteInput) (query.Input, error)
+}
+
+// LogWriter TODO
+type LogWriter interface {
+	Write(query.WriteLog) (query.Log, error)
 }
 
 // SchemaEditor TODO
@@ -97,6 +105,7 @@ type Executor struct {
 	factory struct {
 		NewInputReader    func(context.Context, *sql.Conn) InputReader
 		NewInputWriter    func(context.Context, *sql.Conn) InputWriter
+		NewLogWriter      func(context.Context, *sql.Conn) LogWriter
 		NewSchemaEditor   func(context.Context, *sql.Conn) SchemaEditor
 		NewSchemaReader   func(context.Context, *sql.Conn) SchemaReader
 		NewTemplateEditor func(context.Context, *sql.Conn) TemplateEditor
@@ -118,6 +127,11 @@ func (e *Executor) InputReader(ctx context.Context, conn *sql.Conn) InputReader 
 // InputWriter TODO
 func (e *Executor) InputWriter(ctx context.Context, conn *sql.Conn) InputWriter {
 	return e.factory.NewInputWriter(ctx, conn)
+}
+
+// LogWriter TODO
+func (e *Executor) LogWriter(ctx context.Context, conn *sql.Conn) LogWriter {
+	return e.factory.NewLogWriter(ctx, conn)
 }
 
 // SchemaEditor TODO

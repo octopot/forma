@@ -106,7 +106,9 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		cookie = &http.Cookie{Name: tokenCookieName}
 	}
 
-	response := s.service.HandlePostV1(v1.PostRequest{EncryptedMarker: cookie.Value, ID: uuid, Data: req.PostForm})
+	response := s.service.HandlePostV1(
+		v1.PostRequest{EncryptedMarker: cookie.Value, ID: uuid, InputData: domain.InputData(req.PostForm)},
+	)
 
 	// TODO: move to middleware layer
 	// TODO: support opts.Anonymously()

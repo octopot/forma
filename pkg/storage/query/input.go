@@ -21,11 +21,10 @@ type WriteInput struct {
 
 // WriteLog TODO
 type WriteLog struct {
-	AccountID  domain.ID
-	SchemaID   domain.ID
-	InputID    domain.ID
-	TemplateID *domain.ID
-	Identifier string
-	Code       uint16
-	Context    domain.Context
+	SchemaID     domain.ID
+	InputID      domain.ID
+	TemplateID   *domain.ID
+	Identifier   string
+	Code         uint16
+	InputContext domain.InputContext
 }

@@ -1,17 +1,20 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package service_test -destination $PWD/pkg/service/mock_contract_test.go github.com/kamilsk/form-api/pkg/service Storage
+//go:generate mockgen -package service_test -destination $PWD/pkg/service/mock_storage_test.go github.com/kamilsk/form-api/pkg/service Storage
+//go:generate mockgen -package service_test -destination $PWD/pkg/service/mock_handler_test.go github.com/kamilsk/form-api/pkg/service InputHandler
 package service_test
 
 import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	deep "github.com/pkg/errors"
 
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/service"
+	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 )
@@ -23,8 +26,9 @@ func TestForma_HandleGetV1(t *testing.T) {
 	defer ctrl.Finish()
 
 	var (
-		dao = NewMockStorage(ctrl)
-		api = service.New(dao)
+		storage = NewMockStorage(ctrl)
+		handler = NewMockInputHandler(ctrl)
+		api     = service.New(storage, handler)
 	)
 
 	tests := []struct {
@@ -33,7 +37,7 @@ func TestForma_HandleGetV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.GetRequest, v1.GetResponse) {
 			request, response := v1.GetRequest{ID: UUID}, v1.GetResponse{Schema: domain.Schema{}}
-			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
+			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
 			return request, response
 		}},
 	}
@@ -52,8 +56,9 @@ func TestForma_HandlePostV1(t *testing.T) {
 	defer ctrl.Finish()
 
 	var (
-		dao = NewMockStorage(ctrl)
-		api = service.New(dao)
+		storage = NewMockStorage(ctrl)
+		handler = NewMockInputHandler(ctrl)
+		api     = service.New(storage, handler)
 	)
 
 	tests := []struct {
@@ -63,42 +68,44 @@ func TestForma_HandlePostV1(t *testing.T) {
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
-					Data: map[string][]string{"name": {"val"}},
+					InputData:    domain.InputData{"name": {"val"}},
+					InputContext: domain.InputContext{},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: UUID, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
 			)
 
-			// issue #110: add cookie
-			// TODO use context column
-			data := domain.InputData(map[string][]string{"name": {"val"}, "_token": {string(UUID)}})
+			// TODO issue#110: add cookie
+			data := domain.InputData{"name": {"val"}, "_token": {string(UUID)}}
+			input := &query.Input{ID: response.ID, SchemaID: request.ID, Data: data, CreatedAt: time.Now()}
 
-			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
-			dao.EXPECT().PutData(context.Background(), request.ID, data).Return(response.ID, nil)
+			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
+			handler.EXPECT().HandleInput(context.Background(), request.ID, data).Return(input, nil)
+			handler.EXPECT().LogRequest(context.Background(), input, request.InputContext).Return(nil)
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
-					Data: map[string][]string{"name": {"val"}},
+					InputData: domain.InputData{"name": {"val"}},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
-			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, response.Error)
+			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, response.Error)
 			return request, response
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
 				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
-					Data: map[string][]string{"email": {"test.me"}},
+					InputData: domain.InputData{"email": {"test.me"}},
 				}
 				response = v1.PostResponse{EncryptedMarker: string(UUID), Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)
-			dao.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
-			_, response.Error = response.Schema.Apply(request.Data)
+			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
+			_, response.Error = response.Schema.Apply(request.InputData)
 			return request, response
 		}},
 	}

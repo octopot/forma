@@ -42,12 +42,11 @@ var runCmd = &cobra.Command{
 			}
 		}
 
+		dbLayer := storage.Must(storage.Database(cnf.Union.DBConfig))
 		handler := chi.NewRouter(
 			server.New(
 				cnf.Union.ServerConfig,
-				service.New(
-					storage.Must(storage.Database(cnf.Union.DBConfig)),
-				),
+				service.New(dbLayer, dbLayer),
 			),
 		)
 		return startHTTPServer(cnf.Union.ServerConfig, handler)

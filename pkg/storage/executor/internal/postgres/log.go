@@ -22,8 +22,8 @@ type logScope struct {
 // Write TODO
 func (scope logScope) Write(data query.WriteLog) (query.Log, error) {
 	entity := query.Log{
-		AccountID: data.AccountID, SchemaID: data.SchemaID, InputID: data.InputID, TemplateID: data.TemplateID,
-		Identifier: data.Identifier, Code: data.Code, Context: data.Context,
+		SchemaID: data.SchemaID, InputID: data.InputID, TemplateID: data.TemplateID,
+		Identifier: data.Identifier, Code: data.Code, Context: data.InputContext,
 	}
 	encoded, encodeErr := json.Marshal(entity.Context)
 	if encodeErr != nil {
@@ -32,9 +32,10 @@ func (scope logScope) Write(data query.WriteLog) (query.Log, error) {
 			entity.Context, entity.InputID)
 	}
 	q := `INSERT INTO "log" ("account_id", "schema_id", "input_id", "template_id", "identifier", "code", "context")
-	           VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING "id", "created_at"`
+	           VALUES ((SELECT "account_id" FROM "schema" WHERE "schema_id" = $1), $1, $2, $3, $4, $5, $6)
+	        RETURNING "id", "created_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q,
-		entity.AccountID, entity.SchemaID, entity.InputID, entity.TemplateID,
+		entity.SchemaID, entity.InputID, entity.TemplateID,
 		entity.Identifier, entity.Code, encoded)
 	if scanErr := row.Scan(&entity.ID, &entity.CreatedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,

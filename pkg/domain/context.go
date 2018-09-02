@@ -1,4 +1,4 @@
 package domain
 
-// Context TODO
-type Context map[string]interface{}
+// InputContext TODO
+type InputContext map[string]interface{}

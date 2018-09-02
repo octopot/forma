@@ -29,7 +29,7 @@ func TestLogWriter(t *testing.T) {
 
 			mock.
 				ExpectQuery(`INSERT INTO "log"`).
-				WithArgs(id, id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
+				WithArgs(id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
 				WillReturnRows(
 					sqlmock.
 						NewRows([]string{"id", "created_at"}).
@@ -38,8 +38,8 @@ func TestLogWriter(t *testing.T) {
 
 			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
-				AccountID: id, SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: string(id), Code: http.StatusFound, Context: map[string]interface{}{"cookie": "test"},
+				SchemaID: id, InputID: id, TemplateID: &id,
+				Identifier: string(id), Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
 			})
 			assert.NoError(t, err)
 			assert.Equal(t, uint64(1), log.ID)
@@ -59,13 +59,13 @@ func TestLogWriter(t *testing.T) {
 
 			mock.
 				ExpectQuery(`INSERT INTO "log"`).
-				WithArgs(id, id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
+				WithArgs(id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
 				WillReturnError(errors.Simple("test"))
 
 			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
-				AccountID: id, SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: string(id), Code: http.StatusFound, Context: map[string]interface{}{"cookie": "test"},
+				SchemaID: id, InputID: id, TemplateID: &id,
+				Identifier: string(id), Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
 			})
 			assert.Error(t, err)
 			assert.Empty(t, log.ID)

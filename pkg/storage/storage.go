@@ -73,22 +73,7 @@ func (storage *Storage) connection(ctx context.Context) (*sql.Conn, func() error
 	return conn, conn.Close, nil
 }
 
-// PutData inserts a form data and returns its ID.
-func (storage *Storage) PutData(ctx context.Context, schemaID domain.ID, verified domain.InputData) (domain.ID, error) {
-	var id domain.ID
-
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return id, err
-	}
-	defer closer()
-
-	entity, err := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
-	if err != nil {
-		return id, err
-	}
-	return entity.ID, nil
-}
+// Storage interface
 
 // Schema returns the form schema by provided ID.
 func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema, error) {
@@ -122,4 +107,46 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 		return template, err
 	}
 	return entity.Definition, nil
+}
+
+// ProtectedStorage interface
+
+// TODO issue#165
+
+// InputHandler interface
+
+// HandleInput TODO
+func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*query.Input, error) {
+	conn, closer, err := storage.connection(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer closer()
+
+	entity, err := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
+	if err != nil {
+		return nil, err
+	}
+	return &entity, nil
+}
+
+// LogRequest TODO
+func (storage *Storage) LogRequest(ctx context.Context, input *query.Input, meta domain.InputContext) error {
+	conn, closer, err := storage.connection(ctx)
+	if err != nil {
+		return err
+	}
+	defer closer()
+
+	storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{
+		SchemaID:   input.SchemaID,
+		InputID:    input.ID,
+		TemplateID: input.Data.Template(),
+
+		// TODO issue#171
+		Identifier:   "",
+		Code:         201,
+		InputContext: meta,
+	})
+	return nil
 }

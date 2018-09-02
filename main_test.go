@@ -15,7 +15,7 @@ import (
 
 // convergence
 var (
-	_ server.Service  = service.New(nil)
+	_ server.Service  = service.New(nil, nil)
 	_ service.Storage = storage.Must()
 )
 

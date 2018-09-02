@@ -1,6 +1,9 @@
 package domain
 
-import "net/url"
+import (
+	"net/url"
+	"time"
+)
 
 const (
 	// EmailType specifies `<input type="email">`.
@@ -9,6 +12,21 @@ const (
 	HiddenType = "hidden"
 	// TextType specifies `<input type="text">`.
 	TextType = "text"
+
+	// TODO future
+	captchaType   = "captcha"
+	reCAPTCHAType = "reCAPTCHA"
+)
+
+const (
+	// RedirectKey TODO
+	RedirectKey = "_redirect"
+	// ResourceKey TODO
+	ResourceKey = "_resource"
+	// TemplateKey TODO
+	TemplateKey = "_template"
+	// TimeoutKey TODO
+	TimeoutKey = "_timeout"
 )
 
 // Input represents an element of an HTML form.
@@ -27,3 +45,39 @@ type Input struct {
 
 // InputData TODO
 type InputData url.Values
+
+// Redirect TODO
+func (d InputData) Redirect(fallback ...string) string {
+	value := url.Values(d).Get(RedirectKey)
+	if value == "" {
+		for _, value = range fallback {
+			if value != "" {
+				break
+			}
+		}
+	}
+	return value
+}
+
+// Resource TODO
+func (d InputData) Resource() ID {
+	return ID(url.Values(d).Get(ResourceKey))
+}
+
+// Template TODO
+func (d InputData) Template() *ID {
+	var id = ID(url.Values(d).Get(TemplateKey))
+	if id.IsValid() {
+		return &id
+	}
+	return nil
+}
+
+// Timeout TODO
+func (d InputData) Timeout() time.Duration {
+	timeout, err := time.ParseDuration(url.Values(d).Get(TimeoutKey))
+	if err != nil {
+		return 30 * time.Second
+	}
+	return timeout
+}

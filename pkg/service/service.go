@@ -34,17 +34,6 @@ func (service *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 		verified domain.InputData
 	)
 
-	{ // TODO encrypt/decrypt marker
-		marker := domain.ID(request.EncryptedMarker)
-		//	if !marker.IsValid() {
-		//		marker, response.Error = service.storage.UUID()
-		//		if response.Error != nil {
-		//			return response
-		//		}
-		//	}
-		response.EncryptedMarker = string(marker)
-	}
-
 	response.Schema, response.Error = service.storage.Schema(context.Background(), request.ID)
 	if response.Error != nil {
 		return response
@@ -55,10 +44,6 @@ func (service *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 			"trying to add data for schema %q", request.ID)
 		return response
 	}
-
-	// issue #110: add cookie
-	// TODO use context column
-	verified["_token"] = []string{response.EncryptedMarker}
 
 	var input *query.Input
 	input, response.Error = service.handler.HandleInput(context.Background(), request.ID, verified)

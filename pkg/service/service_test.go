@@ -67,40 +67,40 @@ func TestForma_HandlePostV1(t *testing.T) {
 	}{
 		{"without error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
+				request = v1.PostRequest{ID: UUID,
 					InputData:    domain.InputData{"name": {"val"}},
 					InputContext: domain.InputContext{},
 				}
-				response = v1.PostResponse{EncryptedMarker: string(UUID), ID: UUID, Schema: domain.Schema{
+				response = v1.PostResponse{ID: UUID, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
+				input = &query.Input{ID: response.ID,
+					SchemaID: request.ID, Data: request.InputData, CreatedAt: time.Now(),
+				}
 			)
 
-			// TODO issue#110: add cookie
-			data := domain.InputData{"name": {"val"}, "_token": {string(UUID)}}
-			input := &query.Input{ID: response.ID, SchemaID: request.ID, Data: data, CreatedAt: time.Now()}
-
 			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, nil)
-			handler.EXPECT().HandleInput(context.Background(), request.ID, data).Return(input, nil)
+			handler.EXPECT().HandleInput(context.Background(), request.ID, request.InputData).Return(input, nil)
 			handler.EXPECT().LogRequest(context.Background(), input, request.InputContext).Return(nil)
+
 			return request, response
 		}},
 		{"not found error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
+				request = v1.PostRequest{ID: UUID,
 					InputData: domain.InputData{"name": {"val"}},
 				}
-				response = v1.PostResponse{EncryptedMarker: string(UUID), Error: errors.New("not found"), Schema: domain.Schema{}}
+				response = v1.PostResponse{Error: errors.New("not found"), Schema: domain.Schema{}}
 			)
 			storage.EXPECT().Schema(context.Background(), request.ID).Return(response.Schema, response.Error)
 			return request, response
 		}},
 		{"validation error", func() (v1.PostRequest, v1.PostResponse) {
 			var (
-				request = v1.PostRequest{EncryptedMarker: string(UUID), ID: UUID,
+				request = v1.PostRequest{ID: UUID,
 					InputData: domain.InputData{"email": {"test.me"}},
 				}
-				response = v1.PostResponse{EncryptedMarker: string(UUID), Schema: domain.Schema{
+				response = v1.PostResponse{Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType, Value: "test.me"}},
 				}}
 			)

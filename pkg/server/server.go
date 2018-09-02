@@ -20,12 +20,6 @@ import (
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 )
 
-const (
-	tokenCookieName = "token"
-	redirectKey     = "_redirect"
-	timeoutKey      = "_timeout"
-)
-
 // New returns a new instance of the Forma server.
 // It can raise the panic if base URL is invalid or HTML templates are not available.
 func New(cnf config.ServerConfig, service Service) *Server {
@@ -95,28 +89,13 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusBadRequest)
 		return
 	}
+
 	var (
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
+		uuid     = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
+		request  = v1.PostRequest{ID: uuid, InputData: domain.InputData(req.PostForm)}
+		response = s.service.HandlePostV1(request)
+		redirect = request.InputData.Redirect(req.Referer(), response.Schema.Action)
 	)
-
-	// TODO: move to middleware layer
-	// TODO: support opts.Anonymously()
-	cookie, err := req.Cookie(tokenCookieName)
-	if err != nil {
-		cookie = &http.Cookie{Name: tokenCookieName}
-	}
-
-	response := s.service.HandlePostV1(
-		v1.PostRequest{EncryptedMarker: cookie.Value, ID: uuid, InputData: domain.InputData(req.PostForm)},
-	)
-
-	// TODO: move to middleware layer
-	// TODO: support opts.Anonymously()
-	cookie.MaxAge, cookie.Path, cookie.Value = 0, "/", response.EncryptedMarker
-	cookie.Secure, cookie.HttpOnly = true, true
-	http.SetCookie(rw, cookie)
-
-	redirect := fallback(req.PostFormValue(redirectKey), req.Referer(), response.Schema.Action)
 	if response.Error != nil {
 		if err, is := response.Error.(errors.ApplicationError); is {
 			if clientErr, is := err.IsClientError(); is {
@@ -182,17 +161,6 @@ func extend(u url.URL, paths ...string) string {
 	}
 	u.Path = path.Join(append([]string{u.Path}, paths...)...)
 	return u.String()
-}
-
-func fallback(value string, fallbackValues ...string) string {
-	if value == "" {
-		for _, value := range fallbackValues {
-			if value != "" {
-				return value
-			}
-		}
-	}
-	return value
 }
 
 func must(base, tpl string) string {

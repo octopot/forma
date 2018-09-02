@@ -26,26 +26,6 @@ func Test_extend(t *testing.T) {
 	}
 }
 
-func Test_fallback(t *testing.T) {
-	tests := []struct {
-		name           string
-		value          string
-		fallbackValues []string
-		expected       string
-	}{
-		{"get value as is", "value", nil, "value"},
-		{"first fallback", "", []string{"first", "second"}, "first"},
-		{"second fallback", "", []string{"", "second"}, "second"},
-	}
-
-	for _, test := range tests {
-		tc := test
-		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.expected, fallback(tc.value, tc.fallbackValues...))
-		})
-	}
-}
-
 func Test_must(t *testing.T) {
 	tests := []struct {
 		name      string

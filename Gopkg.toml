@@ -11,11 +11,11 @@
   version = "^1.1.0"
 
 [[constraint]]
-  name = "github.com/lib/pq"
+  name = "github.com/kamilsk/go-kit"
   branch = "master"
 
 [[constraint]]
-  name = "github.com/kamilsk/go-kit"
+  name = "github.com/lib/pq"
   branch = "master"
 
 [[constraint]]

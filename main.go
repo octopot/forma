@@ -28,10 +28,10 @@ var (
 	version = "dev"
 )
 
-func main() { application{Cmd: cmd.RootCmd, Output: os.Stderr, Shutdown: os.Exit}.Run() }
+func main() { application{Commander: cmd.RootCmd, Output: os.Stderr, Shutdown: os.Exit}.run() }
 
 type application struct {
-	Cmd interface {
+	Commander interface {
 		AddCommand(...*cobra.Command)
 		Execute() error
 	}
@@ -39,8 +39,7 @@ type application struct {
 	Shutdown func(code int)
 }
 
-// Run executes the application logic.
-func (app application) Run() {
+func (app application) run() {
 	var err error
 	defer func() {
 		errors.Recover(&err)
@@ -51,7 +50,7 @@ func (app application) Run() {
 			app.Shutdown(failed)
 		}
 	}()
-	app.Cmd.AddCommand(&cobra.Command{
+	app.Commander.AddCommand(&cobra.Command{
 		Use:   "version",
 		Short: "Show application version",
 		Run: func(cmd *cobra.Command, args []string) {
@@ -61,7 +60,7 @@ func (app application) Run() {
 		},
 		Version: version,
 	})
-	if err = app.Cmd.Execute(); err != nil {
+	if err = app.Commander.Execute(); err != nil {
 		app.Shutdown(failed)
 	}
 	app.Shutdown(success)

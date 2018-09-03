@@ -13,6 +13,7 @@ import (
 
 	_ "github.com/lib/pq"
 
+	_ "github.com/mailru/easyjson"
 	_ "golang.org/x/sync/errgroup"
 )
 

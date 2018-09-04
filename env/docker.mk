@@ -1,4 +1,6 @@
-IMAGE_VERSION := 1.x
+IMAGE_VERSION := 2.x
+PACKAGE       := github.com/kamilsk/form-api
+
 
 .PHONY: docker-build
 docker-build:
@@ -7,6 +9,7 @@ docker-build:
 	             -t kamilsk/form-api:latest \
 	             -t quay.io/kamilsk/form-api:$(IMAGE_VERSION) \
 	             -t quay.io/kamilsk/form-api:latest \
+	             --build-arg PACKAGE=$(PACKAGE) \
 	             --force-rm --no-cache --pull --rm \
 	             .
 
@@ -37,9 +40,10 @@ docker-start:
 	docker run --rm -d \
 	           --env-file env/.env.example \
 	           --name form-api-dev \
-	           --publish 8080:8080 \
+	           --publish 8080:80 \
 	           --publish 8090:8090 \
 	           --publish 8091:8091 \
+	           --publish 8092:8092 \
 	           kamilsk/form-api:$(IMAGE_VERSION)
 
 .PHONY: docker-logs

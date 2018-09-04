@@ -33,7 +33,7 @@
 
 ## Motivation
 
-- We need better integration with static site generators like [Hugo](https://gohugo.io/).
+- We need better integration with static sites built with [Hugo](https://gohugo.io/).
 - We want cheaper products than [Formata](https://www.formata.io/) or [FormKeep](https://formkeep.com/).
 - We have to full control over our users' data and protect it from third parties.
 

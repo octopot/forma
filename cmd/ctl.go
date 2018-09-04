@@ -65,6 +65,9 @@ func init() {
 		func() error { return v.BindEnv("grpc_port") },
 		func() error { return v.BindEnv("forma_token") },
 		func() error {
+			v.SetDefault("bind", defaults["bind"])
+			v.SetDefault("grpc_port", defaults["grpc_port"])
+
 			bind := v.GetString("bind")
 			v.SetDefault("grpc_host", kit.Concat(bind, ":", strconv.Itoa(v.GetInt("grpc_port"))))
 

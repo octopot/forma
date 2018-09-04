@@ -9,12 +9,14 @@ services:
 
   migration:
     build:
-      context: ../.
+      args:       { PACKAGE: "${PACKAGE}" }
+      context:    ../.
       dockerfile: ./env/Dockerfile
 
   service:
     build:
-      context: ../.
+      args:       { PACKAGE: "${PACKAGE}" }
+      context:    ../.
       dockerfile: ./env/Dockerfile
     ports:
     - ${LOCAL_SERVICE_HTTP_PORT}:80

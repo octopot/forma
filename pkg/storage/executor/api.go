@@ -8,6 +8,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 const (
@@ -54,49 +55,49 @@ func New(dialect string) *Executor {
 
 // InputReader TODO
 type InputReader interface {
-	ReadByID(*query.Token, domain.ID) (query.Input, error)
-	ReadByFilter(*query.Token, query.InputFilter) ([]query.Input, error)
+	ReadByID(*types.Token, domain.ID) (types.Input, error)
+	ReadByFilter(*types.Token, query.InputFilter) ([]types.Input, error)
 }
 
 // InputWriter TODO
 type InputWriter interface {
-	Write(query.WriteInput) (query.Input, error)
+	Write(query.WriteInput) (types.Input, error)
 }
 
 // LogWriter TODO
 type LogWriter interface {
-	Write(query.WriteLog) (query.Log, error)
+	Write(query.WriteLog) (types.Log, error)
 }
 
 // SchemaEditor TODO
 type SchemaEditor interface {
-	Create(*query.Token, query.CreateSchema) (query.Schema, error)
-	Read(*query.Token, query.ReadSchema) (query.Schema, error)
-	Update(*query.Token, query.UpdateSchema) (query.Schema, error)
-	Delete(*query.Token, query.DeleteSchema) (query.Schema, error)
+	Create(*types.Token, query.CreateSchema) (types.Schema, error)
+	Read(*types.Token, query.ReadSchema) (types.Schema, error)
+	Update(*types.Token, query.UpdateSchema) (types.Schema, error)
+	Delete(*types.Token, query.DeleteSchema) (types.Schema, error)
 }
 
 // SchemaReader TODO
 type SchemaReader interface {
-	ReadByID(domain.ID) (query.Schema, error)
+	ReadByID(domain.ID) (types.Schema, error)
 }
 
 // TemplateEditor TODO
 type TemplateEditor interface {
-	Create(*query.Token, query.CreateTemplate) (query.Template, error)
-	Read(*query.Token, query.ReadTemplate) (query.Template, error)
-	Update(*query.Token, query.UpdateTemplate) (query.Template, error)
-	Delete(*query.Token, query.DeleteTemplate) (query.Template, error)
+	Create(*types.Token, query.CreateTemplate) (types.Template, error)
+	Read(*types.Token, query.ReadTemplate) (types.Template, error)
+	Update(*types.Token, query.UpdateTemplate) (types.Template, error)
+	Delete(*types.Token, query.DeleteTemplate) (types.Template, error)
 }
 
 // TemplateReader TODO
 type TemplateReader interface {
-	ReadByID(domain.ID) (query.Template, error)
+	ReadByID(domain.ID) (types.Template, error)
 }
 
 // UserManager TODO
 type UserManager interface {
-	Token(domain.ID) (*query.Token, error)
+	Token(domain.ID) (*types.Token, error)
 }
 
 // Executor TODO

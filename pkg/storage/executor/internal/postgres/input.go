@@ -9,6 +9,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // NewInputContext TODO
@@ -22,8 +23,8 @@ type inputScope struct {
 }
 
 // Write TODO
-func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
-	entity := query.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
+func (scope inputScope) Write(data query.WriteInput) (types.Input, error) {
+	entity := types.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
 	encoded, encodeErr := json.Marshal(entity.Data)
 	if encodeErr != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, encodeErr,
@@ -41,8 +42,8 @@ func (scope inputScope) Write(data query.WriteInput) (query.Input, error) {
 }
 
 // ReadByID TODO
-func (scope inputScope) ReadByID(token *query.Token, id domain.ID) (query.Input, error) {
-	entity, encoded := query.Input{ID: id}, []byte(nil)
+func (scope inputScope) ReadByID(token *types.Token, id domain.ID) (types.Input, error) {
+	entity, encoded := types.Input{ID: id}, []byte(nil)
 	q := `SELECT "i"."schema_id", "i"."data", "i"."created_at"
 	        FROM "input" "i"
 	  INNER JOIN "schema" "s" ON "s"."id" = "i"."schema_id"
@@ -62,7 +63,7 @@ func (scope inputScope) ReadByID(token *query.Token, id domain.ID) (query.Input,
 }
 
 // ReadByFilter TODO
-func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilter) ([]query.Input, error) {
+func (scope inputScope) ReadByFilter(token *types.Token, filter query.InputFilter) ([]types.Input, error) {
 	q := `SELECT "i"."id", "i"."data", "i"."created_at"
 	        FROM "input" "i"
 	  INNER JOIN "schema" "s" ON "s"."id" = "i"."schema_id"
@@ -82,7 +83,7 @@ func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilte
 		_, _ = builder.WriteString(` AND "i"."created_at" <= $2`)
 		args = append(args, filter.To)
 	}
-	entities := make([]query.Input, 0, 8)
+	entities := make([]types.Input, 0, 8)
 	rows, dbErr := scope.conn.QueryContext(scope.ctx, builder.String(), args...)
 	if dbErr != nil {
 		return nil, errors.Database(errors.ServerErrorMessage, dbErr,
@@ -90,7 +91,7 @@ func (scope inputScope) ReadByFilter(token *query.Token, filter query.InputFilte
 			token.UserID, token.User.AccountID, filter)
 	}
 	for rows.Next() {
-		entity, encoded := query.Input{SchemaID: filter.SchemaID}, []byte(nil)
+		entity, encoded := types.Input{SchemaID: filter.SchemaID}, []byte(nil)
 		if scanErr := rows.Scan(&entity.ID, &encoded, &entity.CreatedAt); scanErr != nil {
 			return nil, errors.Database(errors.ServerErrorMessage, scanErr,
 				"user %q of account %q tried to read inputs by criteria %+v",

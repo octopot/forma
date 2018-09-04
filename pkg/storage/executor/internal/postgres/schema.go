@@ -8,6 +8,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // NewSchemaContext TODO
@@ -21,8 +22,8 @@ type schemaScope struct {
 }
 
 // Create TODO
-func (scope schemaScope) Create(token *query.Token, data query.CreateSchema) (query.Schema, error) {
-	entity := query.Schema{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
+func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (types.Schema, error) {
+	entity := types.Schema{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
 	encoded, encodeErr := xml.Marshal(entity.Definition)
 	if encodeErr != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, encodeErr,
@@ -41,8 +42,8 @@ func (scope schemaScope) Create(token *query.Token, data query.CreateSchema) (qu
 }
 
 // Read TODO
-func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.Schema, error) {
-	entity, encoded := query.Schema{ID: data.ID, AccountID: token.User.AccountID}, []byte(nil)
+func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.Schema, error) {
+	entity, encoded := types.Schema{ID: data.ID, AccountID: token.User.AccountID}, []byte(nil)
 	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
 	       WHERE "id" = $1 AND "account_id" = $2`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
@@ -59,8 +60,8 @@ func (scope schemaScope) Read(token *query.Token, data query.ReadSchema) (query.
 }
 
 // ReadByID TODO
-func (scope schemaScope) ReadByID(id domain.ID) (query.Schema, error) {
-	entity, encoded := query.Schema{ID: id}, []byte(nil)
+func (scope schemaScope) ReadByID(id domain.ID) (types.Schema, error) {
+	entity, encoded := types.Schema{ID: id}, []byte(nil)
 	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "schema"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
@@ -79,7 +80,7 @@ func (scope schemaScope) ReadByID(id domain.ID) (query.Schema, error) {
 }
 
 // Update TODO
-func (scope schemaScope) Update(token *query.Token, data query.UpdateSchema) (query.Schema, error) {
+func (scope schemaScope) Update(token *types.Token, data query.UpdateSchema) (types.Schema, error) {
 	entity, readErr := scope.Read(token, query.ReadSchema{ID: data.ID})
 	if readErr != nil {
 		return entity, readErr
@@ -109,7 +110,7 @@ func (scope schemaScope) Update(token *query.Token, data query.UpdateSchema) (qu
 }
 
 // Delete TODO
-func (scope schemaScope) Delete(token *query.Token, data query.DeleteSchema) (query.Schema, error) {
+func (scope schemaScope) Delete(token *types.Token, data query.DeleteSchema) (types.Schema, error) {
 	entity, readErr := scope.Read(token, query.ReadSchema{ID: data.ID})
 	if readErr != nil {
 		return entity, readErr

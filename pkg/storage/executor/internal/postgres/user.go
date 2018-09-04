@@ -6,7 +6,7 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // NewUserContext TODO
@@ -20,11 +20,11 @@ type manager struct {
 }
 
 // Token TODO
-func (scope manager) Token(id domain.ID) (*query.Token, error) {
+func (scope manager) Token(id domain.ID) (*types.Token, error) {
 	var (
-		token   = query.Token{ID: id}
-		user    = query.User{}
-		account = query.Account{}
+		token   = types.Token{ID: id}
+		user    = types.User{}
+		account = types.Account{}
 	)
 	q := `SELECT "t"."user_id", "t"."expired_at", "t"."created_at",
 	             "u"."account_id", "u"."name", "u"."created_at", "u"."updated_at",

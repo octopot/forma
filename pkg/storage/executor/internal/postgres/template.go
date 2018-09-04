@@ -7,6 +7,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // NewTemplateContext TODO
@@ -20,8 +21,8 @@ type templateScope struct {
 }
 
 // Create TODO
-func (scope templateScope) Create(token *query.Token, data query.CreateTemplate) (query.Template, error) {
-	entity := query.Template{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
+func (scope templateScope) Create(token *types.Token, data query.CreateTemplate) (types.Template, error) {
+	entity := types.Template{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
 	encoded := string(entity.Definition)
 	q := `INSERT INTO "template" ("id", "account_id", "title", "definition") VALUES ($1, $2, $3, $4)
 	      RETURNING "id", "created_at"`
@@ -35,8 +36,8 @@ func (scope templateScope) Create(token *query.Token, data query.CreateTemplate)
 }
 
 // Read TODO
-func (scope templateScope) Read(token *query.Token, data query.ReadTemplate) (query.Template, error) {
-	entity, encoded := query.Template{ID: data.ID, AccountID: token.User.AccountID}, ""
+func (scope templateScope) Read(token *types.Token, data query.ReadTemplate) (types.Template, error) {
+	entity, encoded := types.Template{ID: data.ID, AccountID: token.User.AccountID}, ""
 	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "template"
 	       WHERE "id" = $1 AND "account_id" = $2`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
@@ -50,8 +51,8 @@ func (scope templateScope) Read(token *query.Token, data query.ReadTemplate) (qu
 }
 
 // ReadByID TODO
-func (scope templateScope) ReadByID(id domain.ID) (query.Template, error) {
-	entity, encoded := query.Template{ID: id}, ""
+func (scope templateScope) ReadByID(id domain.ID) (types.Template, error) {
+	entity, encoded := types.Template{ID: id}, ""
 	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "template"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
@@ -66,7 +67,7 @@ func (scope templateScope) ReadByID(id domain.ID) (query.Template, error) {
 }
 
 // Update TODO
-func (scope templateScope) Update(token *query.Token, data query.UpdateTemplate) (query.Template, error) {
+func (scope templateScope) Update(token *types.Token, data query.UpdateTemplate) (types.Template, error) {
 	entity, readErr := scope.Read(token, query.ReadTemplate{ID: data.ID})
 	if readErr != nil {
 		return entity, readErr
@@ -91,7 +92,7 @@ func (scope templateScope) Update(token *query.Token, data query.UpdateTemplate)
 }
 
 // Delete TODO
-func (scope templateScope) Delete(token *query.Token, data query.DeleteTemplate) (query.Template, error) {
+func (scope templateScope) Delete(token *types.Token, data query.DeleteTemplate) (types.Template, error) {
 	entity, readErr := scope.Read(token, query.ReadTemplate{ID: data.ID})
 	if readErr != nil {
 		return entity, readErr

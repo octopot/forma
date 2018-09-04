@@ -9,6 +9,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // Must returns a new instance of the Storage or panics if it cannot configure it.
@@ -116,7 +117,7 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 // InputHandler interface
 
 // HandleInput TODO
-func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*query.Input, error) {
+func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
 		return nil, err
@@ -131,7 +132,7 @@ func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, ver
 }
 
 // LogRequest TODO
-func (storage *Storage) LogRequest(ctx context.Context, input *query.Input, meta domain.InputContext) error {
+func (storage *Storage) LogRequest(ctx context.Context, input *types.Input, meta domain.InputContext) error {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
 		return err

@@ -1,2 +1,30 @@
 kind: Template
-payload: ~
+payload:
+  id:         10000000-2000-4000-8000-160000000008
+  title:      Feedback template
+  definition: |
+    {{- define "forma.body" -}}
+        {{- with .Schema.Input "name" -}}
+            <div class="form-group row">
+                <label for="{{ .ID }}"
+                       class="col-sm-3 col-form-label">{{ .Name }}</label>
+                <div class="col-sm-9">
+                    {{- template "forma.input" . -}}
+                </div>
+            </div>
+        {{- end -}}
+        {{- with .Schema.Input "feedback" -}}
+            <div class="form-group row">
+                <label for="{{ .ID }}"
+                       class="col-sm-3 col-form-label">{{ .Name }}</label>
+                <div class="col-sm-9">
+                    {{- template "forma.input" . -}}
+                </div>
+            </div>
+        {{- end -}}
+    {{- end -}}
+    {{- define "forma.submit" -}}
+        <input name="_redirect" type="hidden" value="https://kamilsk.github.io/form-api/">
+        <input name="_timeout" type="hidden" value="60">
+        <input class="btn btn-dark" type="submit">
+    {{- end -}}

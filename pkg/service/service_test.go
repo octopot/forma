@@ -14,7 +14,7 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/service"
-	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 )
@@ -74,7 +74,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 				response = v1.PostResponse{ID: UUID, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "name", Type: domain.TextType}},
 				}}
-				input = &query.Input{ID: response.ID,
+				input = &types.Input{ID: response.ID,
 					SchemaID: request.ID, Data: request.InputData, CreatedAt: time.Now(),
 				}
 			)

@@ -8,7 +8,7 @@ import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/kamilsk/form-api/pkg/domain"
-	query "github.com/kamilsk/form-api/pkg/storage/query"
+	types "github.com/kamilsk/form-api/pkg/storage/types"
 	reflect "reflect"
 )
 
@@ -36,9 +36,9 @@ func (m *MockInputHandler) EXPECT() *MockInputHandlerMockRecorder {
 }
 
 // HandleInput mocks base method
-func (m *MockInputHandler) HandleInput(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (*query.Input, error) {
+func (m *MockInputHandler) HandleInput(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (*types.Input, error) {
 	ret := m.ctrl.Call(m, "HandleInput", arg0, arg1, arg2)
-	ret0, _ := ret[0].(*query.Input)
+	ret0, _ := ret[0].(*types.Input)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -49,7 +49,7 @@ func (mr *MockInputHandlerMockRecorder) HandleInput(arg0, arg1, arg2 interface{}
 }
 
 // LogRequest mocks base method
-func (m *MockInputHandler) LogRequest(arg0 context.Context, arg1 *query.Input, arg2 domain.InputContext) error {
+func (m *MockInputHandler) LogRequest(arg0 context.Context, arg1 *types.Input, arg2 domain.InputContext) error {
 	ret := m.ctrl.Call(m, "LogRequest", arg0, arg1, arg2)
 	ret0, _ := ret[0].(error)
 	return ret0

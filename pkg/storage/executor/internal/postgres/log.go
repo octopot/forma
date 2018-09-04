@@ -7,6 +7,7 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // NewLogContext TODO
@@ -20,8 +21,8 @@ type logScope struct {
 }
 
 // Write TODO
-func (scope logScope) Write(data query.WriteLog) (query.Log, error) {
-	entity := query.Log{
+func (scope logScope) Write(data query.WriteLog) (types.Log, error) {
+	entity := types.Log{
 		SchemaID: data.SchemaID, InputID: data.InputID, TemplateID: data.TemplateID,
 		Identifier: data.Identifier, Code: data.Code, Context: data.InputContext,
 	}

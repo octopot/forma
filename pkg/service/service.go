@@ -5,7 +5,7 @@ import (
 
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
@@ -45,7 +45,7 @@ func (service *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 		return response
 	}
 
-	var input *query.Input
+	var input *types.Input
 	input, response.Error = service.handler.HandleInput(context.Background(), request.ID, verified)
 	if response.Error != nil {
 		return response

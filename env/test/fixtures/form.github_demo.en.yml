@@ -1,2 +1,10 @@
 kind: Schema
-payload: ~
+payload:
+  id:         10000000-2000-4000-8000-160000000005
+  title:      GitHub demo
+  definition: |
+    <form lang="en" action="https://kamilsk.github.io/form-api/">
+        <input name="name" type="text" title="Name" placeholder="Name..." maxlength="25" required="1"/>
+        <input name="feedback" type="text" title="Feedback" placeholder="Your feedback..." maxlength="255"
+               required="1"/>
+    </form>

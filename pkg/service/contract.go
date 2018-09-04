@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/storage/query"
+	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
 // Storage TODO
@@ -23,7 +23,7 @@ type ProtectedStorage interface {
 // InputHandler TODO
 type InputHandler interface {
 	// HandleInput TODO
-	HandleInput(context.Context, domain.ID, domain.InputData) (*query.Input, error)
+	HandleInput(context.Context, domain.ID, domain.InputData) (*types.Input, error)
 	// LogRequest TODO
-	LogRequest(context.Context, *query.Input, domain.InputContext) error
+	LogRequest(context.Context, *types.Input, domain.InputContext) error
 }

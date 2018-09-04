@@ -15,16 +15,16 @@
 - [x] v1: [MVP](https://github.com/kamilsk/form-api/projects/1)
   - [**May 31, 2018**](https://github.com/kamilsk/form-api/milestone/1)
   - Main concepts and working prototype.
-- [ ] v2: [API v2 and CLI CRUD](https://github.com/kamilsk/form-api/projects/2)
+- [ ] v2: [CLI CRUD](https://github.com/kamilsk/form-api/projects/2)
   - [**August 31, 2018**](https://github.com/kamilsk/form-api/milestone/2)
   - Command line interface for create, read, update and delete operations above gRPC.
-  - Template system and Edge Side Includes/Server Side Includes support.
-- [ ] v3: [DSL for validation and CSI](https://github.com/kamilsk/form-api/projects/3)
+- [ ] v3: [API v2 and DSL for validation](https://github.com/kamilsk/form-api/projects/3)
   - [**September 30, 2018**](https://github.com/kamilsk/form-api/milestone/3)
-  - Client-side integration.
+  - Template system and Edge Side Includes/Server Side Includes support.
   - Domain-specific language to define validation rules.
-- [ ] v4: [GUI CRUD](https://github.com/kamilsk/form-api/projects/4)
+- [ ] v4: [CSI and GUI CRUD](https://github.com/kamilsk/form-api/projects/4)
   - [**October 31, 2018**](https://github.com/kamilsk/form-api/milestone/4)
+  - Client-side integration.
   - Graphical user interface and admin panel to perform create, read, update and delete operations.
 - [ ] Forma, SaaS
   - **December 31, 2018**
@@ -97,6 +97,7 @@ Usage:
 
 Available Commands:
   completion  Print Bash or Zsh completion
+  ctl         Communicate with Forma server via gRPC
   help        Help about any command
   migrate     Apply database migration
   run         Start HTTP server

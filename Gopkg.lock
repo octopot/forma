@@ -106,11 +106,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5cc561c0f280b098d24dbaa192fa0c6409bbd0cbc06b6e4ac46f6e9b36077ca6"
+  digest = "1:4bd7ec2c74487ee345d42c79a970b73512b44fbef4e02db26ec61e15901e6b43"
   name = "github.com/kamilsk/go-kit"
-  packages = ["pkg/fn"]
+  packages = [
+    "pkg/fn",
+    "pkg/strings",
+  ]
   pruneopts = "UT"
-  revision = "c4a06f93eaecb1ce90c8246c1f7ed8af368e567d"
+  revision = "0101ca8436fba89061a6961d864ae7fa731e5797"
 
 [[projects]]
   branch = "master"
@@ -189,7 +192,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:5423af3e995a8d4cc5753845d80849c8df1ef1debcef4bf373b075a7c1ab8a23"
+  digest = "1:779b60df866a1d0c7a19d5988c86e4d5b0732d07fb6a047e5852ad4a038156b1"
   name = "github.com/prometheus/client_golang"
   packages = [
     "prometheus",
@@ -197,7 +200,7 @@
     "prometheus/promhttp",
   ]
   pruneopts = "UT"
-  revision = "a10423e9da491a85bad70ec36c4215a6b063a7c0"
+  revision = "d968d2292ed0d640ba2065d86a22ddee4bf009f1"
 
 [[projects]]
   branch = "master"
@@ -343,7 +346,7 @@
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "fa5fdf94c78965f1aa8423f0cc50b8b8d728b05a"
+  revision = "2b024373dcd9800f0cae693839fac6ede8d64a8c"
 
 [[projects]]
   digest = "1:a2ab62866c75542dd18d2b069fec854577a20211d7c0ea6ae746072a1dccdd18"
@@ -446,6 +449,7 @@
     "github.com/golang/protobuf/proto",
     "github.com/golang/protobuf/ptypes/timestamp",
     "github.com/kamilsk/go-kit/pkg/fn",
+    "github.com/kamilsk/go-kit/pkg/strings",
     "github.com/lib/pq",
     "github.com/magiconair/properties/assert",
     "github.com/mailru/easyjson",

@@ -1,0 +1,16 @@
+docs
+env
+
+.github
+.dockerignore
+.gitattributes
+.gitignore
+.goreleaser.yml
+.scrutinizer.yml
+.travis.yml
+
+Makefile
+Gopkg.*
+*_test.go
+
+README.md

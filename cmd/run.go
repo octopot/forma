@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/pprof"
 	"runtime"
+	"strconv"
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 
@@ -16,6 +17,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/kamilsk/go-kit/pkg/fn"
+	"github.com/kamilsk/go-kit/pkg/strings"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -56,29 +58,38 @@ var runCmd = &cobra.Command{
 func init() {
 	v := viper.New()
 	fn.Must(
-		func() error { return v.BindEnv("max_cpus") },
-		func() error { return v.BindEnv("host") },
+		func() error { return v.BindEnv("bind") },
+		func() error { return v.BindEnv("http_port") },
+		func() error { return v.BindEnv("profiling_port") },
+		func() error { return v.BindEnv("monitoring_port") },
+		func() error { return v.BindEnv("grpc_port") },
 		func() error { return v.BindEnv("read_timeout") },
 		func() error { return v.BindEnv("read_header_timeout") },
 		func() error { return v.BindEnv("write_timeout") },
 		func() error { return v.BindEnv("idle_timeout") },
 		func() error { return v.BindEnv("base_url") },
 		func() error { return v.BindEnv("template_dir") },
-		func() error { return v.BindEnv("profiling_host") },
-		func() error { return v.BindEnv("monitoring_host") },
-		func() error { return v.BindEnv("grpc_host") },
+		func() error { return v.BindEnv("max_cpus") },
 		func() error {
 			v.SetDefault("max_cpus", defaults["max_cpus"])
-			v.SetDefault("host", defaults["host"])
+			v.SetDefault("bind", defaults["bind"])
+			v.SetDefault("http_port", defaults["http_port"])
+			v.SetDefault("profiling_port", defaults["profiling_port"])
+			v.SetDefault("monitoring_port", defaults["monitoring_port"])
+			v.SetDefault("grpc_port", defaults["grpc_port"])
+
+			bind := v.GetString("bind")
+			v.SetDefault("host", strings.Concat(bind, ":", strconv.Itoa(v.GetInt("http_port"))))
+			v.SetDefault("profiling_host", strings.Concat(bind, ":", strconv.Itoa(v.GetInt("profiling_port"))))
+			v.SetDefault("monitoring_host", strings.Concat(bind, ":", strconv.Itoa(v.GetInt("monitoring_port"))))
+			v.SetDefault("grpc_host", strings.Concat(bind, ":", strconv.Itoa(v.GetInt("grpc_port"))))
+
 			v.SetDefault("read_timeout", defaults["read_timeout"])
 			v.SetDefault("read_header_timeout", defaults["read_header_timeout"])
 			v.SetDefault("write_timeout", defaults["write_timeout"])
 			v.SetDefault("idle_timeout", defaults["idle_timeout"])
 			v.SetDefault("base_url", defaults["base_url"])
 			v.SetDefault("template_dir", defaults["template_dir"])
-			v.SetDefault("profiling_host", defaults["profiling_host"])
-			v.SetDefault("monitoring_host", defaults["monitoring_host"])
-			v.SetDefault("grpc_host", defaults["grpc_host"])
 			return nil
 		},
 		func() error {
@@ -179,7 +190,7 @@ func startProfiler(cnf config.ProfilingConfig) error {
 		mux.HandleFunc("/pprof/profile", pprof.Profile)
 		mux.HandleFunc("/pprof/symbol", pprof.Symbol)
 		mux.HandleFunc("/pprof/trace", pprof.Trace)
-		mux.HandleFunc("/debug/pprof/", pprof.Index) // net/http/pprof.handler.ServeHTTP specificity
+		mux.HandleFunc("/debug/pprof/", pprof.Index)
 		log.Println("start profiling server at", listener.Addr())
 		_ = http.Serve(listener, mux) // TODO issue#139
 		listener.Close()

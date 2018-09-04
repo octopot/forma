@@ -12,17 +12,12 @@ import (
 var (
 	cnf      = config.ApplicationConfig{}
 	defaults = map[string]interface{}{
-		"dsn":                 "postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable",
-		"open_conn":           1,
-		"idle_conn":           1,
-		"conn_max_lt":         0,
-		"table":               "migration",
-		"schema":              "public",
 		"max_cpus":            1,
-		"host":                "127.0.0.1:80",
-		"profiling_host":      "127.0.0.1:8090",
-		"monitoring_host":     "127.0.0.1:8091",
-		"grpc_host":           "127.0.0.1:8092",
+		"bind":                "127.0.0.1",
+		"http_port":           80,
+		"profiling_port":      8090,
+		"monitoring_port":     8091,
+		"grpc_port":           8092,
 		"read_timeout":        time.Duration(0),
 		"read_header_timeout": time.Duration(0),
 		"write_timeout":       time.Duration(0),
@@ -30,6 +25,12 @@ var (
 		"base_url":            "http://localhost/",
 		"template_dir":        "static/templates",
 		"forma_token":         "",
+		"dsn":                 "postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable",
+		"open_conn":           1,
+		"idle_conn":           1,
+		"conn_max_lt":         0,
+		"table":               "migration",
+		"schema":              "public",
 	}
 )
 

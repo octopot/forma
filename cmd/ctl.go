@@ -7,10 +7,12 @@ import (
 	"io/ioutil"
 	"os"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
+	kit "github.com/kamilsk/go-kit/pkg/strings"
 
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/go-kit/pkg/fn"
@@ -22,10 +24,98 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+var (
+	controlCmd = &cobra.Command{Use: "ctl", Short: "Communicate with Forma server via gRPC"}
+	createCmd  = &cobra.Command{Use: "create", Short: "Create some kind", RunE: edit}
+	readCmd    = &cobra.Command{Use: "read", Short: "Read some kind", RunE: edit}
+	updateCmd  = &cobra.Command{Use: "update", Short: "Update some kind", RunE: edit}
+	deleteCmd  = &cobra.Command{Use: "delete", Short: "Delete some kind", RunE: edit}
+	schemaCmd  = &cobra.Command{
+		Use:   "schema",
+		Short: "Print schema of another control command",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			var (
+				target   *cobra.Command
+				builders map[string]func() interface{}
+				found    bool
+			)
+			use := cmd.Flag("for").Value.String()
+			for target, builders = range entities {
+				if strings.EqualFold(target.Use, use) {
+					found = true
+					break
+				}
+			}
+			if !found {
+				return errors.Errorf("unknown control command %q", use)
+			}
+			for kind, builder := range builders {
+				yaml.NewEncoder(cmd.OutOrStdout()).Encode(schema{Kind: kind, Payload: convert(builder())})
+				cmd.Println()
+			}
+			return nil
+		},
+	}
+)
+
+func init() {
+	v := viper.New()
+	fn.Must(
+		func() error { return v.BindEnv("bind") },
+		func() error { return v.BindEnv("grpc_port") },
+		func() error { return v.BindEnv("forma_token") },
+		func() error {
+			bind := v.GetString("bind")
+			v.SetDefault("grpc_host", kit.Concat(bind, ":", strconv.Itoa(v.GetInt("grpc_port"))))
+
+			v.SetDefault("forma_token", defaults["forma_token"])
+			return nil
+		},
+		func() error {
+			flags := controlCmd.PersistentFlags()
+			flags.StringVarP(new(string), "filename", "f", "", "entity source (default is standard input)")
+			flags.StringVarP(new(string), "output", "o", yamlFormat, "output format, one of: json|yaml")
+			flags.Bool("dry-run", false, "if true, only print the object that would be sent, without sending it")
+			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
+				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
+			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,
+				"timeout", "t", time.Second, "connection timeout")
+			flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
+				"token", "", v.GetString("forma_token"), "user access token")
+			schemaCmd.Flags().String("for", "", "which command: create, read, update or delete")
+			return schemaCmd.MarkFlagRequired("for")
+		},
+		func() error {
+			entities = factory{
+				createCmd: {
+					"Schema":   func() interface{} { return &pb.CreateSchemaRequest{} },
+					"Template": func() interface{} { return &pb.CreateTemplateRequest{} },
+				},
+				readCmd: {
+					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
+					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
+				},
+				updateCmd: {
+					"Schema":   func() interface{} { return &pb.UpdateSchemaRequest{} },
+					"Template": func() interface{} { return &pb.UpdateTemplateRequest{} },
+				},
+				deleteCmd: {
+					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
+					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
+				},
+			}
+			return nil
+		},
+	)
+	controlCmd.AddCommand(createCmd, readCmd, updateCmd, deleteCmd, schemaCmd)
+}
+
 const (
 	yamlFormat = "yaml"
 	jsonFormat = "json"
 )
+
+var entities factory
 
 type schema struct {
 	Kind    string                 `yaml:"kind"`
@@ -149,89 +239,4 @@ func edit(cmd *cobra.Command, _ []string) error {
 		return json.NewEncoder(cmd.OutOrStdout()).Encode(response)
 	}
 	return yaml.NewEncoder(cmd.OutOrStdout()).Encode(response)
-}
-
-var entities factory
-
-var (
-	controlCmd = &cobra.Command{Use: "ctl", Short: "Communicate with Forma server via gRPC"}
-	createCmd  = &cobra.Command{Use: "create", Short: "Create some kind", RunE: edit}
-	readCmd    = &cobra.Command{Use: "read", Short: "Read some kind", RunE: edit}
-	updateCmd  = &cobra.Command{Use: "update", Short: "Update some kind", RunE: edit}
-	deleteCmd  = &cobra.Command{Use: "delete", Short: "Delete some kind", RunE: edit}
-	schemaCmd  = &cobra.Command{
-		Use:   "schema",
-		Short: "Print schema of another control command",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			var (
-				target   *cobra.Command
-				builders map[string]func() interface{}
-				found    bool
-			)
-			use := cmd.Flag("for").Value.String()
-			for target, builders = range entities {
-				if strings.EqualFold(target.Use, use) {
-					found = true
-					break
-				}
-			}
-			if !found {
-				return errors.Errorf("unknown control command %q", use)
-			}
-			for kind, builder := range builders {
-				yaml.NewEncoder(cmd.OutOrStdout()).Encode(schema{Kind: kind, Payload: convert(builder())})
-				cmd.Println()
-			}
-			return nil
-		},
-	}
-)
-
-func init() {
-	v := viper.New()
-	fn.Must(
-		func() error { return v.BindEnv("forma_token") },
-		func() error { return v.BindEnv("grpc_host") },
-		func() error {
-			v.SetDefault("forma_token", defaults["forma_token"])
-			v.SetDefault("grpc_host", defaults["grpc_host"])
-			return nil
-		},
-		func() error {
-			flags := controlCmd.PersistentFlags()
-			flags.StringVarP(new(string), "filename", "f", "", "entity source (default is standard input)")
-			flags.StringVarP(new(string), "output", "o", yamlFormat, "output format, one of: json|yaml")
-			flags.Bool("dry-run", false, "if true, only print the object that would be sent, without sending it")
-			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
-				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
-			flags.DurationVarP(&cnf.Union.GRPCConfig.Timeout,
-				"timeout", "t", time.Second, "connection timeout")
-			flags.StringVarP((*string)(&cnf.Union.GRPCConfig.Token),
-				"token", "", v.GetString("forma_token"), "user access token")
-			schemaCmd.Flags().String("for", "", "which command: create, read, update or delete")
-			return schemaCmd.MarkFlagRequired("for")
-		},
-		func() error {
-			entities = factory{
-				createCmd: {
-					"Schema":   func() interface{} { return &pb.CreateSchemaRequest{} },
-					"Template": func() interface{} { return &pb.CreateTemplateRequest{} },
-				},
-				readCmd: {
-					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
-					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
-				},
-				updateCmd: {
-					"Schema":   func() interface{} { return &pb.UpdateSchemaRequest{} },
-					"Template": func() interface{} { return &pb.UpdateTemplateRequest{} },
-				},
-				deleteCmd: {
-					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
-					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
-				},
-			}
-			return nil
-		},
-	)
-	controlCmd.AddCommand(createCmd, readCmd, updateCmd, deleteCmd, schemaCmd)
 }

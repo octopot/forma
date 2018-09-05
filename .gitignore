@@ -2,8 +2,6 @@
 *.out
 
 # database
-/static/migrations/*
-!/static/migrations/1_initial.sql
 /env/backup.db
 
 # environment

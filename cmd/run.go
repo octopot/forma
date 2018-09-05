@@ -11,8 +11,10 @@ import (
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 
+	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/server"
+	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage"
@@ -151,7 +153,10 @@ func startGRPCServer(cnf config.GRPCConfig, storage pb.ProtectedStorage) error {
 		return err
 	}
 	go func() {
-		srv := grpc.NewServer()
+		srv := grpc.NewServer(
+			grpc.StreamInterceptor(grpc_auth.StreamServerInterceptor(middleware.TokenInjector)),
+			grpc.UnaryInterceptor(grpc_auth.UnaryServerInterceptor(middleware.TokenInjector)),
+		)
 		pb.RegisterSchemaServer(srv, pb.NewSchemaServer(storage))
 		pb.RegisterTemplateServer(srv, pb.NewTemplateServer(storage))
 		pb.RegisterInputServer(srv, pb.NewInputServer(storage))

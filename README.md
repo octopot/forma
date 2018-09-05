@@ -57,7 +57,7 @@ form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/t
 ```
 
 <details>
-<summary>GET `curl /api/v1/UUID`</summary>
+<summary><strong>GET curl /api/v1/UUID</strong></summary>
 
 ```bash
 $ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
@@ -71,7 +71,7 @@ $ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 </details>
 
 <details>
-<summary>POST `curl /api/v1/UUID`</summary>
+<summary><strong>POST /api/v1/UUID</strong></summary>
 
 ```bash
 $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \

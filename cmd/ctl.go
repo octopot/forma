@@ -15,12 +15,14 @@ import (
 	kit "github.com/kamilsk/go-kit/pkg/strings"
 
 	"github.com/kamilsk/form-api/pkg/config"
+	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
 	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"gopkg.in/yaml.v2"
 )
 
@@ -95,8 +97,8 @@ func init() {
 					"Template": func() interface{} { return &pb.CreateTemplateRequest{} },
 				},
 				readCmd: {
-					"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
-					"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
+					"Schema":   func() interface{} { return &pb.ReadSchemaRequest{} },
+					"Template": func() interface{} { return &pb.ReadTemplateRequest{} },
 				},
 				updateCmd: {
 					"Schema":   func() interface{} { return &pb.UpdateSchemaRequest{} },
@@ -172,6 +174,9 @@ func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
 	defer conn.Close()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
+	ctx = metadata.AppendToOutgoingContext(ctx,
+		middleware.AuthHeader,
+		kit.Concat(middleware.AuthScheme, " ", string(cnf.Token)))
 	switch request := entity.(type) {
 	case *pb.CreateSchemaRequest:
 		client := pb.NewSchemaClient(conn)

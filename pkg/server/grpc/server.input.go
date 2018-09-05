@@ -14,7 +14,7 @@ type inputServer struct {
 	storage ProtectedStorage
 }
 
-// Read TODO
+// Read TODO issue#173
 func (*inputServer) Read(context.Context, *ReadInputRequest) (*ReadInputResponse, error) {
 	log.Println("InputServer.Read was called")
 	return &ReadInputResponse{}, nil

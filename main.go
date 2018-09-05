@@ -11,8 +11,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/spf13/cobra"
 
-	_ "github.com/lib/pq"
-
+	_ "github.com/grpc-ecosystem/go-grpc-middleware"
 	_ "github.com/mailru/easyjson"
 	_ "golang.org/x/sync/errgroup"
 )

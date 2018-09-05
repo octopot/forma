@@ -36,12 +36,12 @@ func New(configs ...Configurator) (*Storage, error) {
 func Database(cnf config.DBConfig) Configurator {
 	return func(instance *Storage) (err error) {
 		defer errors.Recover(&err)
+		instance.exec = executor.New(cnf.DriverName())
 		instance.db, err = sql.Open(cnf.DriverName(), string(cnf.DSN))
 		if err == nil {
 			instance.db.SetMaxOpenConns(cnf.MaxOpen)
 			instance.db.SetMaxIdleConns(cnf.MaxIdle)
 			instance.db.SetConnMaxLifetime(cnf.MaxLifetime)
-			instance.exec = executor.New(cnf.DriverName())
 		}
 		return
 	}

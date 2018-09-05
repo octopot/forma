@@ -48,6 +48,19 @@ func (mr *MockProtectedStorageMockRecorder) CreateSchema(arg0, arg1, arg2 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateSchema", reflect.TypeOf((*MockProtectedStorage)(nil).CreateSchema), arg0, arg1, arg2)
 }
 
+// CreateTemplate mocks base method
+func (m *MockProtectedStorage) CreateTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.CreateTemplate) (types.Template, error) {
+	ret := m.ctrl.Call(m, "CreateTemplate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(types.Template)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// CreateTemplate indicates an expected call of CreateTemplate
+func (mr *MockProtectedStorageMockRecorder) CreateTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).CreateTemplate), arg0, arg1, arg2)
+}
+
 // DeleteSchema mocks base method
 func (m *MockProtectedStorage) DeleteSchema(arg0 context.Context, arg1 *types.Token, arg2 query.DeleteSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "DeleteSchema", arg0, arg1, arg2)
@@ -59,6 +72,19 @@ func (m *MockProtectedStorage) DeleteSchema(arg0 context.Context, arg1 *types.To
 // DeleteSchema indicates an expected call of DeleteSchema
 func (mr *MockProtectedStorageMockRecorder) DeleteSchema(arg0, arg1, arg2 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSchema", reflect.TypeOf((*MockProtectedStorage)(nil).DeleteSchema), arg0, arg1, arg2)
+}
+
+// DeleteTemplate mocks base method
+func (m *MockProtectedStorage) DeleteTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.DeleteTemplate) (types.Template, error) {
+	ret := m.ctrl.Call(m, "DeleteTemplate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(types.Template)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// DeleteTemplate indicates an expected call of DeleteTemplate
+func (mr *MockProtectedStorageMockRecorder) DeleteTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).DeleteTemplate), arg0, arg1, arg2)
 }
 
 // ReadSchema mocks base method
@@ -74,6 +100,19 @@ func (mr *MockProtectedStorageMockRecorder) ReadSchema(arg0, arg1, arg2 interfac
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadSchema", reflect.TypeOf((*MockProtectedStorage)(nil).ReadSchema), arg0, arg1, arg2)
 }
 
+// ReadTemplate mocks base method
+func (m *MockProtectedStorage) ReadTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.ReadTemplate) (types.Template, error) {
+	ret := m.ctrl.Call(m, "ReadTemplate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(types.Template)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadTemplate indicates an expected call of ReadTemplate
+func (mr *MockProtectedStorageMockRecorder) ReadTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).ReadTemplate), arg0, arg1, arg2)
+}
+
 // UpdateSchema mocks base method
 func (m *MockProtectedStorage) UpdateSchema(arg0 context.Context, arg1 *types.Token, arg2 query.UpdateSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "UpdateSchema", arg0, arg1, arg2)
@@ -85,4 +124,17 @@ func (m *MockProtectedStorage) UpdateSchema(arg0 context.Context, arg1 *types.To
 // UpdateSchema indicates an expected call of UpdateSchema
 func (mr *MockProtectedStorageMockRecorder) UpdateSchema(arg0, arg1, arg2 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSchema", reflect.TypeOf((*MockProtectedStorage)(nil).UpdateSchema), arg0, arg1, arg2)
+}
+
+// UpdateTemplate mocks base method
+func (m *MockProtectedStorage) UpdateTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.UpdateTemplate) (types.Template, error) {
+	ret := m.ctrl.Call(m, "UpdateTemplate", arg0, arg1, arg2)
+	ret0, _ := ret[0].(types.Template)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// UpdateTemplate indicates an expected call of UpdateTemplate
+func (mr *MockProtectedStorageMockRecorder) UpdateTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).UpdateTemplate), arg0, arg1, arg2)
 }

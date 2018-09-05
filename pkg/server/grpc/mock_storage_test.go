@@ -37,7 +37,7 @@ func (m *MockProtectedStorage) EXPECT() *MockProtectedStorageMockRecorder {
 }
 
 // CreateSchema mocks base method
-func (m *MockProtectedStorage) CreateSchema(arg0 context.Context, arg1 *types.Token, arg2 query.CreateSchema) (types.Schema, error) {
+func (m *MockProtectedStorage) CreateSchema(arg0 context.Context, arg1 domain.ID, arg2 query.CreateSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "CreateSchema", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Schema)
 	ret1, _ := ret[1].(error)
@@ -50,7 +50,7 @@ func (mr *MockProtectedStorageMockRecorder) CreateSchema(arg0, arg1, arg2 interf
 }
 
 // CreateTemplate mocks base method
-func (m *MockProtectedStorage) CreateTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.CreateTemplate) (types.Template, error) {
+func (m *MockProtectedStorage) CreateTemplate(arg0 context.Context, arg1 domain.ID, arg2 query.CreateTemplate) (types.Template, error) {
 	ret := m.ctrl.Call(m, "CreateTemplate", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Template)
 	ret1, _ := ret[1].(error)
@@ -63,7 +63,7 @@ func (mr *MockProtectedStorageMockRecorder) CreateTemplate(arg0, arg1, arg2 inte
 }
 
 // DeleteSchema mocks base method
-func (m *MockProtectedStorage) DeleteSchema(arg0 context.Context, arg1 *types.Token, arg2 query.DeleteSchema) (types.Schema, error) {
+func (m *MockProtectedStorage) DeleteSchema(arg0 context.Context, arg1 domain.ID, arg2 query.DeleteSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "DeleteSchema", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Schema)
 	ret1, _ := ret[1].(error)
@@ -76,7 +76,7 @@ func (mr *MockProtectedStorageMockRecorder) DeleteSchema(arg0, arg1, arg2 interf
 }
 
 // DeleteTemplate mocks base method
-func (m *MockProtectedStorage) DeleteTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.DeleteTemplate) (types.Template, error) {
+func (m *MockProtectedStorage) DeleteTemplate(arg0 context.Context, arg1 domain.ID, arg2 query.DeleteTemplate) (types.Template, error) {
 	ret := m.ctrl.Call(m, "DeleteTemplate", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Template)
 	ret1, _ := ret[1].(error)
@@ -89,7 +89,7 @@ func (mr *MockProtectedStorageMockRecorder) DeleteTemplate(arg0, arg1, arg2 inte
 }
 
 // ReadInputByFilter mocks base method
-func (m *MockProtectedStorage) ReadInputByFilter(arg0 context.Context, arg1 *types.Token, arg2 query.InputFilter) ([]types.Input, error) {
+func (m *MockProtectedStorage) ReadInputByFilter(arg0 context.Context, arg1 domain.ID, arg2 query.InputFilter) ([]types.Input, error) {
 	ret := m.ctrl.Call(m, "ReadInputByFilter", arg0, arg1, arg2)
 	ret0, _ := ret[0].([]types.Input)
 	ret1, _ := ret[1].(error)
@@ -102,7 +102,7 @@ func (mr *MockProtectedStorageMockRecorder) ReadInputByFilter(arg0, arg1, arg2 i
 }
 
 // ReadInputByID mocks base method
-func (m *MockProtectedStorage) ReadInputByID(arg0 context.Context, arg1 *types.Token, arg2 domain.ID) (types.Input, error) {
+func (m *MockProtectedStorage) ReadInputByID(arg0 context.Context, arg1, arg2 domain.ID) (types.Input, error) {
 	ret := m.ctrl.Call(m, "ReadInputByID", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Input)
 	ret1, _ := ret[1].(error)
@@ -115,7 +115,7 @@ func (mr *MockProtectedStorageMockRecorder) ReadInputByID(arg0, arg1, arg2 inter
 }
 
 // ReadSchema mocks base method
-func (m *MockProtectedStorage) ReadSchema(arg0 context.Context, arg1 *types.Token, arg2 query.ReadSchema) (types.Schema, error) {
+func (m *MockProtectedStorage) ReadSchema(arg0 context.Context, arg1 domain.ID, arg2 query.ReadSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "ReadSchema", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Schema)
 	ret1, _ := ret[1].(error)
@@ -128,7 +128,7 @@ func (mr *MockProtectedStorageMockRecorder) ReadSchema(arg0, arg1, arg2 interfac
 }
 
 // ReadTemplate mocks base method
-func (m *MockProtectedStorage) ReadTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.ReadTemplate) (types.Template, error) {
+func (m *MockProtectedStorage) ReadTemplate(arg0 context.Context, arg1 domain.ID, arg2 query.ReadTemplate) (types.Template, error) {
 	ret := m.ctrl.Call(m, "ReadTemplate", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Template)
 	ret1, _ := ret[1].(error)
@@ -140,21 +140,8 @@ func (mr *MockProtectedStorageMockRecorder) ReadTemplate(arg0, arg1, arg2 interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).ReadTemplate), arg0, arg1, arg2)
 }
 
-// TokenByID mocks base method
-func (m *MockProtectedStorage) TokenByID(arg0 context.Context, arg1 domain.ID) (*types.Token, error) {
-	ret := m.ctrl.Call(m, "TokenByID", arg0, arg1)
-	ret0, _ := ret[0].(*types.Token)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// TokenByID indicates an expected call of TokenByID
-func (mr *MockProtectedStorageMockRecorder) TokenByID(arg0, arg1 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TokenByID", reflect.TypeOf((*MockProtectedStorage)(nil).TokenByID), arg0, arg1)
-}
-
 // UpdateSchema mocks base method
-func (m *MockProtectedStorage) UpdateSchema(arg0 context.Context, arg1 *types.Token, arg2 query.UpdateSchema) (types.Schema, error) {
+func (m *MockProtectedStorage) UpdateSchema(arg0 context.Context, arg1 domain.ID, arg2 query.UpdateSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "UpdateSchema", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Schema)
 	ret1, _ := ret[1].(error)
@@ -167,7 +154,7 @@ func (mr *MockProtectedStorageMockRecorder) UpdateSchema(arg0, arg1, arg2 interf
 }
 
 // UpdateTemplate mocks base method
-func (m *MockProtectedStorage) UpdateTemplate(arg0 context.Context, arg1 *types.Token, arg2 query.UpdateTemplate) (types.Template, error) {
+func (m *MockProtectedStorage) UpdateTemplate(arg0 context.Context, arg1 domain.ID, arg2 query.UpdateTemplate) (types.Template, error) {
 	ret := m.ctrl.Call(m, "UpdateTemplate", arg0, arg1, arg2)
 	ret0, _ := ret[0].(types.Template)
 	ret1, _ := ret[1].(error)

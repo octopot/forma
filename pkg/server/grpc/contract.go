@@ -10,15 +10,14 @@ import (
 
 // ProtectedStorage TODO
 type ProtectedStorage interface {
-	TokenByID(context.Context, domain.ID) (*types.Token, error)
-	CreateSchema(context.Context, *types.Token, query.CreateSchema) (types.Schema, error)
-	ReadSchema(context.Context, *types.Token, query.ReadSchema) (types.Schema, error)
-	UpdateSchema(context.Context, *types.Token, query.UpdateSchema) (types.Schema, error)
-	DeleteSchema(context.Context, *types.Token, query.DeleteSchema) (types.Schema, error)
-	CreateTemplate(context.Context, *types.Token, query.CreateTemplate) (types.Template, error)
-	ReadTemplate(context.Context, *types.Token, query.ReadTemplate) (types.Template, error)
-	UpdateTemplate(context.Context, *types.Token, query.UpdateTemplate) (types.Template, error)
-	DeleteTemplate(context.Context, *types.Token, query.DeleteTemplate) (types.Template, error)
-	ReadInputByID(context.Context, *types.Token, domain.ID) (types.Input, error)
-	ReadInputByFilter(context.Context, *types.Token, query.InputFilter) ([]types.Input, error)
+	CreateSchema(ctx context.Context, tokenID domain.ID, data query.CreateSchema) (types.Schema, error)
+	ReadSchema(ctx context.Context, tokenID domain.ID, data query.ReadSchema) (types.Schema, error)
+	UpdateSchema(ctx context.Context, tokenID domain.ID, data query.UpdateSchema) (types.Schema, error)
+	DeleteSchema(ctx context.Context, tokenID domain.ID, data query.DeleteSchema) (types.Schema, error)
+	CreateTemplate(ctx context.Context, tokenID domain.ID, data query.CreateTemplate) (types.Template, error)
+	ReadTemplate(ctx context.Context, tokenID domain.ID, data query.ReadTemplate) (types.Template, error)
+	UpdateTemplate(ctx context.Context, tokenID domain.ID, data query.UpdateTemplate) (types.Template, error)
+	DeleteTemplate(ctx context.Context, tokenID domain.ID, data query.DeleteTemplate) (types.Template, error)
+	ReadInputByID(ctx context.Context, tokenID, id domain.ID) (types.Input, error)
+	ReadInputByFilter(ctx context.Context, tokenID domain.ID, data query.InputFilter) ([]types.Input, error)
 }

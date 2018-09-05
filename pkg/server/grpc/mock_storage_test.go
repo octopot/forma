@@ -88,6 +88,32 @@ func (mr *MockProtectedStorageMockRecorder) DeleteTemplate(arg0, arg1, arg2 inte
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).DeleteTemplate), arg0, arg1, arg2)
 }
 
+// ReadInputByFilter mocks base method
+func (m *MockProtectedStorage) ReadInputByFilter(arg0 context.Context, arg1 *types.Token, arg2 query.InputFilter) ([]types.Input, error) {
+	ret := m.ctrl.Call(m, "ReadInputByFilter", arg0, arg1, arg2)
+	ret0, _ := ret[0].([]types.Input)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadInputByFilter indicates an expected call of ReadInputByFilter
+func (mr *MockProtectedStorageMockRecorder) ReadInputByFilter(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadInputByFilter", reflect.TypeOf((*MockProtectedStorage)(nil).ReadInputByFilter), arg0, arg1, arg2)
+}
+
+// ReadInputByID mocks base method
+func (m *MockProtectedStorage) ReadInputByID(arg0 context.Context, arg1 *types.Token, arg2 domain.ID) (types.Input, error) {
+	ret := m.ctrl.Call(m, "ReadInputByID", arg0, arg1, arg2)
+	ret0, _ := ret[0].(types.Input)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ReadInputByID indicates an expected call of ReadInputByID
+func (mr *MockProtectedStorageMockRecorder) ReadInputByID(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadInputByID", reflect.TypeOf((*MockProtectedStorage)(nil).ReadInputByID), arg0, arg1, arg2)
+}
+
 // ReadSchema mocks base method
 func (m *MockProtectedStorage) ReadSchema(arg0 context.Context, arg1 *types.Token, arg2 query.ReadSchema) (types.Schema, error) {
 	ret := m.ctrl.Call(m, "ReadSchema", arg0, arg1, arg2)

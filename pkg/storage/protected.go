@@ -106,3 +106,25 @@ func (storage *Storage) DeleteTemplate(ctx context.Context, token *types.Token, 
 
 	return storage.exec.TemplateEditor(ctx, conn).Delete(token, data)
 }
+
+// ReadInputByID TODO
+func (storage *Storage) ReadInputByID(ctx context.Context, token *types.Token, id domain.ID) (types.Input, error) {
+	conn, closer, err := storage.connection(ctx)
+	if err != nil {
+		return types.Input{}, err
+	}
+	defer closer()
+
+	return storage.exec.InputReader(ctx, conn).ReadByID(token, id)
+}
+
+// ReadInputByFilter TODO
+func (storage *Storage) ReadInputByFilter(ctx context.Context, token *types.Token, filter query.InputFilter) ([]types.Input, error) {
+	conn, closer, err := storage.connection(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer closer()
+
+	return storage.exec.InputReader(ctx, conn).ReadByFilter(token, filter)
+}

@@ -2,8 +2,8 @@ package grpc
 
 import (
 	"context"
-	"github.com/kamilsk/form-api/pkg/domain"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
@@ -19,4 +19,6 @@ type ProtectedStorage interface {
 	ReadTemplate(context.Context, *types.Token, query.ReadTemplate) (types.Template, error)
 	UpdateTemplate(context.Context, *types.Token, query.UpdateTemplate) (types.Template, error)
 	DeleteTemplate(context.Context, *types.Token, query.DeleteTemplate) (types.Template, error)
+	ReadInputByID(context.Context, *types.Token, domain.ID) (types.Input, error)
+	ReadInputByFilter(context.Context, *types.Token, query.InputFilter) ([]types.Input, error)
 }

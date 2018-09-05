@@ -56,12 +56,15 @@
   revision = "96d2a289f41e8b271c9fae52d7d82c970e359284"
 
 [[projects]]
-  digest = "1:bc38c7c481812e178d85160472e231c5e1c9a7f5845d67e23ee4e706933c10d8"
+  branch = "master"
+  digest = "1:8e2e9d89f806c2830ed880fa4dc417e9ed53edb9b071d1bf59f6ea57cfb0e0fc"
   name = "github.com/golang/mock"
-  packages = ["gomock"]
+  packages = [
+    "gomock",
+    "mockgen/model",
+  ]
   pruneopts = "UT"
-  revision = "c34cdb4725f4c3844d095133c6e40e448b86589b"
-  version = "v1.1.1"
+  revision = "600781dde9cca80734169b9e969d9054ccc57937"
 
 [[projects]]
   digest = "1:4c0989ca0bcd10799064318923b9bc2db6b4d6338dd75f3f2d86c3511aaaf5cf"
@@ -200,7 +203,7 @@
     "prometheus/promhttp",
   ]
   pruneopts = "UT"
-  revision = "d968d2292ed0d640ba2065d86a22ddee4bf009f1"
+  revision = "2dbc3a58c2b4d2c9aa7dbb87519be0c9a6767bfb"
 
 [[projects]]
   branch = "master"
@@ -446,6 +449,7 @@
     "github.com/go-chi/chi/middleware",
     "github.com/golang/gddo/httputil",
     "github.com/golang/mock/gomock",
+    "github.com/golang/mock/mockgen/model",
     "github.com/golang/protobuf/proto",
     "github.com/golang/protobuf/ptypes/timestamp",
     "github.com/kamilsk/go-kit/pkg/fn",

@@ -74,8 +74,6 @@ func (storage *Storage) connection(ctx context.Context) (*sql.Conn, func() error
 	return conn, conn.Close, nil
 }
 
-// Storage interface
-
 // Schema returns the form schema by provided ID.
 func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema, error) {
 	var schema domain.Schema
@@ -109,12 +107,6 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	}
 	return entity.Definition, nil
 }
-
-// ProtectedStorage interface
-
-// TODO issue#165
-
-// InputHandler interface
 
 // HandleInput TODO
 func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {

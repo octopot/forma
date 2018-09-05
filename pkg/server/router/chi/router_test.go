@@ -13,6 +13,8 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/stretchr/testify/assert"
+
+	_ "github.com/golang/mock/mockgen/model"
 )
 
 const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"

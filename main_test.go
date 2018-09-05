@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/server"
+	"github.com/kamilsk/form-api/pkg/server/grpc"
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/spf13/cobra"
@@ -15,8 +16,9 @@ import (
 
 // convergence
 var (
-	_ server.Service  = service.New(nil, nil)
-	_ service.Storage = storage.Must()
+	_ server.Service        = service.New(nil, nil)
+	_ service.Storage       = storage.Must()
+	_ grpc.ProtectedStorage = storage.Must()
 )
 
 func TestApplication_Run(t *testing.T) {

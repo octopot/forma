@@ -19,6 +19,8 @@ import (
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
+
+	_ "github.com/golang/mock/mockgen/model"
 )
 
 const (

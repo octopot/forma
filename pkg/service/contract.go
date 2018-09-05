@@ -15,11 +15,6 @@ type Storage interface {
 	Template(context.Context, domain.ID) (domain.Template, error)
 }
 
-// ProtectedStorage TODO
-type ProtectedStorage interface {
-	Storage
-}
-
 // InputHandler TODO
 type InputHandler interface {
 	// HandleInput TODO

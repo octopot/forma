@@ -54,7 +54,12 @@ $ make up demo status
 form-api_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
 form-api_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
 form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091
+```
 
+<details>
+<summary>GET `curl /api/v1/UUID`</summary>
+
+```bash
 $ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 # <form id="10000000-2000-4000-8000-160000000004" lang="en" title="Email subscription"
 #       action="http://localhost/api/v1/10000000-2000-4000-8000-160000000004" method="post"
@@ -62,6 +67,13 @@ $ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 #       <input id="10000000-2000-4000-8000-160000000004_email" name="email" type="email" title="Email"
 #              maxlength="64" required="true"></input>
 # </form>
+```
+</details>
+
+<details>
+<summary>POST `curl /api/v1/UUID`</summary>
+
+```bash
 $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \
        http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
@@ -78,6 +90,7 @@ $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
 # < Content-Length: 0
 # <
 ```
+</details>
 
 ## Specification
 

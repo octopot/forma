@@ -7,6 +7,7 @@ package grpc_test
 import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
+	domain "github.com/kamilsk/form-api/pkg/domain"
 	query "github.com/kamilsk/form-api/pkg/storage/query"
 	types "github.com/kamilsk/form-api/pkg/storage/types"
 	reflect "reflect"
@@ -111,6 +112,19 @@ func (m *MockProtectedStorage) ReadTemplate(arg0 context.Context, arg1 *types.To
 // ReadTemplate indicates an expected call of ReadTemplate
 func (mr *MockProtectedStorageMockRecorder) ReadTemplate(arg0, arg1, arg2 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReadTemplate", reflect.TypeOf((*MockProtectedStorage)(nil).ReadTemplate), arg0, arg1, arg2)
+}
+
+// TokenByID mocks base method
+func (m *MockProtectedStorage) TokenByID(arg0 context.Context, arg1 domain.ID) (*types.Token, error) {
+	ret := m.ctrl.Call(m, "TokenByID", arg0, arg1)
+	ret0, _ := ret[0].(*types.Token)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// TokenByID indicates an expected call of TokenByID
+func (mr *MockProtectedStorageMockRecorder) TokenByID(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TokenByID", reflect.TypeOf((*MockProtectedStorage)(nil).TokenByID), arg0, arg1)
 }
 
 // UpdateSchema mocks base method

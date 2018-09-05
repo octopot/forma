@@ -3,9 +3,21 @@ package storage
 import (
 	"context"
 
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
+
+// TokenByID TODO
+func (storage *Storage) TokenByID(ctx context.Context, id domain.ID) (*types.Token, error) {
+	conn, closer, err := storage.connection(ctx)
+	if err != nil {
+		return nil, err
+	}
+	defer closer()
+
+	return storage.exec.UserManager(ctx, conn).Token(id)
+}
 
 // CreateSchema TODO
 func (storage *Storage) CreateSchema(ctx context.Context, token *types.Token, data query.CreateSchema) (types.Schema, error) {

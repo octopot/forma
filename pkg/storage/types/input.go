@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// Input TODO
+// Input TODO issue#173
 type Input struct {
 	ID        domain.ID        `db:"id"`
 	SchemaID  domain.ID        `db:"schema_id"`

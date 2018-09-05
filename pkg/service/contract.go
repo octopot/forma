@@ -7,7 +7,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// Storage TODO
+// Storage TODO issue#173
 type Storage interface {
 	// Schema returns the form schema with provided ID.
 	Schema(context.Context, domain.ID) (domain.Schema, error)
@@ -15,10 +15,10 @@ type Storage interface {
 	Template(context.Context, domain.ID) (domain.Template, error)
 }
 
-// InputHandler TODO
+// InputHandler TODO issue#173
 type InputHandler interface {
-	// HandleInput TODO
+	// HandleInput TODO issue#173
 	HandleInput(context.Context, domain.ID, domain.InputData) (*types.Input, error)
-	// LogRequest TODO
+	// LogRequest TODO issue#173
 	LogRequest(context.Context, *types.Input, domain.InputContext) error
 }

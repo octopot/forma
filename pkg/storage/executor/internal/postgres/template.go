@@ -10,7 +10,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// NewTemplateContext TODO
+// NewTemplateContext TODO issue#173
 func NewTemplateContext(ctx context.Context, conn *sql.Conn) templateScope {
 	return templateScope{ctx, conn}
 }
@@ -20,7 +20,7 @@ type templateScope struct {
 	conn *sql.Conn
 }
 
-// Create TODO
+// Create TODO issue#173
 func (scope templateScope) Create(token *types.Token, data query.CreateTemplate) (types.Template, error) {
 	entity := types.Template{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
 	encoded := string(entity.Definition)
@@ -35,7 +35,7 @@ func (scope templateScope) Create(token *types.Token, data query.CreateTemplate)
 	return entity, nil
 }
 
-// Read TODO
+// Read TODO issue#173
 func (scope templateScope) Read(token *types.Token, data query.ReadTemplate) (types.Template, error) {
 	entity, encoded := types.Template{ID: data.ID, AccountID: token.User.AccountID}, ""
 	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "template"
@@ -50,7 +50,7 @@ func (scope templateScope) Read(token *types.Token, data query.ReadTemplate) (ty
 	return entity, nil
 }
 
-// ReadByID TODO
+// ReadByID TODO issue#173
 func (scope templateScope) ReadByID(id domain.ID) (types.Template, error) {
 	entity, encoded := types.Template{ID: id}, ""
 	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "template"
@@ -66,7 +66,7 @@ func (scope templateScope) ReadByID(id domain.ID) (types.Template, error) {
 	return entity, nil
 }
 
-// Update TODO
+// Update TODO issue#173
 func (scope templateScope) Update(token *types.Token, data query.UpdateTemplate) (types.Template, error) {
 	entity, readErr := scope.Read(token, query.ReadTemplate{ID: data.ID})
 	if readErr != nil {
@@ -91,7 +91,7 @@ func (scope templateScope) Update(token *types.Token, data query.UpdateTemplate)
 	return entity, nil
 }
 
-// Delete TODO
+// Delete TODO issue#173
 func (scope templateScope) Delete(token *types.Token, data query.DeleteTemplate) (types.Template, error) {
 	entity, readErr := scope.Read(token, query.ReadTemplate{ID: data.ID})
 	if readErr != nil {

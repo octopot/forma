@@ -64,7 +64,7 @@ func TestInputReader(t *testing.T) {
 			assert.Empty(t, input.CreatedAt)
 		})
 		t.Run("serialization error", func(t *testing.T) {
-			// TODO
+			// TODO issue#126
 		})
 	})
 	t.Run("read by filter", func(t *testing.T) {
@@ -168,10 +168,10 @@ func TestInputReader(t *testing.T) {
 			assert.Nil(t, inputs)
 		})
 		t.Run("database scan error", func(t *testing.T) {
-			// TODO
+			// TODO issue#126
 		})
 		t.Run("serialization error", func(t *testing.T) {
-			// TODO
+			// TODO issue#126
 		})
 	})
 }
@@ -207,7 +207,7 @@ func TestInputWriter(t *testing.T) {
 			assert.NotEmpty(t, input.CreatedAt)
 		})
 		t.Run("serialization error", func(t *testing.T) {
-			// TODO
+			// TODO issue#126
 		})
 		t.Run("database error", func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())

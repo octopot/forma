@@ -18,7 +18,7 @@ const (
 	mysqlDialect    = "mysql"
 )
 
-// New TODO
+// New TODO issue#173
 func New(dialect string) *Executor {
 	exec := &Executor{dialect: dialect}
 	switch exec.dialect {
@@ -55,23 +55,23 @@ func New(dialect string) *Executor {
 	return exec
 }
 
-// InputReader TODO
+// InputReader TODO issue#173
 type InputReader interface {
 	ReadByID(*types.Token, domain.ID) (types.Input, error)
 	ReadByFilter(*types.Token, query.InputFilter) ([]types.Input, error)
 }
 
-// InputWriter TODO
+// InputWriter TODO issue#173
 type InputWriter interface {
 	Write(query.WriteInput) (types.Input, error)
 }
 
-// LogWriter TODO
+// LogWriter TODO issue#173
 type LogWriter interface {
 	Write(query.WriteLog) (types.Log, error)
 }
 
-// SchemaEditor TODO
+// SchemaEditor TODO issue#173
 type SchemaEditor interface {
 	Create(*types.Token, query.CreateSchema) (types.Schema, error)
 	Read(*types.Token, query.ReadSchema) (types.Schema, error)
@@ -79,12 +79,12 @@ type SchemaEditor interface {
 	Delete(*types.Token, query.DeleteSchema) (types.Schema, error)
 }
 
-// SchemaReader TODO
+// SchemaReader TODO issue#173
 type SchemaReader interface {
 	ReadByID(domain.ID) (types.Schema, error)
 }
 
-// TemplateEditor TODO
+// TemplateEditor TODO issue#173
 type TemplateEditor interface {
 	Create(*types.Token, query.CreateTemplate) (types.Template, error)
 	Read(*types.Token, query.ReadTemplate) (types.Template, error)
@@ -92,17 +92,17 @@ type TemplateEditor interface {
 	Delete(*types.Token, query.DeleteTemplate) (types.Template, error)
 }
 
-// TemplateReader TODO
+// TemplateReader TODO issue#173
 type TemplateReader interface {
 	ReadByID(domain.ID) (types.Template, error)
 }
 
-// UserManager TODO
+// UserManager TODO issue#173
 type UserManager interface {
 	Token(domain.ID) (*types.Token, error)
 }
 
-// Executor TODO
+// Executor TODO issue#173
 type Executor struct {
 	dialect string
 	factory struct {
@@ -117,47 +117,47 @@ type Executor struct {
 	}
 }
 
-// Dialect TODO
+// Dialect TODO issue#173
 func (e *Executor) Dialect() string {
 	return e.dialect
 }
 
-// InputReader TODO
+// InputReader TODO issue#173
 func (e *Executor) InputReader(ctx context.Context, conn *sql.Conn) InputReader {
 	return e.factory.NewInputReader(ctx, conn)
 }
 
-// InputWriter TODO
+// InputWriter TODO issue#173
 func (e *Executor) InputWriter(ctx context.Context, conn *sql.Conn) InputWriter {
 	return e.factory.NewInputWriter(ctx, conn)
 }
 
-// LogWriter TODO
+// LogWriter TODO issue#173
 func (e *Executor) LogWriter(ctx context.Context, conn *sql.Conn) LogWriter {
 	return e.factory.NewLogWriter(ctx, conn)
 }
 
-// SchemaEditor TODO
+// SchemaEditor TODO issue#173
 func (e *Executor) SchemaEditor(ctx context.Context, conn *sql.Conn) SchemaEditor {
 	return e.factory.NewSchemaEditor(ctx, conn)
 }
 
-// SchemaReader TODO
+// SchemaReader TODO issue#173
 func (e *Executor) SchemaReader(ctx context.Context, conn *sql.Conn) SchemaReader {
 	return e.factory.NewSchemaReader(ctx, conn)
 }
 
-// TemplateEditor TODO
+// TemplateEditor TODO issue#173
 func (e *Executor) TemplateEditor(ctx context.Context, conn *sql.Conn) TemplateEditor {
 	return e.factory.NewTemplateEditor(ctx, conn)
 }
 
-// TemplateReader TODO
+// TemplateReader TODO issue#173
 func (e *Executor) TemplateReader(ctx context.Context, conn *sql.Conn) TemplateReader {
 	return e.factory.NewTemplateReader(ctx, conn)
 }
 
-// UserManager TODO
+// UserManager TODO issue#173
 func (e *Executor) UserManager(ctx context.Context, conn *sql.Conn) UserManager {
 	return e.factory.NewUserManager(ctx, conn)
 }

@@ -108,7 +108,7 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	return entity.Definition, nil
 }
 
-// HandleInput TODO
+// HandleInput TODO issue#173
 func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {
@@ -123,7 +123,7 @@ func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, ver
 	return &entity, nil
 }
 
-// LogRequest TODO
+// LogRequest TODO issue#173
 func (storage *Storage) LogRequest(ctx context.Context, input *types.Input, meta domain.InputContext) error {
 	conn, closer, err := storage.connection(ctx)
 	if err != nil {

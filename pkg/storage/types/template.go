@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// Template TODO
+// Template TODO issue#173
 type Template struct {
 	ID         domain.ID       `db:"id"`
 	AccountID  domain.ID       `db:"account_id"`

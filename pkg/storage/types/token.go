@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// Token TODO
+// Token TODO issue#173
 type Token struct {
 	ID        domain.ID  `db:"id"`
 	UserID    domain.ID  `db:"user_id"`

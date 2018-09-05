@@ -16,7 +16,7 @@ type Schema struct {
 	Inputs       []Input `json:"input"             yaml:"input"             xml:"input"`
 }
 
-// IsEmpty TODO
+// IsEmpty TODO issue#173
 func (s *Schema) IsEmpty() bool {
 	return s.ID == "" && s.Language == "" && s.Title == "" && len(s.Inputs) == 0
 }

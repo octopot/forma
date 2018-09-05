@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// User TODO
+// User TODO issue#173
 type User struct {
 	ID        domain.ID  `db:"id"`
 	AccountID domain.ID  `db:"account_id"`

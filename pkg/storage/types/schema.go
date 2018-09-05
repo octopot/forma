@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// Schema TODO
+// Schema TODO issue#173
 type Schema struct {
 	ID         domain.ID     `db:"id"`
 	AccountID  domain.ID     `db:"account_id"`

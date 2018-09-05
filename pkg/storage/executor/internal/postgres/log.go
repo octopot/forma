@@ -10,7 +10,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// NewLogContext TODO
+// NewLogContext TODO issue#173
 func NewLogContext(ctx context.Context, conn *sql.Conn) logScope {
 	return logScope{ctx, conn}
 }
@@ -20,7 +20,7 @@ type logScope struct {
 	conn *sql.Conn
 }
 
-// Write TODO
+// Write TODO issue#173
 func (scope logScope) Write(data query.WriteLog) (types.Log, error) {
 	entity := types.Log{
 		SchemaID: data.SchemaID, InputID: data.InputID, TemplateID: data.TemplateID,

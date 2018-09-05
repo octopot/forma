@@ -9,7 +9,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// NewUserContext TODO
+// NewUserContext TODO issue#173
 func NewUserContext(ctx context.Context, conn *sql.Conn) manager {
 	return manager{ctx, conn}
 }
@@ -19,7 +19,7 @@ type manager struct {
 	conn *sql.Conn
 }
 
-// Token TODO
+// Token TODO issue#173
 func (scope manager) Token(id domain.ID) (*types.Token, error) {
 	var (
 		token   = types.Token{ID: id}

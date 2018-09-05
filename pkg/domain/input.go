@@ -13,19 +13,19 @@ const (
 	// TextType specifies `<input type="text">`.
 	TextType = "text"
 
-	// TODO future
+	// TODO issue#174
 	captchaType   = "captcha"
 	reCAPTCHAType = "reCAPTCHA"
 )
 
 const (
-	// RedirectKey TODO
+	// RedirectKey TODO issue#173
 	RedirectKey = "_redirect"
-	// ResourceKey TODO
+	// ResourceKey TODO issue#173
 	ResourceKey = "_resource"
-	// TemplateKey TODO
+	// TemplateKey TODO issue#173
 	TemplateKey = "_template"
-	// TimeoutKey TODO
+	// TimeoutKey TODO issue#173
 	TimeoutKey = "_timeout"
 )
 
@@ -43,10 +43,10 @@ type Input struct {
 	Strict      bool   `json:"strict,omitempty"      yaml:"strict,omitempty"      xml:"strict,attr,omitempty"`
 }
 
-// InputData TODO
+// InputData TODO issue#173
 type InputData url.Values
 
-// Redirect TODO
+// Redirect TODO issue#173
 func (d InputData) Redirect(fallback ...string) string {
 	value := url.Values(d).Get(RedirectKey)
 	if value == "" {
@@ -59,12 +59,12 @@ func (d InputData) Redirect(fallback ...string) string {
 	return value
 }
 
-// Resource TODO
+// Resource TODO issue#173
 func (d InputData) Resource() ID {
 	return ID(url.Values(d).Get(ResourceKey))
 }
 
-// Template TODO
+// Template TODO issue#173
 func (d InputData) Template() *ID {
 	var id = ID(url.Values(d).Get(TemplateKey))
 	if id.IsValid() {
@@ -73,7 +73,7 @@ func (d InputData) Template() *ID {
 	return nil
 }
 
-// Timeout TODO
+// Timeout TODO issue#173
 func (d InputData) Timeout() time.Duration {
 	timeout, err := time.ParseDuration(url.Values(d).Get(TimeoutKey))
 	if err != nil {

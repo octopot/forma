@@ -12,7 +12,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// NewInputContext TODO
+// NewInputContext TODO issue#173
 func NewInputContext(ctx context.Context, conn *sql.Conn) inputScope {
 	return inputScope{ctx, conn}
 }
@@ -22,7 +22,7 @@ type inputScope struct {
 	conn *sql.Conn
 }
 
-// Write TODO
+// Write TODO issue#173
 func (scope inputScope) Write(data query.WriteInput) (types.Input, error) {
 	entity := types.Input{SchemaID: data.SchemaID, Data: data.VerifiedData}
 	encoded, encodeErr := json.Marshal(entity.Data)
@@ -41,7 +41,7 @@ func (scope inputScope) Write(data query.WriteInput) (types.Input, error) {
 	return entity, nil
 }
 
-// ReadByID TODO
+// ReadByID TODO issue#173
 func (scope inputScope) ReadByID(token *types.Token, id domain.ID) (types.Input, error) {
 	entity, encoded := types.Input{ID: id}, []byte(nil)
 	q := `SELECT "i"."schema_id", "i"."data", "i"."created_at"
@@ -62,7 +62,7 @@ func (scope inputScope) ReadByID(token *types.Token, id domain.ID) (types.Input,
 	return entity, nil
 }
 
-// ReadByFilter TODO
+// ReadByFilter TODO issue#173
 func (scope inputScope) ReadByFilter(token *types.Token, filter query.InputFilter) ([]types.Input, error) {
 	q := `SELECT "i"."id", "i"."data", "i"."created_at"
 	        FROM "input" "i"

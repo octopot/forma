@@ -2,26 +2,26 @@ package query
 
 import "github.com/kamilsk/form-api/pkg/domain"
 
-// CreateTemplate TODO
+// CreateTemplate TODO issue#173
 type CreateTemplate struct {
 	ID         *domain.ID
 	Title      string
 	Definition domain.Template
 }
 
-// ReadTemplate TODO
+// ReadTemplate TODO issue#173
 type ReadTemplate struct {
 	ID domain.ID
 }
 
-// UpdateTemplate TODO
+// UpdateTemplate TODO issue#173
 type UpdateTemplate struct {
 	ID         domain.ID
 	Title      string
 	Definition domain.Template
 }
 
-// DeleteTemplate TODO
+// DeleteTemplate TODO issue#173
 type DeleteTemplate struct {
 	ID          domain.ID
 	Permanently bool

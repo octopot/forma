@@ -6,7 +6,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 )
 
-// Log TODO
+// Log TODO issue#173
 type Log struct {
 	ID         uint64              `db:"id"`
 	AccountID  domain.ID           `db:"account_id"`

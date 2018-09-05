@@ -2,26 +2,26 @@ package query
 
 import "github.com/kamilsk/form-api/pkg/domain"
 
-// CreateSchema TODO
+// CreateSchema TODO issue#173
 type CreateSchema struct {
 	ID         *domain.ID
 	Title      string
 	Definition domain.Schema
 }
 
-// ReadSchema TODO
+// ReadSchema TODO issue#173
 type ReadSchema struct {
 	ID domain.ID
 }
 
-// UpdateSchema TODO
+// UpdateSchema TODO issue#173
 type UpdateSchema struct {
 	ID         domain.ID
 	Title      string
 	Definition domain.Schema
 }
 
-// DeleteSchema TODO
+// DeleteSchema TODO issue#173
 type DeleteSchema struct {
 	ID          domain.ID
 	Permanently bool

@@ -11,7 +11,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 )
 
-// NewSchemaContext TODO
+// NewSchemaContext TODO issue#173
 func NewSchemaContext(ctx context.Context, conn *sql.Conn) schemaScope {
 	return schemaScope{ctx, conn}
 }
@@ -21,7 +21,7 @@ type schemaScope struct {
 	conn *sql.Conn
 }
 
-// Create TODO
+// Create TODO issue#173
 func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (types.Schema, error) {
 	entity := types.Schema{AccountID: token.User.AccountID, Title: data.Title, Definition: data.Definition}
 	encoded, encodeErr := xml.Marshal(entity.Definition)
@@ -41,7 +41,7 @@ func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (ty
 	return entity, nil
 }
 
-// Read TODO
+// Read TODO issue#173
 func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.Schema, error) {
 	entity, encoded := types.Schema{ID: data.ID, AccountID: token.User.AccountID}, []byte(nil)
 	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
@@ -59,7 +59,7 @@ func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.
 	return entity, nil
 }
 
-// ReadByID TODO
+// ReadByID TODO issue#173
 func (scope schemaScope) ReadByID(id domain.ID) (types.Schema, error) {
 	entity, encoded := types.Schema{ID: id}, []byte(nil)
 	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "schema"
@@ -79,7 +79,7 @@ func (scope schemaScope) ReadByID(id domain.ID) (types.Schema, error) {
 	return entity, nil
 }
 
-// Update TODO
+// Update TODO issue#173
 func (scope schemaScope) Update(token *types.Token, data query.UpdateSchema) (types.Schema, error) {
 	entity, readErr := scope.Read(token, query.ReadSchema{ID: data.ID})
 	if readErr != nil {
@@ -109,7 +109,7 @@ func (scope schemaScope) Update(token *types.Token, data query.UpdateSchema) (ty
 	return entity, nil
 }
 
-// Delete TODO
+// Delete TODO issue#173
 func (scope schemaScope) Delete(token *types.Token, data query.DeleteSchema) (types.Schema, error) {
 	entity, readErr := scope.Read(token, query.ReadSchema{ID: data.ID})
 	if readErr != nil {

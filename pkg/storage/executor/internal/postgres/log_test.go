@@ -46,7 +46,7 @@ func TestLogWriter(t *testing.T) {
 			assert.NotEmpty(t, log.CreatedAt)
 		})
 		t.Run("serialization error", func(t *testing.T) {
-			// TODO
+			// TODO issue#126
 		})
 		t.Run("database error", func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())

@@ -30,7 +30,15 @@ var runCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		runtime.GOMAXPROCS(int(cnf.Union.ServerConfig.CPUCount))
 
-		if err := startGRPCServer(cnf.Union.GRPCConfig); err != nil {
+		dbLayer := storage.Must(storage.Database(cnf.Union.DBConfig))
+		handler := chi.NewRouter(
+			server.New(
+				cnf.Union.ServerConfig,
+				service.New(dbLayer, dbLayer),
+			),
+		)
+
+		if err := startGRPCServer(cnf.Union.GRPCConfig, dbLayer); err != nil {
 			return err
 		}
 		if cnf.Union.MonitoringConfig.Enabled {
@@ -43,14 +51,6 @@ var runCmd = &cobra.Command{
 				return err
 			}
 		}
-
-		dbLayer := storage.Must(storage.Database(cnf.Union.DBConfig))
-		handler := chi.NewRouter(
-			server.New(
-				cnf.Union.ServerConfig,
-				service.New(dbLayer, dbLayer),
-			),
-		)
 		return startHTTPServer(cnf.Union.ServerConfig, handler)
 	},
 }
@@ -145,17 +145,17 @@ func startHTTPServer(cnf config.ServerConfig, handler http.Handler) error {
 	return srv.Serve(listener)
 }
 
-func startGRPCServer(cnf config.GRPCConfig) error {
+func startGRPCServer(cnf config.GRPCConfig, storage pb.ProtectedStorage) error {
 	listener, err := net.Listen("tcp", cnf.Interface)
 	if err != nil {
 		return err
 	}
 	go func() {
 		srv := grpc.NewServer()
-		pb.RegisterSchemaServer(srv, pb.NewSchemaServer())
-		pb.RegisterTemplateServer(srv, pb.NewTemplateServer())
-		pb.RegisterInputServer(srv, pb.NewInputServer())
-		pb.RegisterLogServer(srv, pb.NewLogServer())
+		pb.RegisterSchemaServer(srv, pb.NewSchemaServer(storage))
+		pb.RegisterTemplateServer(srv, pb.NewTemplateServer(storage))
+		pb.RegisterInputServer(srv, pb.NewInputServer(storage))
+		pb.RegisterLogServer(srv, pb.NewLogServer(storage))
 		log.Println("start gRPC server at", listener.Addr())
 		_ = srv.Serve(listener) // TODO issue#139
 		listener.Close()

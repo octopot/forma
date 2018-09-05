@@ -14,8 +14,6 @@ message CreateSchemaRequest {
 message CreateSchemaResponse {
     string id = 1;
     google.protobuf.Timestamp created_at = 5;
-
-    Error err = 15;
 }
 
 message ReadSchemaRequest {
@@ -29,8 +27,6 @@ message ReadSchemaResponse {
     google.protobuf.Timestamp created_at = 5;
     google.protobuf.Timestamp updated_at = 6;
     google.protobuf.Timestamp deleted_at = 7;
-
-    Error err = 15;
 }
 
 message UpdateSchemaRequest {
@@ -41,8 +37,6 @@ message UpdateSchemaRequest {
 
 message UpdateSchemaResponse {
     google.protobuf.Timestamp updated_at = 6;
-
-    Error err = 15;
 }
 
 message DeleteSchemaRequest {
@@ -51,8 +45,6 @@ message DeleteSchemaRequest {
 
 message DeleteSchemaResponse {
     google.protobuf.Timestamp deleted_at = 7;
-
-    Error err = 15;
 }
 
 service Schema {
@@ -71,8 +63,6 @@ message CreateTemplateRequest {
 message CreateTemplateResponse {
     string id = 1;
     google.protobuf.Timestamp created_at = 5;
-
-    Error err = 15;
 }
 
 message ReadTemplateRequest {
@@ -86,8 +76,6 @@ message ReadTemplateResponse {
     google.protobuf.Timestamp created_at = 5;
     google.protobuf.Timestamp updated_at = 6;
     google.protobuf.Timestamp deleted_at = 7;
-
-    Error err = 15;
 }
 
 message UpdateTemplateRequest {
@@ -98,8 +86,6 @@ message UpdateTemplateRequest {
 
 message UpdateTemplateResponse {
     google.protobuf.Timestamp updated_at = 5;
-
-    Error err = 15;
 }
 
 message DeleteTemplateRequest {
@@ -108,8 +94,6 @@ message DeleteTemplateRequest {
 
 message DeleteTemplateResponse {
     google.protobuf.Timestamp deleted_at = 7;
-
-    Error err = 15;
 }
 
 service Template {
@@ -140,8 +124,6 @@ message ReadInputRequest {
 
 message ReadInputResponse {
     repeated InputEntry entries = 1;
-
-    Error err = 15;
 }
 
 service Input {

@@ -36,8 +36,6 @@ message ReadLogsRequest {
 
 message ReadLogsResponse {
     repeated LogEntry logs = 1;
-
-    Error err = 15;
 }
 
 message ListenLogsRequest {

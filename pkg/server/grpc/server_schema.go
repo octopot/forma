@@ -61,11 +61,12 @@ func (server *schemaServer) Create(ctx context.Context, req *CreateSchemaRequest
 
 // Read TODO issue#173
 func (server *schemaServer) Read(ctx context.Context, req *ReadSchemaRequest) (*ReadSchemaResponse, error) {
+	data := query.ReadSchema{ID: domain.ID(req.Id)}
 	tokenID, err := middleware.TokenExtractor(ctx)
 	if err != nil {
 		return nil, err
 	}
-	schema, err := server.storage.ReadSchema(ctx, tokenID, query.ReadSchema{ID: domain.ID(req.Id)})
+	schema, err := server.storage.ReadSchema(ctx, tokenID, data)
 	if err != nil {
 		if appErr, is := err.(errors.ApplicationError); is {
 			if _, is = appErr.IsClientError(); is {
@@ -139,11 +140,12 @@ func (server *schemaServer) Update(ctx context.Context, req *UpdateSchemaRequest
 
 // Delete TODO issue#173
 func (server *schemaServer) Delete(ctx context.Context, req *DeleteSchemaRequest) (*DeleteSchemaResponse, error) {
+	data := query.DeleteSchema{ID: domain.ID(req.Id)}
 	tokenID, err := middleware.TokenExtractor(ctx)
 	if err != nil {
 		return nil, err
 	}
-	schema, err := server.storage.DeleteSchema(ctx, tokenID, query.DeleteSchema{ID: domain.ID(req.Id)})
+	schema, err := server.storage.DeleteSchema(ctx, tokenID, data)
 	if err != nil {
 		if appErr, is := err.(errors.ApplicationError); is {
 			if _, is = appErr.IsClientError(); is {

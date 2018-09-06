@@ -96,10 +96,18 @@ $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
 
 ### API
 
-You can find API specification [here](env/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest)
-HTTP client to work with the API - you can import data for it from the [file](env/insomnia.json).
+You can find API specification [here](env/client/rest.http). Also, we recommend using [Insomnia](https://insomnia.rest/)
+HTTP client to work with the API - you can import data for it from the [file](env/client/insomnia.json).
+Or you can choose [Postman](https://www.getpostman.com/) - its import data is [here](env/client/postman.json) and
+[here](env/client/postman.env.json).
 
 ### CLI
+
+You can use CLI not only to start the HTTP server but also to execute
+[CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations.
+
+<details>
+<summary><strong>CLI interface</summary>
 
 ```bash
 $ form-api --help
@@ -121,6 +129,7 @@ Flags:
 
 Use "form-api [command] --help" for more information about a command.
 ```
+</details>
 
 #### Bash and Zsh completions
 

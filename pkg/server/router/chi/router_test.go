@@ -35,11 +35,6 @@ func TestChiRouter(t *testing.T) {
 		data func() *http.Request
 		code int
 	}{
-		{"POST /api/v1", func() *http.Request {
-			return &http.Request{Method: http.MethodPost, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v1",
-			}}
-		}, http.StatusNotImplemented},
 		{"GET /api/v1/{ID}", func() *http.Request {
 			request := &http.Request{Method: http.MethodGet, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
@@ -49,16 +44,6 @@ func TestChiRouter(t *testing.T) {
 				Do(func(rw http.ResponseWriter, _ *http.Request) { rw.WriteHeader(http.StatusOK) })
 			return request
 		}, http.StatusOK},
-		{"PUT /api/v1/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodPut, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
-		{"DELETE /api/v1/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
 		{"POST /api/v1/{ID}", func() *http.Request {
 			request := &http.Request{Method: http.MethodPost, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
@@ -69,23 +54,8 @@ func TestChiRouter(t *testing.T) {
 			return request
 		}, http.StatusFound},
 
-		{"POST /api/v2/schema", func() *http.Request {
-			return &http.Request{Method: http.MethodPost, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/schema",
-			}}
-		}, http.StatusNotImplemented},
 		{"GET /api/v2/schema/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodGet, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
-		{"PUT /api/v2/schema/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodPut, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
-		{"DELETE /api/v2/schema/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/schema/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},
@@ -95,23 +65,8 @@ func TestChiRouter(t *testing.T) {
 			}}
 		}, http.StatusNotImplemented},
 
-		{"POST /api/v2/template", func() *http.Request {
-			return &http.Request{Method: http.MethodPost, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/template",
-			}}
-		}, http.StatusNotImplemented},
 		{"GET /api/v2/template/{ID}", func() *http.Request {
 			return &http.Request{Method: http.MethodGet, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
-		{"PUT /api/v2/template/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodPut, URL: &url.URL{
-				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
-			}}
-		}, http.StatusNotImplemented},
-		{"DELETE /api/v2/template/{ID}", func() *http.Request {
-			return &http.Request{Method: http.MethodDelete, URL: &url.URL{
 				Scheme: "http", Host: "dev", Path: "/api/v2/template/" + UUID.String(),
 			}}
 		}, http.StatusNotImplemented},

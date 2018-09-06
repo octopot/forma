@@ -55,7 +55,7 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	response := s.service.HandleGetV1(v1.GetRequest{ID: uuid})
 	if response.Error != nil {
 		if err, is := response.Error.(errors.ApplicationError); is {
-			if _, is := err.IsClientError(); is {
+			if _, is = err.IsClientError(); is {
 				rw.WriteHeader(http.StatusNotFound)
 				return
 			}
@@ -72,6 +72,8 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		}
 		// replace fallback by current API call
 		response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
+		response.Schema.Method = http.MethodPost
+		response.Schema.EncodingType = "application/x-www-form-urlencoded"
 	}
 
 	rw.Header().Set("Content-Type", enc.ContentType())
@@ -112,6 +114,8 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 						}
 						// replace fallback by current API call
 						response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
+						response.Schema.Method = http.MethodPost
+						response.Schema.EncodingType = "application/x-www-form-urlencoded"
 						// add URL marker
 						u, err := url.Parse(redirect)
 						if err == nil {

@@ -87,6 +87,8 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	if err != nil {
 		return schema, err
 	}
+	entity.Definition.Title = entity.Title
+
 	return entity.Definition, nil
 }
 

@@ -21,51 +21,30 @@ func NewRouter(api router.Server) http.Handler {
 	notImplemented := func(rw http.ResponseWriter, req *http.Request) { rw.WriteHeader(http.StatusNotImplemented) }
 
 	r.Route("/api/v1", func(r chi.Router) {
-		r.Post("/", notImplemented)
-
 		r.Route("/{ID}", func(r chi.Router) {
 			r.Use(ctxPacker(common.Schema, "ID"))
-
 			r.Get("/", common.Encoder(api.GetV1))
-			r.Put("/", notImplemented)
-			r.Delete("/", notImplemented)
-
 			r.Post("/", api.PostV1)
 		})
 	})
-
 	r.Route("/api/v2", func(r chi.Router) {
 		r.Route("/schema", func(r chi.Router) {
-			r.Post("/", notImplemented)
-
 			r.Route("/{ID}", func(r chi.Router) {
 				r.Use(ctxPacker(common.Schema, "ID"))
-
 				r.Get("/", notImplemented)
-				r.Put("/", notImplemented)
-				r.Delete("/", notImplemented)
-
 				r.Post("/", notImplemented)
 			})
 		})
-
 		r.Route("/template", func(r chi.Router) {
-			r.Post("/", notImplemented)
-
 			r.Route("/{ID}", func(r chi.Router) {
 				r.Use(ctxPacker(common.Template, "ID"))
-
 				r.Get("/", notImplemented)
-				r.Put("/", notImplemented)
-				r.Delete("/", notImplemented)
 			})
 		})
 	})
-
 	r.Route("/schema/{SCM_ID}/template/{TPL_ID}", func(r chi.Router) {
 		r.Use(ctxPacker(common.Schema, "SCM_ID"))
 		r.Use(ctxPacker(common.Template, "TPL_ID"))
-
 		r.Get("/", notImplemented)
 	})
 

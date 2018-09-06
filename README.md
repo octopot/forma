@@ -152,7 +152,7 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export VER=1.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases/
+$ export VER=2.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases/
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
 $ wget -q -O form-api.tar.gz \
@@ -163,19 +163,19 @@ $ tar xf form-api.tar.gz -C "${GOPATH}"/bin/ && rm form-api.tar.gz
 ### Docker Hub
 
 ```bash
-$ docker pull kamilsk/form-api:1.x
+$ docker pull kamilsk/form-api:2.x
 ```
 
 ### From source code
 
 ```bash
-$ egg github.com/kamilsk/form-api@^1.0.0 -- make test install
+$ egg github.com/kamilsk/form-api@^2.0.0 -- make test install
 ```
 
 #### Mirror
 
 ```bash
-$ egg bitbucket.org/kamilsk/form-api@^1.0.0 -- make test install
+$ egg bitbucket.org/kamilsk/form-api@^2.0.0 -- make test install
 ```
 
 > [egg](https://github.com/kamilsk/egg) is an `extended go get`.

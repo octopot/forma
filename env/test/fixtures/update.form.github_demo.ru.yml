@@ -1,0 +1,10 @@
+kind: Schema
+payload:
+  id:         10000000-2000-4000-8000-160000000006
+  title:      GitHub демо (UPDATED)
+  definition: |
+    <form lang="ru" action="https://kamilsk.github.io/form-api/">
+        <input name="name" type="text" title="Имя" placeholder="Имя..." maxlength="25" required="1"/>
+        <input name="feedback" type="text" title="Комментарий" placeholder="Ваш комментарий..." maxlength="255"
+               required="1"/>
+    </form>

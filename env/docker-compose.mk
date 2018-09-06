@@ -1,9 +1,10 @@
 COMPOSE ?= docker-compose -f env/docker-compose.base.yml -f env/docker-compose.dev.yml -p forma
 
+
 .PHONY: env
 env:
 	cp -n env/.env{.example,} || true # for containers
-	cp -n env/.env .env       || true # for docker compose file, https://docs.docker.com/compose/env-file/
+	cp -n env/.env .env       || true # for docker compose, https://docs.docker.com/compose/env-file/
 
 .PHONY: rm-env
 rm-env:

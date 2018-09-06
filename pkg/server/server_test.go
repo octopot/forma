@@ -144,13 +144,12 @@ func TestServer_PostV1(t *testing.T) {
 			req = req.WithContext(context.WithValue(req.Context(),
 				middleware.SchemaKey{}, UUID))
 			data, err := func() (map[string][]string, error) {
-				data := map[string][]string{"email": {"invalid"}}
 				schema := domain.Schema{Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}}}
-				_, err := schema.Validate(data)
+				data, err := schema.Validate(map[string][]string{"email": {"invalid"}})
 				return data, errors.Validation("", err, "")
 			}()
 			service.EXPECT().
-				HandlePostV1(v1.PostRequest{ID: UUID, InputData: data}).
+				HandlePostV1(v1.PostRequest{ID: UUID, InputData: data, InputContext: domain.InputContext{}}).
 				Return(v1.PostResponse{Error: err, Schema: domain.Schema{
 					Inputs: []domain.Input{{Name: "email", Type: domain.EmailType}},
 				}})
@@ -162,7 +161,8 @@ func TestServer_PostV1(t *testing.T) {
 			req = req.WithContext(context.WithValue(req.Context(),
 				middleware.SchemaKey{}, FAKE))
 			service.EXPECT().
-				HandlePostV1(v1.PostRequest{ID: FAKE, InputData: domain.InputData{"email": {"test@my.email"}}}).
+				HandlePostV1(v1.PostRequest{ID: FAKE,
+					InputData: domain.InputData{"email": {"test@my.email"}}, InputContext: domain.InputContext{}}).
 				Return(v1.PostResponse{Error: errors.Database("", nil, "")})
 			return req
 		}, http.StatusInternalServerError},
@@ -172,7 +172,8 @@ func TestServer_PostV1(t *testing.T) {
 			req = req.WithContext(context.WithValue(req.Context(),
 				middleware.SchemaKey{}, ZERO))
 			service.EXPECT().
-				HandlePostV1(v1.PostRequest{ID: ZERO, InputData: domain.InputData{"email": {"test@my.email"}}}).
+				HandlePostV1(v1.PostRequest{ID: ZERO,
+					InputData: domain.InputData{"email": {"test@my.email"}}, InputContext: domain.InputContext{}}).
 				Return(v1.PostResponse{Error: errors.NotFound("", nil, "")})
 			return req
 		}, http.StatusNotFound},
@@ -182,7 +183,8 @@ func TestServer_PostV1(t *testing.T) {
 			req = req.WithContext(context.WithValue(req.Context(),
 				middleware.SchemaKey{}, UUID))
 			service.EXPECT().
-				HandlePostV1(v1.PostRequest{ID: UUID, InputData: domain.InputData{"email": {"test@my.email"}}}).
+				HandlePostV1(v1.PostRequest{ID: UUID,
+					InputData: domain.InputData{"email": {"test@my.email"}}, InputContext: domain.InputContext{}}).
 				Return(v1.PostResponse{ID: UUID, Error: nil, Schema: domain.Schema{Action: HOST}})
 			return req
 		}, http.StatusFound},

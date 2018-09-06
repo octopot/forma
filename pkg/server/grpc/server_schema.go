@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/xml"
-	"log"
 	"strings"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
@@ -27,15 +26,16 @@ type schemaServer struct {
 
 // Create TODO issue#173
 func (server *schemaServer) Create(ctx context.Context, req *CreateSchemaRequest) (*CreateSchemaResponse, error) {
-	var data query.CreateSchema
+	data := query.CreateSchema{Title: req.Title}
 	if err := xml.NewDecoder(strings.NewReader(req.Definition)).Decode(&data.Definition); err != nil {
 		return nil, status.Errorf(codes.InvalidArgument,
 			"trying to unmarshal XML `%s` of the schema definition",
 			req.Definition)
 	}
-
-	// TODO not ready
-
+	if req.Id != "" {
+		id := domain.ID(req.Id)
+		data.ID = &id
+	}
 	tokenID, err := middleware.TokenExtractor(ctx)
 	if err != nil {
 		return nil, err
@@ -43,9 +43,12 @@ func (server *schemaServer) Create(ctx context.Context, req *CreateSchemaRequest
 	schema, err := server.storage.CreateSchema(ctx, tokenID, data)
 	if err != nil {
 		if appErr, is := err.(errors.ApplicationError); is {
-			return nil, status.Error(codes.Internal, appErr.Message())
+			if _, is = appErr.IsClientError(); is {
+				return nil, status.Error(codes.InvalidArgument, appErr.Message())
+			}
+			return nil, status.Errorf(codes.Internal, "trying to create the schema %q", req.Definition)
 		}
-		return nil, status.Error(codes.Unknown, "trying to create the schema")
+		return nil, status.Errorf(codes.Unknown, "trying to create the schema %q", req.Definition)
 	}
 	return &CreateSchemaResponse{
 		Id: string(schema.ID),
@@ -63,9 +66,15 @@ func (server *schemaServer) Read(ctx context.Context, req *ReadSchemaRequest) (*
 		return nil, err
 	}
 	schema, err := server.storage.ReadSchema(ctx, tokenID, query.ReadSchema{ID: domain.ID(req.Id)})
-
-	// TODO not ready
-
+	if err != nil {
+		if appErr, is := err.(errors.ApplicationError); is {
+			if _, is = appErr.IsClientError(); is {
+				return nil, status.Error(codes.InvalidArgument, appErr.Message())
+			}
+			return nil, status.Errorf(codes.Internal, "trying to read the schema %q", req.Id)
+		}
+		return nil, status.Errorf(codes.Unknown, "trying to read the schema %q", req.Id)
+	}
 	resp := ReadSchemaResponse{
 		Id:    string(schema.ID),
 		Title: schema.Title,
@@ -98,12 +107,58 @@ func (server *schemaServer) Read(ctx context.Context, req *ReadSchemaRequest) (*
 
 // Update TODO issue#173
 func (server *schemaServer) Update(ctx context.Context, req *UpdateSchemaRequest) (*UpdateSchemaResponse, error) {
-	log.Println("SchemaServer.Update was called")
-	return &UpdateSchemaResponse{}, nil
+	data := query.UpdateSchema{ID: domain.ID(req.Id), Title: req.Title}
+	if err := xml.NewDecoder(strings.NewReader(req.Definition)).Decode(&data.Definition); err != nil {
+		return nil, status.Errorf(codes.InvalidArgument,
+			"trying to unmarshal XML `%s` of the schema definition",
+			req.Definition)
+	}
+	tokenID, err := middleware.TokenExtractor(ctx)
+	if err != nil {
+		return nil, err
+	}
+	schema, err := server.storage.UpdateSchema(ctx, tokenID, data)
+	if err != nil {
+		if appErr, is := err.(errors.ApplicationError); is {
+			if _, is = appErr.IsClientError(); is {
+				return nil, status.Error(codes.InvalidArgument, appErr.Message())
+			}
+			return nil, status.Errorf(codes.Internal, "trying to update the schema %q", req.Id)
+		}
+		return nil, status.Errorf(codes.Unknown, "trying to update the schema %q", req.Id)
+	}
+	resp := UpdateSchemaResponse{}
+	if schema.UpdatedAt != nil {
+		resp.UpdatedAt = &timestamp.Timestamp{
+			Seconds: int64(schema.UpdatedAt.Second()),
+			Nanos:   int32(schema.UpdatedAt.Nanosecond()),
+		}
+	}
+	return &resp, nil
 }
 
 // Delete TODO issue#173
 func (server *schemaServer) Delete(ctx context.Context, req *DeleteSchemaRequest) (*DeleteSchemaResponse, error) {
-	log.Println("SchemaServer.Delete was called")
-	return &DeleteSchemaResponse{}, nil
+	tokenID, err := middleware.TokenExtractor(ctx)
+	if err != nil {
+		return nil, err
+	}
+	schema, err := server.storage.DeleteSchema(ctx, tokenID, query.DeleteSchema{ID: domain.ID(req.Id)})
+	if err != nil {
+		if appErr, is := err.(errors.ApplicationError); is {
+			if _, is = appErr.IsClientError(); is {
+				return nil, status.Error(codes.InvalidArgument, appErr.Message())
+			}
+			return nil, status.Errorf(codes.Internal, "trying to delete the schema %q", req.Id)
+		}
+		return nil, status.Errorf(codes.Unknown, "trying to delete the schema %q", req.Id)
+	}
+	resp := DeleteSchemaResponse{}
+	if schema.DeletedAt != nil {
+		resp.DeletedAt = &timestamp.Timestamp{
+			Seconds: int64(schema.DeletedAt.Second()),
+			Nanos:   int32(schema.DeletedAt.Nanosecond()),
+		}
+	}
+	return &resp, nil
 }

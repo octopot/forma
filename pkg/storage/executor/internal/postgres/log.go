@@ -33,15 +33,15 @@ func (scope logScope) Write(data query.WriteLog) (types.Log, error) {
 			entity.Context, entity.InputID)
 	}
 	q := `INSERT INTO "log" ("account_id", "schema_id", "input_id", "template_id", "identifier", "code", "context")
-	           VALUES ((SELECT "account_id" FROM "schema" WHERE "schema_id" = $1), $1, $2, $3, $4, $5, $6)
+	           VALUES ((SELECT "account_id" FROM "schema" WHERE "id" = $1), $1, $2, $3, $4, $5, $6)
 	        RETURNING "id", "created_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q,
 		entity.SchemaID, entity.InputID, entity.TemplateID,
 		entity.Identifier, entity.Code, encoded)
 	if scanErr := row.Scan(&entity.ID, &entity.CreatedAt); scanErr != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, scanErr,
-			"trying to insert log `%s` of the input %q",
-			encoded, entity.InputID)
+			"trying to insert log `%s` of the input %q (%#+v)",
+			encoded, entity.InputID, data)
 	}
 	return entity, nil
 }

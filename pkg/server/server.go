@@ -92,7 +92,7 @@ func (s *Server) PostV1(rw http.ResponseWriter, req *http.Request) {
 
 	var (
 		uuid     = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
-		request  = v1.PostRequest{ID: uuid, InputData: domain.InputData(req.PostForm)}
+		request  = v1.PostRequest{ID: uuid, InputData: domain.InputData(req.PostForm), InputContext: domain.InputContext{}}
 		response = s.service.HandlePostV1(request)
 		redirect = request.InputData.Redirect(req.Referer(), response.Schema.Action)
 	)

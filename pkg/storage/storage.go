@@ -3,7 +3,6 @@ package storage
 import (
 	"context"
 	"database/sql"
-
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
@@ -131,13 +130,14 @@ func (storage *Storage) LogRequest(ctx context.Context, input *types.Input, meta
 	}
 	defer closer()
 
-	storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{
+	// TODO issue#109
+	_, _ = storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{
 		SchemaID:   input.SchemaID,
 		InputID:    input.ID,
 		TemplateID: input.Data.Template(),
 
 		// TODO issue#171
-		Identifier:   "",
+		Identifier:   "10000000-2000-4000-8000-160000000000",
 		Code:         201,
 		InputContext: meta,
 	})

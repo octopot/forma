@@ -1,0 +1,6 @@
+kind: Input
+payload:
+  filter:
+    condition:
+      schema_id:  10000000-2000-4000-8000-160000000004
+      created_at: { start: 2018-08-31T00:00:00.01Z }

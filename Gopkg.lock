@@ -121,9 +121,10 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4bd7ec2c74487ee345d42c79a970b73512b44fbef4e02db26ec61e15901e6b43"
+  digest = "1:09196f8417b28774ee5463e5a1f26f3ab89848170565539d84f478398efeefe0"
   name = "github.com/kamilsk/go-kit"
   packages = [
+    "pkg/config",
     "pkg/fn",
     "pkg/strings",
   ]
@@ -466,6 +467,7 @@
     "github.com/golang/protobuf/ptypes/timestamp",
     "github.com/grpc-ecosystem/go-grpc-middleware",
     "github.com/grpc-ecosystem/go-grpc-middleware/auth",
+    "github.com/kamilsk/go-kit/pkg/config",
     "github.com/kamilsk/go-kit/pkg/fn",
     "github.com/kamilsk/go-kit/pkg/strings",
     "github.com/lib/pq",

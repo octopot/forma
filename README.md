@@ -107,7 +107,7 @@ You can use CLI not only to start the HTTP server but also to execute
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations.
 
 <details>
-<summary><strong>CLI interface</summary>
+<summary><strong>CLI interface</strong></summary>
 
 ```bash
 $ form-api --help

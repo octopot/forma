@@ -1,5 +1,5 @@
 OPEN_BROWSER       =
-SUPPORTED_VERSIONS = 1.9 1.10 latest
+SUPPORTED_VERSIONS = 1.9 1.10 1.11 latest
 
 
 include env/makefiles/env.mk

@@ -1,5 +1,9 @@
-LDFLAGS     ?= -ldflags '-s -w -X main.version=dev -X main.commit=$(shell git rev-parse --short HEAD)'
-BUILD_FILES ?= main.go
+_commit     = -X main.commit=$(shell git rev-parse --short HEAD)
+_date       = -X main.date=$(shell date -u +%FT%X%Z)
+_version    = -X main.version=dev
+
+LDFLAGS     = -ldflags '-s -w $(_commit) $(_date) $(_version)'
+BUILD_FILES = main.go
 
 
 .PHONY: cmd-help

@@ -18,6 +18,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
 
+	_ "github.com/golang/mock/gomock"
 	_ "github.com/golang/mock/mockgen/model"
 )
 

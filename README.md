@@ -13,7 +13,7 @@
 ## Roadmap
 
 - [x] v1: [MVP][project_v1]
-  - [**May 31, 2018**][milestone_v2]
+  - [**May 31, 2018**][milestone_v1]
   - Main concepts and working prototype.
 - [ ] v2: [Accounts and CLI CRUD][project_v2]
   - [**August 31, 2018**][milestone_v2]
@@ -178,7 +178,7 @@ $ egg github.com/kamilsk/form-api@^2.0.0 -- make test install
 $ egg bitbucket.org/kamilsk/form-api@^2.0.0 -- make test install
 ```
 
-> [egg](https://github.com/kamilsk/egg) is an `extended go get`.<sup id="anchor-egg">[1](#egg)</sup>
+> [egg](https://github.com/kamilsk/egg)<sup id="anchor-egg">[1](#egg)</sup> is an `extended go get`.
 
 ## Update
 

@@ -14,6 +14,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/stretchr/testify/assert"
 
+	_ "github.com/golang/mock/gomock"
 	_ "github.com/golang/mock/mockgen/model"
 )
 

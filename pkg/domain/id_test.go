@@ -8,7 +8,7 @@ import (
 )
 
 func TestID(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name    string
 		uuid    domain.ID
 		isValid bool
@@ -20,7 +20,7 @@ func TestID(t *testing.T) {
 		{"ID in uppercase", "41CA5E09-3CE2-4094-B108-3ECC257C6FA4", true},
 	}
 
-	for _, test := range testCases {
+	for _, test := range tests {
 		assert.Equal(t, test.uuid == "", test.uuid.IsEmpty(), test.name)
 		assert.Equal(t, test.isValid, test.uuid.IsValid(), test.name)
 		assert.Equal(t, test.uuid, domain.ID(test.uuid.String()), test.name)

@@ -3,6 +3,8 @@ package config
 import (
 	"net/url"
 	"time"
+
+	"github.com/kamilsk/go-kit/pkg/config"
 )
 
 // ApplicationConfig holds all configurations of the application.
@@ -19,7 +21,7 @@ type ApplicationConfig struct {
 
 // DBConfig contains configuration related to database.
 type DBConfig struct {
-	DSN         Secret        `json:"dsn"      xml:"dsn"      yaml:"dsn"`
+	DSN         config.Secret `json:"dsn"      xml:"dsn"      yaml:"dsn"`
 	MaxIdle     int           `json:"idle"     xml:"idle"     yaml:"idle"`
 	MaxOpen     int           `json:"open"     xml:"open"     yaml:"open"`
 	MaxLifetime time.Duration `json:"lifetime" xml:"lifetime" yaml:"lifetime"`
@@ -40,7 +42,7 @@ func (cnf *DBConfig) DriverName() string {
 type GRPCConfig struct {
 	Interface string        `json:"interface" xml:"interface" yaml:"interface"`
 	Timeout   time.Duration `json:"timeout"   xml:"timeout"   yaml:"timeout"`
-	Token     Secret        `json:"token"     xml:"token"     yaml:"token"`
+	Token     config.Secret `json:"token"     xml:"token"     yaml:"token"`
 }
 
 // MigrationConfig contains configuration related to migrations.

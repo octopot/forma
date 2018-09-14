@@ -11,9 +11,9 @@ ENV GOARCH      amd64
 ENV CGO_ENABLED 0
 
 RUN echo "os: ${GOOS}" "arch: ${GOARCH}" "cgo: ${CGO_ENABLED}" \
- && export _commit="-X main.commit=$(git rev-parse --short HEAD)" \
- && export _date="-X main.date=$(date -u +%FT%X%Z)" \
- && export _version="-X main.version=$(git describe --tags | cut -d - -f 1)" \
+ && export _commit="-X main.commit=$(git rev-parse --short HEAD || echo 'none')" \
+ && export _date="-X main.date=$(date -u +%FT%X%Z || echo 'unknown')" \
+ && export _version="-X main.version=$(git describe --tags 2>&- || echo 'dev' | cut -d - -f 1)" \
  && go build -o /go/bin/service \
              -ldflags "-s -w ${_commit} ${_date} ${_version}" .
 

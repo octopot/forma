@@ -14,7 +14,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-// convergence
+// invariant
 var (
 	_ server.Service        = service.New(nil, nil)
 	_ service.Storage       = storage.Must()

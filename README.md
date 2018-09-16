@@ -1,4 +1,4 @@
-> # 🗃 Forma [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" height="100" src=".github/character.png">
+> # 🗃 Forma [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" src=".github/character.png">
 > [![Analytics][pixel_analytics]][page_promo]
 > Data Collector as a Service &mdash; your personal server for HTML forms.
 

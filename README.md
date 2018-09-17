@@ -1,29 +1,31 @@
-> # 🗃 Forma [![Tweet][icon_twitter]][publish_twitter] <img align="right" width="100" src=".github/character.png">
-> [![Analytics][pixel_analytics]][page_promo]
+> # 🗃 Forma [![Tweet][icon_twitter]][twitter_publish] <img align="right" width="126" src=".github/character.png">
+> [![Analytics][analytics_pixel]][page_promo]
 > Data Collector as a Service &mdash; your personal server for HTML forms.
 
-[![Patreon][icon_patreon]][page_patreon]
-[![Build Status][status_build]][page_build]
-[![Code Quality][status_quality]][page_quality]
-[![Go version][status_go_min]][page_build]
-[![Code Coverage][status_coverage]][page_quality]
-[![Research][status_research]][page_research]
-[![License][icon_license]][page_license]
+[![Patreon][icon_patreon]](https://www.patreon.com/octolab)
+[![Build Status][icon_build]][page_build]
+[![Code Quality][icon_quality]][page_quality]
+[![Go version][icon_go_min]][page_build]
+[![Code Coverage][icon_coverage]][page_quality]
+[![Research][icon_research]](../../tree/research)
+[![License][icon_license]](LICENSE)
 
 ## Roadmap
 
 - [x] v1: [MVP][project_v1]
-  - [**May 31, 2018**][milestone_v1]
+  - [**May 31, 2018**][project_v1_dl]
   - Main concepts and working prototype.
-- [ ] v2: [Accounts and CLI CRUD][project_v2]
-  - [**August 31, 2018**][milestone_v2]
+- [x] v2: [Accounts and CLI CRUD][project_v2]
+  - [**August 31, 2018**][project_v2_dl]
   - Command line interface for create, read, update and delete operations above gRPC.
-- [ ] v3: [API v2 and DSL for validation][project_v3]
-  - [**September 30, 2018**][milestone_v3]
+- [ ] v3: [API v2 and RESTful API][project_v3]
+  - [**September 30, 2018**][project_v3_dl]
   - Template system and Edge Side Includes/Server Side Includes support.
+  - Integrate gRPC gateway.
+  - Improve gRPC layer.
+- [ ] v4: [DSL for validation, CSI, and GUI][project_v4]
+  - [**October 31, 2018**][project_v4_dl]
   - Domain-specific language to define validation rules.
-- [ ] v4: [CSI and GUI CRUD][project_v4]
-  - [**October 31, 2018**][milestone_v4]
   - Client-side integration.
   - Graphical user interface and admin panel to perform create, read, update and delete operations.
 - [ ] Forma, SaaS
@@ -196,34 +198,31 @@ but major versions can be not [BC](https://en.wikipedia.org/wiki/Backward_compat
 
 made with ❤️ by [OctoLab](https://www.octolab.org/)
 
+[analytics_pixel]: https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel
+
+[icon_build]:      https://travis-ci.org/kamilsk/form-api.svg?branch=master
+[icon_coverage]:   https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master
 [icon_gitter]:     https://badges.gitter.im/Join%20Chat.svg
+[icon_go_min]:     https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg
 [icon_license]:    https://img.shields.io/badge/license-MIT-blue.svg
 [icon_patreon]:    https://img.shields.io/badge/patreon-donate-orange.svg
+[icon_quality]:    https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master
+[icon_research]:   https://img.shields.io/badge/research-in%20progress-yellow.svg
 [icon_tw_author]:  https://img.shields.io/badge/author-%40kamilsk-blue.svg
 [icon_tw_sponsor]: https://img.shields.io/badge/sponsor-%40octolab-blue.svg
 [icon_twitter]:    https://img.shields.io/twitter/url/http/shields.io.svg?style=social
 
 [page_build]:      https://travis-ci.org/kamilsk/form-api
-[page_license]:    https://github.com/kamilsk/form-api/blob/master/LICENSE
-[page_patreon]:    https://www.patreon.com/octolab
 [page_promo]:      https://kamilsk.github.io/form-api/
-[page_research]:   https://github.com/kamilsk/form-api/tree/research
 [page_quality]:    https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master
 
-[pixel_analytics]: https://ga-beacon.appspot.com/UA-109817251-15/form-api/readme?pixel
-[publish_twitter]: https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://kamilsk.github.io/form-api/&via=ikamilsk&hashtags=go,service,data-collector,form-handler
-
 [project_v1]:      https://github.com/kamilsk/form-api/projects/1
-[milestone_v1]:    https://github.com/kamilsk/form-api/milestone/1
+[project_v1_dl]:   https://github.com/kamilsk/form-api/milestone/1
 [project_v2]:      https://github.com/kamilsk/form-api/projects/2
-[milestone_v2]:    https://github.com/kamilsk/form-api/milestone/2
+[project_v2_dl]:   https://github.com/kamilsk/form-api/milestone/2
 [project_v3]:      https://github.com/kamilsk/form-api/projects/3
-[milestone_v3]:    https://github.com/kamilsk/form-api/milestone/3
+[project_v3_dl]:   https://github.com/kamilsk/form-api/milestone/3
 [project_v4]:      https://github.com/kamilsk/form-api/projects/4
-[milestone_v4]:    https://github.com/kamilsk/form-api/milestone/4
+[project_v4_dl]:   https://github.com/kamilsk/form-api/milestone/4
 
-[status_build]:    https://travis-ci.org/kamilsk/form-api.svg?branch=master
-[status_coverage]: https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master
-[status_go_min]:   https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg
-[status_research]: https://img.shields.io/badge/research-in%20progress-yellow.svg
-[status_quality]:  https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master
+[twitter_publish]: https://twitter.com/intent/tweet?text=Data%20Collector%20as%20a%20Service&url=https://kamilsk.github.io/form-api/&via=ikamilsk&hashtags=go,service,data-collector,form-handler

@@ -18,7 +18,7 @@
 - [x] v2: [Accounts and CLI CRUD][project_v2]
   - [**August 31, 2018**][project_v2_dl]
   - Command line interface for create, read, update and delete operations above gRPC.
-- [ ] v3: [API v2 and RESTful API][project_v3]
+- [ ] v3: [Templating and RESTful API][project_v3]
   - [**September 30, 2018**][project_v3_dl]
   - Template system and Edge Side Includes/Server Side Includes support.
   - Integrate gRPC gateway.

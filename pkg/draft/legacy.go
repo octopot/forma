@@ -1,3 +1,5 @@
+// +build draft
+
 package draft
 
 import (

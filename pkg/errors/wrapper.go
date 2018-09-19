@@ -14,7 +14,7 @@ func Errorf(format string, args ...interface{}) error {
 // Recover recovers execution flow and sets error to the passed error pointer.
 func Recover(err *error) {
 	if r := recover(); r != nil {
-		switch e := (r).(type) {
+		switch e := r.(type) {
 		case error:
 			*err = e
 		default:

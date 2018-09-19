@@ -10,17 +10,17 @@ import (
 )
 
 // NewUserContext TODO issue#173
-func NewUserContext(ctx context.Context, conn *sql.Conn) manager {
-	return manager{ctx, conn}
+func NewUserContext(ctx context.Context, conn *sql.Conn) userScope {
+	return userScope{ctx, conn}
 }
 
-type manager struct {
+type userScope struct {
 	ctx  context.Context
 	conn *sql.Conn
 }
 
 // Token TODO issue#173
-func (scope manager) Token(id domain.ID) (*types.Token, error) {
+func (scope userScope) Token(id domain.ID) (*types.Token, error) {
 	var (
 		token   = types.Token{ID: id}
 		user    = types.User{}

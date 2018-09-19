@@ -1,10 +1,12 @@
+required = [
+  "github.com/golang/gddo/httputil",
+
+  "golang.org/x/sync/errgroup",
+]
+
 [[constraint]]
   name = "github.com/go-chi/chi"
   version = "^3.3.0"
-
-[[constraint]]
-  name = "github.com/golang/gddo"
-  branch = "master"
 
 [[constraint]]
   name = "github.com/golang/mock"
@@ -24,10 +26,6 @@
 
 [[constraint]]
   name = "github.com/lib/pq"
-  branch = "master"
-
-[[constraint]]
-  name = "github.com/mailru/easyjson"
   branch = "master"
 
 [[constraint]]
@@ -59,10 +57,6 @@
   version = "^1.2.0"
 
 [[constraint]]
-  name = "golang.org/x/sync"
-  branch = "master"
-
-[[constraint]]
   name = "google.golang.org/grpc"
   version = "^1.13.0"
 
@@ -76,4 +70,5 @@
 
 [prune]
   go-tests = true
+  non-go = true
   unused-packages = true

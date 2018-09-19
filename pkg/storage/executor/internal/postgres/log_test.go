@@ -39,7 +39,7 @@ func TestLogWriter(t *testing.T) {
 			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
 				SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: string(id), Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
+				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
 			})
 			assert.NoError(t, err)
 			assert.Equal(t, uint64(1), log.ID)
@@ -65,7 +65,7 @@ func TestLogWriter(t *testing.T) {
 			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
 				SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: string(id), Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
+				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
 			})
 			assert.Error(t, err)
 			assert.Empty(t, log.ID)

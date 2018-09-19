@@ -24,7 +24,7 @@ type WriteLog struct {
 	SchemaID     domain.ID
 	InputID      domain.ID
 	TemplateID   *domain.ID
-	Identifier   string
+	Identifier   domain.ID
 	Code         uint16
 	InputContext domain.InputContext
 }

@@ -17,9 +17,6 @@ import (
 	"github.com/kamilsk/form-api/pkg/storage/types"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
-
-	_ "github.com/golang/mock/gomock"
-	_ "github.com/golang/mock/mockgen/model"
 )
 
 const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"

@@ -1,1 +1,1 @@
-package chi
+package chi_test

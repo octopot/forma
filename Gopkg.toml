@@ -1,6 +1,9 @@
 required = [
   "github.com/golang/gddo/httputil",
 
+  "github.com/golang/mock/gomock",
+  "github.com/golang/mock/mockgen/model",
+
   "golang.org/x/sync/errgroup",
 ]
 

@@ -27,7 +27,7 @@ func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (ty
 	encoded, encodeErr := xml.Marshal(entity.Definition)
 	if encodeErr != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, encodeErr,
-			"user %q of account %q tried to marshal definition `%#v` of a schema into XML",
+			"user %q of account %q tried to marshal a schema definition `%#v` into XML",
 			token.UserID, token.User.AccountID, entity.Definition)
 	}
 	q := `INSERT INTO "schema" ("id", "account_id", "title", "definition") VALUES ($1, $2, $3, $4)
@@ -49,7 +49,8 @@ func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 	if err := row.Scan(&entity.Title, &encoded, &entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
-			"user %q of account %q tried to read the schema %q", token.UserID, token.User.AccountID, entity.ID)
+			"user %q of account %q tried to read the schema %q",
+			token.UserID, token.User.AccountID, entity.ID)
 	}
 	if err := xml.Unmarshal(encoded, &entity.Definition); err != nil {
 		return entity, errors.Serialization(errors.ServerErrorMessage, err,

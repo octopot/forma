@@ -35,17 +35,19 @@ func New(dialect string) *Executor {
 		exec.factory.NewSchemaEditor = func(ctx context.Context, conn *sql.Conn) SchemaEditor {
 			return postgres.NewSchemaContext(ctx, conn)
 		}
-		exec.factory.NewSchemaReader = func(ctx context.Context, conn *sql.Conn) SchemaReader {
-			return postgres.NewSchemaContext(ctx, conn)
-		}
 		exec.factory.NewTemplateEditor = func(ctx context.Context, conn *sql.Conn) TemplateEditor {
-			return postgres.NewTemplateContext(ctx, conn)
-		}
-		exec.factory.NewTemplateReader = func(ctx context.Context, conn *sql.Conn) TemplateReader {
 			return postgres.NewTemplateContext(ctx, conn)
 		}
 		exec.factory.NewUserManager = func(ctx context.Context, conn *sql.Conn) UserManager {
 			return postgres.NewUserContext(ctx, conn)
+		}
+		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+		exec.factory.NewSchemaReader = func(ctx context.Context, conn *sql.Conn) SchemaReader {
+			return postgres.NewSchemaContext(ctx, conn)
+		}
+		// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+		exec.factory.NewTemplateReader = func(ctx context.Context, conn *sql.Conn) TemplateReader {
+			return postgres.NewTemplateContext(ctx, conn)
 		}
 	case mysqlDialect:
 		fallthrough
@@ -80,6 +82,7 @@ type SchemaEditor interface {
 }
 
 // SchemaReader TODO issue#173
+// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 type SchemaReader interface {
 	ReadByID(domain.ID) (types.Schema, error)
 }
@@ -93,6 +96,7 @@ type TemplateEditor interface {
 }
 
 // TemplateReader TODO issue#173
+// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 type TemplateReader interface {
 	ReadByID(domain.ID) (types.Template, error)
 }
@@ -142,22 +146,24 @@ func (e *Executor) SchemaEditor(ctx context.Context, conn *sql.Conn) SchemaEdito
 	return e.factory.NewSchemaEditor(ctx, conn)
 }
 
-// SchemaReader TODO issue#173
-func (e *Executor) SchemaReader(ctx context.Context, conn *sql.Conn) SchemaReader {
-	return e.factory.NewSchemaReader(ctx, conn)
-}
-
 // TemplateEditor TODO issue#173
 func (e *Executor) TemplateEditor(ctx context.Context, conn *sql.Conn) TemplateEditor {
 	return e.factory.NewTemplateEditor(ctx, conn)
 }
 
-// TemplateReader TODO issue#173
-func (e *Executor) TemplateReader(ctx context.Context, conn *sql.Conn) TemplateReader {
-	return e.factory.NewTemplateReader(ctx, conn)
-}
-
 // UserManager TODO issue#173
 func (e *Executor) UserManager(ctx context.Context, conn *sql.Conn) UserManager {
 	return e.factory.NewUserManager(ctx, conn)
+}
+
+// SchemaReader TODO issue#173
+// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+func (e *Executor) SchemaReader(ctx context.Context, conn *sql.Conn) SchemaReader {
+	return e.factory.NewSchemaReader(ctx, conn)
+}
+
+// TemplateReader TODO issue#173
+// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+func (e *Executor) TemplateReader(ctx context.Context, conn *sql.Conn) TemplateReader {
+	return e.factory.NewTemplateReader(ctx, conn)
 }

@@ -4,8 +4,8 @@
 
 [![Patreon][icon_patreon]](https://www.patreon.com/octolab)
 [![Build Status][icon_build]][page_build]
-[![Code Quality][icon_quality]][page_quality]
 [![Code Coverage][icon_coverage]][page_quality]
+[![Code Quality][icon_quality]][page_quality]
 [![Research][icon_research]](../../tree/research)
 [![License][icon_license]](LICENSE)
 
@@ -108,7 +108,7 @@ You can use CLI not only to start the HTTP server but also to execute
 [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) operations.
 
 <details>
-<summary><strong>CLI interface</strong></summary>
+<summary><strong>Service command-line interface</strong></summary>
 
 ```bash
 $ form-api --help
@@ -153,12 +153,13 @@ $ brew install kamilsk/tap/form-api
 ### Binary
 
 ```bash
-$ export VER=2.0.0      # all available versions are on https://github.com/kamilsk/form-api/releases/
+$ export REQ_VER=2.0.0  # all available versions are on https://github.com/kamilsk/form-api/releases/
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
-$ wget -q -O form-api.tar.gz \
-       https://github.com/kamilsk/form-api/releases/download/"${VER}/form-api_${VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
-$ tar xf form-api.tar.gz -C "${GOPATH}"/bin/ && rm form-api.tar.gz
+$ # wget -q -O forma.tar.gz
+$ curl -sL -o forma.tar.gz \
+       https://github.com/kamilsk/form-api/releases/download/"${REQ_VER}/form-api_${REQ_VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
+$ tar xf forma.tar.gz -C "${GOPATH}"/bin/ && rm forma.tar.gz
 ```
 
 ### Docker Hub
@@ -171,11 +172,7 @@ $ docker pull kamilsk/form-api:2.x
 
 ```bash
 $ egg github.com/kamilsk/form-api@^2.0.0 -- make test install
-```
-
-#### Mirror
-
-```bash
+$ # or use mirror
 $ egg bitbucket.org/kamilsk/form-api@^2.0.0 -- make test install
 ```
 

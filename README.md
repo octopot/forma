@@ -5,7 +5,6 @@
 [![Patreon][icon_patreon]](https://www.patreon.com/octolab)
 [![Build Status][icon_build]][page_build]
 [![Code Quality][icon_quality]][page_quality]
-[![Go version][icon_go_min]][page_build]
 [![Code Coverage][icon_coverage]][page_quality]
 [![Research][icon_research]](../../tree/research)
 [![License][icon_license]](LICENSE)
@@ -203,7 +202,6 @@ made with ❤️ by [OctoLab](https://www.octolab.org/)
 [icon_build]:      https://travis-ci.org/kamilsk/form-api.svg?branch=master
 [icon_coverage]:   https://scrutinizer-ci.com/g/kamilsk/form-api/badges/coverage.png?b=master
 [icon_gitter]:     https://badges.gitter.im/Join%20Chat.svg
-[icon_go_min]:     https://img.shields.io/badge/Go-%3E%3D%201.9.2-green.svg
 [icon_license]:    https://img.shields.io/badge/license-MIT-blue.svg
 [icon_patreon]:    https://img.shields.io/badge/patreon-donate-orange.svg
 [icon_quality]:    https://scrutinizer-ci.com/g/kamilsk/form-api/badges/quality-score.png?b=master

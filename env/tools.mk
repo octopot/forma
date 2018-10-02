@@ -14,11 +14,12 @@ tools:
 
 .PHONY: json
 json:
+	find . -name "*_easyjson.go" | grep -v /vendor/ | xargs rm || true
 	go generate -run="easyjson" ./...
 
 .PHONY: mocks
 mocks:
-	find . -name "mock_*_test.go" | grep -v ./vendor | xargs rm || true
+	find . -name "mock_*_test.go" | grep -v /vendor/ | xargs rm || true
 	go generate -run="mockgen" ./...
 
 .PHONY: protobuf

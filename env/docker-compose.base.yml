@@ -1,6 +1,7 @@
 version: "3"
 
 services:
+
   db:
     image: postgres:10-alpine # https://hub.docker.com/_/postgres/
     env_file: .env

@@ -2,6 +2,7 @@ OPEN_BROWSER       =
 SUPPORTED_VERSIONS = 1.9 1.10 1.11 latest
 
 
+include env/.env.example
 include env/makefiles/env.mk
 include env/makefiles/docker.mk
 include env/makefiles/local.mk

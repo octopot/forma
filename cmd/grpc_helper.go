@@ -22,25 +22,30 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const (
+	schemaKind   kind = "Schema"
+	templateKind kind = "Template"
+)
+
 var entities factory
 
 func init() {
 	entities = factory{
 		createCmd: {
-			"Schema":   func() interface{} { return &pb.CreateSchemaRequest{} },
-			"Template": func() interface{} { return &pb.CreateTemplateRequest{} },
+			schemaKind:   func() interface{} { return &pb.CreateSchemaRequest{} },
+			templateKind: func() interface{} { return &pb.CreateTemplateRequest{} },
 		},
 		readCmd: {
-			"Schema":   func() interface{} { return &pb.ReadSchemaRequest{} },
-			"Template": func() interface{} { return &pb.ReadTemplateRequest{} },
+			schemaKind:   func() interface{} { return &pb.ReadSchemaRequest{} },
+			templateKind: func() interface{} { return &pb.ReadTemplateRequest{} },
 		},
 		updateCmd: {
-			"Schema":   func() interface{} { return &pb.UpdateSchemaRequest{} },
-			"Template": func() interface{} { return &pb.UpdateTemplateRequest{} },
+			schemaKind:   func() interface{} { return &pb.UpdateSchemaRequest{} },
+			templateKind: func() interface{} { return &pb.UpdateTemplateRequest{} },
 		},
 		deleteCmd: {
-			"Schema":   func() interface{} { return &pb.DeleteSchemaRequest{} },
-			"Template": func() interface{} { return &pb.DeleteTemplateRequest{} },
+			schemaKind:   func() interface{} { return &pb.DeleteSchemaRequest{} },
+			templateKind: func() interface{} { return &pb.DeleteTemplateRequest{} },
 		},
 	}
 }
@@ -52,11 +57,15 @@ func communicate(cmd *cobra.Command, _ []string) error {
 	}
 	if dry, _ := cmd.Flags().GetBool("dry-run"); dry {
 		cmd.Printf("%T would be sent with data: ", entity)
+		if cmd.Flag("output").Value.String() == jsonFormat {
+			return json.NewEncoder(cmd.OutOrStdout()).Encode(entity)
+		}
 		return json.NewEncoder(cmd.OutOrStdout()).Encode(entity)
 	}
 	response, err := call(cnf.Union.GRPCConfig, entity)
 	if err != nil {
-		return err
+		cmd.Println(err)
+		return nil
 	}
 	if cmd.Flag("output").Value.String() == jsonFormat {
 		return json.NewEncoder(cmd.OutOrStdout()).Encode(response)
@@ -67,7 +76,7 @@ func communicate(cmd *cobra.Command, _ []string) error {
 func printSchemas(cmd *cobra.Command, _ []string) error {
 	var (
 		target   *cobra.Command
-		builders map[string]func() interface{}
+		builders map[kind]builder
 		found    bool
 	)
 	use := cmd.Flag("for").Value.String()
@@ -80,30 +89,34 @@ func printSchemas(cmd *cobra.Command, _ []string) error {
 	if !found {
 		return errors.Errorf("unknown control command %q", use)
 	}
-	for kind, builder := range builders {
-		yaml.NewEncoder(cmd.OutOrStdout()).Encode(schema{Kind: kind, Payload: convert(builder())})
+	for k, b := range builders {
+		_ = yaml.NewEncoder(cmd.OutOrStdout()).Encode(schema{Kind: k, Payload: convert(b())})
 		cmd.Println()
 	}
 	return nil
 }
 
+type builder func() interface{}
+
+type kind string
+
 type schema struct {
-	Kind    string                 `yaml:"kind"`
+	Kind    kind                   `yaml:"kind"`
 	Payload map[string]interface{} `yaml:"payload"`
 }
 
-type factory map[*cobra.Command]map[string]func() interface{}
+type factory map[*cobra.Command]map[kind]builder
 
 func (f factory) new(cmd *cobra.Command) (interface{}, error) {
 	data, err := f.data(cmd.Flag("filename").Value.String())
 	if err != nil {
 		return nil, err
 	}
-	builder, ok := f[cmd][data.Kind]
-	if !ok {
+	build, found := f[cmd][data.Kind]
+	if !found {
 		return nil, errors.Errorf("unknown payload type %q", data.Kind)
 	}
-	entity := builder()
+	entity := build()
 	if err = mapstructure.Decode(data.Payload, &entity); err != nil {
 		return nil, errors.Wrapf(err, "trying to decode payload to %#v", entity)
 	}

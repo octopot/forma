@@ -15,7 +15,7 @@ import (
 )
 
 func TestInputReader(t *testing.T) {
-	token, id := Token(), domain.ID("10000000-2000-4000-8000-160000000000")
+	token, id := DemoToken(), domain.ID("10000000-2000-4000-8000-160000000000")
 	t.Run("read by ID", func(t *testing.T) {
 		t.Run("success", func(t *testing.T) {
 			ctx, cancel := context.WithCancel(context.Background())

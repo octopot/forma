@@ -18,6 +18,7 @@ type ProtectedStorage interface {
 	UpdateSchema(ctx context.Context, tokenID domain.ID, data query.UpdateSchema) (types.Schema, error)
 	// DeleteSchema TODO issue#173
 	DeleteSchema(ctx context.Context, tokenID domain.ID, data query.DeleteSchema) (types.Schema, error)
+
 	// CreateTemplate TODO issue#173
 	CreateTemplate(ctx context.Context, tokenID domain.ID, data query.CreateTemplate) (types.Template, error)
 	// ReadTemplate TODO issue#173
@@ -26,6 +27,7 @@ type ProtectedStorage interface {
 	UpdateTemplate(ctx context.Context, tokenID domain.ID, data query.UpdateTemplate) (types.Template, error)
 	// DeleteTemplate TODO issue#173
 	DeleteTemplate(ctx context.Context, tokenID domain.ID, data query.DeleteTemplate) (types.Template, error)
+
 	// ReadInputByID TODO issue#173
 	ReadInputByID(ctx context.Context, tokenID, id domain.ID) (types.Input, error)
 	// ReadInputByFilter TODO issue#173

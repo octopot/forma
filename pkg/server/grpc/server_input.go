@@ -7,7 +7,7 @@ import (
 
 // NewInputServer returns new instance of server API for Input service.
 func NewInputServer(storage ProtectedStorage) InputServer {
-	return &inputServer{storage: storage}
+	return &inputServer{storage}
 }
 
 type inputServer struct {

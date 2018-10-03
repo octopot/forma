@@ -7,7 +7,7 @@ import (
 
 // NewLogServer returns new instance of server API for Log service.
 func NewLogServer(storage ProtectedStorage) LogServer {
-	return &logServer{storage: storage}
+	return &logServer{storage}
 }
 
 type logServer struct {

@@ -17,7 +17,7 @@ import (
 
 // NewSchemaServer returns new instance of server API for Schema service.
 func NewSchemaServer(storage ProtectedStorage) SchemaServer {
-	return &schemaServer{storage: storage}
+	return &schemaServer{storage}
 }
 
 type schemaServer struct {

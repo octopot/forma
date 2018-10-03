@@ -14,7 +14,7 @@ import (
 
 // NewTemplateServer returns new instance of server API for Template service.
 func NewTemplateServer(storage ProtectedStorage) TemplateServer {
-	return &templateServer{storage: storage}
+	return &templateServer{storage}
 }
 
 type templateServer struct {

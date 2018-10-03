@@ -32,15 +32,15 @@ var runCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		runtime.GOMAXPROCS(int(cnf.Union.ServerConfig.CPUCount))
 
-		dbLayer := storage.Must(storage.Database(cnf.Union.DBConfig))
+		repo := storage.Must(storage.Database(cnf.Union.DBConfig))
 		handler := chi.NewRouter(
 			server.New(
 				cnf.Union.ServerConfig,
-				service.New(dbLayer, dbLayer),
+				service.New(repo, repo),
 			),
 		)
 
-		if err := startGRPCServer(cnf.Union.GRPCConfig, dbLayer); err != nil {
+		if err := startGRPCServer(cnf.Union.GRPCConfig, repo); err != nil {
 			return err
 		}
 		if cnf.Union.MonitoringConfig.Enabled {
@@ -60,6 +60,7 @@ var runCmd = &cobra.Command{
 func init() {
 	v := viper.New()
 	fn.Must(
+		func() error { return v.BindEnv("max_cpus") },
 		func() error { return v.BindEnv("bind") },
 		func() error { return v.BindEnv("http_port") },
 		func() error { return v.BindEnv("profiling_port") },
@@ -71,7 +72,6 @@ func init() {
 		func() error { return v.BindEnv("idle_timeout") },
 		func() error { return v.BindEnv("base_url") },
 		func() error { return v.BindEnv("template_dir") },
-		func() error { return v.BindEnv("max_cpus") },
 		func() error {
 			v.SetDefault("max_cpus", defaults["max_cpus"])
 			v.SetDefault("bind", defaults["bind"])
@@ -112,10 +112,6 @@ func init() {
 			flags.DurationVarP(&cnf.Union.ServerConfig.IdleTimeout,
 				"idle-timeout", "", v.GetDuration("idle_timeout"),
 				"maximum amount of time to wait for the next request when keep-alive is enabled")
-			flags.StringVarP(&cnf.Union.ServerConfig.BaseURL,
-				"base-url", "", v.GetString("base_url"), "hostname (and path) to the root")
-			flags.StringVarP(&cnf.Union.ServerConfig.TemplateDir,
-				"tpl-dir", "", v.GetString("template_dir"), "filesystem path to custom template directory")
 			flags.BoolVarP(&cnf.Union.ProfilingConfig.Enabled,
 				"with-profiling", "", false, "enable pprof on /pprof/* and /debug/pprof/")
 			flags.StringVarP(&cnf.Union.ProfilingConfig.Interface,
@@ -126,6 +122,10 @@ func init() {
 				"monitoring-host", "", v.GetString("monitoring_host"), "monitoring host")
 			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
 				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
+			flags.StringVarP(&cnf.Union.ServerConfig.BaseURL,
+				"base-url", "", v.GetString("base_url"), "hostname (and path) to the root")
+			flags.StringVarP(&cnf.Union.ServerConfig.TemplateDir,
+				"tpl-dir", "", v.GetString("template_dir"), "filesystem path to custom template directory")
 			return nil
 		},
 	)

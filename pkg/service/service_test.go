@@ -13,10 +13,11 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage/types"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/magiconair/properties/assert"
+
+	. "github.com/kamilsk/form-api/pkg/service"
 )
 
 const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
@@ -28,7 +29,7 @@ func TestForma_HandleGetV1(t *testing.T) {
 	var (
 		storage = NewMockStorage(ctrl)
 		handler = NewMockInputHandler(ctrl)
-		api     = service.New(storage, handler)
+		api     = New(storage, handler)
 	)
 
 	tests := []struct {
@@ -58,7 +59,7 @@ func TestForma_HandlePostV1(t *testing.T) {
 	var (
 		storage = NewMockStorage(ctrl)
 		handler = NewMockInputHandler(ctrl)
-		api     = service.New(storage, handler)
+		api     = New(storage, handler)
 	)
 
 	tests := []struct {

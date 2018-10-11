@@ -53,7 +53,7 @@ func (service *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
 	response.ID = input.ID
 
 	// TODO issue#109
-	go service.handler.LogRequest(context.Background(), input, request.InputContext)
+	_ = service.handler.LogRequest(context.Background(), input, request.InputContext)
 
 	return response
 }

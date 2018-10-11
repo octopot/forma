@@ -33,8 +33,8 @@ func (scope logScope) Write(data query.WriteLog) (types.Log, error) {
 			entity.Context, entity.InputID)
 	}
 	q := `INSERT INTO "log" ("account_id", "schema_id", "input_id", "template_id", "identifier", "code", "context")
-	           VALUES ((SELECT "account_id" FROM "schema" WHERE "id" = $1), $1, $2, $3, $4, $5, $6)
-	        RETURNING "id", "created_at"`
+	      VALUES ((SELECT "account_id" FROM "schema" WHERE "id" = $1), $1, $2, $3, $4, $5, $6)
+	   RETURNING "id", "created_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q,
 		entity.SchemaID, entity.InputID, entity.TemplateID,
 		entity.Identifier, entity.Code, encoded)

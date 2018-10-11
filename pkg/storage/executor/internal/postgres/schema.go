@@ -30,8 +30,9 @@ func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (ty
 			"user %q of account %q tried to marshal a schema definition `%#v` into XML",
 			token.UserID, token.User.AccountID, entity.Definition)
 	}
-	q := `INSERT INTO "schema" ("id", "account_id", "title", "definition") VALUES ($1, $2, $3, $4)
-	      RETURNING "id", "created_at"`
+	q := `INSERT INTO "schema" ("id", "account_id", "title", "definition")
+	      VALUES (coalesce($1, uuid_generate_v4()), $2, $3, $4)
+	   RETURNING "id", "created_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q, data.ID, entity.AccountID, entity.Title, encoded)
 	if err := row.Scan(&entity.ID, &entity.CreatedAt); err != nil {
 		return entity, errors.Database(errors.ServerErrorMessage, err,
@@ -44,7 +45,8 @@ func (scope schemaScope) Create(token *types.Token, data query.CreateSchema) (ty
 // Read TODO issue#173
 func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.Schema, error) {
 	entity, encoded := types.Schema{ID: data.ID, AccountID: token.User.AccountID}, []byte(nil)
-	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at" FROM "schema"
+	q := `SELECT "title", "definition", "created_at", "updated_at", "deleted_at"
+	        FROM "schema"
 	       WHERE "id" = $1 AND "account_id" = $2`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 	if err := row.Scan(&entity.Title, &encoded, &entity.CreatedAt, &entity.UpdatedAt, &entity.DeletedAt); err != nil {
@@ -63,7 +65,8 @@ func (scope schemaScope) Read(token *types.Token, data query.ReadSchema) (types.
 // ReadByID TODO issue#173
 func (scope schemaScope) ReadByID(id domain.ID) (types.Schema, error) {
 	entity, encoded := types.Schema{ID: id}, []byte(nil)
-	q := `SELECT "title", "definition", "created_at", "updated_at" FROM "schema"
+	q := `SELECT "title", "definition", "created_at", "updated_at"
+	        FROM "schema"
 	       WHERE "id" = $1 AND "deleted_at" IS NULL`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID)
 	if err := row.Scan(&entity.Title, &encoded, &entity.CreatedAt, &entity.UpdatedAt); err != nil {
@@ -98,7 +101,8 @@ func (scope schemaScope) Update(token *types.Token, data query.UpdateSchema) (ty
 			"user %q of account %q tried to marshal definition `%#v` of the schema %q into XML",
 			token.UserID, token.User.AccountID, entity.Definition, entity.ID)
 	}
-	q := `UPDATE "schema" SET "title" = $1, "definition" = $2
+	q := `UPDATE "schema"
+	         SET "title" = $1, "definition" = $2
 	       WHERE "id" = $3 AND "account_id" = $4
 	   RETURNING "updated_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.Title, encoded, entity.ID, entity.AccountID)
@@ -117,7 +121,9 @@ func (scope schemaScope) Delete(token *types.Token, data query.DeleteSchema) (ty
 		return entity, readErr
 	}
 	if data.Permanently {
-		q := `DELETE FROM "schema" WHERE "id" = $1 AND "account_id" = $2 RETURNING now()`
+		q := `DELETE FROM "schema"
+		       WHERE "id" = $1 AND "account_id" = $2
+		   RETURNING now()`
 		row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 		if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
 			return entity, errors.Database(errors.ServerErrorMessage, scanErr,
@@ -126,7 +132,8 @@ func (scope schemaScope) Delete(token *types.Token, data query.DeleteSchema) (ty
 		}
 		return entity, nil
 	}
-	q := `UPDATE "schema" SET "deleted_at" = now()
+	q := `UPDATE "schema"
+	         SET "deleted_at" = now()
 	       WHERE "id" = $1 AND "account_id" = $2
 	   RETURNING "deleted_at"`
 	row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)

@@ -8,9 +8,10 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestUserManager(t *testing.T) {
@@ -42,7 +43,7 @@ func TestUserManager(t *testing.T) {
 						),
 				)
 
-			var exec executor.UserManager = postgres.NewUserContext(ctx, conn)
+			var exec executor.UserManager = NewUserContext(ctx, conn)
 			token, err := exec.Token(id)
 			assert.NoError(t, err)
 			assert.NotEmpty(t, token.UserID)
@@ -72,7 +73,7 @@ func TestUserManager(t *testing.T) {
 				WithArgs(id).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.UserManager = postgres.NewUserContext(ctx, conn)
+			var exec executor.UserManager = NewUserContext(ctx, conn)
 			token, err := exec.Token(id)
 			assert.Error(t, err)
 			assert.Nil(t, token)

@@ -43,8 +43,8 @@ func (scope userScope) Token(id domain.ID) (*types.Token, error) {
 	); err != nil {
 		return nil, errors.Database(errors.ServerErrorMessage, err, "trying to fetch credentials by the token %q", id)
 	}
-	user.ID, account.ID = token.UserID, user.AccountID
-	token.User, user.Account = &user, &account
+	account.ID, user.ID = user.AccountID, token.UserID
+	user.Account, token.User = &account, &user
 	user.Tokens, account.Users = append(user.Tokens, &token), append(account.Users, &user)
 	return &token, nil
 }

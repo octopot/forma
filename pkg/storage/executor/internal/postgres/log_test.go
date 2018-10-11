@@ -9,10 +9,11 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestLogWriter(t *testing.T) {
@@ -36,7 +37,7 @@ func TestLogWriter(t *testing.T) {
 						AddRow(uint64(1), time.Now()),
 				)
 
-			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
+			var exec executor.LogWriter = NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
 				SchemaID: id, InputID: id, TemplateID: &id,
 				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
@@ -62,7 +63,7 @@ func TestLogWriter(t *testing.T) {
 				WithArgs(id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.LogWriter = postgres.NewLogContext(ctx, conn)
+			var exec executor.LogWriter = NewLogContext(ctx, conn)
 			log, err := exec.Write(query.WriteLog{
 				SchemaID: id, InputID: id, TemplateID: &id,
 				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},

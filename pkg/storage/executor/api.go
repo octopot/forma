@@ -5,8 +5,6 @@ import (
 	"database/sql"
 	"fmt"
 
-	_ "github.com/lib/pq"
-
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"

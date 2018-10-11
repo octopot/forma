@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestTemplateEditor(t *testing.T) {
@@ -13,25 +14,25 @@ func TestTemplateEditor(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.TemplateEditor = postgres.NewTemplateContext(ctx, nil)
+		var _ executor.TemplateEditor = NewTemplateContext(ctx, nil)
 	})
 	t.Run("read", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.TemplateEditor = postgres.NewTemplateContext(ctx, nil)
+		var _ executor.TemplateEditor = NewTemplateContext(ctx, nil)
 	})
 	t.Run("update", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.TemplateEditor = postgres.NewTemplateContext(ctx, nil)
+		var _ executor.TemplateEditor = NewTemplateContext(ctx, nil)
 	})
 	t.Run("delete", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.TemplateEditor = postgres.NewTemplateContext(ctx, nil)
+		var _ executor.TemplateEditor = NewTemplateContext(ctx, nil)
 	})
 }
 
@@ -40,6 +41,6 @@ func TestTemplateReader(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.TemplateReader = postgres.NewTemplateContext(ctx, nil)
+		var _ executor.TemplateReader = NewTemplateContext(ctx, nil)
 	})
 }

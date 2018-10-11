@@ -5,30 +5,31 @@ import (
 	"database/sql"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/storage/executor"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor"
 )
 
 func TestNew(t *testing.T) {
 	type contract interface {
 		Dialect() string
 
-		InputReader(context.Context, *sql.Conn) executor.InputReader
-		InputWriter(context.Context, *sql.Conn) executor.InputWriter
-		LogWriter(context.Context, *sql.Conn) executor.LogWriter
-		SchemaEditor(context.Context, *sql.Conn) executor.SchemaEditor
-		TemplateEditor(context.Context, *sql.Conn) executor.TemplateEditor
-		UserManager(context.Context, *sql.Conn) executor.UserManager
+		InputReader(context.Context, *sql.Conn) InputReader
+		InputWriter(context.Context, *sql.Conn) InputWriter
+		LogWriter(context.Context, *sql.Conn) LogWriter
+		SchemaEditor(context.Context, *sql.Conn) SchemaEditor
+		TemplateEditor(context.Context, *sql.Conn) TemplateEditor
+		UserManager(context.Context, *sql.Conn) UserManager
 
 		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
-		SchemaReader(context.Context, *sql.Conn) executor.SchemaReader
+		SchemaReader(context.Context, *sql.Conn) SchemaReader
 		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
-		TemplateReader(context.Context, *sql.Conn) executor.TemplateReader
+		TemplateReader(context.Context, *sql.Conn) TemplateReader
 	}
 	t.Run("PostgreSQL", func(t *testing.T) {
 		assert.NotPanics(t, func() {
 			dialect, ctx := "postgres", context.Background()
-			var exec contract = executor.New(dialect)
+			var exec contract = New(dialect)
 			assert.Equal(t, dialect, exec.Dialect())
 
 			assert.NotNil(t, exec.InputReader(ctx, nil))
@@ -45,7 +46,7 @@ func TestNew(t *testing.T) {
 	t.Run("MySQL", func(t *testing.T) {
 		assert.Panics(t, func() {
 			dialect := "mysql"
-			var _ contract = executor.New(dialect)
+			var _ contract = New(dialect)
 		})
 	})
 }

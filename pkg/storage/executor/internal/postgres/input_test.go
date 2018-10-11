@@ -8,10 +8,11 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/DATA-DOG/go-sqlmock.v1"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestInputReader(t *testing.T) {
@@ -35,7 +36,7 @@ func TestInputReader(t *testing.T) {
 						AddRow(id, `{"input":["test"]}`, time.Now()),
 				)
 
-			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputReader = NewInputContext(ctx, conn)
 			input, err := exec.ReadByID(token, id)
 			assert.NoError(t, err)
 			assert.Equal(t, id, input.SchemaID)
@@ -56,7 +57,7 @@ func TestInputReader(t *testing.T) {
 				WithArgs(id, token.User.AccountID).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputReader = NewInputContext(ctx, conn)
 			input, err := exec.ReadByID(token, id)
 			assert.Error(t, err)
 			assert.Empty(t, input.SchemaID)
@@ -140,7 +141,7 @@ func TestInputReader(t *testing.T) {
 				},
 			}
 
-			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputReader = NewInputContext(ctx, conn)
 			for _, test := range testCases {
 				test.mocker(mock)
 				inputs, readErr := exec.ReadByFilter(token, test.filter)
@@ -162,7 +163,7 @@ func TestInputReader(t *testing.T) {
 				WithArgs(id, token.User.AccountID).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.InputReader = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputReader = NewInputContext(ctx, conn)
 			inputs, err := exec.ReadByFilter(token, query.InputFilter{SchemaID: id})
 			assert.Error(t, err)
 			assert.Nil(t, inputs)
@@ -197,7 +198,7 @@ func TestInputWriter(t *testing.T) {
 						AddRow(id, time.Now()),
 				)
 
-			var exec executor.InputWriter = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputWriter = NewInputContext(ctx, conn)
 			input, err := exec.Write(query.WriteInput{
 				SchemaID:     id,
 				VerifiedData: map[string][]string{"input": {"test"}},
@@ -223,7 +224,7 @@ func TestInputWriter(t *testing.T) {
 				WithArgs(id, []byte(`{"input":["test"]}`)).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.InputWriter = postgres.NewInputContext(ctx, conn)
+			var exec executor.InputWriter = NewInputContext(ctx, conn)
 			input, err := exec.Write(query.WriteInput{
 				SchemaID:     id,
 				VerifiedData: map[string][]string{"input": {"test"}},

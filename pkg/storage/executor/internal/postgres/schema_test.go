@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-	"github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
+
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestSchemaEditor(t *testing.T) {
@@ -13,25 +14,25 @@ func TestSchemaEditor(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
+		var _ executor.SchemaEditor = NewSchemaContext(ctx, nil)
 	})
 	t.Run("read", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
+		var _ executor.SchemaEditor = NewSchemaContext(ctx, nil)
 	})
 	t.Run("update", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
+		var _ executor.SchemaEditor = NewSchemaContext(ctx, nil)
 	})
 	t.Run("delete", func(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.SchemaEditor = postgres.NewSchemaContext(ctx, nil)
+		var _ executor.SchemaEditor = NewSchemaContext(ctx, nil)
 	})
 }
 
@@ -40,6 +41,6 @@ func TestSchemaReader(t *testing.T) {
 		ctx, cancel := context.WithCancel(context.Background())
 		defer cancel()
 
-		var _ executor.SchemaReader = postgres.NewSchemaContext(ctx, nil)
+		var _ executor.SchemaReader = NewSchemaContext(ctx, nil)
 	})
 }

@@ -1,7 +1,7 @@
 kind: Template
 payload:
-  id:         10000000-2000-4000-8000-160000000007
-  title:      Subscribe template (UPDATED)
+  id:         10000000-2000-4000-8000-160000000005
+  title:      Subscribe template
   definition: |
     {{- define "forma.body" -}}
         <div class="row">

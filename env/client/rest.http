@@ -27,6 +27,7 @@ Authorization: Bearer 10000000-2000-4000-8000-160000000003
 POST http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 Content-Type: application/x-www-form-urlencoded
 Cookie: identifier=10000000-2000-4000-8000-160000000000
+X-Request-ID: 10000000-2000-4000-8000-160000000011
 
 email=test@my.email
 

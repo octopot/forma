@@ -8,28 +8,14 @@ DECLARE   demoAccount  "account"."id"%TYPE := '10000000-2000-4000-8000-160000000
   DECLARE subscribeTpl "template"."id"%TYPE := '10000000-2000-4000-8000-160000000007';
   DECLARE feedbackTpl  "template"."id"%TYPE := '10000000-2000-4000-8000-160000000008';
 BEGIN
-  DELETE FROM "log"
-  WHERE "account_id" = demoAccount
-        OR "schema_id" IN (subscribe, feedbackEn, feedbackRu)
-        OR "template_id" IN (subscribeTpl, feedbackTpl);
-
-  DELETE FROM "input"
-  WHERE "schema_id" IN (subscribe, feedbackEn, feedbackRu);
-
-  DELETE FROM "template"
-  WHERE "account_id" = demoAccount OR "id" IN (subscribeTpl, feedbackTpl);
-
-  DELETE FROM "schema"
-  WHERE "account_id" = demoAccount OR "id" IN (subscribe, feedbackEn, feedbackRu);
-
-  DELETE FROM "token"
-  WHERE "id" = demoToken OR "user_id" = demoUser;
-
-  DELETE FROM "user"
-  WHERE "id" = demoUser OR "account_id" = demoAccount;
-
-  DELETE FROM "account"
-  WHERE "id" = demoAccount;
+  TRUNCATE TABLE "account" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "token" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "user" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "link" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "schema" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "template" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "input" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "log" RESTART IDENTITY RESTRICT;
 
   INSERT INTO "account" ("id", "name")
   VALUES (demoAccount, 'Demo account');

@@ -24,7 +24,7 @@ var migrateCmd = &cobra.Command{
 		direction, limit := chooseDirectionAndLimit(args)
 		migrate.SetTable(cnf.Union.MigrationConfig.Table)
 		migrate.SetSchema(cnf.Union.MigrationConfig.Schema)
-		layer := storage.Must(storage.Database(cnf.Union.DBConfig))
+		layer := storage.Must(storage.Database(cnf.Union.DatabaseConfig))
 		src := &migrate.AssetMigrationSource{
 			Asset:    static.Asset,
 			AssetDir: static.AssetDir,

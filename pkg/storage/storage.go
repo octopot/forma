@@ -30,7 +30,7 @@ func New(configs ...Configurator) (*Storage, error) {
 }
 
 // Database returns database configurator.
-func Database(cnf config.DBConfig) Configurator {
+func Database(cnf config.DatabaseConfig) Configurator {
 	return func(instance *Storage) (err error) {
 		defer errors.Recover(&err)
 		instance.exec = executor.New(cnf.DriverName())

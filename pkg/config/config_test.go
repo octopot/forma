@@ -49,3 +49,7 @@ func TestApplicationConfig_Dumping(t *testing.T) {
 		})
 	}
 }
+
+func TestDatabaseConfig_DriverName(t *testing.T) {
+	assert.Equal(t, "postgres", (&DatabaseConfig{DSN: "postgres://postgres:postgres@127.0.0.1:5432/postgres"}).DriverName())
+}

@@ -1,8 +1,11 @@
 ---
+
 config:
 
+  cpus: 1
+
   db:
-    dsn: postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable
+    dsn:      postgres://postgres:postgres@127.0.0.1:5432/postgres?connect_timeout=1&sslmode=disable
     idle:     1
     open:     1
     lifetime: 0
@@ -28,11 +31,14 @@ config:
     interface: 127.0.0.1:8090
 
   server:
-    interface: 127.0.0.1:8080
-    cpus:                1
+    interface:           127.0.0.1:80
     read-timeout:        1s
     read-header-timeout: 1s
     write-timeout:       1s
     idle-timeout:        1s
     base-url:            http://localhost/
     tpl-dir:             static/templates
+
+  service:
+    base-url: http://localhost/
+    tpl-dir:  static/templates

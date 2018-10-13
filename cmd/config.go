@@ -50,13 +50,13 @@ func db(cmd *cobra.Command) {
 		},
 		func() error {
 			flags := cmd.Flags()
-			flags.StringVarP((*string)(&cnf.Union.DBConfig.DSN),
+			flags.StringVarP((*string)(&cnf.Union.DatabaseConfig.DSN),
 				"dsn", "", v.GetString("dsn"), "data source name")
-			flags.IntVarP(&cnf.Union.DBConfig.MaxOpen,
+			flags.IntVarP(&cnf.Union.DatabaseConfig.MaxOpen,
 				"db-open-conn", "", v.GetInt("open_conn"), "maximum number of open connections to the database")
-			flags.IntVarP(&cnf.Union.DBConfig.MaxIdle,
+			flags.IntVarP(&cnf.Union.DatabaseConfig.MaxIdle,
 				"db-idle-conn", "", v.GetInt("idle_conn"), "maximum number of connections in the idle connection pool")
-			flags.DurationVarP(&cnf.Union.DBConfig.MaxLifetime,
+			flags.DurationVarP(&cnf.Union.DatabaseConfig.MaxLifetime,
 				"db-conn-max-lt", "", v.GetDuration("conn_max_lt"), "maximum amount of time a connection may be reused")
 			return nil
 		},

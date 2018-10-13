@@ -6,8 +6,9 @@ import (
 
 	deep "github.com/pkg/errors"
 
-	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/errors"
 )
 
 func TestApplicationError(t *testing.T) {
@@ -24,16 +25,16 @@ func TestApplicationError(t *testing.T) {
 		}
 		TestCase struct {
 			name        string
-			constructor func(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) errors.ApplicationError
+			constructor func(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError
 			expected    Result
 		}
 	)
 
 	tests := []TestCase{
-		{"not found", errors.NotFound, Result{isUserError: true, isResourceNotFound: true}},
-		{"validation", errors.Validation, Result{isUserError: true, isInvalidInput: true}},
-		{"database", errors.Database, Result{isServerError: true, isDatabaseFail: true}},
-		{"serialization", errors.Serialization, Result{isServerError: true, isSerializationFail: true}},
+		{"not found", NotFound, Result{isUserError: true, isResourceNotFound: true}},
+		{"validation", Validation, Result{isUserError: true, isInvalidInput: true}},
+		{"database", Database, Result{isServerError: true, isDatabaseFail: true}},
+		{"serialization", Serialization, Result{isServerError: true, isSerializationFail: true}},
 	}
 
 	for _, test := range tests {
@@ -66,24 +67,24 @@ func TestApplicationError(t *testing.T) {
 func TestApplicationErrorMessage(t *testing.T) {
 	tests := []struct {
 		name        string
-		constructor func(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) errors.ApplicationError
+		constructor func(userMsg string, cause error, ctxMsg string, ctxArgs ...interface{}) ApplicationError
 		args        func(name string) (userMsg string, cause error, ctxMsg string)
 		expected    func() (err, msg string)
 	}{
-		{"not found", errors.NotFound,
+		{"not found", NotFound,
 			func(name string) (string, error, string) {
 				return "", fmt.Errorf(name), "uuid is not presented"
 			},
-			func() (string, string) { return "error: uuid is not presented: not found", errors.ClientErrorMessage }},
-		{"validation", errors.Validation,
+			func() (string, string) { return "error: uuid is not presented: not found", ClientErrorMessage }},
+		{"validation", Validation,
 			func(name string) (string, error, string) { return "validation", nil, "invalid email" },
 			func() (string, string) { return "validation", "validation" }},
-		{"database", errors.Database,
+		{"database", Database,
 			func(name string) (string, error, string) { return "", fmt.Errorf(name), "connection is lost" },
 			func() (string, string) {
-				return "server error: connection is lost: database", errors.ServerErrorMessage
+				return "server error: connection is lost: database", ServerErrorMessage
 			}},
-		{"serialization", errors.Serialization,
+		{"serialization", Serialization,
 			func(name string) (string, error, string) { return "serialization", nil, "corrupted data" },
 			func() (string, string) { return "serialization", "serialization" }},
 	}

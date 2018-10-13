@@ -7,9 +7,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
+
+	. "github.com/kamilsk/form-api/pkg/config"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -31,7 +32,7 @@ func TestApplicationConfig_Dumping(t *testing.T) {
 			raw, err := ioutil.ReadFile(tc.in)
 			assert.NoError(t, err)
 
-			var cnf config.ApplicationConfig
+			var cnf ApplicationConfig
 			err = yaml.UnmarshalStrict(raw, &cnf)
 			assert.NoError(t, err)
 

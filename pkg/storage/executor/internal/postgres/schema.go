@@ -121,9 +121,7 @@ func (scope schemaScope) Delete(token *types.Token, data query.DeleteSchema) (ty
 		return entity, readErr
 	}
 	if data.Permanently {
-		q := `DELETE FROM "schema"
-		       WHERE "id" = $1 AND "account_id" = $2
-		   RETURNING now()`
+		q := `DELETE FROM "schema" WHERE "id" = $1 AND "account_id" = $2 RETURNING now()`
 		row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 		if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
 			return entity, errors.Database(errors.ServerErrorMessage, scanErr,

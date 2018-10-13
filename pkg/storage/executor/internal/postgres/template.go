@@ -102,9 +102,7 @@ func (scope templateScope) Delete(token *types.Token, data query.DeleteTemplate)
 		return entity, readErr
 	}
 	if data.Permanently {
-		q := `DELETE FROM "template"
-		       WHERE "id" = $1 AND "account_id" = $2
-		   RETURNING now()`
+		q := `DELETE FROM "template" WHERE "id" = $1 AND "account_id" = $2 RETURNING now()`
 		row := scope.conn.QueryRowContext(scope.ctx, q, entity.ID, entity.AccountID)
 		if scanErr := row.Scan(&entity.DeletedAt); scanErr != nil {
 			return entity, errors.Database(errors.ServerErrorMessage, scanErr,

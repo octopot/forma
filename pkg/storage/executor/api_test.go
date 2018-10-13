@@ -21,9 +21,9 @@ func TestNew(t *testing.T) {
 		TemplateEditor(context.Context, *sql.Conn) TemplateEditor
 		UserManager(context.Context, *sql.Conn) UserManager
 
-		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+		// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 		SchemaReader(context.Context, *sql.Conn) SchemaReader
-		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+		// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 		TemplateReader(context.Context, *sql.Conn) TemplateReader
 	}
 	t.Run("PostgreSQL", func(t *testing.T) {

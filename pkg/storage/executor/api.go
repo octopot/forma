@@ -28,7 +28,7 @@ func New(dialect string) *Executor {
 			return postgres.NewInputContext(ctx, conn)
 		}
 		exec.factory.NewLogWriter = func(ctx context.Context, conn *sql.Conn) LogWriter {
-			return postgres.NewLogContext(ctx, conn)
+			return postgres.NewEventContext(ctx, conn)
 		}
 		exec.factory.NewSchemaEditor = func(ctx context.Context, conn *sql.Conn) SchemaEditor {
 			return postgres.NewSchemaContext(ctx, conn)
@@ -39,11 +39,11 @@ func New(dialect string) *Executor {
 		exec.factory.NewUserManager = func(ctx context.Context, conn *sql.Conn) UserManager {
 			return postgres.NewUserContext(ctx, conn)
 		}
-		// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+		// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 		exec.factory.NewSchemaReader = func(ctx context.Context, conn *sql.Conn) SchemaReader {
 			return postgres.NewSchemaContext(ctx, conn)
 		}
-		// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+		// Deprecated: TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 		exec.factory.NewTemplateReader = func(ctx context.Context, conn *sql.Conn) TemplateReader {
 			return postgres.NewTemplateContext(ctx, conn)
 		}
@@ -68,7 +68,7 @@ type InputWriter interface {
 
 // LogWriter TODO issue#173
 type LogWriter interface {
-	Write(query.WriteLog) (types.Log, error)
+	Write(query.WriteLog) (types.Event, error)
 }
 
 // SchemaEditor TODO issue#173
@@ -80,7 +80,7 @@ type SchemaEditor interface {
 }
 
 // SchemaReader TODO issue#173
-// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+// Deprecated: TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 type SchemaReader interface {
 	ReadByID(domain.ID) (types.Schema, error)
 }
@@ -94,7 +94,7 @@ type TemplateEditor interface {
 }
 
 // TemplateReader TODO issue#173
-// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+// Deprecated: TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 type TemplateReader interface {
 	ReadByID(domain.ID) (types.Template, error)
 }
@@ -155,13 +155,13 @@ func (e *Executor) UserManager(ctx context.Context, conn *sql.Conn) UserManager 
 }
 
 // SchemaReader TODO issue#173
-// Deprecated TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 func (e *Executor) SchemaReader(ctx context.Context, conn *sql.Conn) SchemaReader {
 	return e.factory.NewSchemaReader(ctx, conn)
 }
 
 // TemplateReader TODO issue#173
-// Deprecated TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
+// Deprecated: TODO issue#version3.0 use TemplateEditor and gRPC gateway instead
 func (e *Executor) TemplateReader(ctx context.Context, conn *sql.Conn) TemplateReader {
 	return e.factory.NewTemplateReader(ctx, conn)
 }

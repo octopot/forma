@@ -28,23 +28,29 @@ func TestLogWriter(t *testing.T) {
 			assert.NoError(t, err)
 			defer conn.Close()
 
+			e := domain.InputEvent{
+				SchemaID: id, InputID: id, TemplateID: &id, Identifier: &id,
+				Context: domain.InputContext{}, Code: http.StatusFound, URL: "test",
+			}
+			l := query.WriteLog{InputEvent: e}
+
 			mock.
-				ExpectQuery(`INSERT INTO "log"`).
-				WithArgs(id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
+				ExpectQuery(`INSERT INTO "event"`).
+				WithArgs(
+					e.SchemaID, e.InputID, e.TemplateID, e.Identifier,
+					[]byte(`{}`), e.Code, e.URL,
+				).
 				WillReturnRows(
 					sqlmock.
 						NewRows([]string{"id", "created_at"}).
 						AddRow(uint64(1), time.Now()),
 				)
 
-			var exec executor.LogWriter = NewLogContext(ctx, conn)
-			log, err := exec.Write(query.WriteLog{
-				SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
-			})
+			var exec executor.LogWriter = NewEventContext(ctx, conn)
+			event, err := exec.Write(l)
 			assert.NoError(t, err)
-			assert.Equal(t, uint64(1), log.ID)
-			assert.NotEmpty(t, log.CreatedAt)
+			assert.Equal(t, uint64(1), event.ID)
+			assert.NotEmpty(t, event.CreatedAt)
 		})
 		t.Run("serialization error", func(t *testing.T) {
 			// TODO issue#126
@@ -58,19 +64,25 @@ func TestLogWriter(t *testing.T) {
 			assert.NoError(t, err)
 			defer conn.Close()
 
+			e := domain.InputEvent{
+				SchemaID: id, InputID: id, TemplateID: &id, Identifier: &id,
+				Context: domain.InputContext{}, Code: http.StatusFound, URL: "test",
+			}
+			l := query.WriteLog{InputEvent: e}
+
 			mock.
-				ExpectQuery(`INSERT INTO "log"`).
-				WithArgs(id, id, &id, string(id), uint16(http.StatusFound), []byte(`{"cookie":"test"}`)).
+				ExpectQuery(`INSERT INTO "event"`).
+				WithArgs(
+					e.SchemaID, e.InputID, e.TemplateID, e.Identifier,
+					[]byte(`{}`), e.Code, e.URL,
+				).
 				WillReturnError(errors.Simple("test"))
 
-			var exec executor.LogWriter = NewLogContext(ctx, conn)
-			log, err := exec.Write(query.WriteLog{
-				SchemaID: id, InputID: id, TemplateID: &id,
-				Identifier: id, Code: http.StatusFound, InputContext: domain.InputContext{"cookie": "test"},
-			})
+			var exec executor.LogWriter = NewEventContext(ctx, conn)
+			event, err := exec.Write(l)
 			assert.Error(t, err)
-			assert.Empty(t, log.ID)
-			assert.Empty(t, log.CreatedAt)
+			assert.Empty(t, event.ID)
+			assert.Empty(t, event.CreatedAt)
 		})
 	})
 }

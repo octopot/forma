@@ -2,7 +2,7 @@
 *.out
 
 # database
-/env/backup.db
+/env/docker/db/*.dump
 
 # environment
 *.env

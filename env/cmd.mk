@@ -22,6 +22,10 @@ cmd-help-run:
 cmd-version:
 	go run $(LDFLAGS) $(BUILD_FILES) version
 
+.PHONY: cmd-migrate
+cmd-migrate:
+	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up
+
 .PHONY: cmd-migrate-up
 cmd-migrate-up:
 	go run $(LDFLAGS) $(BUILD_FILES) migrate $(FLAGS) up 1

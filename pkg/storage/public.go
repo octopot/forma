@@ -12,9 +12,9 @@ import (
 func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema, error) {
 	var schema domain.Schema
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return schema, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return schema, connErr
 	}
 	defer closer()
 
@@ -31,9 +31,9 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Template, error) {
 	var template domain.Template
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return template, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return template, connErr
 	}
 	defer closer()
 
@@ -46,9 +46,9 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 
 // HandleInput TODO issue#173
 func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return nil, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return nil, connErr
 	}
 	defer closer()
 
@@ -59,24 +59,16 @@ func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, ver
 	return &entity, nil
 }
 
-// LogRequest TODO issue#173
-func (storage *Storage) LogRequest(ctx context.Context, input *types.Input, meta domain.InputContext) error {
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return err
+// LogInput stores an input event.
+func (storage *Storage) LogInput(ctx context.Context, event domain.InputEvent) error {
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return connErr
 	}
 	defer closer()
 
-	// TODO issue#109
-	_, _ = storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{
-		SchemaID:   input.SchemaID,
-		InputID:    input.ID,
-		TemplateID: input.Data.Template(),
+	// TODO issue#51
+	_, writeErr := storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{InputEvent: event})
 
-		// TODO issue#171
-		Identifier:   "10000000-2000-4000-8000-160000000000",
-		Code:         201,
-		InputContext: meta,
-	})
-	return nil
+	return writeErr
 }

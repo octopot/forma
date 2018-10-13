@@ -76,9 +76,6 @@ type ServerConfig struct {
 	ReadHeaderTimeout time.Duration `json:"read-header-timeout" xml:"read-header-timeout" yaml:"read-header-timeout"`
 	WriteTimeout      time.Duration `json:"write-timeout"       xml:"write-timeout"       yaml:"write-timeout"`
 	IdleTimeout       time.Duration `json:"idle-timeout"        xml:"idle-timeout"        yaml:"idle-timeout"`
-
-	BaseURL     string `json:"base-url"            xml:"base-url"            yaml:"base-url"`
-	TemplateDir string `json:"tpl-dir"             xml:"tpl-dir"             yaml:"tpl-dir"`
 }
 
 // ServiceConfig contains configuration related to the service.

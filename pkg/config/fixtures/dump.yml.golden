@@ -27,8 +27,6 @@ config:
     read-header-timeout: 1s
     write-timeout: 1s
     idle-timeout: 1s
-    base-url: http://localhost/
-    tpl-dir: static/templates
   service:
     base-url: http://localhost/
     tpl-dir: static/templates

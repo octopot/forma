@@ -37,7 +37,7 @@ var runCmd = &cobra.Command{
 			handler = chi.NewRouter(
 				server.New(
 					cnf.Union.ServerConfig,
-					service.New(repo, repo),
+					service.New(cnf.Union.ServiceConfig, repo, repo),
 				),
 			)
 		)
@@ -124,9 +124,9 @@ func init() {
 				"monitoring-host", "", v.GetString("monitoring_host"), "monitoring host")
 			flags.StringVarP(&cnf.Union.GRPCConfig.Interface,
 				"grpc-host", "", v.GetString("grpc_host"), "gRPC server host")
-			flags.StringVarP(&cnf.Union.ServerConfig.BaseURL,
+			flags.StringVarP(&cnf.Union.ServiceConfig.BaseURL,
 				"base-url", "", v.GetString("base_url"), "hostname (and path) to the root")
-			flags.StringVarP(&cnf.Union.ServerConfig.TemplateDir,
+			flags.StringVarP(&cnf.Union.ServiceConfig.TemplateDir,
 				"tpl-dir", "", v.GetString("template_dir"), "filesystem path to custom template directory")
 			return nil
 		},

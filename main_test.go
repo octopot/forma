@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/server"
 	"github.com/kamilsk/form-api/pkg/server/grpc"
+	"github.com/kamilsk/form-api/pkg/server/router"
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/spf13/cobra"
@@ -16,9 +18,11 @@ import (
 
 // invariant
 var (
-	_ server.Service        = service.New(nil, nil)
-	_ service.Storage       = storage.Must()
 	_ grpc.ProtectedStorage = storage.Must()
+	_ router.Server         = server.New(config.ServerConfig{}, nil)
+	_ server.Service        = service.New(config.ServiceConfig{}, nil, nil)
+	_ service.Storage       = storage.Must()
+	_ service.Tracker       = storage.Must()
 )
 
 func TestApplication_Run(t *testing.T) {

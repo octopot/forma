@@ -8,9 +8,10 @@ import (
 	"os"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
+
+	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -19,18 +20,18 @@ func TestHTML(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.html.golden", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.html.golden", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -65,18 +66,18 @@ func TestHTML(t *testing.T) {
 func TestJSON(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", domain.Schema{
+		{"email subscription", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -88,8 +89,8 @@ func TestJSON(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domain.Schema {
-				var schema domain.Schema
+			assert.Equal(t, tc.schema, func() Schema {
+				var schema Schema
 				data, err := json.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
@@ -107,18 +108,18 @@ func TestJSON_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domain.Schema
+		schema   Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.json", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -130,7 +131,7 @@ func TestJSON_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domain.Schema
+			var schema Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error { return json.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
@@ -142,18 +143,18 @@ func TestJSON_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.json.golden", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.json.golden", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -188,18 +189,18 @@ func TestJSON_Encode(t *testing.T) {
 func TestXML(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", domain.Schema{
+		{"email subscription", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -211,8 +212,8 @@ func TestXML(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domain.Schema {
-				var schema domain.Schema
+			assert.Equal(t, tc.schema, func() Schema {
+				var schema Schema
 				data, err := xml.MarshalIndent(tc.schema, "", "  ")
 				if err != nil {
 					panic(err)
@@ -230,18 +231,18 @@ func TestXML_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domain.Schema
+		schema   Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -253,7 +254,7 @@ func TestXML_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domain.Schema
+			var schema Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error { return xml.NewDecoder(file).Decode(&schema) }))
 			assert.Equal(t, tc.schema, schema)
@@ -265,32 +266,32 @@ func TestXML_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.xml.golden", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.xml.golden", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
 				},
 			},
 		}},
-		{"stored in db", "./fixtures/stored_in_db.xml.golden", domain.Schema{
+		{"stored in db", "./fixtures/stored_in_db.xml.golden", Schema{
 			Language: "en",
 			Title:    "Email subscription",
 			Action:   "https://kamil.samigullin.info/",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -325,18 +326,18 @@ func TestXML_Encode(t *testing.T) {
 func TestYAML(t *testing.T) {
 	tests := []struct {
 		name   string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", domain.Schema{
+		{"email subscription", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -348,8 +349,8 @@ func TestYAML(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.schema, func() domain.Schema {
-				var schema domain.Schema
+			assert.Equal(t, tc.schema, func() Schema {
+				var schema Schema
 				data, err := yaml.Marshal(tc.schema)
 				if err != nil {
 					panic(err)
@@ -367,18 +368,18 @@ func TestYAML_Decode(t *testing.T) {
 	tests := []struct {
 		name     string
 		filename string
-		schema   domain.Schema
+		schema   Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.yaml", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,
@@ -390,7 +391,7 @@ func TestYAML_Decode(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			var schema domain.Schema
+			var schema Schema
 			file := reader(tc.filename)
 			assert.NoError(t, closeAfter(file, func() error {
 				return yaml.Unmarshal(func() []byte {
@@ -410,18 +411,18 @@ func TestYAML_Encode(t *testing.T) {
 	tests := []struct {
 		name   string
 		golden string
-		schema domain.Schema
+		schema Schema
 	}{
-		{"email subscription", "./fixtures/email_subscription.yaml.golden", domain.Schema{
+		{"email subscription", "./fixtures/email_subscription.yaml.golden", Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
 			Method:       "post",
 			EncodingType: "application/x-www-form-urlencoded",
-			Inputs: []domain.Input{
+			Inputs: []Input{
 				{
 					Name:      "email",
-					Type:      domain.EmailType,
+					Type:      EmailType,
 					Title:     "Email",
 					MaxLength: 64,
 					Required:  true,

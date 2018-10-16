@@ -6,6 +6,7 @@ import (
 )
 
 // Schema represents an HTML form.
+//go:generate easyjson -all
 type Schema struct {
 	ID           string  `json:"id,omitempty"      yaml:"id,omitempty"      xml:"id,attr,omitempty"`
 	Language     string  `json:"lang"              yaml:"lang"              xml:"lang,attr"`

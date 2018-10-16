@@ -30,6 +30,7 @@ const (
 )
 
 // Input represents an element of an HTML form.
+//go:generate easyjson -all
 type Input struct {
 	ID          string `json:"id,omitempty"          yaml:"id,omitempty"          xml:"id,attr,omitempty"`
 	Name        string `json:"name"                  yaml:"name"                  xml:"name,attr"`

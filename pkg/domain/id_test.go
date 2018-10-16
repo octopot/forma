@@ -3,14 +3,15 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 func TestID(t *testing.T) {
 	tests := []struct {
 		name    string
-		uuid    domain.ID
+		uuid    ID
 		isValid bool
 	}{
 		{"ID is empty", "", false},
@@ -23,6 +24,6 @@ func TestID(t *testing.T) {
 	for _, test := range tests {
 		assert.Equal(t, test.uuid == "", test.uuid.IsEmpty(), test.name)
 		assert.Equal(t, test.isValid, test.uuid.IsValid(), test.name)
-		assert.Equal(t, test.uuid, domain.ID(test.uuid.String()), test.name)
+		assert.Equal(t, test.uuid, ID(test.uuid.String()), test.name)
 	}
 }

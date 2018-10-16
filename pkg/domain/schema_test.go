@@ -3,14 +3,15 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 func TestSchema_Apply(t *testing.T) {
 	testCases := []struct {
 		name     string
-		schema   domain.Schema
+		schema   Schema
 		values   map[string][]string
 		expected struct {
 			error bool
@@ -18,8 +19,8 @@ func TestSchema_Apply(t *testing.T) {
 			data  map[string][]string
 		}
 	}{
-		{"normal case", domain.Schema{Inputs: []domain.Input{
-			{Name: "name1", Type: domain.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
+		{"normal case", Schema{Inputs: []Input{
+			{Name: "name1", Type: EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
 			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 			struct {
 				error bool
@@ -34,7 +35,7 @@ func TestSchema_Apply(t *testing.T) {
 		t.Run(tc.name, func(t *testing.T) {
 			var (
 				obtained map[string][]string
-				err      domain.ValidationError
+				err      ValidationError
 			)
 			action := func() { obtained, err = tc.schema.Apply(tc.values) }
 			if tc.expected.panic {
@@ -55,27 +56,27 @@ func TestSchema_Apply(t *testing.T) {
 func TestSchema_Filter(t *testing.T) {
 	testCases := []struct {
 		name     string
-		schema   domain.Schema
+		schema   Schema
 		values   map[string][]string
 		expected map[string][]string
 	}{
-		{"nil inputs", domain.Schema{},
+		{"nil inputs", Schema{},
 			map[string][]string{"name1": {"val1", "val2"}},
 			nil,
 		},
-		{"empty inputs", domain.Schema{Inputs: []domain.Input{}},
+		{"empty inputs", Schema{Inputs: []Input{}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			nil,
 		},
-		{"nil values", domain.Schema{},
+		{"nil values", Schema{},
 			nil,
 			nil,
 		},
-		{"empty values", domain.Schema{},
+		{"empty values", Schema{},
 			nil,
 			nil,
 		},
-		{"normal case", domain.Schema{Inputs: []domain.Input{{Name: "name1"}}},
+		{"normal case", Schema{Inputs: []Input{{Name: "name1"}}},
 			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
 			map[string][]string{"name1": {"val1"}},
 		},
@@ -92,11 +93,11 @@ func TestSchema_Filter(t *testing.T) {
 func TestSchema_Normalize(t *testing.T) {
 	testCases := []struct {
 		name     string
-		schema   domain.Schema
+		schema   Schema
 		values   map[string][]string
 		expected map[string][]string
 	}{
-		{"input with spaces", domain.Schema{},
+		{"input with spaces", Schema{},
 			map[string][]string{"name1": {string([]rune{'\u200B', '\u200C'}) + " val1 " + string([]rune{'\u200D', '\u2060'})}},
 			map[string][]string{"name1": {"val1"}},
 		},
@@ -113,100 +114,100 @@ func TestSchema_Normalize(t *testing.T) {
 func TestSchema_Validate(t *testing.T) {
 	testCases := []struct {
 		name     string
-		schema   domain.Schema
+		schema   Schema
 		values   map[string][]string
 		expected struct {
 			error bool
 			panic bool
-			data  map[domain.Input][]string
+			data  map[Input][]string
 		}
 	}{
-		{"nil inputs", domain.Schema{},
+		{"nil inputs", Schema{},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
+				data  map[Input][]string
 			}{false, false, nil},
 		},
-		{"empty inputs", domain.Schema{Inputs: []domain.Input{}},
+		{"empty inputs", Schema{Inputs: []Input{}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
+				data  map[Input][]string
 			}{false, false, nil},
 		},
-		{"nil values", domain.Schema{},
+		{"nil values", Schema{},
 			nil,
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
+				data  map[Input][]string
 			}{false, false, nil},
 		},
-		{"empty values", domain.Schema{},
+		{"empty values", Schema{},
 			nil,
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
+				data  map[Input][]string
 			}{false, false, nil},
 		},
-		{"invalid length", domain.Schema{Inputs: []domain.Input{
-			{Name: "name1", Type: domain.TextType, MinLength: 5},
-			{Name: "name2", Type: domain.TextType, MaxLength: 2}}},
+		{"invalid length", Schema{Inputs: []Input{
+			{Name: "name1", Type: TextType, MinLength: 5},
+			{Name: "name2", Type: TextType, MaxLength: 2}}},
 			map[string][]string{"name1": {"val1"}, "name2": {"val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
-			}{true, false, map[domain.Input][]string{
-				{Name: "name1", Type: domain.TextType, MinLength: 5}: {
+				data  map[Input][]string
+			}{true, false, map[Input][]string{
+				{Name: "name1", Type: TextType, MinLength: 5}: {
 					`value "val1" at position 0 is invalid: value length is less than 5`},
-				{Name: "name2", Type: domain.TextType, MaxLength: 2}: {
+				{Name: "name2", Type: TextType, MaxLength: 2}: {
 					`value "val2" at position 0 is invalid: value length is greater than 2`},
 			}},
 		},
-		{"empty required value", domain.Schema{Inputs: []domain.Input{
-			{Name: "name1", Type: domain.TextType, Required: true},
-			{Name: "name2", Type: domain.TextType, Required: true}}},
+		{"empty required value", Schema{Inputs: []Input{
+			{Name: "name1", Type: TextType, Required: true},
+			{Name: "name2", Type: TextType, Required: true}}},
 			map[string][]string{"name1": {"val1", ""}, "name2": {}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
-			}{true, false, map[domain.Input][]string{
-				{Name: "name1", Type: domain.TextType, Required: true}: {"value at position 1 is invalid: value is empty"},
-				{Name: "name2", Type: domain.TextType, Required: true}: {"values are empty"},
+				data  map[Input][]string
+			}{true, false, map[Input][]string{
+				{Name: "name1", Type: TextType, Required: true}: {"value at position 1 is invalid: value is empty"},
+				{Name: "name2", Type: TextType, Required: true}: {"values are empty"},
 			}},
 		},
-		{"invalid type", domain.Schema{Inputs: []domain.Input{{Name: "name1", Type: "unknown"}}},
+		{"invalid type", Schema{Inputs: []Input{{Name: "name1", Type: "unknown"}}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
-			}{false, true, map[domain.Input][]string{}},
+				data  map[Input][]string
+			}{false, true, map[Input][]string{}},
 		},
-		{"invalid email", domain.Schema{Inputs: []domain.Input{{Name: "name1", Type: domain.EmailType}}},
+		{"invalid email", Schema{Inputs: []Input{{Name: "name1", Type: EmailType}}},
 			map[string][]string{"name1": {"val1", "val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
-			}{true, false, map[domain.Input][]string{
-				{Name: "name1", Type: domain.EmailType}: {
+				data  map[Input][]string
+			}{true, false, map[Input][]string{
+				{Name: "name1", Type: EmailType}: {
 					`value "val1" at position 0 is invalid: value is not a valid email`},
 			}},
 		},
-		{"normal case", domain.Schema{Inputs: []domain.Input{
-			{Name: "name1", Type: domain.EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
+		{"normal case", Schema{Inputs: []Input{
+			{Name: "name1", Type: EmailType, MinLength: 6, MaxLength: 255, Required: true}}},
 			map[string][]string{"name1": {"test@my.email"}, "not_filtered": {"val2"}},
 			struct {
 				error bool
 				panic bool
-				data  map[domain.Input][]string
+				data  map[Input][]string
 			}{},
 		},
 	}
@@ -214,7 +215,7 @@ func TestSchema_Validate(t *testing.T) {
 	for _, tc := range testCases {
 		tc := tc
 		t.Run(tc.name, func(t *testing.T) {
-			var err domain.ValidationError
+			var err ValidationError
 			action := func() { _, err = tc.schema.Validate(tc.values) }
 			if tc.expected.panic {
 				assert.Panics(t, action)
@@ -235,7 +236,7 @@ func TestSchema_Validate(t *testing.T) {
 						return converted
 					}())
 				}
-				assert.False(t, err.HasError(domain.Input{}))
+				assert.False(t, err.HasError(Input{}))
 			} else {
 				assert.NoError(t, err)
 			}
@@ -246,19 +247,19 @@ func TestSchema_Validate(t *testing.T) {
 func TestSchema_Input(t *testing.T) {
 	testCases := []struct {
 		name     string
-		schema   domain.Schema
+		schema   Schema
 		what     string
 		expected int
 	}{
 		{
 			name:     "expect the first occurrence",
-			schema:   domain.Schema{Inputs: []domain.Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
+			schema:   Schema{Inputs: []Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
 			what:     "first",
 			expected: 0,
 		},
 		{
 			name:     "expect not find anything",
-			schema:   domain.Schema{Inputs: []domain.Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
+			schema:   Schema{Inputs: []Input{{Name: "First"}, {Name: "fiRst"}, {Name: "firSt"}}},
 			what:     "second",
 			expected: -1,
 		},

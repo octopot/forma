@@ -10,12 +10,12 @@ import (
 func Test_extend(t *testing.T) {
 	tests := []struct {
 		name     string
-		url      *url.URL
+		url      url.URL
 		paths    []string
 		expected string
 	}{
-		{"without paths", &url.URL{Path: "/"}, nil, "/"},
-		{"with some paths", &url.URL{Path: "/with"}, []string{"some", "paths"}, "/with/some/paths"},
+		{"without paths", url.URL{Path: "/"}, nil, "/"},
+		{"with some paths", url.URL{Path: "/with"}, []string{"some", "paths"}, "/with/some/paths"},
 	}
 
 	for _, test := range tests {

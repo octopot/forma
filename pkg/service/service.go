@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+	repository "github.com/kamilsk/form-api/pkg/storage/types"
+
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
@@ -87,28 +89,10 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 		return
 	}
 
-	input, storeErr := service.storage.StoreInput(ctx, req.ID, verified)
-	if u, err := url.Parse(resp.URL); err == nil {
-		type feedback struct {
-			ID       domain.ID `json:"input"`
-			SchemaID domain.ID `json:"id"`
-			Result   string    `json:"result"`
-		}
-		if storeErr != nil {
-			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
-				raw, _ := json.Marshal(feedback{SchemaID: req.ID, Result: "failure"})
-				return raw
-			}())
-		} else {
-			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
-				raw, _ := json.Marshal(feedback{ID: input.ID, SchemaID: req.ID, Result: "success"})
-				return raw
-			}())
-		}
-		resp.URL = u.String()
-	}
+	var input *repository.Input
+	input, resp.Error = service.storage.StoreInput(ctx, req.ID, verified)
 
-	if storeErr == nil && !req.Context.Option().NoLog && !ignore(req.Context) {
+	if resp.Error == nil && !req.Context.Option().NoLog && !ignore(req.Context) {
 		// if option.Anonymously {}
 		event := domain.InputEvent{
 			SchemaID:   req.ID,
@@ -122,6 +106,26 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 		resp.Error = service.tracker.LogInput(ctx, event) // TODO issue#109
 	}
 
+	if u, err := url.Parse(resp.URL); err == nil {
+		type feedback struct {
+			ID       domain.ID `json:"input"`
+			SchemaID domain.ID `json:"id"`
+			Result   string    `json:"result"`
+		}
+		if resp.Error != nil {
+			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+				raw, _ := json.Marshal(feedback{SchemaID: req.ID, Result: "failure"})
+				return raw
+			}())
+		} else {
+			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+				raw, _ := json.Marshal(feedback{ID: input.ID, SchemaID: req.ID, Result: "success"})
+				return raw
+			}())
+		}
+		resp.URL = u.String()
+	}
+
 	return resp
 }
 
@@ -130,12 +134,12 @@ func enrich(base *url.URL, schema *domain.Schema) {
 		schema.Inputs[i].ID = schema.ID + "_" + schema.Inputs[i].Name
 	}
 	// replace fallback by current API call
-	schema.Action = extend(base, "api/v1", schema.ID)
+	schema.Action = extend(*base, "api/v1", schema.ID)
 	schema.Method = http.MethodPost
 	schema.EncodingType = "application/x-www-form-urlencoded"
 }
 
-func extend(base *url.URL, paths ...string) string {
+func extend(base url.URL, paths ...string) string {
 	if len(paths) == 0 {
 		return base.String()
 	}

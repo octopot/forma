@@ -17,8 +17,7 @@ const (
 )
 
 var (
-	// TODO issue#173
-	controlCmd = &cobra.Command{Use: "ctl", Short: "Forma CRUD operations"}
+	controlCmd = &cobra.Command{Use: "ctl", Short: "Forma Service Control"}
 	createCmd  = &cobra.Command{Use: "create", Short: "Create some kind", RunE: communicate}
 	readCmd    = &cobra.Command{Use: "read", Short: "Read some kind", RunE: communicate}
 	updateCmd  = &cobra.Command{Use: "update", Short: "Update some kind", RunE: communicate}

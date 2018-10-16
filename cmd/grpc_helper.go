@@ -156,30 +156,27 @@ func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
 		middleware.AuthHeader,
 		kit.Concat(middleware.AuthScheme, " ", string(cnf.Token)))
 	switch request := entity.(type) {
+
 	case *pb.CreateSchemaRequest:
-		client := pb.NewSchemaClient(conn)
-		return client.Create(ctx, request)
+		return pb.NewSchemaClient(conn).Create(ctx, request)
 	case *pb.CreateTemplateRequest:
-		client := pb.NewTemplateClient(conn)
-		return client.Create(ctx, request)
+		return pb.NewTemplateClient(conn).Create(ctx, request)
+
 	case *pb.ReadSchemaRequest:
-		client := pb.NewSchemaClient(conn)
-		return client.Read(ctx, request)
+		return pb.NewSchemaClient(conn).Read(ctx, request)
 	case *pb.ReadTemplateRequest:
-		client := pb.NewTemplateClient(conn)
-		return client.Read(ctx, request)
+		return pb.NewTemplateClient(conn).Read(ctx, request)
+
 	case *pb.UpdateSchemaRequest:
-		client := pb.NewSchemaClient(conn)
-		return client.Update(ctx, request)
+		return pb.NewSchemaClient(conn).Update(ctx, request)
 	case *pb.UpdateTemplateRequest:
-		client := pb.NewTemplateClient(conn)
-		return client.Update(ctx, request)
+		return pb.NewTemplateClient(conn).Update(ctx, request)
+
 	case *pb.DeleteSchemaRequest:
-		client := pb.NewSchemaClient(conn)
-		return client.Delete(ctx, request)
+		return pb.NewSchemaClient(conn).Delete(ctx, request)
 	case *pb.DeleteTemplateRequest:
-		client := pb.NewTemplateClient(conn)
-		return client.Delete(ctx, request)
+		return pb.NewTemplateClient(conn).Delete(ctx, request)
+
 	default:
 		return nil, errors.Errorf("unknown type %T", request)
 	}

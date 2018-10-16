@@ -37,7 +37,7 @@ cmd-migrate-down:
 
 .PHONY: demo
 demo: FLAGS = --with-demo
-demo: cmd-migrate-up
+demo: cmd-migrate
 
 .PHONY: dev-server
 dev-server:

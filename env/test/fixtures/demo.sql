@@ -12,22 +12,22 @@ BEGIN
   TRUNCATE TABLE "schema" RESTART IDENTITY RESTRICT;
   TRUNCATE TABLE "template" RESTART IDENTITY RESTRICT;
   TRUNCATE TABLE "input" RESTART IDENTITY RESTRICT;
-  TRUNCATE TABLE "log" RESTART IDENTITY RESTRICT;
+  TRUNCATE TABLE "event" RESTART IDENTITY RESTRICT;
 
-  INSERT INTO "account" ("id", "name") VALUES (demoAccount, 'Demo account');
+  INSERT INTO "account" ("id", "name") VALUES (demoAccount, 'Demo Account');
 
-  INSERT INTO "user" ("id", "account_id", "name") VALUES (demoUser, demoAccount, 'Demo user');
+  INSERT INTO "user" ("id", "account_id", "name") VALUES (demoUser, demoAccount, 'Demo User');
 
   INSERT INTO "token" ("id", "user_id", "expired_at") VALUES (demoToken, demoUser, NULL);
 
   INSERT INTO "schema" ("id", "account_id", "title", "definition")
-  VALUES (form, demoAccount, 'Email subscription', '
+  VALUES (form, demoAccount, 'Email Subscription', '
     <form lang="en" action="https://kamil.samigullin.info/">
         <input name="email" type="email" title="Email" maxlength="64" required="1"/>
     </form>');
 
   INSERT INTO "template" ("id", "account_id", "title", "definition")
-  VALUES (html, demoAccount, 'Subscribe template', '{{- define "forma.body" -}}
+  VALUES (html, demoAccount, 'Email Subscription template', '{{- define "forma.body" -}}
     <div class="row">
         {{- with .Schema.Input "email" -}}
             <div class="col-md-8">

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 export FORMA_TOKEN=10000000-2000-4000-8000-160000000003
 
 form-api ctl create -f env/client/grpc/schema.create.yml

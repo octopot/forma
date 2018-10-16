@@ -43,12 +43,12 @@ func (mr *MockServerMockRecorder) GetV1(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetV1", reflect.TypeOf((*MockServer)(nil).GetV1), arg0, arg1)
 }
 
-// PostV1 mocks base method
-func (m *MockServer) PostV1(arg0 http.ResponseWriter, arg1 *http.Request) {
-	m.ctrl.Call(m, "PostV1", arg0, arg1)
+// Input mocks base method
+func (m *MockServer) Input(arg0 http.ResponseWriter, arg1 *http.Request) {
+	m.ctrl.Call(m, "Input", arg0, arg1)
 }
 
-// PostV1 indicates an expected call of PostV1
-func (mr *MockServerMockRecorder) PostV1(arg0, arg1 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "PostV1", reflect.TypeOf((*MockServer)(nil).PostV1), arg0, arg1)
+// Input indicates an expected call of Input
+func (mr *MockServerMockRecorder) Input(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Input", reflect.TypeOf((*MockServer)(nil).Input), arg0, arg1)
 }

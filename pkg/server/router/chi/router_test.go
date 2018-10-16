@@ -1,5 +1,5 @@
 //go:generate echo $PWD/$GOPACKAGE/$GOFILE
-//go:generate mockgen -package chi_test -destination $PWD/pkg/server/router/chi/mock_contract_test.go github.com/kamilsk/form-api/pkg/server/router Server
+//go:generate mockgen -package chi_test -destination $PWD/pkg/server/router/chi/mock_server_test.go github.com/kamilsk/form-api/pkg/server/router Server
 package chi_test
 
 import (
@@ -11,8 +11,9 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/golang/mock/gomock"
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/server/router/chi"
 )
 
 const UUID domain.ID = "41ca5e09-3ce2-4094-b108-3ecc257c6fa4"
@@ -25,7 +26,7 @@ func TestChiRouter(t *testing.T) {
 
 	var (
 		api    = NewMockServer(ctrl)
-		router = chi.NewRouter(api)
+		router = NewRouter(api)
 	)
 
 	tests := []struct {
@@ -47,7 +48,7 @@ func TestChiRouter(t *testing.T) {
 				Scheme: "http", Host: "dev", Path: "/api/v1/" + UUID.String(),
 			}}
 			api.EXPECT().
-				PostV1(gomock.Any(), gomock.Any()).
+				Input(gomock.Any(), gomock.Any()).
 				Do(func(rw http.ResponseWriter, _ *http.Request) { rw.WriteHeader(http.StatusFound) })
 			return request
 		}, http.StatusFound},

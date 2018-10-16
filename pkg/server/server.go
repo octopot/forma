@@ -47,8 +47,8 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	encoder.Encode(resp.Schema)
 }
 
-// HandleInput is responsible for `POST /api/v1/{Schema.ID}` request handling.
-func (s *Server) HandleInput(rw http.ResponseWriter, req *http.Request) {
+// Input is responsible for `POST /api/v1/{Schema.ID}` request handling.
+func (s *Server) Input(rw http.ResponseWriter, req *http.Request) {
 	if err := req.ParseForm(); err != nil {
 		rw.WriteHeader(http.StatusBadRequest)
 		return

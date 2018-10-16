@@ -45,7 +45,7 @@
     "httputil/header",
   ]
   pruneopts = "NUT"
-  revision = "8b031907f29f163ebae1e3978af398769a5f3df6"
+  revision = "6c035858b4d75d0d20d1dc21647c98707fe284d0"
 
 [[projects]]
   branch = "master"
@@ -125,14 +125,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4d5fa9f49e5bf3d55c16ff562af9e3231f9ac5ccf495927fd0555f4607c15475"
+  digest = "1:e12c15c1002fea305a3d7049f1f71067fe63856c63c9186f469eddab47348d86"
   name = "github.com/lib/pq"
   packages = [
     ".",
     "oid",
   ]
   pruneopts = "NUT"
-  revision = "4ded0e9383f75c197b3a2aaa6d590ac52df6fd79"
+  revision = "0ac245bc3be505fde6900e1ca0f957c0845cbfa2"
 
 [[projects]]
   digest = "1:4244266b65ea535b8ebd109a327720821707b59f9a37bda738946d52ec69442d"
@@ -146,6 +146,20 @@
   version = "v1.8.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:27709e1b4d50eb443e1c41cb8393cee3be80a48400edfc98c8098752882a4d8c"
+  name = "github.com/mailru/easyjson"
+  packages = [
+    ".",
+    "buffer",
+    "gen",
+    "jlexer",
+    "jwriter",
+  ]
+  pruneopts = "NUT"
+  revision = "60711f1a8329503b04e1c88535f419d0bb440bff"
+
+[[projects]]
   digest = "1:5985ef4caf91ece5d54817c11ea25f182697534f8ae6521eadcd628c142ac4b6"
   name = "github.com/matttproud/golang_protobuf_extensions"
   packages = ["pbutil"]
@@ -155,11 +169,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:7ab17345d3ff52cee65e3f0494b5a53976955b090b8a99f93cb65f3d3322b2df"
+  digest = "1:a45ae66dea4c899d79fceb116accfa1892105c251f0dcd9a217ddc276b42ec68"
   name = "github.com/mitchellh/mapstructure"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "fe40af7a9c397fa3ddba203c38a5042c5d0475ad"
+  revision = "3536a929edddb9a5b34bd6861dc4a9647cb459fe"
 
 [[projects]]
   digest = "1:51ea800cff51752ff68e12e04106f5887b4daec6f9356721238c28019f0b42db"
@@ -171,11 +185,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:ad23cc427f544a97fb1bae46291baa626e430d4513e279f9ffd9171aa797b288"
+  digest = "1:75386ee8a7a1b23cef8dc0d18f689834706742fd18c3046b6d7186a4e9c18c37"
   name = "github.com/pkg/errors"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "c059e472caf75dbe73903f6521a20abac245b17f"
+  revision = "2233dee583dcf88f3c8b22cb7a33f05a499800d8"
 
 [[projects]]
   digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
@@ -195,7 +209,7 @@
     "prometheus/promhttp",
   ]
   pruneopts = "NUT"
-  revision = "0a8115f42e037a6e327f9a269a26ff6603fb8472"
+  revision = "1cafe34db7fdec6022e17e00e1c1ea501022f3e4"
 
 [[projects]]
   branch = "master"
@@ -207,7 +221,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:fad5a35eea6a1a33d6c8f949fbc146f24275ca809ece854248187683f52cc30b"
+  digest = "1:712c7be114f13d52202e440ef99d6ff810fdf9e41e3e3f7bfbbfa6bd13985d5a"
   name = "github.com/prometheus/common"
   packages = [
     "expfmt",
@@ -215,11 +229,11 @@
     "model",
   ]
   pruneopts = "NUT"
-  revision = "c7de2306084e37d54b8be01f3541a8464345e9a5"
+  revision = "bcb74de08d37a417cb6789eec1d6c810040f0470"
 
 [[projects]]
   branch = "master"
-  digest = "1:26a2f5e891cc4d2321f18a0caa84c8e788663c17bed6a487f3cbe2c4295292d0"
+  digest = "1:102dea0c03a915acfc634b7c67f2662012b5483b56d9025e33f5188e112759b6"
   name = "github.com/prometheus/procfs"
   packages = [
     ".",
@@ -228,7 +242,7 @@
     "xfs",
   ]
   pruneopts = "NUT"
-  revision = "418d78d0b9a7b7de3a6bbc8a23def624cc977bb2"
+  revision = "185b4288413d2a0dd0806f78c90dde719829e5ae"
 
 [[projects]]
   branch = "master"
@@ -277,12 +291,12 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:e3707aeaccd2adc89eba6c062fec72116fe1fc1ba71097da85b4d8ae1668a675"
+  digest = "1:9d8420bbf131d1618bde6530af37c3799340d3762cc47210c1d9532a4c3a2779"
   name = "github.com/spf13/pflag"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "9a97c102cda95a86cec2345a6f09f55a939babf5"
-  version = "v1.0.2"
+  revision = "298182f68c66c05229eb03ac171abe6e309ee79a"
+  version = "v1.0.3"
 
 [[projects]]
   digest = "1:9caed8c7c05e8927f5bc6eec5698119b2b63a7cf304effc6c9b818bc864a10d3"
@@ -325,7 +339,7 @@
     "trace",
   ]
   pruneopts = "NUT"
-  revision = "4dfa2610cdf3b287375bbba5b8f2a14d3b01d8de"
+  revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
 
 [[projects]]
   branch = "master"
@@ -337,11 +351,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:79325523c76a32a00daae41a018570653948212a2b93838c83c571f6a68e48ef"
+  digest = "1:e1e75018db0765a0ac54aa7f9473417a7db770c75c9527b4bfff03d2e55f0a0a"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "NUT"
-  revision = "e4b3c5e9061176387e7cea65e4dc5853801f3fb7"
+  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
 
 [[projects]]
   digest = "1:e7071ed636b5422cc51c0e3a6cebc229d6c9fffc528814b519a980641422d619"
@@ -368,11 +382,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:1e6b0176e8c5dd8ff551af65c76f8b73a99bcf4d812cedff1b91711b7df4804c"
+  digest = "1:56b0bca90b7e5d1facf5fbdacba23e4e0ce069d25381b8e2f70ef1e7ebfb9c1a"
   name = "google.golang.org/genproto"
   packages = ["googleapis/rpc/status"]
   pruneopts = "NUT"
-  revision = "c7e5094acea1ca1b899e2259d80a6b0f882f81f8"
+  revision = "af9cb2a35e7f169ec875002c1829c9b315cddc04"
 
 [[projects]]
   digest = "1:5b805b8e03b29399b344655cac16873f026e54dc0a7c17b381f6f4d4c7b6d741"
@@ -443,6 +457,7 @@
     "github.com/golang/mock/gomock",
     "github.com/golang/mock/mockgen/model",
     "github.com/golang/protobuf/proto",
+    "github.com/golang/protobuf/ptypes",
     "github.com/golang/protobuf/ptypes/timestamp",
     "github.com/grpc-ecosystem/go-grpc-middleware/auth",
     "github.com/kamilsk/go-kit/pkg/config",
@@ -450,6 +465,9 @@
     "github.com/kamilsk/go-kit/pkg/strings",
     "github.com/lib/pq",
     "github.com/magiconair/properties/assert",
+    "github.com/mailru/easyjson/gen",
+    "github.com/mailru/easyjson/jlexer",
+    "github.com/mailru/easyjson/jwriter",
     "github.com/mitchellh/mapstructure",
     "github.com/pkg/errors",
     "github.com/prometheus/client_golang/prometheus/promhttp",

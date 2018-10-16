@@ -3,6 +3,9 @@ required = [
 
   "github.com/golang/mock/gomock",
   "github.com/golang/mock/mockgen/model",
+  "github.com/mailru/easyjson/gen",
+  "github.com/mailru/easyjson/jlexer",
+  "github.com/mailru/easyjson/jwriter",
 
   "golang.org/x/sync/errgroup",
 ]
@@ -29,6 +32,10 @@ required = [
 
 [[constraint]]
   name = "github.com/lib/pq"
+  branch = "master"
+
+[[constraint]]
+  name = "github.com/mailru/easyjson"
   branch = "master"
 
 [[constraint]]

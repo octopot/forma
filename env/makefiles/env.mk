@@ -19,7 +19,7 @@ debug:                        #| Prints debug information of Makefile.
 
 .PHONY: help
 help:                         #| Shows available help information of Makefile.
-	@fgrep -h "#|" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/#| //'
+	@fgrep -h "#|" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/#|//'
 
 .PHONY: pull-makes
 pull-makes:                   #| Clones branch makefile-go of git@github.com:kamilsk/shared.git into makes dir

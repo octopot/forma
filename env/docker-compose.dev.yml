@@ -29,7 +29,7 @@ services:
       /bin/sh -c "echo $$BASIC_USER:`(echo $$BASIC_PASS | openssl passwd -crypt -stdin -noverify)` >> /etc/nginx/.htpasswd \
                   && /entrypoint.sh"
     ports:
-    - ${LOCAL_SERVER_HTTP_PORT}:8080
+    - ${LOCAL_SERVER_HTTP_PORT}:80
     - ${LOCAL_SERVER_HTTPS_PORT}:443
     volumes:
     - certificates:/etc/nginx/ssl

@@ -134,3 +134,9 @@ truncate: __env__  #| Truncate the database tables.
 	@(docker cp ./env/docker/db/truncate.sql $$(make status | tail +3 | awk '{print $$1}' | grep _db_ | head -1):/tmp/)
 	@($(COMPOSE) exec db /bin/sh -c 'su - postgres -c "psql $${POSTGRES_DB} < /tmp/truncate.sql"')
 	@($(COMPOSE) exec db rm /tmp/truncate.sql)
+#|
+#|                    --- Server-specific commands
+#|
+.PHONY: reload
+reload: __env__    #| Reload nginx configuration.
+	@($(COMPOSE) exec server nginx -s reload)

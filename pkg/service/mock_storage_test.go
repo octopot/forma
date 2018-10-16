@@ -8,6 +8,7 @@ import (
 	context "context"
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/kamilsk/form-api/pkg/domain"
+	types "github.com/kamilsk/form-api/pkg/storage/types"
 	reflect "reflect"
 )
 
@@ -45,6 +46,19 @@ func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.ID) (domain.Schem
 // Schema indicates an expected call of Schema
 func (mr *MockStorageMockRecorder) Schema(arg0, arg1 interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Schema", reflect.TypeOf((*MockStorage)(nil).Schema), arg0, arg1)
+}
+
+// StoreInput mocks base method
+func (m *MockStorage) StoreInput(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (*types.Input, error) {
+	ret := m.ctrl.Call(m, "StoreInput", arg0, arg1, arg2)
+	ret0, _ := ret[0].(*types.Input)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// StoreInput indicates an expected call of StoreInput
+func (mr *MockStorageMockRecorder) StoreInput(arg0, arg1, arg2 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StoreInput", reflect.TypeOf((*MockStorage)(nil).StoreInput), arg0, arg1, arg2)
 }
 
 // Template mocks base method

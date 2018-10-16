@@ -20,7 +20,7 @@ import (
 var (
 	_ grpc.ProtectedStorage = storage.Must()
 	_ router.Server         = server.New(config.ServerConfig{}, nil)
-	_ server.Service        = service.New(config.ServiceConfig{}, nil, nil)
+	_ server.Service        = service.New(config.ServiceConfig{TemplateDir: "static/templates"}, nil, nil)
 	_ service.Storage       = storage.Must()
 	_ service.Tracker       = storage.Must()
 )

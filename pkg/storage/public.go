@@ -22,6 +22,7 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	if err != nil {
 		return schema, err
 	}
+	entity.Definition.ID = entity.ID.String()
 	entity.Definition.Title = entity.Title
 
 	return entity.Definition, nil
@@ -44,8 +45,8 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	return entity.Definition, nil
 }
 
-// HandleInput TODO issue#173
-func (storage *Storage) HandleInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {
+// StoreInput stores an user input data.
+func (storage *Storage) StoreInput(ctx context.Context, schemaID domain.ID, verified domain.InputData) (*types.Input, error) {
 	conn, closer, connErr := storage.connection(ctx)
 	if connErr != nil {
 		return nil, connErr

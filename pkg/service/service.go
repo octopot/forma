@@ -2,58 +2,156 @@ package service
 
 import (
 	"context"
+	"encoding/base64"
+	"encoding/json"
+	"html/template"
+	"net/http"
+	"net/url"
+	"path"
+	"strings"
+	"time"
 
+	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/kamilsk/form-api/pkg/storage/types"
+	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
 // New returns a new instance of the Forma service.
-func New(storage Storage, handler InputHandler) *Forma {
-	return &Forma{storage: storage, handler: handler}
+// It can raise the panic if base URL is invalid or HTML templates are not available.
+func New(cnf config.ServiceConfig, storage Storage, tracker Tracker) *Forma {
+	u, err := url.Parse(cnf.BaseURL)
+	if err != nil {
+		panic(err)
+	}
+	return &Forma{config: cnf, storage: storage, tracker: tracker,
+		baseURL: u, templates: struct {
+			errorTpl    *template.Template
+			redirectTpl *template.Template
+		}{
+			errorTpl:    template.Must(template.New("error").Parse(must(cnf.TemplateDir, "error.html"))),
+			redirectTpl: template.Must(template.New("redirect").Parse(must(cnf.TemplateDir, "redirect.html"))),
+		}}
 }
 
 // Forma is the primary application service.
 type Forma struct {
+	config  config.ServiceConfig
 	storage Storage
-	handler InputHandler
+	tracker Tracker
+
+	baseURL   *url.URL
+	templates struct {
+		errorTpl    *template.Template
+		redirectTpl *template.Template
+	}
 }
 
 // HandleGetV1 handles an input request.
-func (service *Forma) HandleGetV1(request v1.GetRequest) v1.GetResponse {
-	var response v1.GetResponse
-	response.Schema, response.Error = service.storage.Schema(context.Background(), request.ID)
-	return response
+// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
+func (service *Forma) HandleGetV1(ctx context.Context, req v1.GetRequest) (resp v1.GetResponse) {
+	resp.Schema, resp.Error = service.storage.Schema(ctx, req.ID)
+	if resp.Error != nil {
+		return
+	}
+
+	// add form namespace to make its elements unique
+	enrich(service.baseURL, &resp.Schema)
+
+	return
 }
 
-// HandlePostV1 handles an input request.
-func (service *Forma) HandlePostV1(request v1.PostRequest) v1.PostResponse {
-	var (
-		response v1.PostResponse
-		verified domain.InputData
-	)
-
-	response.Schema, response.Error = service.storage.Schema(context.Background(), request.ID)
-	if response.Error != nil {
-		return response
-	}
-	verified, response.Error = response.Schema.Apply(request.InputData)
-	if response.Error != nil {
-		response.Error = errors.Validation(errors.InvalidFormDataMessage, response.Error,
-			"trying to add data for schema %q", request.ID)
-		return response
+// HandleInput handles an input request.
+func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp v1.PostResponse) {
+	schema, readErr := service.storage.Schema(ctx, req.ID)
+	if readErr != nil {
+		resp.Error = readErr
+		return
 	}
 
-	var input *types.Input
-	input, response.Error = service.handler.HandleInput(context.Background(), request.ID, verified)
-	if response.Error != nil {
-		return response
+	// add form namespace to make its elements unique
+	enrich(service.baseURL, &schema)
+	resp.URL = req.InputData.Redirect(req.Context.Referer(), schema.Action)
+
+	verified, validateErr := schema.Apply(req.InputData)
+	if validateErr != nil {
+		service.templates.errorTpl.Execute(req.Output, static.ErrorPageContext{
+			Schema:   schema,
+			Error:    validateErr,
+			Delay:    30 * time.Duration(len(validateErr.InputWithErrors())) * time.Second,
+			Redirect: resp.URL,
+		})
+		resp.Error = errors.Validation(errors.InvalidFormDataMessage, validateErr,
+			"trying to apply data to the schema %q", req.ID)
+		return
 	}
-	response.ID = input.ID
 
-	// TODO issue#109
-	_ = service.handler.LogRequest(context.Background(), input, request.InputContext)
+	input, storeErr := service.storage.StoreInput(ctx, req.ID, verified)
+	if u, err := url.Parse(resp.URL); err == nil {
+		type feedback struct {
+			ID       domain.ID `json:"input"`
+			SchemaID domain.ID `json:"id"`
+			Result   string    `json:"result"`
+		}
+		if storeErr != nil {
+			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+				raw, _ := json.Marshal(feedback{SchemaID: req.ID, Result: "failure"})
+				return raw
+			}())
+		} else {
+			u.Fragment = base64.StdEncoding.EncodeToString(func() []byte {
+				raw, _ := json.Marshal(feedback{ID: input.ID, SchemaID: req.ID, Result: "success"})
+				return raw
+			}())
+		}
+		resp.URL = u.String()
+	}
 
-	return response
+	if storeErr == nil && !req.Context.Option().NoLog && !ignore(req.Context) {
+		// if option.Anonymously {}
+		event := domain.InputEvent{
+			SchemaID:   req.ID,
+			InputID:    input.ID,
+			TemplateID: req.InputData.Template(),
+			Identifier: nil, // TODO issue#171
+			Context:    req.Context,
+			Code:       http.StatusFound, // TODO issue#design
+			URL:        resp.URL,
+		}
+		resp.Error = service.tracker.LogInput(ctx, event) // TODO issue#109
+	}
+
+	return resp
+}
+
+func enrich(base *url.URL, schema *domain.Schema) {
+	for i := range schema.Inputs {
+		schema.Inputs[i].ID = schema.ID + "_" + schema.Inputs[i].Name
+	}
+	// replace fallback by current API call
+	schema.Action = extend(base, "api/v1", schema.ID)
+	schema.Method = http.MethodPost
+	schema.EncodingType = "application/x-www-form-urlencoded"
+}
+
+func extend(base *url.URL, paths ...string) string {
+	if len(paths) == 0 {
+		return base.String()
+	}
+	base.Path = path.Join(append([]string{base.Path}, paths...)...)
+	return base.String()
+}
+
+func ignore(req domain.InputContext) bool {
+	// do not log curl request
+	return strings.HasPrefix(req.UserAgent(), "curl/")
+}
+
+func must(base, tpl string) string {
+	b, err := static.LoadTemplate(base, tpl)
+	if err != nil {
+		panic(tpl)
+	}
+	return string(b)
 }

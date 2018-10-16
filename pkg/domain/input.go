@@ -19,14 +19,10 @@ const (
 )
 
 const (
-	// RedirectKey TODO issue#173
-	RedirectKey = "_redirect"
-	// ResourceKey TODO issue#173
-	ResourceKey = "_resource"
-	// TemplateKey TODO issue#173
-	TemplateKey = "_template"
-	// TimeoutKey TODO issue#173
-	TimeoutKey = "_timeout"
+	redirectKey = "_redirect"
+	resourceKey = "_resource"
+	templateKey = "_template"
+	timeoutKey  = "_timeout"
 )
 
 // Input represents an element of an HTML form.
@@ -49,7 +45,7 @@ type InputData url.Values
 
 // Redirect TODO issue#173
 func (d InputData) Redirect(fallback ...string) string {
-	value := url.Values(d).Get(RedirectKey)
+	value := url.Values(d).Get(redirectKey)
 	if value == "" {
 		for _, value = range fallback {
 			if value != "" {
@@ -62,12 +58,12 @@ func (d InputData) Redirect(fallback ...string) string {
 
 // Resource TODO issue#173
 func (d InputData) Resource() ID {
-	return ID(url.Values(d).Get(ResourceKey))
+	return ID(url.Values(d).Get(resourceKey))
 }
 
 // Template TODO issue#173
 func (d InputData) Template() *ID {
-	var id = ID(url.Values(d).Get(TemplateKey))
+	var id = ID(url.Values(d).Get(templateKey))
 	if id.IsValid() {
 		return &id
 	}
@@ -76,7 +72,7 @@ func (d InputData) Template() *ID {
 
 // Timeout TODO issue#173
 func (d InputData) Timeout() time.Duration {
-	timeout, err := time.ParseDuration(url.Values(d).Get(TimeoutKey))
+	timeout, err := time.ParseDuration(url.Values(d).Get(timeoutKey))
 	if err != nil {
 		return 30 * time.Second
 	}

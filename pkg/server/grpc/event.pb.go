@@ -44,7 +44,7 @@ func (m *LogEntry) Reset()         { *m = LogEntry{} }
 func (m *LogEntry) String() string { return proto.CompactTextString(m) }
 func (*LogEntry) ProtoMessage()    {}
 func (*LogEntry) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_6540864d84a83132, []int{0}
+	return fileDescriptor_2d17a9d3f0ddf27e, []int{0}
 }
 func (m *LogEntry) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LogEntry.Unmarshal(m, b)
@@ -52,8 +52,8 @@ func (m *LogEntry) XXX_Unmarshal(b []byte) error {
 func (m *LogEntry) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_LogEntry.Marshal(b, m, deterministic)
 }
-func (dst *LogEntry) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogEntry.Merge(dst, src)
+func (m *LogEntry) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogEntry.Merge(m, src)
 }
 func (m *LogEntry) XXX_Size() int {
 	return xxx_messageInfo_LogEntry.Size(m)
@@ -137,7 +137,7 @@ func (m *LogFilter) Reset()         { *m = LogFilter{} }
 func (m *LogFilter) String() string { return proto.CompactTextString(m) }
 func (*LogFilter) ProtoMessage()    {}
 func (*LogFilter) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_6540864d84a83132, []int{1}
+	return fileDescriptor_2d17a9d3f0ddf27e, []int{1}
 }
 func (m *LogFilter) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_LogFilter.Unmarshal(m, b)
@@ -145,8 +145,8 @@ func (m *LogFilter) XXX_Unmarshal(b []byte) error {
 func (m *LogFilter) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_LogFilter.Marshal(b, m, deterministic)
 }
-func (dst *LogFilter) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogFilter.Merge(dst, src)
+func (m *LogFilter) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogFilter.Merge(m, src)
 }
 func (m *LogFilter) XXX_Size() int {
 	return xxx_messageInfo_LogFilter.Size(m)
@@ -220,7 +220,7 @@ func (m *ReadLogsRequest) Reset()         { *m = ReadLogsRequest{} }
 func (m *ReadLogsRequest) String() string { return proto.CompactTextString(m) }
 func (*ReadLogsRequest) ProtoMessage()    {}
 func (*ReadLogsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_6540864d84a83132, []int{2}
+	return fileDescriptor_2d17a9d3f0ddf27e, []int{2}
 }
 func (m *ReadLogsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadLogsRequest.Unmarshal(m, b)
@@ -228,8 +228,8 @@ func (m *ReadLogsRequest) XXX_Unmarshal(b []byte) error {
 func (m *ReadLogsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ReadLogsRequest.Marshal(b, m, deterministic)
 }
-func (dst *ReadLogsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadLogsRequest.Merge(dst, src)
+func (m *ReadLogsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadLogsRequest.Merge(m, src)
 }
 func (m *ReadLogsRequest) XXX_Size() int {
 	return xxx_messageInfo_ReadLogsRequest.Size(m)
@@ -247,11 +247,13 @@ type isReadLogsRequest_Filter interface {
 type ReadLogsRequest_Id struct {
 	Id uint32 `protobuf:"varint,1,opt,name=id,proto3,oneof"`
 }
+
 type ReadLogsRequest_Condition struct {
 	Condition *LogFilter `protobuf:"bytes,2,opt,name=condition,proto3,oneof"`
 }
 
-func (*ReadLogsRequest_Id) isReadLogsRequest_Filter()        {}
+func (*ReadLogsRequest_Id) isReadLogsRequest_Filter() {}
+
 func (*ReadLogsRequest_Condition) isReadLogsRequest_Filter() {}
 
 func (m *ReadLogsRequest) GetFilter() isReadLogsRequest_Filter {
@@ -355,7 +357,7 @@ func (m *ReadLogsResponse) Reset()         { *m = ReadLogsResponse{} }
 func (m *ReadLogsResponse) String() string { return proto.CompactTextString(m) }
 func (*ReadLogsResponse) ProtoMessage()    {}
 func (*ReadLogsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_6540864d84a83132, []int{3}
+	return fileDescriptor_2d17a9d3f0ddf27e, []int{3}
 }
 func (m *ReadLogsResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReadLogsResponse.Unmarshal(m, b)
@@ -363,8 +365,8 @@ func (m *ReadLogsResponse) XXX_Unmarshal(b []byte) error {
 func (m *ReadLogsResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ReadLogsResponse.Marshal(b, m, deterministic)
 }
-func (dst *ReadLogsResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReadLogsResponse.Merge(dst, src)
+func (m *ReadLogsResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReadLogsResponse.Merge(m, src)
 }
 func (m *ReadLogsResponse) XXX_Size() int {
 	return xxx_messageInfo_ReadLogsResponse.Size(m)
@@ -393,7 +395,7 @@ func (m *ListenLogsRequest) Reset()         { *m = ListenLogsRequest{} }
 func (m *ListenLogsRequest) String() string { return proto.CompactTextString(m) }
 func (*ListenLogsRequest) ProtoMessage()    {}
 func (*ListenLogsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_event_6540864d84a83132, []int{4}
+	return fileDescriptor_2d17a9d3f0ddf27e, []int{4}
 }
 func (m *ListenLogsRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ListenLogsRequest.Unmarshal(m, b)
@@ -401,8 +403,8 @@ func (m *ListenLogsRequest) XXX_Unmarshal(b []byte) error {
 func (m *ListenLogsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ListenLogsRequest.Marshal(b, m, deterministic)
 }
-func (dst *ListenLogsRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ListenLogsRequest.Merge(dst, src)
+func (m *ListenLogsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ListenLogsRequest.Merge(m, src)
 }
 func (m *ListenLogsRequest) XXX_Size() int {
 	return xxx_messageInfo_ListenLogsRequest.Size(m)
@@ -561,9 +563,9 @@ var _Log_serviceDesc = grpc.ServiceDesc{
 	Metadata: "event.proto",
 }
 
-func init() { proto.RegisterFile("event.proto", fileDescriptor_event_6540864d84a83132) }
+func init() { proto.RegisterFile("event.proto", fileDescriptor_2d17a9d3f0ddf27e) }
 
-var fileDescriptor_event_6540864d84a83132 = []byte{
+var fileDescriptor_2d17a9d3f0ddf27e = []byte{
 	// 447 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xcc, 0x52, 0x41, 0x8f, 0xd3, 0x3c,
 	0x14, 0x8c, 0xdb, 0xb4, 0x4d, 0x5e, 0xf7, 0xdb, 0xee, 0x67, 0x2d, 0x60, 0x82, 0xc4, 0x46, 0xb9,

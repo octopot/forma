@@ -24,7 +24,7 @@ func NewRouter(api router.Server) http.Handler {
 		r.Route("/{ID}", func(r chi.Router) {
 			r.Use(ctxPacker(common.Schema, "ID"))
 			r.Get("/", common.Encoder(api.GetV1))
-			r.Post("/", api.PostV1)
+			r.Post("/", api.HandleInput)
 		})
 	})
 	r.Route("/api/v2", func(r chi.Router) {

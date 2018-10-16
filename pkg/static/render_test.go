@@ -11,8 +11,9 @@ import (
 	"time"
 
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/static"
 )
 
 var (
@@ -30,10 +31,10 @@ func TestErrorTemplate(t *testing.T) {
 
 	tests := []struct {
 		name   string
-		data   func() static.ErrorPageContext
+		data   func() ErrorPageContext
 		golden string
 	}{
-		{"email subscription", func() static.ErrorPageContext {
+		{"email subscription", func() ErrorPageContext {
 			schema := domain.Schema{
 				Language:     "en",
 				Title:        "Email subscription",
@@ -60,7 +61,7 @@ func TestErrorTemplate(t *testing.T) {
 				},
 			}
 			_, err := schema.Apply(map[string][]string{"email": {"is invalid"}, "name": {"Kamil Samigullin"}})
-			return static.ErrorPageContext{Schema: schema, Error: err, Delay: time.Minute, Redirect: schema.Action}
+			return ErrorPageContext{Schema: schema, Error: err, Delay: time.Minute, Redirect: schema.Action}
 		}, "./fixtures/email_subscription.html.golden"},
 	}
 
@@ -94,7 +95,7 @@ func closeAfter(file *os.File, action func() error) error {
 }
 
 func must(base, tpl string) string {
-	b, err := static.LoadTemplate(base, tpl)
+	b, err := LoadTemplate(base, tpl)
 	if err != nil {
 		panic(tpl)
 	}

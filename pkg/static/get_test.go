@@ -4,8 +4,9 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/static"
 )
 
 func TestLoadTemplate(t *testing.T) {
@@ -25,7 +26,7 @@ func TestLoadTemplate(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			expected, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
-			obtained, err := static.LoadTemplate(tc.base, tc.tpl)
+			obtained, err := LoadTemplate(tc.base, tc.tpl)
 			assert.NoError(t, err)
 			assert.Equal(t, expected, obtained)
 		})

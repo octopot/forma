@@ -6,8 +6,9 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/static"
 )
 
 func TestAsset(t *testing.T) {
@@ -29,7 +30,7 @@ func TestAsset(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			expected, err := ioutil.ReadFile(tc.golden)
 			assert.NoError(t, err)
-			obtained, err := static.Asset(filepath.Join(tc.asset))
+			obtained, err := Asset(filepath.Join(tc.asset))
 			assert.NoError(t, err)
 			assert.Equal(t, expected, obtained)
 		})
@@ -65,7 +66,7 @@ func TestAssetDir(t *testing.T) {
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			files, err := static.AssetDir(tc.assetDir)
+			files, err := AssetDir(tc.assetDir)
 			sort.Strings(tc.expected)
 			sort.Strings(files)
 			assert.Equal(t, tc.expected, files)

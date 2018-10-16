@@ -9,6 +9,6 @@ type GetRequest struct {
 
 // GetResponse represents `GET /api/v1/{Schema.ID}` response.
 type GetResponse struct {
-	Schema domain.Schema
 	Error  error
+	Schema domain.Schema
 }

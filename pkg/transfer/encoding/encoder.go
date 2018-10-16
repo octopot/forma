@@ -69,12 +69,15 @@ type encoder struct {
 	stream      io.Writer
 }
 
+// ContentType TODO issue#173
 func (enc encoder) ContentType() string { return enc.contentType }
 
+// Encode TODO issue#173
 func (enc encoder) Encode(v interface{}) error { return enc.real.Encode(v) }
 
 type htmlEncoder struct{ stream io.Writer }
 
+// Encode TODO issue#173
 func (enc htmlEncoder) Encode(v interface{}) error {
 	marshaler, compatible := v.(interface {
 		MarshalHTML() ([]byte, error)
@@ -101,6 +104,7 @@ type yamlEncoder struct {
 	marshal func(interface{}) ([]byte, error)
 }
 
+// Encode TODO issue#173
 func (enc yamlEncoder) Encode(v interface{}) error {
 	b, err := enc.marshal(v)
 	if err != nil {

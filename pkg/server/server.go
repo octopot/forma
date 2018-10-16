@@ -1,12 +1,7 @@
 package server
 
 import (
-	"encoding/base64"
-	"encoding/json"
-	"html/template"
 	"net/http"
-	"net/url"
-	"path"
 	"time"
 
 	deep "github.com/pkg/errors"
@@ -21,40 +16,26 @@ import (
 )
 
 // New returns a new instance of the Forma server.
-// It can raise the panic if base URL is invalid or HTML templates are not available.
 func New(cnf config.ServerConfig, service Service) *Server {
-	u, err := url.Parse(cnf.BaseURL)
-	if err != nil {
-		panic(err)
-	}
-	return &Server{baseURL: u, service: service, templates: struct {
-		errorTpl    *template.Template
-		redirectTpl *template.Template
-	}{
-		errorTpl:    template.Must(template.New("error").Parse(must(cnf.TemplateDir, "error.html"))),
-		redirectTpl: template.Must(template.New("redirect").Parse(must(cnf.TemplateDir, "redirect.html"))),
-	}}
+	return &Server{cnf, service}
 }
 
 // Server handles HTTP requests.
 type Server struct {
-	baseURL   *url.URL
-	service   Service
-	templates struct {
-		errorTpl    *template.Template
-		redirectTpl *template.Template
-	}
+	config  config.ServerConfig
+	service Service
 }
 
 // GetV1 is responsible for `GET /api/v1/{Schema.ID}` request handling.
+// Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	var (
-		uuid = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
-		enc  = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
+		id      = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
+		encoder = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
 	)
-	response := s.service.HandleGetV1(v1.GetRequest{ID: uuid})
-	if response.Error != nil {
-		if err, is := response.Error.(errors.ApplicationError); is {
+	resp := s.service.HandleGetV1(req.Context(), v1.GetRequest{ID: id})
+	if resp.Error != nil {
+		if err, is := resp.Error.(errors.ApplicationError); is {
 			if _, is = err.IsClientError(); is {
 				rw.WriteHeader(http.StatusNotFound)
 				return
@@ -63,22 +44,9 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 		rw.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-
-	{ // domain logic
-		// add form namespace to make its elements unique
-		response.Schema.ID = string(uuid)
-		for i := range response.Schema.Inputs {
-			response.Schema.Inputs[i].ID = string(uuid) + "_" + response.Schema.Inputs[i].Name
-		}
-		// replace fallback by current API call
-		response.Schema.Action = extend(*s.baseURL, "api/v1", string(uuid))
-		response.Schema.Method = http.MethodPost
-		response.Schema.EncodingType = "application/x-www-form-urlencoded"
-	}
-
-	rw.Header().Set("Content-Type", enc.ContentType())
+	rw.Header().Set("Content-Type", encoder.ContentType())
 	rw.WriteHeader(http.StatusOK)
-	enc.Encode(response.Schema)
+	encoder.Encode(resp.Schema)
 }
 
 // PostV1 is responsible for `POST /api/v1/{Schema.ID}` request handling.

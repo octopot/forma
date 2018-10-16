@@ -54,7 +54,7 @@ func (s *Server) Input(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	output := bytes.NewBuffer(make([]byte, 0, 1024))
-	resp := s.service.HandlePostV1(req.Context(), v1.PostRequest{
+	resp := s.service.HandleInput(req.Context(), v1.PostRequest{
 		Context: domain.InputContext{
 			Cookies: domain.FromCookies(req.Cookies()),
 			Headers: domain.FromHeaders(req.Header),

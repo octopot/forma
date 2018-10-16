@@ -5,6 +5,7 @@
 package server_test
 
 import (
+	context "context"
 	gomock "github.com/golang/mock/gomock"
 	v1 "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	reflect "reflect"
@@ -34,25 +35,25 @@ func (m *MockService) EXPECT() *MockServiceMockRecorder {
 }
 
 // HandleGetV1 mocks base method
-func (m *MockService) HandleGetV1(arg0 v1.GetRequest) v1.GetResponse {
-	ret := m.ctrl.Call(m, "HandleGetV1", arg0)
+func (m *MockService) HandleGetV1(arg0 context.Context, arg1 v1.GetRequest) v1.GetResponse {
+	ret := m.ctrl.Call(m, "HandleGetV1", arg0, arg1)
 	ret0, _ := ret[0].(v1.GetResponse)
 	return ret0
 }
 
 // HandleGetV1 indicates an expected call of HandleGetV1
-func (mr *MockServiceMockRecorder) HandleGetV1(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandleGetV1", reflect.TypeOf((*MockService)(nil).HandleGetV1), arg0)
+func (mr *MockServiceMockRecorder) HandleGetV1(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandleGetV1", reflect.TypeOf((*MockService)(nil).HandleGetV1), arg0, arg1)
 }
 
-// HandlePostV1 mocks base method
-func (m *MockService) HandlePostV1(arg0 v1.PostRequest) v1.PostResponse {
-	ret := m.ctrl.Call(m, "HandlePostV1", arg0)
+// HandleInput mocks base method
+func (m *MockService) HandleInput(arg0 context.Context, arg1 v1.PostRequest) v1.PostResponse {
+	ret := m.ctrl.Call(m, "HandleInput", arg0, arg1)
 	ret0, _ := ret[0].(v1.PostResponse)
 	return ret0
 }
 
-// HandlePostV1 indicates an expected call of HandlePostV1
-func (mr *MockServiceMockRecorder) HandlePostV1(arg0 interface{}) *gomock.Call {
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandlePostV1", reflect.TypeOf((*MockService)(nil).HandlePostV1), arg0)
+// HandleInput indicates an expected call of HandleInput
+func (mr *MockServiceMockRecorder) HandleInput(arg0, arg1 interface{}) *gomock.Call {
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "HandleInput", reflect.TypeOf((*MockService)(nil).HandleInput), arg0, arg1)
 }

@@ -18,12 +18,12 @@
   - [**August 31, 2018**][project_v2_dl]
   - Command line interface for create, read, update and delete operations above gRPC.
 - [ ] v3: [Templating and RESTful API][project_v3]
-  - [**September 30, 2018**][project_v3_dl]
+  - [**October 20, 2018**][project_v3_dl]
   - Template system and Edge Side Includes/Server Side Includes support.
   - Integrate gRPC gateway.
   - Improve gRPC layer.
 - [ ] v4: [DSL for validation, CSI, and GUI][project_v4]
-  - [**October 31, 2018**][project_v4_dl]
+  - [**November 20, 2018**][project_v4_dl]
   - Domain-specific language to define validation rules.
   - Client-side integration.
   - Graphical user interface and admin panel to perform create, read, update and delete operations.

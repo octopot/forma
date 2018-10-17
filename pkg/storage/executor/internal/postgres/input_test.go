@@ -78,7 +78,9 @@ func TestInputReader(t *testing.T) {
 			assert.NoError(t, err)
 			defer conn.Close()
 
-			testCases := []struct {
+			now := time.Now()
+
+			tests := []struct {
 				name   string
 				mocker func(sqlmock.Sqlmock)
 				filter query.InputFilter
@@ -92,7 +94,7 @@ func TestInputReader(t *testing.T) {
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
-									AddRow(id, `{"input":["test"]}`, time.Now()),
+									AddRow(id, `{"input":["test"]}`, now),
 							)
 					},
 					filter: query.InputFilter{SchemaID: id},
@@ -106,10 +108,10 @@ func TestInputReader(t *testing.T) {
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
-									AddRow(id, `{"input":["test"]}`, time.Now()),
+									AddRow(id, `{"input":["test"]}`, now),
 							)
 					},
-					filter: query.InputFilter{SchemaID: id, From: time.Now()},
+					filter: query.InputFilter{SchemaID: id, From: &now},
 				},
 				{
 					name: `by schema ID and "to" date`,
@@ -120,10 +122,10 @@ func TestInputReader(t *testing.T) {
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
-									AddRow(id, `{"input":["test"]}`, time.Now()),
+									AddRow(id, `{"input":["test"]}`, now),
 							)
 					},
-					filter: query.InputFilter{SchemaID: id, To: time.Now()},
+					filter: query.InputFilter{SchemaID: id, To: &now},
 				},
 				{
 					name: `by schema ID and "from" and "to" dates`,
@@ -134,15 +136,15 @@ func TestInputReader(t *testing.T) {
 							WillReturnRows(
 								sqlmock.
 									NewRows([]string{"id", "data", "created_at"}).
-									AddRow(id, `{"input":["test"]}`, time.Now()),
+									AddRow(id, `{"input":["test"]}`, now),
 							)
 					},
-					filter: query.InputFilter{SchemaID: id, From: time.Now(), To: time.Now()},
+					filter: query.InputFilter{SchemaID: id, From: &now, To: &now},
 				},
 			}
 
 			var exec executor.InputReader = NewInputContext(ctx, conn)
-			for _, test := range testCases {
+			for _, test := range tests {
 				test.mocker(mock)
 				inputs, readErr := exec.ReadByFilter(token, test.filter)
 				assert.NoError(t, readErr, test.name)

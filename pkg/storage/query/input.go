@@ -9,8 +9,8 @@ import (
 // InputFilter TODO issue#173
 type InputFilter struct {
 	SchemaID domain.ID
-	From     time.Time
-	To       time.Time
+	From     *time.Time
+	To       *time.Time
 }
 
 // WriteInput TODO issue#173

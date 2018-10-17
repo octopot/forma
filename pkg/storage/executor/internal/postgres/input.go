@@ -67,20 +67,20 @@ func (scope inputScope) ReadByFilter(token *types.Token, filter query.InputFilte
 	q := `SELECT "i"."id", "i"."data", "i"."created_at"
 	        FROM "input" "i"
 	  INNER JOIN "schema" "s" ON "s"."id" = "i"."schema_id"
-	       WHERE "i"."schema_id" = $1 AND "s"."account_id"`
+	       WHERE "i"."schema_id" = $1 AND "s"."account_id" = $2`
 	args := append(make([]interface{}, 0, 4), filter.SchemaID, token.User.AccountID)
 	// TODO go 1.10 builder := strings.Builder{}
 	builder := bytes.NewBuffer(make([]byte, 0, len(q)+39))
 	_, _ = builder.WriteString(q)
 	switch {
-	case !filter.From.IsZero() && !filter.To.IsZero():
-		_, _ = builder.WriteString(` AND "i"."created_at" BETWEEN $2 AND $3`)
+	case filter.From != nil && filter.To != nil:
+		_, _ = builder.WriteString(` AND "i"."created_at" BETWEEN $3 AND $4`)
 		args = append(args, filter.From, filter.To)
-	case !filter.From.IsZero():
-		_, _ = builder.WriteString(` AND "i"."created_at" >= $2`)
+	case filter.From != nil:
+		_, _ = builder.WriteString(` AND "i"."created_at" >= $3`)
 		args = append(args, filter.From)
-	case !filter.To.IsZero():
-		_, _ = builder.WriteString(` AND "i"."created_at" <= $2`)
+	case filter.To != nil:
+		_, _ = builder.WriteString(` AND "i"."created_at" <= $3`)
 		args = append(args, filter.To)
 	}
 	entities := make([]types.Input, 0, 8)

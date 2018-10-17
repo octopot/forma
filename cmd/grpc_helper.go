@@ -8,11 +8,13 @@ import (
 	"os"
 	"reflect"
 	"strings"
+	"time"
 
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 	kit "github.com/kamilsk/go-kit/pkg/strings"
 
 	"github.com/kamilsk/form-api/pkg/config"
+	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
@@ -25,6 +27,7 @@ import (
 const (
 	schemaKind   kind = "Schema"
 	templateKind kind = "Template"
+	inputKind    kind = "Input"
 )
 
 var entities factory
@@ -38,6 +41,7 @@ func init() {
 		readCmd: {
 			schemaKind:   func() interface{} { return &pb.ReadSchemaRequest{} },
 			templateKind: func() interface{} { return &pb.ReadTemplateRequest{} },
+			inputKind:    func() interface{} { return &inputReadProxy{} },
 		},
 		updateCmd: {
 			schemaKind:   func() interface{} { return &pb.UpdateSchemaRequest{} },
@@ -48,6 +52,19 @@ func init() {
 			templateKind: func() interface{} { return &pb.DeleteTemplateRequest{} },
 		},
 	}
+}
+
+type inputReadProxy struct {
+	Filter struct {
+		ID        domain.ID `json:"id" mapstructure:"id" yaml:"id"`
+		Condition struct {
+			SchemaID  domain.ID `json:"schema_id" mapstructure:"schema_id" yaml:"schema_id"`
+			CreatedAt struct {
+				Start string `json:"start" mapstructure:"start" yaml:"start"`
+				End   string `json:"end"   mapstructure:"end" yaml:"end"`
+			} `json:"created_at" mapstructure:"created_at" yaml:"created_at"`
+		} `json:"condition" mapstructure:"condition" yaml:"condition"`
+	} `json:"filter" mapstructure:"filter" yaml:"filter"`
 }
 
 func communicate(cmd *cobra.Command, _ []string) error {
@@ -166,6 +183,38 @@ func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
 		return pb.NewSchemaClient(conn).Read(ctx, request)
 	case *pb.ReadTemplateRequest:
 		return pb.NewTemplateClient(conn).Read(ctx, request)
+
+	// TODO issue#180
+	// - remove hacks with proxies
+	// - remove deps to github.com/mitchellh/mapstructure
+	// - use github.com/ghodss/yaml and github.com/grpc-ecosystem/grpc-gateway/runtime instead
+	case *inputReadProxy:
+		grpcRequest := &pb.ReadInputRequest{}
+		if request.Filter.ID != "" {
+			grpcRequest.Filter = &pb.ReadInputRequest_Id{Id: request.Filter.ID.String()}
+		} else {
+			var start, end *time.Time
+			if request.Filter.Condition.CreatedAt.Start != "" {
+				t, parseErr := time.Parse(time.RFC3339, request.Filter.Condition.CreatedAt.Start)
+				if parseErr == nil {
+					start = &t
+				}
+			}
+			if request.Filter.Condition.CreatedAt.End != "" {
+				t, parseErr := time.Parse(time.RFC3339, request.Filter.Condition.CreatedAt.End)
+				if parseErr == nil {
+					end = &t
+				}
+			}
+			grpcRequest.Filter = &pb.ReadInputRequest_Condition{Condition: &pb.InputFilter{
+				SchemaId: request.Filter.Condition.SchemaID.String(),
+				CreatedAt: &pb.TimestampRange{
+					Start: pb.Timestamp(start),
+					End:   pb.Timestamp(end),
+				},
+			}}
+		}
+		return pb.NewInputClient(conn).Read(ctx, grpcRequest)
 
 	case *pb.UpdateSchemaRequest:
 		return pb.NewSchemaClient(conn).Update(ctx, request)

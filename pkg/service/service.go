@@ -57,10 +57,7 @@ func (service *Forma) HandleGetV1(ctx context.Context, req v1.GetRequest) (resp 
 	if resp.Error != nil {
 		return
 	}
-
-	// add form namespace to make its elements unique
 	enrich(service.baseURL, &resp.Schema)
-
 	return
 }
 
@@ -72,7 +69,6 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 		return
 	}
 
-	// add form namespace to make its elements unique
 	enrich(service.baseURL, &schema)
 	resp.URL = req.InputData.Redirect(req.Context.Referer(), schema.Action)
 
@@ -129,11 +125,8 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 	return resp
 }
 
+// configure form action
 func enrich(base *url.URL, schema *domain.Schema) {
-	for i := range schema.Inputs {
-		schema.Inputs[i].ID = schema.ID + "_" + schema.Inputs[i].Name
-	}
-	// replace fallback by current API call
 	schema.Action = extend(*base, "api/v1", schema.ID)
 	schema.Method = http.MethodPost
 	schema.EncodingType = "application/x-www-form-urlencoded"

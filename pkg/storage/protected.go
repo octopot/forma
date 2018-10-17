@@ -45,7 +45,23 @@ func (storage *Storage) ReadSchema(ctx context.Context, tokenID domain.ID, data 
 	if authErr != nil {
 		return entity, authErr
 	}
-	return storage.exec.SchemaEditor(ctx, conn).Read(token, data)
+
+	entity, readErr := storage.exec.SchemaEditor(ctx, conn).Read(token, data)
+	if readErr != nil {
+		return entity, readErr
+	}
+
+	// TODO issue#logic duplicated
+	{
+		ptr := &entity.Definition
+		ptr.ID = entity.ID.String()
+		ptr.Title = entity.Title
+		for i, input := range ptr.Inputs {
+			ptr.Inputs[i].ID = ptr.ID + "_" + input.Name
+		}
+	}
+
+	return entity, nil
 }
 
 // UpdateSchema TODO issue#173

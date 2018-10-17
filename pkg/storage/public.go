@@ -22,8 +22,16 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	if readErr != nil {
 		return schema, readErr
 	}
-	entity.Definition.ID = entity.ID.String()
-	entity.Definition.Title = entity.Title
+
+	// TODO issue#logic duplicated
+	{
+		ptr := &entity.Definition
+		ptr.ID = entity.ID.String()
+		ptr.Title = entity.Title
+		for i, input := range ptr.Inputs {
+			ptr.Inputs[i].ID = ptr.ID + "_" + input.Name
+		}
+	}
 
 	return entity.Definition, nil
 }

@@ -1,6 +1,7 @@
 version: "3"
 
 services:
+
   db:
     ports:
     - ${LOCAL_DB_PORT}:5432
@@ -10,14 +11,14 @@ services:
   migration:
     build:
       args:       { PACKAGE: "${PACKAGE}" }
-      context:    ../.
-      dockerfile: ./env/Dockerfile
+      context:    ../../../.
+      dockerfile: ./env/docker/service/Dockerfile
 
   service:
     build:
       args:       { PACKAGE: "${PACKAGE}" }
-      context:    ../.
-      dockerfile: ./env/Dockerfile
+      context:    ../../../.
+      dockerfile: ./env/docker/service/Dockerfile
     ports:
     - ${LOCAL_SERVICE_HTTP_PORT}:80
     - ${LOCAL_SERVICE_PROFILING_PORT}:8090
@@ -36,10 +37,8 @@ services:
     - letsencrypt:/etc/letsencrypt
 
 volumes:
-  pgdata:
-    driver: local
 
-  certificates:
-    driver: local
-  letsencrypt:
-    driver: local
+  pgdata:       { driver: local }
+
+  certificates: { driver: local }
+  letsencrypt:  { driver: local }

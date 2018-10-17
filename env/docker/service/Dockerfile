@@ -36,4 +36,4 @@ EXPOSE ${HTTP_PORT} \
        ${GRPC_PORT}
 
 ENTRYPOINT [ "service" ]
-CMD        [ "run" ]
+CMD        [ "help", "run" ]

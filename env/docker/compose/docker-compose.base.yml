@@ -7,15 +7,15 @@ services:
     env_file: .env
 
   migration:
-    image: kamilsk/form-api:2.x # https://hub.docker.com/r/kamilsk/form-api/
-    command: [ "migrate", "up" ]
+    image: kamilsk/form-api:3.x # https://hub.docker.com/r/kamilsk/form-api/
+    command: [ "migrate" ]
     depends_on:
     - db
     env_file: .env
     restart: on-failure
 
   service:
-    image: kamilsk/form-api:2.x # https://hub.docker.com/r/kamilsk/form-api/
+    image: kamilsk/form-api:3.x # https://hub.docker.com/r/kamilsk/form-api/
     command: [ "run", "--with-profiling", "--with-monitoring" ]
     depends_on:
     - migration

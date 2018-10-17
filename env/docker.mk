@@ -1,4 +1,4 @@
-IMAGE_VERSION := 2.x
+IMAGE_VERSION := 3.x
 PACKAGE       := github.com/kamilsk/form-api
 
 

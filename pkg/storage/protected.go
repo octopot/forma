@@ -18,15 +18,15 @@ import (
 func (storage *Storage) CreateSchema(ctx context.Context, tokenID domain.ID, data query.CreateSchema) (types.Schema, error) {
 	var entity types.Schema
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.SchemaEditor(ctx, conn).Create(token, data)
 }
@@ -35,15 +35,15 @@ func (storage *Storage) CreateSchema(ctx context.Context, tokenID domain.ID, dat
 func (storage *Storage) ReadSchema(ctx context.Context, tokenID domain.ID, data query.ReadSchema) (types.Schema, error) {
 	var entity types.Schema
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.SchemaEditor(ctx, conn).Read(token, data)
 }
@@ -52,15 +52,15 @@ func (storage *Storage) ReadSchema(ctx context.Context, tokenID domain.ID, data 
 func (storage *Storage) UpdateSchema(ctx context.Context, tokenID domain.ID, data query.UpdateSchema) (types.Schema, error) {
 	var entity types.Schema
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.SchemaEditor(ctx, conn).Update(token, data)
 }
@@ -69,15 +69,15 @@ func (storage *Storage) UpdateSchema(ctx context.Context, tokenID domain.ID, dat
 func (storage *Storage) DeleteSchema(ctx context.Context, tokenID domain.ID, data query.DeleteSchema) (types.Schema, error) {
 	var entity types.Schema
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.SchemaEditor(ctx, conn).Delete(token, data)
 }
@@ -92,15 +92,15 @@ func (storage *Storage) DeleteSchema(ctx context.Context, tokenID domain.ID, dat
 func (storage *Storage) CreateTemplate(ctx context.Context, tokenID domain.ID, data query.CreateTemplate) (types.Template, error) {
 	var entity types.Template
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.TemplateEditor(ctx, conn).Create(token, data)
 }
@@ -109,15 +109,15 @@ func (storage *Storage) CreateTemplate(ctx context.Context, tokenID domain.ID, d
 func (storage *Storage) ReadTemplate(ctx context.Context, tokenID domain.ID, data query.ReadTemplate) (types.Template, error) {
 	var entity types.Template
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.TemplateEditor(ctx, conn).Read(token, data)
 }
@@ -126,15 +126,15 @@ func (storage *Storage) ReadTemplate(ctx context.Context, tokenID domain.ID, dat
 func (storage *Storage) UpdateTemplate(ctx context.Context, tokenID domain.ID, data query.UpdateTemplate) (types.Template, error) {
 	var entity types.Template
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.TemplateEditor(ctx, conn).Update(token, data)
 }
@@ -143,15 +143,15 @@ func (storage *Storage) UpdateTemplate(ctx context.Context, tokenID domain.ID, d
 func (storage *Storage) DeleteTemplate(ctx context.Context, tokenID domain.ID, data query.DeleteTemplate) (types.Template, error) {
 	var entity types.Template
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.TemplateEditor(ctx, conn).Delete(token, data)
 }
@@ -166,30 +166,30 @@ func (storage *Storage) DeleteTemplate(ctx context.Context, tokenID domain.ID, d
 func (storage *Storage) ReadInputByID(ctx context.Context, tokenID domain.ID, id domain.ID) (types.Input, error) {
 	var entity types.Input
 
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return entity, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return entity, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return entity, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return entity, authErr
 	}
 	return storage.exec.InputReader(ctx, conn).ReadByID(token, id)
 }
 
 // ReadInputByFilter TODO issue#173
 func (storage *Storage) ReadInputByFilter(ctx context.Context, tokenID domain.ID, filter query.InputFilter) ([]types.Input, error) {
-	conn, closer, err := storage.connection(ctx)
-	if err != nil {
-		return nil, err
+	conn, closer, connErr := storage.connection(ctx)
+	if connErr != nil {
+		return nil, connErr
 	}
 	defer closer()
 
-	token, err := storage.exec.UserManager(ctx, conn).Token(tokenID)
-	if err != nil {
-		return nil, err
+	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
+	if authErr != nil {
+		return nil, authErr
 	}
 	return storage.exec.InputReader(ctx, conn).ReadByFilter(token, filter)
 }

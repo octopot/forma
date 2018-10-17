@@ -18,9 +18,9 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	}
 	defer closer()
 
-	entity, err := storage.exec.SchemaReader(ctx, conn).ReadByID(id)
-	if err != nil {
-		return schema, err
+	entity, readErr := storage.exec.SchemaReader(ctx, conn).ReadByID(id)
+	if readErr != nil {
+		return schema, readErr
 	}
 	entity.Definition.ID = entity.ID.String()
 	entity.Definition.Title = entity.Title
@@ -38,9 +38,9 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	}
 	defer closer()
 
-	entity, err := storage.exec.TemplateReader(ctx, conn).ReadByID(id)
-	if err != nil {
-		return template, err
+	entity, readErr := storage.exec.TemplateReader(ctx, conn).ReadByID(id)
+	if readErr != nil {
+		return template, readErr
 	}
 	return entity.Definition, nil
 }
@@ -53,9 +53,9 @@ func (storage *Storage) StoreInput(ctx context.Context, schemaID domain.ID, veri
 	}
 	defer closer()
 
-	entity, err := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
-	if err != nil {
-		return nil, err
+	entity, writeErr := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
+	if writeErr != nil {
+		return nil, writeErr
 	}
 	return &entity, nil
 }

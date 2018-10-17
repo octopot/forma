@@ -7,16 +7,16 @@
   },
   "item": [
     {
-      "name": "/api",
+      "name": "public",
       "item": [
         {
-          "name": "/v1",
+          "name": "/api",
           "item": [
             {
-              "name": "demo",
+              "name": "/v1",
               "item": [
                 {
-                  "name": "/{UUID} [HTML]",
+                  "name": "schema:Email Subscription (HTML)",
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -37,22 +37,22 @@
                     ],
                     "body": {},
                     "url": {
-                      "raw": "{{schema}}://{{host}}/api/v1/{{uuid}}",
+                      "raw": "{{schema}}://{{api}}/api/v1/10000000-2000-4000-8000-160000000004",
                       "protocol": "{{schema}}",
                       "host": [
-                        "{{host}}"
+                        "{{api}}"
                       ],
                       "path": [
                         "api",
                         "v1",
-                        "{{uuid}}"
+                        "10000000-2000-4000-8000-160000000004"
                       ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "/{UUID} [JSON]",
+                  "name": "schema:Email Subscription (JSON)",
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -73,22 +73,22 @@
                     ],
                     "body": {},
                     "url": {
-                      "raw": "{{schema}}://{{host}}/api/v1/{{uuid}}",
+                      "raw": "{{schema}}://{{api}}/api/v1/10000000-2000-4000-8000-160000000004",
                       "protocol": "{{schema}}",
                       "host": [
-                        "{{host}}"
+                        "{{api}}"
                       ],
                       "path": [
                         "api",
                         "v1",
-                        "{{uuid}}"
+                        "10000000-2000-4000-8000-160000000004"
                       ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "/{UUID} [XML]",
+                  "name": "schema:Email Subscription (XML)",
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -109,22 +109,22 @@
                     ],
                     "body": {},
                     "url": {
-                      "raw": "{{schema}}://{{host}}/api/v1/{{uuid}}",
+                      "raw": "{{schema}}://{{api}}/api/v1/10000000-2000-4000-8000-160000000004",
                       "protocol": "{{schema}}",
                       "host": [
-                        "{{host}}"
+                        "{{api}}"
                       ],
                       "path": [
                         "api",
                         "v1",
-                        "{{uuid}}"
+                        "10000000-2000-4000-8000-160000000004"
                       ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "/{UUID} [YAML]",
+                  "name": "schema:Email Subscription (YAML)",
                   "request": {
                     "auth": {
                       "type": "bearer",
@@ -145,22 +145,22 @@
                     ],
                     "body": {},
                     "url": {
-                      "raw": "{{schema}}://{{host}}/api/v1/{{uuid}}",
+                      "raw": "{{schema}}://{{api}}/api/v1/10000000-2000-4000-8000-160000000004",
                       "protocol": "{{schema}}",
                       "host": [
-                        "{{host}}"
+                        "{{api}}"
                       ],
                       "path": [
                         "api",
                         "v1",
-                        "{{uuid}}"
+                        "10000000-2000-4000-8000-160000000004"
                       ]
                     }
                   },
                   "response": []
                 },
                 {
-                  "name": "/{UUID}",
+                  "name": "input:Email Subscription",
                   "request": {
                     "auth": {
                       "type": "noauth"
@@ -168,16 +168,8 @@
                     "method": "POST",
                     "header": [
                       {
-                        "key": "Referer",
-                        "value": "https://kamil.samigullin.info/"
-                      },
-                      {
                         "key": "Content-Type",
                         "value": "application/x-www-form-urlencoded"
-                      },
-                      {
-                        "key": "Cookie",
-                        "value": "identifier=10000000-2000-4000-8000-160000000000"
                       }
                     ],
                     "body": {
@@ -191,7 +183,7 @@
                       ]
                     },
                     "url": {
-                      "raw": "{{schema}}://{{host}}/api/v1/{{uuid}}",
+                      "raw": "{{schema}}://{{host}}/api/v1/10000000-2000-4000-8000-160000000004",
                       "protocol": "{{schema}}",
                       "host": [
                         "{{host}}"
@@ -199,7 +191,7 @@
                       "path": [
                         "api",
                         "v1",
-                        "{{uuid}}"
+                        "10000000-2000-4000-8000-160000000004"
                       ]
                     }
                   },
@@ -214,108 +206,252 @@
       ]
     },
     {
-      "name": "profiling",
+      "name": "protected",
       "item": [
         {
-          "name": "/pprof/cmdline",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{profiler}}/pprof/cmdline",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{profiler}}"
-              ],
-              "path": [
-                "pprof",
-                "cmdline"
-              ]
+          "name": "monitoring",
+          "item": [
+            {
+              "name": "/monitoring",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{monitoring}}/monitoring",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{monitoring}}"
+                  ],
+                  "path": [
+                    "monitoring"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/vars",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{monitoring}}/vars",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{monitoring}}"
+                  ],
+                  "path": [
+                    "vars"
+                  ]
+                }
+              },
+              "response": []
             }
+          ],
+          "auth": {
+            "type": "basic",
+            "basic": [
+              {
+                "key": "password",
+                "value": "{{pass}}",
+                "type": "string"
+              },
+              {
+                "key": "username",
+                "value": "{{user}}",
+                "type": "string"
+              },
+              {
+                "key": "saveHelperData",
+                "value": true,
+                "type": "boolean"
+              },
+              {
+                "key": "showPassword",
+                "value": false,
+                "type": "boolean"
+              }
+            ]
           },
-          "response": []
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "765c1dea-021a-44b5-a711-84966924d926",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "6708f6fc-638c-4aa2-82d7-ff9e134b89fc",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            }
+          ],
+          "_postman_isSubFolder": true
         },
         {
-          "name": "/pprof/profile",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{profiler}}/pprof/profile",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{profiler}}"
-              ],
-              "path": [
-                "pprof",
-                "profile"
-              ]
+          "name": "profiling",
+          "item": [
+            {
+              "name": "/pprof/cmdline",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{profiling}}/pprof/cmdline",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{profiling}}"
+                  ],
+                  "path": [
+                    "pprof",
+                    "cmdline"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/pprof/profile",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{profiling}}/pprof/profile",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{profiling}}"
+                  ],
+                  "path": [
+                    "pprof",
+                    "profile"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/pprof/symbol",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{profiling}}/pprof/symbol",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{profiling}}"
+                  ],
+                  "path": [
+                    "pprof",
+                    "symbol"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/pprof/trace",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{profiling}}/pprof/trace",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{profiling}}"
+                  ],
+                  "path": [
+                    "pprof",
+                    "trace"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "/debug/pprof/",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "body": {},
+                "url": {
+                  "raw": "{{schema}}://{{profiling}}/debug/pprof/",
+                  "protocol": "{{schema}}",
+                  "host": [
+                    "{{profiling}}"
+                  ],
+                  "path": [
+                    "debug",
+                    "pprof",
+                    ""
+                  ]
+                }
+              },
+              "response": []
             }
+          ],
+          "auth": {
+            "type": "basic",
+            "basic": [
+              {
+                "key": "password",
+                "value": "{{pass}}",
+                "type": "string"
+              },
+              {
+                "key": "username",
+                "value": "{{user}}",
+                "type": "string"
+              },
+              {
+                "key": "saveHelperData",
+                "value": true,
+                "type": "boolean"
+              },
+              {
+                "key": "showPassword",
+                "value": false,
+                "type": "boolean"
+              }
+            ]
           },
-          "response": []
-        },
-        {
-          "name": "/pprof/symbol",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{profiler}}/pprof/symbol",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{profiler}}"
-              ],
-              "path": [
-                "pprof",
-                "symbol"
-              ]
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "id": "56cb5ac6-6437-48fc-9cea-9f1a413e0025",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "id": "33168210-ff6c-44dc-bd81-8253a34502d4",
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
             }
-          },
-          "response": []
-        },
-        {
-          "name": "/pprof/trace",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{profiler}}/pprof/trace",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{profiler}}"
-              ],
-              "path": [
-                "pprof",
-                "trace"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/debug/pprof/",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{profiler}}/debug/pprof/",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{profiler}}"
-              ],
-              "path": [
-                "debug",
-                "pprof",
-                ""
-              ]
-            }
-          },
-          "response": []
+          ],
+          "_postman_isSubFolder": true
         }
       ],
       "auth": {
@@ -347,7 +483,7 @@
         {
           "listen": "prerequest",
           "script": {
-            "id": "56cb5ac6-6437-48fc-9cea-9f1a413e0025",
+            "id": "2c6fc533-b5d7-47ee-b2ac-98e067c67634",
             "type": "text/javascript",
             "exec": [
               ""
@@ -357,97 +493,7 @@
         {
           "listen": "test",
           "script": {
-            "id": "33168210-ff6c-44dc-bd81-8253a34502d4",
-            "type": "text/javascript",
-            "exec": [
-              ""
-            ]
-          }
-        }
-      ]
-    },
-    {
-      "name": "monitoring",
-      "item": [
-        {
-          "name": "/monitoring",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{monitor}}/monitoring",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{monitor}}"
-              ],
-              "path": [
-                "monitoring"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "/vars",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "body": {},
-            "url": {
-              "raw": "{{schema}}://{{monitor}}/vars",
-              "protocol": "{{schema}}",
-              "host": [
-                "{{monitor}}"
-              ],
-              "path": [
-                "vars"
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
-      "auth": {
-        "type": "basic",
-        "basic": [
-          {
-            "key": "password",
-            "value": "{{pass}}",
-            "type": "string"
-          },
-          {
-            "key": "username",
-            "value": "{{user}}",
-            "type": "string"
-          },
-          {
-            "key": "saveHelperData",
-            "value": true,
-            "type": "boolean"
-          },
-          {
-            "key": "showPassword",
-            "value": false,
-            "type": "boolean"
-          }
-        ]
-      },
-      "event": [
-        {
-          "listen": "prerequest",
-          "script": {
-            "id": "765c1dea-021a-44b5-a711-84966924d926",
-            "type": "text/javascript",
-            "exec": [
-              ""
-            ]
-          }
-        },
-        {
-          "listen": "test",
-          "script": {
-            "id": "6708f6fc-638c-4aa2-82d7-ff9e134b89fc",
+            "id": "bb0bce5f-4679-4d31-9c44-9d02e7cc5506",
             "type": "text/javascript",
             "exec": [
               ""

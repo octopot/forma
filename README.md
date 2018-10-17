@@ -6,7 +6,7 @@
 [![Build Status][icon_build]][page_build]
 [![Code Coverage][icon_coverage]][page_quality]
 [![Code Quality][icon_quality]][page_quality]
-[![Research][icon_research]](../../tree/research)
+[![Research][icon_research]][page_research]
 [![License][icon_license]](LICENSE)
 
 ## Roadmap
@@ -50,23 +50,29 @@ Requirements:
 ```bash
 $ make up demo status
 
-       Name                     Command               State                                  Ports
-------------------------------------------------------------------------------------------------------------------------
-form-api_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
-form-api_server_1    /bin/sh -c envsubst '$SERV ...   Up      80/tcp, 0.0.0.0:80->8080/tcp
-form-api_service_1   form-api run --with-profil ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp, 0.0.0.0:8091
+     Name                    Command               State                          Ports
+---------------------------------------------------------------------------------------------------------------
+forma_db_1        docker-entrypoint.sh postgres    Up      0.0.0.0:5432->5432/tcp
+forma_server_1    /bin/sh -c echo $BASIC_USE ...   Up      0.0.0.0:443->443/tcp, 0.0.0.0:80->80/tcp
+forma_service_1   service run --with-profili ...   Up      0.0.0.0:8080->80/tcp, 0.0.0.0:8090->8090/tcp,
+                                                           0.0.0.0:8091->8091/tcp, 0.0.0.0:8092->8092/tcp
+
+$ open http://127.0.0.1.xip.io/api/v1/10000000-2000-4000-8000-160000000004
+
+$ make help
 ```
 
 <details>
 <summary><strong>GET curl /api/v1/UUID</strong></summary>
 
 ```bash
-$ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
-# <form id="10000000-2000-4000-8000-160000000004" lang="en" title="Email subscription"
-#       action="http://localhost/api/v1/10000000-2000-4000-8000-160000000004" method="post"
+$ curl http://127.0.0.1.xip.io/api/v1/10000000-2000-4000-8000-160000000004
+# <form id="10000000-2000-4000-8000-160000000004" lang="en" title="Email Subscription"
+#       action="http://localhost/api/v1/10000000-2000-4000-8000-160000000004" method="POST"
 #       enctype="application/x-www-form-urlencoded">
 #       <input id="10000000-2000-4000-8000-160000000004_email" name="email" type="email" title="Email"
 #              maxlength="64" required="true"></input>
+#       <input type="submit">
 # </form>
 ```
 </details>
@@ -77,16 +83,16 @@ $ curl http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
 ```bash
 $ curl -v -H "Content-Type: application/x-www-form-urlencoded" \
        --data-urlencode "email=test@my.email" \
-       http://localhost:8080/api/v1/10000000-2000-4000-8000-160000000004
+       http://127.0.0.1.xip.io/api/v1/10000000-2000-4000-8000-160000000004
 # > POST /api/v1/10000000-2000-4000-8000-160000000004 HTTP/1.1
-# > Host: localhost:8080
+# > Host: 127.0.0.1.xip.io
 # > User-Agent: curl/7.54.0
 # > Accept: */*
 # > Content-Type: application/x-www-form-urlencoded
 # > Content-Length: 21
 # >
 # < HTTP/1.1 302 Found
-# < Location: https://kamil.samigullin.info/#eyJpZCI6IjEwMDAwMDAwLTIwMDAtNDAwMC04MDAwLTE2MDAwMDAwMDAwNCIsInJlc3VsdCI6InN1Y2Nlc3MifQ==
+# < Location: http://localhost/api/v1/10000000-2000-4000-8000-160000000004#eyJpbnB1dCI6ImJmM2MyYWIwLWVkYjQtNDFiZi1iNDlkLWY3ZjNiMmI5ZDViMiIsImlkIjoiMTAwMDAwMDAtMjAwMC00MDAwLTgwMDAtMTYwMDAwMDAwMDA0IiwicmVzdWx0Ijoic3VjY2VzcyJ9
 # < Date: Sat, 05 May 2018 09:34:47 GMT
 # < Content-Length: 0
 # <
@@ -111,7 +117,9 @@ You can use CLI not only to start the HTTP server but also to execute
 <summary><strong>Service command-line interface</strong></summary>
 
 ```bash
-$ form-api --help
+$ make install
+
+$ form-api help
 Forma
 
 Usage:
@@ -119,7 +127,7 @@ Usage:
 
 Available Commands:
   completion  Print Bash or Zsh completion
-  ctl         Communicate with Forma server via gRPC
+  ctl         Forma Service Control
   help        Help about any command
   migrate     Apply database migration
   run         Start HTTP server
@@ -148,6 +156,9 @@ $ form-api completion -f zsh  > /path/to/zsh-completions/_form-api.zsh
 
 ```bash
 $ brew install kamilsk/tap/form-api
+
+$ which form-api
+/usr/local/bin/form-api
 ```
 
 ### Binary
@@ -156,7 +167,7 @@ $ brew install kamilsk/tap/form-api
 $ export REQ_VER=2.0.0  # all available versions are on https://github.com/kamilsk/form-api/releases/
 $ export REQ_OS=Linux   # macOS and Windows are also available
 $ export REQ_ARCH=64bit # 32bit is also available
-$ # wget -q -O forma.tar.gz
+# wget -q -O forma.tar.gz
 $ curl -sL -o forma.tar.gz \
        https://github.com/kamilsk/form-api/releases/download/"${REQ_VER}/form-api_${REQ_VER}_${REQ_OS}-${REQ_ARCH}".tar.gz
 $ tar xf forma.tar.gz -C "${GOPATH}"/bin/ && rm forma.tar.gz
@@ -172,7 +183,7 @@ $ docker pull kamilsk/form-api:2.x
 
 ```bash
 $ egg github.com/kamilsk/form-api@^2.0.0 -- make test install
-$ # or use mirror
+# or use mirror
 $ egg bitbucket.org/kamilsk/form-api@^2.0.0 -- make test install
 ```
 
@@ -209,6 +220,7 @@ made with ❤️ by [OctoLab](https://www.octolab.org/)
 
 [page_build]:      https://travis-ci.org/kamilsk/form-api
 [page_promo]:      https://kamilsk.github.io/form-api/
+[page_research]:   ../../tree/research
 [page_quality]:    https://scrutinizer-ci.com/g/kamilsk/form-api/?branch=master
 
 [project_v1]:      https://github.com/kamilsk/form-api/projects/1

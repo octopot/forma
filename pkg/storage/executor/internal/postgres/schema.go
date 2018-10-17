@@ -89,10 +89,8 @@ func (scope schemaScope) Update(token *types.Token, data query.UpdateSchema) (ty
 	if readErr != nil {
 		return entity, readErr
 	}
-	if data.Title != "" {
+	{
 		entity.Title = data.Title
-	}
-	if !data.Definition.IsEmpty() {
 		entity.Definition = data.Definition
 	}
 	encoded, encodeErr := xml.Marshal(entity.Definition)

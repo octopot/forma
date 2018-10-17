@@ -75,10 +75,8 @@ func (scope templateScope) Update(token *types.Token, data query.UpdateTemplate)
 	if readErr != nil {
 		return entity, readErr
 	}
-	if data.Title != "" {
+	{
 		entity.Title = data.Title
-	}
-	if !data.Definition.IsEmpty() {
 		entity.Definition = data.Definition
 	}
 	encoded := string(entity.Definition)

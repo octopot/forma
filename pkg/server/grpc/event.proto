@@ -5,44 +5,45 @@ package grpc;
 import public "common.proto";
 import "google/protobuf/timestamp.proto";
 
-message LogEntry {
+message Event {
     uint32 id = 1;
-    string schema_id = 3;
-    string input_id = 4;
-    string template_id = 5;
-    string identifier = 6;
+    string schema_id = 2;
+    string input_id = 3;
+    string template_id = 4;
+    string identifier = 5;
+    bytes context = 6;
     int32 code = 7;
-    bytes context = 8;
+    string url = 8;
     google.protobuf.Timestamp created_at = 9;
 }
 
-message LogFilter {
-    string schema_id = 3;
-    string input_id = 4;
-    string template_id = 5;
-    string identifier = 6;
-    int32 code = 7;
-    TimestampRange created_at = 9;
-
-    uint32 limit = 15;
+message EventFilter {
+    string schema_id = 1;
+    string input_id = 2;
+    string template_id = 3;
+    string identifier = 4;
+    int32 code = 5;
+    string url = 6;
+    TimestampRange created_at = 7;
+    uint32 limit = 8;
 }
 
-message ReadLogsRequest {
+message ReadEventsRequest {
     oneof filter {
         uint32 id = 1;
-        LogFilter condition = 2;
+        EventFilter condition = 2;
     }
 }
 
-message ReadLogsResponse {
-    repeated LogEntry logs = 1;
+message ReadEventsResponse {
+    repeated Event events = 1;
 }
 
-message ListenLogsRequest {
-    LogFilter filter = 1;
+message ListenEventsRequest {
+    EventFilter filter = 1;
 }
 
-service Log {
-    rpc Read (ReadLogsRequest) returns (ReadLogsResponse) {}
-    rpc Listen (ListenLogsRequest) returns (stream LogEntry) {}
+service Listener {
+    rpc Read (ReadEventsRequest) returns (ReadEventsResponse) {}
+    rpc Listen (ListenEventsRequest) returns (stream Event) {}
 }

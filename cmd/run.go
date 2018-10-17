@@ -162,7 +162,7 @@ func startGRPCServer(cnf config.GRPCConfig, storage pb.ProtectedStorage) error {
 		pb.RegisterSchemaServer(srv, pb.NewSchemaServer(storage))
 		pb.RegisterTemplateServer(srv, pb.NewTemplateServer(storage))
 		pb.RegisterInputServer(srv, pb.NewInputServer(storage))
-		pb.RegisterLogServer(srv, pb.NewLogServer(storage))
+		pb.RegisterListenerServer(srv, pb.NewEventServer(storage))
 		log.Println("start gRPC server at", listener.Addr())
 		_ = srv.Serve(listener) // TODO issue#139
 		listener.Close()

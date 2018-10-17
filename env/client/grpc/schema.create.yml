@@ -2,7 +2,4 @@ kind: Schema
 payload:
   id:         10000000-2000-4000-8000-160000000004
   title:      Email subscription
-  definition: |
-    <form lang="en" action="https://kamil.samigullin.info/">
-        <input name="email" type="email" title="Email" maxlength="64" required="1"/>
-    </form>
+  definition: ~

@@ -2,28 +2,4 @@ kind: Template
 payload:
   id:         10000000-2000-4000-8000-160000000005
   title:      Subscription template
-  definition: |
-    {{- define "forma.body" -}}
-        <div class="row">
-            {{- with .Schema.Input "email" -}}
-                <div class="col-md-8">
-                    <span class="bmd-form-group">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">
-                                    <i class="material-icons">mail</i>
-                                </span>
-                            </div>
-                            {{- template "forma.input" . -}}
-                        </div>
-                    </span>
-                </div>
-            {{- end -}}
-        </div>
-    {{- end -}}
-    {{- define "forma.submit" -}}
-        {{- template "forma.powered_by" . -}}
-        <div class="col-md-4">
-            <button class="btn btn-primary btn-block" type="submit">Subscribe</button>
-        </div>
-    {{- end -}}
+  definition: ~

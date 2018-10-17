@@ -7,13 +7,13 @@ import "google/protobuf/timestamp.proto";
 
 message CreateSchemaRequest {
     string id = 1;
-    string title = 3;
-    string definition = 4;
+    string title = 2;
+    string definition = 3;
 }
 
 message CreateSchemaResponse {
     string id = 1;
-    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp created_at = 2;
 }
 
 message ReadSchemaRequest {
@@ -22,21 +22,22 @@ message ReadSchemaRequest {
 
 message ReadSchemaResponse {
     string id = 1;
-    string title = 3;
-    string definition = 4;
-    google.protobuf.Timestamp created_at = 5;
-    google.protobuf.Timestamp updated_at = 6;
-    google.protobuf.Timestamp deleted_at = 7;
+    string title = 2;
+    string definition = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
 }
 
 message UpdateSchemaRequest {
     string id = 1;
-    string title = 3;
-    string definition = 4;
+    string title = 2;
+    string definition = 3;
 }
 
 message UpdateSchemaResponse {
-    google.protobuf.Timestamp updated_at = 6;
+    string id = 1;
+    google.protobuf.Timestamp updated_at = 2;
 }
 
 message DeleteSchemaRequest {
@@ -44,7 +45,8 @@ message DeleteSchemaRequest {
 }
 
 message DeleteSchemaResponse {
-    google.protobuf.Timestamp deleted_at = 7;
+    string id = 1;
+    google.protobuf.Timestamp deleted_at = 2;
 }
 
 service Schema {
@@ -56,13 +58,13 @@ service Schema {
 
 message CreateTemplateRequest {
     string id = 1;
-    string title = 3;
-    string definition = 4;
+    string title = 2;
+    string definition = 3;
 }
 
 message CreateTemplateResponse {
     string id = 1;
-    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp created_at = 2;
 }
 
 message ReadTemplateRequest {
@@ -71,21 +73,22 @@ message ReadTemplateRequest {
 
 message ReadTemplateResponse {
     string id = 1;
-    string title = 3;
-    string definition = 4;
-    google.protobuf.Timestamp created_at = 5;
-    google.protobuf.Timestamp updated_at = 6;
-    google.protobuf.Timestamp deleted_at = 7;
+    string title = 2;
+    string definition = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    google.protobuf.Timestamp deleted_at = 6;
 }
 
 message UpdateTemplateRequest {
     string id = 1;
-    string title = 3;
-    string definition = 4;
+    string title = 2;
+    string definition = 3;
 }
 
 message UpdateTemplateResponse {
-    google.protobuf.Timestamp updated_at = 5;
+    string id = 1;
+    google.protobuf.Timestamp updated_at = 2;
 }
 
 message DeleteTemplateRequest {
@@ -93,7 +96,8 @@ message DeleteTemplateRequest {
 }
 
 message DeleteTemplateResponse {
-    google.protobuf.Timestamp deleted_at = 7;
+    string id = 1;
+    google.protobuf.Timestamp deleted_at = 2;
 }
 
 service Template {
@@ -106,13 +110,13 @@ service Template {
 message InputEntry {
     string id = 1;
     string schema_id = 2;
-    bytes data = 3;
+    string data = 3;
     google.protobuf.Timestamp created_at = 4;
 }
 
 message InputFilter {
-    string schema_id = 2;
-    TimestampRange created_at = 4;
+    string schema_id = 1;
+    TimestampRange created_at = 2;
 }
 
 message ReadInputRequest {

@@ -6,10 +6,12 @@ import (
 )
 
 const (
-	cookieHeader    = "Cookie"
-	optionsHeader   = "X-Forma-Options"
-	refererHeader   = "Referer"
-	userAgentHeader = "User-Agent"
+	cookieHeader     = "Cookie"
+	identifierHeader = "X-Passport-ID"
+	optionsHeader    = "X-Forma-Options"
+	refererHeader    = "Referer"
+	requestHeader    = "X-Request-ID"
+	userAgentHeader  = "User-Agent"
 )
 
 // FromCookies returns converted value from request's cookies.
@@ -44,6 +46,16 @@ func (context InputContext) Header(key string) string {
 	return http.Header(context.Headers).Get(key)
 }
 
+// Identifier TODO issue#173
+func (context InputContext) Identifier() *ID {
+	header := context.Header(identifierHeader)
+	if header != "" {
+		id := ID(header)
+		return &id
+	}
+	return nil
+}
+
 // Option TODO issue#173
 func (context InputContext) Option() Option {
 	split := func(str string) []string {
@@ -72,6 +84,16 @@ func (context InputContext) Option() Option {
 // Referer TODO issue#173
 func (context InputContext) Referer() string {
 	return context.Header(refererHeader)
+}
+
+// Request TODO issue#173
+func (context InputContext) Request() *ID {
+	header := context.Header(requestHeader)
+	if header != "" {
+		id := ID(header)
+		return &id
+	}
+	return nil
 }
 
 // UserAgent TODO issue#173

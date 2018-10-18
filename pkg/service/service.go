@@ -94,7 +94,7 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 			SchemaID:   req.ID,
 			InputID:    input.ID,
 			TemplateID: req.InputData.Template(),
-			Identifier: nil, // TODO issue#171
+			Identifier: req.Context.Identifier(),
 			Context:    req.Context,
 			Code:       http.StatusFound, // TODO issue#design
 			URL:        resp.URL,

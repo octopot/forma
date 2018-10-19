@@ -22,18 +22,23 @@ FROM alpine:latest AS service
 
 LABEL maintainer="Kamil Samigullin <kamil@samigullin.info>"
 
+RUN adduser -D -H -u 1000 service
+USER service
+
 COPY --from=build /go/bin/service /usr/local/bin/
 
 ENV BIND=0.0.0.0 \
-    HTTP_PORT=80 \
+    HTTP_PORT=8080 \
     PROFILING_PORT=8090 \
     MONITORING_PORT=8091 \
-    GRPC_PORT=8092
+    GRPC_PORT=8092 \
+    GRPC_GATEWAY_PORT=8093
 
 EXPOSE ${HTTP_PORT} \
        ${PROFILING_PORT} \
        ${MONITORING_PORT} \
-       ${GRPC_PORT}
+       ${GRPC_PORT} \
+       ${GRPC_GATEWAY_PORT}
 
 ENTRYPOINT [ "service" ]
 CMD        [ "help", "run" ]

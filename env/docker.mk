@@ -40,11 +40,12 @@ docker-start:
 	docker run --rm -d \
 	           --env-file env/.env.example \
 	           --name form-api-dev \
-	           --publish 8080:80 \
-	           --publish 8090:8090 \
-	           --publish 8091:8091 \
-	           --publish 8092:8092 \
-	           kamilsk/form-api:$(IMAGE_VERSION)
+	           -p 8080:8080 \
+	           -p 8090:8090 \
+	           -p 8091:8091 \
+	           -p 8092:8092 \
+	           -p 8093:8093 \
+	           kamilsk/form-api:$(IMAGE_VERSION) run --with-profiling --with-monitoring --with-grpc-gateway
 
 .PHONY: docker-logs
 docker-logs:

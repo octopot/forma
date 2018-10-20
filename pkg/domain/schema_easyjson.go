@@ -95,7 +95,7 @@ func easyjsonCef4e921EncodeGithubComKamilskFormApiPkgDomain(out *jwriter.Writer,
 		}
 		out.String(string(in.ID))
 	}
-	{
+	if in.Language != "" {
 		const prefix string = ",\"lang\":"
 		if first {
 			first = false
@@ -105,7 +105,7 @@ func easyjsonCef4e921EncodeGithubComKamilskFormApiPkgDomain(out *jwriter.Writer,
 		}
 		out.String(string(in.Language))
 	}
-	{
+	if in.Title != "" {
 		const prefix string = ",\"title\":"
 		if first {
 			first = false
@@ -115,7 +115,7 @@ func easyjsonCef4e921EncodeGithubComKamilskFormApiPkgDomain(out *jwriter.Writer,
 		}
 		out.String(string(in.Title))
 	}
-	{
+	if in.Action != "" {
 		const prefix string = ",\"action\":"
 		if first {
 			first = false

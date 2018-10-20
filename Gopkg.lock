@@ -26,6 +26,14 @@
   version = "v1.4.7"
 
 [[projects]]
+  branch = "master"
+  digest = "1:0b86d0877c1b5a5d518f5bb51d7a27878f0c2a1e05dd96ab8790dee49d4eb5bf"
+  name = "github.com/ghodss/yaml"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c7ce16629ff4cd059ed96ed06419dd3856fd3577"
+
+[[projects]]
   digest = "1:c38144c2e2d2cf5592dc55f08f69b491b15f4449c54e293710fe19ea0874fa90"
   name = "github.com/go-chi/chi"
   packages = [
@@ -59,10 +67,11 @@
   revision = "600781dde9cca80734169b9e969d9054ccc57937"
 
 [[projects]]
-  digest = "1:63ccdfbd20f7ccd2399d0647a7d100b122f79c13bb83da9660b1598396fd9f62"
+  digest = "1:5ae5b54d7cd695bafa92bf426b7c3d046f907260ec0fcb4fe5c368d937597c00"
   name = "github.com/golang/protobuf"
   packages = [
     "proto",
+    "protoc-gen-go/descriptor",
     "ptypes",
     "ptypes/any",
     "ptypes/duration",
@@ -83,6 +92,25 @@
   pruneopts = "NUT"
   revision = "c250d6563d4d4c20252cd865923440e829844f4e"
   version = "v1.0.0"
+
+[[projects]]
+  digest = "1:5872c7f130f62fc34bfda20babad36be6309c00b5c9207717f7cd2a51536fff4"
+  name = "github.com/grpc-ecosystem/go-grpc-prometheus"
+  packages = ["."]
+  pruneopts = "NUT"
+  revision = "c225b8c3b01faf2899099b768856a9e916e5087b"
+  version = "v1.2.0"
+
+[[projects]]
+  digest = "1:c4a0b2286ccdfcb4575e19c2bab20d4972ba7fce2ed7cba0941c168708b96f54"
+  name = "github.com/grpc-ecosystem/grpc-gateway"
+  packages = [
+    "protoc-gen-swagger/options",
+    "utilities",
+  ]
+  pruneopts = "T"
+  revision = "aeab1d96e0f1368d243e2e5f526aa29d495517bb"
+  version = "v1.5.1"
 
 [[projects]]
   digest = "1:11c6c696067d3127ecf332b10f89394d386d9083f82baf71f40f2da31841a009"
@@ -125,22 +153,19 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e12c15c1002fea305a3d7049f1f71067fe63856c63c9186f469eddab47348d86"
+  digest = "1:784d05a21c37defeaba624c1b0a55cb2c6488dbc9f456df16aab1af4928618c6"
   name = "github.com/lib/pq"
   packages = [
     ".",
     "oid",
   ]
   pruneopts = "NUT"
-  revision = "0ac245bc3be505fde6900e1ca0f957c0845cbfa2"
+  revision = "9eb73efc1fcc404148b56765b0d3f61d9a5ef8ee"
 
 [[projects]]
-  digest = "1:4244266b65ea535b8ebd109a327720821707b59f9a37bda738946d52ec69442d"
+  digest = "1:d244f8666a838fe6ad70ec8fe77f50ebc29fdc3331a2729ba5886bef8435d10d"
   name = "github.com/magiconair/properties"
-  packages = [
-    ".",
-    "assert",
-  ]
+  packages = ["."]
   pruneopts = "NUT"
   revision = "c2353362d570a7bfa228149c62842019201cfb71"
   version = "v1.8.0"
@@ -221,7 +246,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:712c7be114f13d52202e440ef99d6ff810fdf9e41e3e3f7bfbbfa6bd13985d5a"
+  digest = "1:83bbf84553fd78c94be448156c7786adc805fd676f8ffa416315582b21b675cd"
   name = "github.com/prometheus/common"
   packages = [
     "expfmt",
@@ -229,7 +254,7 @@
     "model",
   ]
   pruneopts = "NUT"
-  revision = "bcb74de08d37a417cb6789eec1d6c810040f0470"
+  revision = "16b4535ad14a9ef20a9d9fd8055143c5faa15224"
 
 [[projects]]
   branch = "master"
@@ -280,7 +305,7 @@
   name = "github.com/spf13/cobra"
   packages = ["."]
   pruneopts = "NUT"
-  revision = "8d114be902bc9f08717804830a55c48378108a28"
+  revision = "40172f1635de1c5888b70b1917dd9a6b2ffd46c6"
 
 [[projects]]
   digest = "1:f29f83301ed096daed24a90f4af591b7560cb14b9cc3e1827abbf04db7269ab5"
@@ -339,7 +364,7 @@
     "trace",
   ]
   pruneopts = "NUT"
-  revision = "49bb7cea24b1df9410e1712aa6433dae904ff66a"
+  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
 
 [[projects]]
   branch = "master"
@@ -351,11 +376,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:e1e75018db0765a0ac54aa7f9473417a7db770c75c9527b4bfff03d2e55f0a0a"
+  digest = "1:9976581dd4c7206d2573fc4b118bf3251ecf7a53ae5ef9cfba451fc8d7f8060a"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "NUT"
-  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
+  revision = "8e24a49d80f82323e1c4db1b5da3e0f31171a151"
 
 [[projects]]
   digest = "1:e7071ed636b5422cc51c0e3a6cebc229d6c9fffc528814b519a980641422d619"
@@ -382,11 +407,14 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:56b0bca90b7e5d1facf5fbdacba23e4e0ce069d25381b8e2f70ef1e7ebfb9c1a"
+  digest = "1:ec1919b8b80839559effbe3eabcebf92238d12d3dd9182e51deb5da3ed12e5e9"
   name = "google.golang.org/genproto"
-  packages = ["googleapis/rpc/status"]
+  packages = [
+    "googleapis/api/annotations",
+    "googleapis/rpc/status",
+  ]
   pruneopts = "NUT"
-  revision = "af9cb2a35e7f169ec875002c1829c9b315cddc04"
+  revision = "94acd270e44e65579b9ee3cdab25034d33fed608"
 
 [[projects]]
   digest = "1:5b805b8e03b29399b344655cac16873f026e54dc0a7c17b381f6f4d4c7b6d741"
@@ -440,17 +468,18 @@
   version = "v1.7.1"
 
 [[projects]]
-  branch = "v2"
   digest = "1:7c95b35057a0ff2e19f707173cc1a947fa43a6eb5c4d300d196ece0334046082"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "NUT"
   revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
+  version = "v2.2.1"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
+    "github.com/ghodss/yaml",
     "github.com/go-chi/chi",
     "github.com/go-chi/chi/middleware",
     "github.com/golang/gddo/httputil",
@@ -460,11 +489,14 @@
     "github.com/golang/protobuf/ptypes",
     "github.com/golang/protobuf/ptypes/timestamp",
     "github.com/grpc-ecosystem/go-grpc-middleware/auth",
+    "github.com/grpc-ecosystem/go-grpc-prometheus",
+    "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options",
+    "github.com/grpc-ecosystem/grpc-gateway/utilities",
     "github.com/kamilsk/go-kit/pkg/config",
     "github.com/kamilsk/go-kit/pkg/fn",
     "github.com/kamilsk/go-kit/pkg/strings",
     "github.com/lib/pq",
-    "github.com/magiconair/properties/assert",
+    "github.com/mailru/easyjson",
     "github.com/mailru/easyjson/gen",
     "github.com/mailru/easyjson/jlexer",
     "github.com/mailru/easyjson/jwriter",
@@ -478,6 +510,7 @@
     "github.com/stretchr/testify/mock",
     "golang.org/x/net/context",
     "golang.org/x/sync/errgroup",
+    "google.golang.org/genproto/googleapis/api/annotations",
     "google.golang.org/grpc",
     "google.golang.org/grpc/codes",
     "google.golang.org/grpc/metadata",

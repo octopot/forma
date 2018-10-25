@@ -42,8 +42,8 @@
 
 Requirements:
 
-- Docker 17.09.0-ce or above
-- Docker Compose 1.16.1 or above
+- Docker 18.06.0-ce or above
+- Docker Compose 1.22.0 or above
 - Go 1.9.2 or above
 - GNU Make 3.81 or above
 
@@ -177,6 +177,8 @@ $ tar xf forma.tar.gz -C "${GOPATH}"/bin/ && rm forma.tar.gz
 
 ```bash
 $ docker pull kamilsk/form-api:2.x
+# or use mirror
+$ docker pull quay.io/kamilsk/form-api:2.x
 ```
 
 ### From source code

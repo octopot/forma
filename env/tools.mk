@@ -1,3 +1,8 @@
+# TODO issue#environment
+# - protoc
+# - go-bindata replace
+# TODO add . "github.com/kamilsk/form-api/pkg/transport/grpc/protobuf" to the import
+
 .PHONY: tools
 tools:
 	if ! command -v easyjson > /dev/null; then \
@@ -24,9 +29,14 @@ mocks:
 
 .PHONY: protobuf
 protobuf:
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc common.proto
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc storage.proto
-	protoc -Ipkg/server/grpc/ --go_out=plugins=grpc:pkg/server/grpc event.proto
+	@(protoc -Ienv/api \
+	         -Ivendor/github.com/grpc-ecosystem/grpc-gateway \
+	         -Ivendor/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+	         --go_out=plugins=grpc,logtostderr=true:pkg/transport/grpc/protobuf \
+	         --grpc-gateway_out=logtostderr=true,import_path=gateway:pkg/transport/grpc/gateway \
+	         --swagger_out=logtostderr=true,allow_merge=true,merge_file_name=forma:env/api \
+	         common.proto storage.proto event.proto)
+	@(mv env/api/forma.swagger.json env/api/swagger.json)
 
 .PHONY: static
 static:

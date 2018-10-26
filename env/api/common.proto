@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package protobuf;
+
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+    info: {
+        title: "Data Collector as a Service";
+        version: "dev";
+        contact: {
+            name:  "Forma project of Hugs Platform";
+            url:   "https://github.com/kamilsk/form-api";
+            email: "info@octolab.org";
+        }
+    }
+    security_definitions: {
+        security: {
+            key: "Token";
+            value: {
+                type: TYPE_API_KEY;
+                in: IN_HEADER;
+                name: "Authorization";
+                description: "value = <strong>Bearer $(FORMA_TOKEN)</strong>"
+            }
+        }
+    }
+    security: {
+        security_requirement: {
+            key: "Token";
+        }
+    }
+};
+
+message TimestampRange {
+    google.protobuf.Timestamp start = 1;
+    google.protobuf.Timestamp end = 2;
+}

@@ -84,12 +84,13 @@ func (scope inputScope) ReadByFilter(token *types.Token, filter query.InputFilte
 		args = append(args, filter.To)
 	}
 	entities := make([]types.Input, 0, 8)
-	rows, dbErr := scope.conn.QueryContext(scope.ctx, builder.String(), args...)
-	if dbErr != nil {
-		return nil, errors.Database(errors.ServerErrorMessage, dbErr,
+	rows, queryErr := scope.conn.QueryContext(scope.ctx, builder.String(), args...)
+	if queryErr != nil {
+		return nil, errors.Database(errors.ServerErrorMessage, queryErr,
 			"user %q of account %q tried to read inputs by criteria %+v",
 			token.UserID, token.User.AccountID, filter)
 	}
+	defer func() { _ = rows.Close() }()
 	for rows.Next() {
 		entity, encoded := types.Input{SchemaID: filter.SchemaID}, []byte(nil)
 		if scanErr := rows.Scan(&entity.ID, &encoded, &entity.CreatedAt); scanErr != nil {
@@ -103,6 +104,11 @@ func (scope inputScope) ReadByFilter(token *types.Token, filter query.InputFilte
 				token.UserID, token.User.AccountID, encoded, entity.ID)
 		}
 		entities = append(entities, entity)
+	}
+	if loopErr := rows.Err(); loopErr != nil {
+		return nil, errors.Database(errors.ServerErrorMessage, loopErr,
+			"user %q of account %q tried to read inputs by criteria %+v",
+			token.UserID, token.User.AccountID, filter)
 	}
 	return entities, nil
 }

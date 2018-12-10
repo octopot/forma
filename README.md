@@ -18,17 +18,17 @@
   - [**August 31, 2018**][project_v2_dl]
   - Command line interface for create, read, update and delete operations above gRPC.
 - [ ] v3: [Templating and RESTful API][project_v3]
-  - [**October 31, 2018**][project_v3_dl]
+  - [**Someday, 20xx**][project_v3_dl]
   - Template system and Edge Side Includes/Server Side Includes support.
   - Integrate gRPC gateway.
   - Improve gRPC layer.
 - [ ] v4: [DSL for validation, CSI, and GUI][project_v4]
-  - [**November 30, 2018**][project_v4_dl]
+  - [**Sometime, 20xx**][project_v4_dl]
   - Domain-specific language to define validation rules.
   - Client-side integration.
   - Graphical user interface and admin panel to perform create, read, update and delete operations.
 - [ ] Forma, SaaS
-  - **December 31, 2018**
+  - **Somehow, 20xx**
   - Ready to apply on Cloud.
   - Move to [OctoLab](https://github.com/octolab/) organization and rename project to `forma`.
 

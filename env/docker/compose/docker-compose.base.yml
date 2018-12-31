@@ -27,5 +27,5 @@ services:
     - service
     env_file: ../../.env
     volumes:
-    - ./etc/nginx.conf:/etc/nginx/nginx.conf:ro
-    - ./etc/service.conf:/etc/nginx/conf.d/default.conf:ro
+    - ../../etc/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ../../etc/service.conf:/etc/nginx/conf.d/default.conf:ro

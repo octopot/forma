@@ -25,6 +25,15 @@ code-quality-check: docker-tool-gometalinter
 code-quality-report:
 	time make code-quality-check | tail +7 | tee report.out
 
+.PHONY: goimports-check
+goimports-check:
+	@(goimports -d ./cmd/ ./pkg/ \
+	 | grep '.go$$' \
+	 | grep -v mock_ \
+	 | grep -v _easyjson \
+	 | grep -v bindata \
+	 | awk '{print $$4}')
+
 
 .PHONY: dev
 dev: up stop-server stop-service clear status demo dev-server

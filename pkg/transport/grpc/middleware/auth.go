@@ -5,7 +5,7 @@ import (
 
 	domain "github.com/kamilsk/form-api/pkg/service/types"
 
-	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

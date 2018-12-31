@@ -3,11 +3,11 @@ package chi
 import (
 	"net/http"
 
-	common "github.com/kamilsk/form-api/pkg/server/middleware"
-
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+	common "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/kamilsk/form-api/pkg/server/router"
+	internal "github.com/kamilsk/form-api/pkg/server/router/chi/middleware"
 )
 
 // NewRouter returns configured `github.com/go-chi/chi` router.
@@ -22,7 +22,7 @@ func NewRouter(api router.Server) http.Handler {
 
 	r.Route("/api/v1", func(r chi.Router) {
 		r.Route("/{ID}", func(r chi.Router) {
-			r.Use(ctxPacker(common.Schema, "ID"))
+			r.Use(internal.Pack("ID", "id"))
 			r.Get("/", common.Encoder(api.GetV1))
 			r.Post("/", api.Input)
 		})
@@ -30,21 +30,21 @@ func NewRouter(api router.Server) http.Handler {
 	r.Route("/api/v2", func(r chi.Router) {
 		r.Route("/schema", func(r chi.Router) {
 			r.Route("/{ID}", func(r chi.Router) {
-				r.Use(ctxPacker(common.Schema, "ID"))
+				r.Use(internal.Pack("ID", "id"))
 				r.Get("/", notImplemented)
 				r.Post("/", notImplemented)
 			})
 		})
 		r.Route("/template", func(r chi.Router) {
 			r.Route("/{ID}", func(r chi.Router) {
-				r.Use(ctxPacker(common.Template, "ID"))
+				r.Use(internal.Pack("ID", "id"))
 				r.Get("/", notImplemented)
 			})
 		})
 	})
-	r.Route("/schema/{SCM_ID}/template/{TPL_ID}", func(r chi.Router) {
-		r.Use(ctxPacker(common.Schema, "SCM_ID"))
-		r.Use(ctxPacker(common.Template, "TPL_ID"))
+	r.Route("/schema/{SCHEMA}/template/{TEMPLATE}", func(r chi.Router) {
+		r.Use(internal.Pack("SCHEMA", "schema"))
+		r.Use(internal.Pack("TEMPLATE", "template"))
 		r.Get("/", notImplemented)
 	})
 

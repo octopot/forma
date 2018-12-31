@@ -17,7 +17,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/static"
-	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
+	v1 "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
 // New returns a new instance of the Forma service.

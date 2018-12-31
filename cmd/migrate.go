@@ -11,7 +11,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/static"
 	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/kamilsk/go-kit/pkg/fn"
-	"github.com/rubenv/sql-migrate"
+	migrate "github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

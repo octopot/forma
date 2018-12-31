@@ -10,18 +10,17 @@ import (
 	"strings"
 	"time"
 
-	pb "github.com/kamilsk/form-api/pkg/server/grpc"
-	kit "github.com/kamilsk/go-kit/pkg/strings"
-
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
+	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
+	kit "github.com/kamilsk/go-kit/pkg/strings"
 	"github.com/mitchellh/mapstructure"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 const (

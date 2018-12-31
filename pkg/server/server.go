@@ -9,7 +9,7 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/server/middleware"
-	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
+	v1 "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 )
 
@@ -27,10 +27,18 @@ type Server struct {
 // GetV1 is responsible for `GET /api/v1/{Schema.ID}` request handling.
 // Deprecated: TODO issue#version3.0 use SchemaEditor and gRPC gateway instead
 func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
+	if err := req.ParseForm(); err != nil {
+		http.Error(rw, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 	var (
-		id      = req.Context().Value(middleware.SchemaKey{}).(domain.ID)
+		id      = domain.ID(req.Form.Get("id"))
 		encoder = req.Context().Value(middleware.EncoderKey{}).(encoding.Generic)
 	)
+	if !id.IsValid() {
+		http.Error(rw, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 	resp := s.service.HandleGetV1(req.Context(), v1.GetRequest{ID: id})
 	if resp.Error != nil {
 		if err, is := resp.Error.(errors.ApplicationError); is {
@@ -44,13 +52,13 @@ func (s *Server) GetV1(rw http.ResponseWriter, req *http.Request) {
 	}
 	rw.Header().Set("Content-Type", encoder.ContentType())
 	rw.WriteHeader(http.StatusOK)
-	encoder.Encode(resp.Schema)
+	_ = encoder.Encode(resp.Schema)
 }
 
 // Input is responsible for `POST /api/v1/{Schema.ID}` request handling.
 func (s *Server) Input(rw http.ResponseWriter, req *http.Request) {
 	if err := req.ParseForm(); err != nil {
-		rw.WriteHeader(http.StatusBadRequest)
+		http.Error(rw, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
 		return
 	}
 	output := bytes.NewBuffer(make([]byte, 0, 1024))
@@ -60,7 +68,7 @@ func (s *Server) Input(rw http.ResponseWriter, req *http.Request) {
 			Headers: domain.FromHeaders(req.Header),
 			Queries: domain.FromRequest(req),
 		},
-		ID:        req.Context().Value(middleware.SchemaKey{}).(domain.ID),
+		ID:        domain.ID(req.Form.Get("id")),
 		InputData: domain.InputData(req.PostForm),
 		Output:    output,
 	})
@@ -73,7 +81,7 @@ func (s *Server) Input(rw http.ResponseWriter, req *http.Request) {
 				default:
 					rw.WriteHeader(http.StatusBadRequest)
 				}
-				io.Copy(rw, output)
+				_, _ = io.Copy(rw, output)
 				return
 			}
 		}

@@ -9,11 +9,10 @@ import (
 	"runtime"
 	"strconv"
 
-	pb "github.com/kamilsk/form-api/pkg/server/grpc"
-
-	"github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/server"
+	pb "github.com/kamilsk/form-api/pkg/server/grpc"
 	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"

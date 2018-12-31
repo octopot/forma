@@ -3,7 +3,7 @@ package server
 import (
 	"context"
 
-	"github.com/kamilsk/form-api/pkg/transfer/api/v1"
+	v1 "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
 // Service defines the behavior of the Forma service.

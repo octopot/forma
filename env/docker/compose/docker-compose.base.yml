@@ -5,6 +5,8 @@ services:
   db:
     image: postgres:10-alpine # https://hub.docker.com/_/postgres/
     env_file: ../../.env
+    volumes:
+    - ../db/initdb.d:/docker-entrypoint-initdb.d
 
   migration:
     image: kamilsk/form-api:3.x # https://hub.docker.com/r/kamilsk/form-api/

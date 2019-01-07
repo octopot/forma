@@ -165,7 +165,7 @@ func call(cnf config.GRPCConfig, entity interface{}) (interface{}, error) {
 	if err != nil {
 		return nil, errors.Wrapf(err, "trying to connect to the gRPC server %q", cnf.Interface)
 	}
-	defer conn.Close()
+	defer func() { _ = conn.Close() }()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	ctx = metadata.AppendToOutgoingContext(ctx,

@@ -11,12 +11,11 @@ import (
 	"strings"
 	"time"
 
-	repository "github.com/kamilsk/form-api/pkg/storage/types"
-
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/static"
+	repository "github.com/kamilsk/form-api/pkg/storage/types"
 	v1 "github.com/kamilsk/form-api/pkg/transfer/api/v1"
 )
 
@@ -74,7 +73,7 @@ func (service *Forma) HandleInput(ctx context.Context, req v1.PostRequest) (resp
 
 	verified, validateErr := schema.Apply(req.InputData)
 	if validateErr != nil {
-		service.templates.errorTpl.Execute(req.Output, static.ErrorPageContext{
+		_ = service.templates.errorTpl.Execute(req.Output, static.ErrorPageContext{
 			Schema:   schema,
 			Error:    validateErr,
 			Delay:    30 * time.Duration(len(validateErr.InputWithErrors())) * time.Second,

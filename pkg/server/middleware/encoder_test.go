@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/server/middleware"
+	. "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
@@ -21,14 +21,14 @@ func TestEncoder(t *testing.T) {
 			encoder := new(encoding.Encoder)
 			return encoder, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*encoder = req.Context().Value(middleware.EncoderKey{}).(encoding.Encoder)
+				*encoder = req.Context().Value(EncoderKey{}).(encoding.Encoder)
 			})
 		}, http.StatusOK},
 		{"supported", "text/html", func() (*encoding.Encoder, http.HandlerFunc) {
 			encoder := new(encoding.Encoder)
 			return encoder, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*encoder = req.Context().Value(middleware.EncoderKey{}).(encoding.Encoder)
+				*encoder = req.Context().Value(EncoderKey{}).(encoding.Encoder)
 			})
 		}, http.StatusOK},
 		{"not supported", "image/*", func() (*encoding.Encoder, http.HandlerFunc) {
@@ -42,7 +42,7 @@ func TestEncoder(t *testing.T) {
 			encoder := new(encoding.Encoder)
 			return encoder, http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
 				rw.WriteHeader(http.StatusOK)
-				*encoder = req.Context().Value(middleware.EncoderKey{}).(encoding.Encoder)
+				*encoder = req.Context().Value(EncoderKey{}).(encoding.Encoder)
 			})
 		}, http.StatusOK},
 	}
@@ -52,7 +52,7 @@ func TestEncoder(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			rw, req := httptest.NewRecorder(), &http.Request{Header: map[string][]string{"Accept": {tc.accept}}}
 			encoder, next := tc.next()
-			middleware.Encoder(next)(rw, req)
+			Encoder(next)(rw, req)
 
 			assert.Equal(t, tc.code, rw.Code)
 			assert.NotNil(t, encoder)

@@ -1,15 +1,13 @@
 IMAGE_VERSION := 3.x
-PACKAGE       := github.com/kamilsk/form-api
 
 
 .PHONY: docker-build
 docker-build:
-	docker build -f env/Dockerfile \
+	docker build -f env/docker/service/Dockerfile \
 	             -t kamilsk/form-api:$(IMAGE_VERSION) \
 	             -t kamilsk/form-api:latest \
 	             -t quay.io/kamilsk/form-api:$(IMAGE_VERSION) \
 	             -t quay.io/kamilsk/form-api:latest \
-	             --build-arg PACKAGE=$(PACKAGE) \
 	             --force-rm --no-cache --pull --rm \
 	             .
 

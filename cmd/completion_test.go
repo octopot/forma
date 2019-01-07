@@ -24,7 +24,7 @@ func TestCompletion(t *testing.T) {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
 			buf.Reset()
-			cmd.Flag("format").Value.Set(tc.format)
+			assert.NoError(t, cmd.Flag("format").Value.Set(tc.format))
 			assert.NoError(t, cmd.RunE(cmd, nil))
 			assert.Contains(t, buf.String(), tc.expected)
 		})

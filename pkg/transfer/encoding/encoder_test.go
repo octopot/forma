@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/kamilsk/form-api/pkg/transfer/encoding"
+	. "github.com/kamilsk/form-api/pkg/transfer/encoding"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -21,17 +21,17 @@ func TestSupport(t *testing.T) {
 		contentType string
 		expected    bool
 	}{
-		{"supported, HTML", encoding.HTML, true},
-		{"supported, JSON", encoding.JSON, true},
-		{"supported, TEXT", encoding.TEXT, true},
-		{"supported, XML", encoding.XML, true},
+		{"supported, HTML", HTML, true},
+		{"supported, JSON", JSON, true},
+		{"supported, TEXT", TEXT, true},
+		{"supported, XML", XML, true},
 		{"unsupported, TOML", "application/toml", false},
 	}
 
 	for _, test := range tests {
 		tc := test
 		t.Run(test.name, func(t *testing.T) {
-			assert.Equal(t, tc.expected, encoding.IsSupported(tc.contentType))
+			assert.Equal(t, tc.expected, IsSupported(tc.contentType))
 		})
 	}
 }
@@ -43,7 +43,7 @@ func TestEncoder(t *testing.T) {
 		golden      string
 		schema      domain.Schema
 	}{
-		{"email subscription, HTML", encoding.HTML, "./fixtures/email_subscription.html.golden", domain.Schema{
+		{"email subscription, HTML", HTML, "./fixtures/email_subscription.html.golden", domain.Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
@@ -59,7 +59,7 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, JSON", encoding.JSON, "./fixtures/email_subscription.json.golden", domain.Schema{
+		{"email subscription, JSON", JSON, "./fixtures/email_subscription.json.golden", domain.Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
@@ -75,7 +75,7 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, XML", encoding.XML, "./fixtures/email_subscription.xml.golden", domain.Schema{
+		{"email subscription, XML", XML, "./fixtures/email_subscription.xml.golden", domain.Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
@@ -91,7 +91,7 @@ func TestEncoder(t *testing.T) {
 				},
 			},
 		}},
-		{"email subscription, YAML", encoding.TEXT, "./fixtures/email_subscription.yaml.golden", domain.Schema{
+		{"email subscription, YAML", TEXT, "./fixtures/email_subscription.yaml.golden", domain.Schema{
 			Language:     "en",
 			Title:        "Email subscription",
 			Action:       "https://kamil.samigullin.info/",
@@ -115,12 +115,12 @@ func TestEncoder(t *testing.T) {
 			if *update {
 				file := writer(tc.golden)
 				assert.NoError(t, closeAfter(file, func() error {
-					return encoding.NewEncoder(file, tc.contentType).Encode(tc.schema)
+					return NewEncoder(file, tc.contentType).Encode(tc.schema)
 				}))
 			}
 
 			buf := bytes.NewBuffer(nil)
-			enc := encoding.NewEncoder(buf, tc.contentType)
+			enc := NewEncoder(buf, tc.contentType)
 			assert.Equal(t, tc.contentType, enc.ContentType())
 			assert.NoError(t, enc.Encode(tc.schema))
 			expected, err := ioutil.ReadFile(tc.golden)
@@ -130,25 +130,25 @@ func TestEncoder(t *testing.T) {
 	}
 
 	t.Run("unsupported content type", func(t *testing.T) {
-		assert.Panics(t, func() { encoding.NewEncoder(bytes.NewBuffer(nil), "application/toml") })
+		assert.Panics(t, func() { NewEncoder(bytes.NewBuffer(nil), "application/toml") })
 	})
 	t.Run("unsupported value by HTML encoder", func(t *testing.T) {
-		enc := encoding.NewEncoder(bytes.NewBuffer(nil), encoding.HTML)
+		enc := NewEncoder(bytes.NewBuffer(nil), HTML)
 		assert.Error(t, enc.Encode("the value does not have `MarshalHTML` method"))
 	})
 	t.Run("writer fails", func(t *testing.T) {
-		var enc encoding.Generic
-		enc = encoding.NewEncoder(
-			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.HTML)
+		var enc Generic
+		enc = NewEncoder(
+			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), HTML)
 		assert.Error(t, enc.Encode(domain.Schema{}))
-		enc = encoding.NewEncoder(
-			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), encoding.TEXT)
+		enc = NewEncoder(
+			writerFn(func(p []byte) (n int, err error) { return 0, errors.New("problem writerFn") }), TEXT)
 		assert.Error(t, enc.Encode(domain.Schema{}))
 	})
 }
 
 func closeAfter(file *os.File, action func() error) error {
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	if err := action(); err != nil {
 		return err
 	}

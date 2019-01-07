@@ -19,7 +19,7 @@ type server struct{}
 
 // Serve TODO issue#173
 func (*server) Serve(listener net.Listener) error {
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 	mux := &http.ServeMux{}
 	mux.Handle("/metrics", promhttp.Handler())
 	mux.Handle("/vars", expvar.Handler())

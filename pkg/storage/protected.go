@@ -22,7 +22,7 @@ func (storage *Storage) CreateSchema(ctx context.Context, tokenID domain.ID, dat
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -39,7 +39,7 @@ func (storage *Storage) ReadSchema(ctx context.Context, tokenID domain.ID, data 
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -72,7 +72,7 @@ func (storage *Storage) UpdateSchema(ctx context.Context, tokenID domain.ID, dat
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -89,7 +89,7 @@ func (storage *Storage) DeleteSchema(ctx context.Context, tokenID domain.ID, dat
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -112,7 +112,7 @@ func (storage *Storage) CreateTemplate(ctx context.Context, tokenID domain.ID, d
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -129,7 +129,7 @@ func (storage *Storage) ReadTemplate(ctx context.Context, tokenID domain.ID, dat
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -146,7 +146,7 @@ func (storage *Storage) UpdateTemplate(ctx context.Context, tokenID domain.ID, d
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -163,7 +163,7 @@ func (storage *Storage) DeleteTemplate(ctx context.Context, tokenID domain.ID, d
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -186,7 +186,7 @@ func (storage *Storage) ReadInputByID(ctx context.Context, tokenID domain.ID, id
 	if connErr != nil {
 		return entity, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {
@@ -201,7 +201,7 @@ func (storage *Storage) ReadInputByFilter(ctx context.Context, tokenID domain.ID
 	if connErr != nil {
 		return nil, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	token, authErr := storage.exec.UserManager(ctx, conn).Token(tokenID)
 	if authErr != nil {

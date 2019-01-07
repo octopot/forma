@@ -15,7 +15,7 @@ func Pixel(next http.HandlerFunc) http.HandlerFunc {
 		if _, found := query["pixel"]; found {
 			rw.Header().Set("Content-Type", "image/gif")
 			rw.WriteHeader(http.StatusOK)
-			rw.Write(pixel[:])
+			_, _ = rw.Write(pixel[:])
 			return
 		}
 		next.ServeHTTP(rw, req)

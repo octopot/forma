@@ -5,7 +5,6 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/storage/executor"
-
 	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 

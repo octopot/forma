@@ -4,9 +4,8 @@ import (
 	"io/ioutil"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	. "github.com/kamilsk/form-api/pkg/static"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestLoadTemplate(t *testing.T) {

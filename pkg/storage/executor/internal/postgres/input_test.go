@@ -8,11 +8,10 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/kamilsk/form-api/pkg/storage/query"
 	"github.com/stretchr/testify/assert"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
-
-	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestInputReader(t *testing.T) {
@@ -25,7 +24,7 @@ func TestInputReader(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
@@ -50,7 +49,7 @@ func TestInputReader(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
@@ -76,7 +75,7 @@ func TestInputReader(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			now := time.Now()
 
@@ -158,7 +157,7 @@ func TestInputReader(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "input"`).
@@ -189,7 +188,7 @@ func TestInputWriter(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`INSERT INTO "input"`).
@@ -219,7 +218,7 @@ func TestInputWriter(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`INSERT INTO "input"`).

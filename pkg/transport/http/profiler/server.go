@@ -18,7 +18,7 @@ type server struct{}
 
 // Serve TODO issue#173
 func (*server) Serve(listener net.Listener) error {
-	defer listener.Close()
+	defer func() { _ = listener.Close() }()
 	mux := &http.ServeMux{}
 	mux.HandleFunc("/pprof/cmdline", pprof.Cmdline)
 	mux.HandleFunc("/pprof/profile", pprof.Profile)

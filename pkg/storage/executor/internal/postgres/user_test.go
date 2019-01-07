@@ -8,10 +8,9 @@ import (
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/kamilsk/form-api/pkg/storage/executor"
+	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 	"github.com/stretchr/testify/assert"
 	sqlmock "gopkg.in/DATA-DOG/go-sqlmock.v1"
-
-	. "github.com/kamilsk/form-api/pkg/storage/executor/internal/postgres"
 )
 
 func TestUserManager(t *testing.T) {
@@ -24,7 +23,7 @@ func TestUserManager(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "token"`).
@@ -66,7 +65,7 @@ func TestUserManager(t *testing.T) {
 			assert.NoError(t, err)
 			conn, err := db.Conn(ctx)
 			assert.NoError(t, err)
-			defer conn.Close()
+			defer func() { _ = conn.Close() }()
 
 			mock.
 				ExpectQuery(`SELECT "(?:.+)" FROM "token"`).

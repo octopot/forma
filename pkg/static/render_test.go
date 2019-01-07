@@ -11,9 +11,8 @@ import (
 	"time"
 
 	"github.com/kamilsk/form-api/pkg/domain"
-	"github.com/stretchr/testify/assert"
-
 	. "github.com/kamilsk/form-api/pkg/static"
+	"github.com/stretchr/testify/assert"
 )
 
 var (
@@ -87,7 +86,7 @@ func TestErrorTemplate(t *testing.T) {
 }
 
 func closeAfter(file *os.File, action func() error) error {
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	if err := action(); err != nil {
 		return err
 	}

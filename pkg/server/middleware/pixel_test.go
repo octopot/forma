@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/server/middleware"
+	. "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -33,7 +33,7 @@ func TestPixel(t *testing.T) {
 				req, _ := http.NewRequest(http.MethodGet, tc.query, nil)
 				return req
 			}()
-			middleware.Pixel(tc.next)(rw, req)
+			Pixel(tc.next)(rw, req)
 			assert.Equal(t, tc.isPixel, "image/gif" == rw.Header().Get("Content-Type"))
 		})
 	}

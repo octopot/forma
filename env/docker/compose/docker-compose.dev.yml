@@ -10,13 +10,11 @@ services:
 
   migration:
     build:
-      args:       { PACKAGE: "${PACKAGE}" }
       context:    ../../../.
       dockerfile: ./env/docker/service/Dockerfile
 
   service:
     build:
-      args:       { PACKAGE: "${PACKAGE}" }
       context:    ../../../.
       dockerfile: ./env/docker/service/Dockerfile
     ports:

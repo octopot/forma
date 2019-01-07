@@ -8,10 +8,9 @@ import (
 	"os"
 	"testing"
 
+	. "github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
-
-	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 var update = flag.Bool("update", false, "update .golden files")
@@ -95,8 +94,8 @@ func TestJSON(t *testing.T) {
 				if err != nil {
 					panic(err)
 				}
-				if err := json.Unmarshal(data, &schema); err != nil {
-					panic(err)
+				if decodeErr := json.Unmarshal(data, &schema); decodeErr != nil {
+					panic(decodeErr)
 				}
 				return schema
 			}())
@@ -218,8 +217,8 @@ func TestXML(t *testing.T) {
 				if err != nil {
 					panic(err)
 				}
-				if err := xml.Unmarshal(data, &schema); err != nil {
-					panic(err)
+				if decodeErr := xml.Unmarshal(data, &schema); decodeErr != nil {
+					panic(decodeErr)
 				}
 				return schema
 			}())
@@ -355,8 +354,8 @@ func TestYAML(t *testing.T) {
 				if err != nil {
 					panic(err)
 				}
-				if err := yaml.Unmarshal(data, &schema); err != nil {
-					panic(err)
+				if decodeErr := yaml.Unmarshal(data, &schema); decodeErr != nil {
+					panic(decodeErr)
 				}
 				return schema
 			}())
@@ -455,7 +454,7 @@ func TestYAML_Encode(t *testing.T) {
 }
 
 func closeAfter(file *os.File, action func() error) error {
-	defer file.Close()
+	defer func() { _ = file.Close() }()
 	if err := action(); err != nil {
 		return err
 	}

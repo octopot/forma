@@ -16,7 +16,7 @@ func (storage *Storage) Schema(ctx context.Context, id domain.ID) (domain.Schema
 	if connErr != nil {
 		return schema, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	entity, readErr := storage.exec.SchemaReader(ctx, conn).ReadByID(id)
 	if readErr != nil {
@@ -44,7 +44,7 @@ func (storage *Storage) Template(ctx context.Context, id domain.ID) (domain.Temp
 	if connErr != nil {
 		return template, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	entity, readErr := storage.exec.TemplateReader(ctx, conn).ReadByID(id)
 	if readErr != nil {
@@ -59,7 +59,7 @@ func (storage *Storage) StoreInput(ctx context.Context, schemaID domain.ID, veri
 	if connErr != nil {
 		return nil, connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	entity, writeErr := storage.exec.InputWriter(ctx, conn).Write(query.WriteInput{SchemaID: schemaID, VerifiedData: verified})
 	if writeErr != nil {
@@ -74,7 +74,7 @@ func (storage *Storage) LogInput(ctx context.Context, event domain.InputEvent) e
 	if connErr != nil {
 		return connErr
 	}
-	defer closer()
+	defer func() { _ = closer() }()
 
 	// TODO issue#51
 	_, writeErr := storage.exec.LogWriter(ctx, conn).Write(query.WriteLog{InputEvent: event})

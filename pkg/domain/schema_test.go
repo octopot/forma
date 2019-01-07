@@ -3,13 +3,12 @@ package domain_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-
 	. "github.com/kamilsk/form-api/pkg/domain"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSchema_Apply(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name     string
 		schema   Schema
 		values   map[string][]string
@@ -30,8 +29,8 @@ func TestSchema_Apply(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		tc := tc
+	for _, test := range tests {
+		tc := test
 		t.Run(tc.name, func(t *testing.T) {
 			var (
 				obtained map[string][]string
@@ -54,7 +53,7 @@ func TestSchema_Apply(t *testing.T) {
 }
 
 func TestSchema_Filter(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name     string
 		schema   Schema
 		values   map[string][]string
@@ -82,8 +81,8 @@ func TestSchema_Filter(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		tc := tc
+	for _, test := range tests {
+		tc := test
 		t.Run(tc.name, func(t *testing.T) {
 			assert.Equal(t, tc.expected, tc.schema.Filter(tc.values))
 		})
@@ -91,7 +90,7 @@ func TestSchema_Filter(t *testing.T) {
 }
 
 func TestSchema_Normalize(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name     string
 		schema   Schema
 		values   map[string][]string
@@ -103,8 +102,8 @@ func TestSchema_Normalize(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		tc := tc
+	for _, test := range tests {
+		tc := test
 		t.Run(tc.name, func(t *testing.T) {
 			assert.Equal(t, tc.expected, tc.schema.Normalize(tc.values))
 		})
@@ -112,7 +111,7 @@ func TestSchema_Normalize(t *testing.T) {
 }
 
 func TestSchema_Validate(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name     string
 		schema   Schema
 		values   map[string][]string
@@ -212,8 +211,8 @@ func TestSchema_Validate(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
-		tc := tc
+	for _, test := range tests {
+		tc := test
 		t.Run(tc.name, func(t *testing.T) {
 			var err ValidationError
 			action := func() { _, err = tc.schema.Validate(tc.values) }
@@ -230,8 +229,8 @@ func TestSchema_Validate(t *testing.T) {
 					assert.True(t, err.HasError(input))
 					assert.Equal(t, expected, func() []string {
 						converted := make([]string, 0, len(errors))
-						for _, err := range errors {
-							converted = append(converted, err.Error())
+						for _, e := range errors {
+							converted = append(converted, e.Error())
 						}
 						return converted
 					}())
@@ -245,7 +244,7 @@ func TestSchema_Validate(t *testing.T) {
 }
 
 func TestSchema_Input(t *testing.T) {
-	testCases := []struct {
+	tests := []struct {
 		name     string
 		schema   Schema
 		what     string
@@ -265,7 +264,7 @@ func TestSchema_Input(t *testing.T) {
 		},
 	}
 
-	for _, tc := range testCases {
+	for _, tc := range tests {
 		test := tc
 		t.Run(test.name, func(t *testing.T) {
 			input := test.schema.Input(test.what)

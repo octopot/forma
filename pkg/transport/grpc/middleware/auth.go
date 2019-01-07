@@ -3,9 +3,8 @@ package middleware
 import (
 	"context"
 
-	domain "github.com/kamilsk/form-api/pkg/service/types"
-
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	domain "github.com/kamilsk/form-api/pkg/service/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

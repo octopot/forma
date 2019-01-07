@@ -7,7 +7,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi"
-	"github.com/kamilsk/form-api/pkg/server/router/chi/middleware"
+	. "github.com/kamilsk/form-api/pkg/server/router/chi/middleware"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,7 +32,7 @@ func TestPack(t *testing.T) {
 		tc := test
 		t.Run("usual: "+test.name, func(t *testing.T) {
 			ctx := context.WithValue(context.TODO(), chi.RouteCtxKey, tc.ctx())
-			handler := middleware.Pack(tc.from, tc.to)(
+			handler := Pack(tc.from, tc.to)(
 				http.HandlerFunc(func(_ http.ResponseWriter, req *http.Request) {
 					assert.Equal(t, tc.expected, req.Form.Get(tc.to))
 				}),
@@ -54,7 +54,7 @@ func TestPack(t *testing.T) {
 	for _, test := range panics {
 		tc := test
 		t.Run("panic: "+test.name, func(t *testing.T) {
-			assert.Panics(t, func() { middleware.Pack(tc.args...) })
+			assert.Panics(t, func() { Pack(tc.args...) })
 		})
 	}
 }

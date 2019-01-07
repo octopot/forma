@@ -1,0 +1,150 @@
+# github.com/beorn7/perks v0.0.0-20180321164747-3a771d992973
+github.com/beorn7/perks/quantile
+# github.com/davecgh/go-spew v1.1.1
+github.com/davecgh/go-spew/spew
+# github.com/fsnotify/fsnotify v1.4.7
+github.com/fsnotify/fsnotify
+# github.com/go-chi/chi v3.3.3+incompatible
+github.com/go-chi/chi
+github.com/go-chi/chi/middleware
+# github.com/golang/gddo v0.0.0-20181009135830-6c035858b4d7
+github.com/golang/gddo/httputil
+github.com/golang/gddo/httputil/header
+# github.com/golang/mock v1.1.1
+github.com/golang/mock/gomock
+# github.com/golang/protobuf v1.2.0
+github.com/golang/protobuf/proto
+github.com/golang/protobuf/ptypes
+github.com/golang/protobuf/ptypes/timestamp
+github.com/golang/protobuf/ptypes/any
+github.com/golang/protobuf/ptypes/duration
+github.com/golang/protobuf/protoc-gen-go/descriptor
+# github.com/grpc-ecosystem/go-grpc-middleware v1.0.0
+github.com/grpc-ecosystem/go-grpc-middleware/auth
+github.com/grpc-ecosystem/go-grpc-middleware
+github.com/grpc-ecosystem/go-grpc-middleware/util/metautils
+# github.com/grpc-ecosystem/grpc-gateway v1.5.1
+github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options
+# github.com/hashicorp/hcl v1.0.0
+github.com/hashicorp/hcl
+github.com/hashicorp/hcl/hcl/printer
+github.com/hashicorp/hcl/hcl/ast
+github.com/hashicorp/hcl/hcl/parser
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
+github.com/hashicorp/hcl/hcl/scanner
+github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/json/scanner
+github.com/hashicorp/hcl/json/token
+# github.com/inconshreveable/mousetrap v1.0.0
+github.com/inconshreveable/mousetrap
+# github.com/kamilsk/go-kit v0.0.0-20180924085458-bcfc2c1707de
+github.com/kamilsk/go-kit/pkg/fn
+github.com/kamilsk/go-kit/pkg/strings
+github.com/kamilsk/go-kit/pkg/config
+# github.com/lib/pq v1.0.0
+github.com/lib/pq
+github.com/lib/pq/oid
+# github.com/magiconair/properties v1.8.0
+github.com/magiconair/properties
+# github.com/mailru/easyjson v0.0.0-20180823135443-60711f1a8329
+github.com/mailru/easyjson
+github.com/mailru/easyjson/jlexer
+github.com/mailru/easyjson/jwriter
+github.com/mailru/easyjson/buffer
+# github.com/matttproud/golang_protobuf_extensions v1.0.1
+github.com/matttproud/golang_protobuf_extensions/pbutil
+# github.com/mitchellh/mapstructure v1.1.2
+github.com/mitchellh/mapstructure
+# github.com/pelletier/go-toml v1.2.0
+github.com/pelletier/go-toml
+# github.com/pkg/errors v0.8.0
+github.com/pkg/errors
+# github.com/pmezard/go-difflib v1.0.0
+github.com/pmezard/go-difflib/difflib
+# github.com/prometheus/client_golang v0.9.1
+github.com/prometheus/client_golang/prometheus/promhttp
+github.com/prometheus/client_golang/prometheus
+github.com/prometheus/client_golang/prometheus/internal
+# github.com/prometheus/client_model v0.0.0-20180712105110-5c3871d89910
+github.com/prometheus/client_model/go
+# github.com/prometheus/common v0.0.0-20181020173914-7e9e6cabbd39
+github.com/prometheus/common/expfmt
+github.com/prometheus/common/model
+github.com/prometheus/common/internal/bitbucket.org/ww/goautoneg
+# github.com/prometheus/procfs v0.0.0-20181005140218-185b4288413d
+github.com/prometheus/procfs
+github.com/prometheus/procfs/nfs
+github.com/prometheus/procfs/xfs
+github.com/prometheus/procfs/internal/util
+# github.com/rubenv/sql-migrate v0.0.0-20181106121204-ba2c6a7295c5
+github.com/rubenv/sql-migrate
+github.com/rubenv/sql-migrate/sqlparse
+# github.com/spf13/afero v1.1.2
+github.com/spf13/afero
+github.com/spf13/afero/mem
+# github.com/spf13/cast v1.3.0
+github.com/spf13/cast
+# github.com/spf13/cobra v0.0.3
+github.com/spf13/cobra
+# github.com/spf13/jwalterweatherman v1.0.0
+github.com/spf13/jwalterweatherman
+# github.com/spf13/pflag v1.0.3
+github.com/spf13/pflag
+# github.com/spf13/viper v1.3.1
+github.com/spf13/viper
+# github.com/stretchr/objx v0.1.1
+github.com/stretchr/objx
+# github.com/stretchr/testify v1.2.2
+github.com/stretchr/testify/assert
+github.com/stretchr/testify/mock
+# golang.org/x/net v0.0.0-20181207154023-610586996380
+golang.org/x/net/context
+golang.org/x/net/trace
+golang.org/x/net/internal/timeseries
+golang.org/x/net/http2
+golang.org/x/net/http2/hpack
+golang.org/x/net/http/httpguts
+golang.org/x/net/idna
+# golang.org/x/sys v0.0.0-20181206074257-70b957f3b65e
+golang.org/x/sys/unix
+# golang.org/x/text v0.3.0
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm
+golang.org/x/text/secure/bidirule
+golang.org/x/text/unicode/bidi
+# google.golang.org/genproto v0.0.0-20181101192439-c830210a61df
+google.golang.org/genproto/googleapis/rpc/status
+# google.golang.org/grpc v1.16.0
+google.golang.org/grpc
+google.golang.org/grpc/metadata
+google.golang.org/grpc/codes
+google.golang.org/grpc/status
+google.golang.org/grpc/balancer
+google.golang.org/grpc/balancer/roundrobin
+google.golang.org/grpc/connectivity
+google.golang.org/grpc/credentials
+google.golang.org/grpc/encoding
+google.golang.org/grpc/encoding/proto
+google.golang.org/grpc/grpclog
+google.golang.org/grpc/internal
+google.golang.org/grpc/internal/backoff
+google.golang.org/grpc/internal/channelz
+google.golang.org/grpc/internal/envconfig
+google.golang.org/grpc/internal/grpcrand
+google.golang.org/grpc/internal/transport
+google.golang.org/grpc/keepalive
+google.golang.org/grpc/naming
+google.golang.org/grpc/peer
+google.golang.org/grpc/resolver
+google.golang.org/grpc/resolver/dns
+google.golang.org/grpc/resolver/passthrough
+google.golang.org/grpc/stats
+google.golang.org/grpc/tap
+google.golang.org/grpc/balancer/base
+# gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
+gopkg.in/DATA-DOG/go-sqlmock.v1
+# gopkg.in/gorp.v1 v1.7.1
+gopkg.in/gorp.v1
+# gopkg.in/yaml.v2 v2.2.2
+gopkg.in/yaml.v2

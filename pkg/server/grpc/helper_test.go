@@ -6,9 +6,8 @@ import (
 	"time"
 
 	"github.com/golang/protobuf/ptypes/timestamp"
-	"github.com/stretchr/testify/assert"
-
 	. "github.com/kamilsk/form-api/pkg/server/grpc"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestTime(t *testing.T) {

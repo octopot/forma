@@ -4,9 +4,8 @@ import (
 	"testing"
 
 	"github.com/kamilsk/form-api/pkg/errors"
-	"github.com/stretchr/testify/assert"
-
 	. "github.com/kamilsk/form-api/pkg/storage"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestMust(t *testing.T) {

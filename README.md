@@ -22,15 +22,11 @@
   - Template system and Edge Side Includes/Server Side Includes support.
   - Integrate gRPC gateway.
   - Improve gRPC layer.
-- [ ] v4: [DSL for validation, CSI, and GUI][project_v4]
+- [ ] v4: [DSL for validation and CSI][project_v4]
   - [**Sometime, 20xx**][project_v4_dl]
   - Domain-specific language to define validation rules.
   - Client-side integration.
   - Graphical user interface and admin panel to perform create, read, update and delete operations.
-- [ ] Forma, SaaS
-  - **Somehow, 20xx**
-  - Ready to apply on Cloud.
-  - Move to [OctoLab](https://github.com/octolab/) organization and rename project to `forma`.
 
 ## Motivation
 

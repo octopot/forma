@@ -80,6 +80,6 @@ type ServerConfig struct {
 
 // ServiceConfig contains configuration related to the service.
 type ServiceConfig struct {
-	BaseURL     string `json:"base-url"            xml:"base-url"            yaml:"base-url"`
-	TemplateDir string `json:"tpl-dir"             xml:"tpl-dir"             yaml:"tpl-dir"`
+	BaseURL     string `json:"base-url" xml:"base-url" yaml:"base-url"` // TODO move to ServerConfig
+	TemplateDir string `json:"tpl-dir"  xml:"tpl-dir"  yaml:"tpl-dir"`
 }

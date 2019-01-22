@@ -1,5 +1,5 @@
 > # 🗃 Forma [![Tweet][icon_twitter]][twitter_publish] <img align="right" width="126" src=".github/character.png">
-> [![Analytics][analytics_pixel]][page_promo]
+>
 > Data Collector as a Service &mdash; your personal server for HTML forms.
 
 [![Patreon][icon_patreon]](https://www.patreon.com/octolab)

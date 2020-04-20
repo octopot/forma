@@ -247,10 +247,10 @@ func AssetNames() []string {
 var _bindata = map[string]func() (*asset, error){
 	"static/migrations/1_prepare.sql": staticMigrations1_prepareSql,
 	"static/migrations/2_account.sql": staticMigrations2_accountSql,
-	"static/migrations/3_domain.sql": staticMigrations3_domainSql,
-	"static/migrations/4_audit.sql": staticMigrations4_auditSql,
-	"static/templates/error.html": staticTemplatesErrorHtml,
-	"static/templates/redirect.html": staticTemplatesRedirectHtml,
+	"static/migrations/3_domain.sql":  staticMigrations3_domainSql,
+	"static/migrations/4_audit.sql":   staticMigrations4_auditSql,
+	"static/templates/error.html":     staticTemplatesErrorHtml,
+	"static/templates/redirect.html":  staticTemplatesRedirectHtml,
 }
 
 // AssetDir returns the file names below a certain
@@ -292,16 +292,17 @@ type bintree struct {
 	Func     func() (*asset, error)
 	Children map[string]*bintree
 }
+
 var _bintree = &bintree{nil, map[string]*bintree{
 	"static": &bintree{nil, map[string]*bintree{
 		"migrations": &bintree{nil, map[string]*bintree{
 			"1_prepare.sql": &bintree{staticMigrations1_prepareSql, map[string]*bintree{}},
 			"2_account.sql": &bintree{staticMigrations2_accountSql, map[string]*bintree{}},
-			"3_domain.sql": &bintree{staticMigrations3_domainSql, map[string]*bintree{}},
-			"4_audit.sql": &bintree{staticMigrations4_auditSql, map[string]*bintree{}},
+			"3_domain.sql":  &bintree{staticMigrations3_domainSql, map[string]*bintree{}},
+			"4_audit.sql":   &bintree{staticMigrations4_auditSql, map[string]*bintree{}},
 		}},
 		"templates": &bintree{nil, map[string]*bintree{
-			"error.html": &bintree{staticTemplatesErrorHtml, map[string]*bintree{}},
+			"error.html":    &bintree{staticTemplatesErrorHtml, map[string]*bintree{}},
 			"redirect.html": &bintree{staticTemplatesRedirectHtml, map[string]*bintree{}},
 		}},
 	}},
@@ -353,4 +354,3 @@ func _filePath(dir, name string) string {
 	cannonicalName := strings.Replace(name, "\\", "/", -1)
 	return filepath.Join(append([]string{dir}, strings.Split(cannonicalName, "/")...)...)
 }
-

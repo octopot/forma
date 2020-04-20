@@ -4,6 +4,7 @@ package domain
 
 import (
 	json "encoding/json"
+
 	easyjson "github.com/mailru/easyjson"
 	jlexer "github.com/mailru/easyjson/jlexer"
 	jwriter "github.com/mailru/easyjson/jwriter"
@@ -87,12 +88,8 @@ func easyjsonCef4e921EncodeGithubComKamilskFormApiPkgDomain(out *jwriter.Writer,
 	_ = first
 	if in.ID != "" {
 		const prefix string = ",\"id\":"
-		if first {
-			first = false
-			out.RawString(prefix[1:])
-		} else {
-			out.RawString(prefix)
-		}
+		first = false
+		out.RawString(prefix[1:])
 		out.String(string(in.ID))
 	}
 	if in.Language != "" {

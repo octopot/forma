@@ -7,8 +7,9 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi"
-	. "github.com/kamilsk/form-api/pkg/server/router/chi/middleware"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/server/router/chi/middleware"
 )
 
 const uuid = "10000000-2000-4000-8000-160000000004"

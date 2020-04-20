@@ -5,9 +5,10 @@ import (
 	"net"
 	"net/http"
 
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/transport"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 // New TODO issue#173

@@ -6,8 +6,9 @@ import (
 	"sort"
 	"testing"
 
-	. "github.com/kamilsk/form-api/pkg/static"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/static"
 )
 
 func TestAsset(t *testing.T) {

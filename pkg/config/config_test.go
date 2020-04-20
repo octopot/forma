@@ -7,9 +7,10 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/kamilsk/form-api/pkg/config"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
+
+	. "github.com/kamilsk/form-api/pkg/config"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

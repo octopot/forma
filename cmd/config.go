@@ -3,10 +3,11 @@ package cmd
 import (
 	"time"
 
-	"github.com/kamilsk/form-api/pkg/config"
-	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.octolab.org/fn"
+
+	"github.com/kamilsk/form-api/pkg/config"
 )
 
 var (

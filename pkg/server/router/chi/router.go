@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
+
 	common "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/kamilsk/form-api/pkg/server/router"
 	internal "github.com/kamilsk/form-api/pkg/server/router/chi/middleware"

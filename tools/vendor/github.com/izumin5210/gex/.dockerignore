@@ -1,7 +1,0 @@
-.travis.yml
-.reviewdog.yml
-tests
-!tests/e2e/testdata
-bin
-README.md
-LICENSE

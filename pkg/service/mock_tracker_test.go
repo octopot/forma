@@ -6,9 +6,11 @@ package service_test
 
 import (
 	context "context"
-	gomock "github.com/golang/mock/gomock"
-	domain "github.com/kamilsk/form-api/pkg/domain"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
+
+	domain "github.com/kamilsk/form-api/pkg/domain"
 )
 
 // MockTracker is a mock of Tracker interface
@@ -36,6 +38,7 @@ func (m *MockTracker) EXPECT() *MockTrackerMockRecorder {
 
 // LogInput mocks base method
 func (m *MockTracker) LogInput(arg0 context.Context, arg1 domain.InputEvent) error {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LogInput", arg0, arg1)
 	ret0, _ := ret[0].(error)
 	return ret0
@@ -43,5 +46,6 @@ func (m *MockTracker) LogInput(arg0 context.Context, arg1 domain.InputEvent) err
 
 // LogInput indicates an expected call of LogInput
 func (mr *MockTrackerMockRecorder) LogInput(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LogInput", reflect.TypeOf((*MockTracker)(nil).LogInput), arg0, arg1)
 }

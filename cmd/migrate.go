@@ -8,12 +8,13 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/kamilsk/form-api/pkg/static"
-	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/go-kit/pkg/fn"
 	migrate "github.com/rubenv/sql-migrate"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.octolab.org/fn"
+
+	"github.com/kamilsk/form-api/pkg/static"
+	"github.com/kamilsk/form-api/pkg/storage"
 )
 
 var migrateCmd = &cobra.Command{

@@ -5,8 +5,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	. "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/server/middleware"
 )
 
 func TestPixel(t *testing.T) {

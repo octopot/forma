@@ -3,8 +3,9 @@ package domain_test
 import (
 	"testing"
 
-	. "github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
+
+	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 func TestSchema_Apply(t *testing.T) {

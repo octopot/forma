@@ -3,11 +3,14 @@
 
 package protobuf
 
-import proto "github.com/golang/protobuf/proto"
-import fmt "fmt"
-import math "math"
-import timestamp "github.com/golang/protobuf/ptypes/timestamp"
-import _ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
+import (
+	fmt "fmt"
+	math "math"
+
+	proto "github.com/golang/protobuf/proto"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger/options"
+)
 
 // Reference imports to suppress errors if they are not otherwise used.
 var _ = proto.Marshal

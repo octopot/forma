@@ -6,11 +6,12 @@ import (
 	"encoding/xml"
 	"strings"
 
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+
 	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/kamilsk/form-api/pkg/server/grpc/middleware"
 	"github.com/kamilsk/form-api/pkg/storage/query"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 // NewSchemaServer returns new instance of server API for Schema service.

@@ -3,9 +3,10 @@ package chi_test
 import (
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	. "github.com/kamilsk/form-api/pkg/server/router"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestNewRouter(t *testing.T) {

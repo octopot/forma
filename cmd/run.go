@@ -10,6 +10,13 @@ import (
 	"strconv"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"go.octolab.org/fn"
+	"go.octolab.org/strings"
+	"google.golang.org/grpc"
+
 	"github.com/kamilsk/form-api/pkg/config"
 	"github.com/kamilsk/form-api/pkg/server"
 	pb "github.com/kamilsk/form-api/pkg/server/grpc"
@@ -17,12 +24,6 @@ import (
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
 	"github.com/kamilsk/form-api/pkg/service"
 	"github.com/kamilsk/form-api/pkg/storage"
-	"github.com/kamilsk/go-kit/pkg/fn"
-	"github.com/kamilsk/go-kit/pkg/strings"
-	"github.com/prometheus/client_golang/prometheus/promhttp"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"google.golang.org/grpc"
 )
 
 var runCmd = &cobra.Command{

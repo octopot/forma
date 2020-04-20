@@ -11,9 +11,10 @@ import (
 
 	"github.com/go-chi/chi/middleware"
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/assert"
+
 	"github.com/kamilsk/form-api/pkg/server/router"
 	"github.com/kamilsk/form-api/pkg/server/router/chi"
-	"github.com/stretchr/testify/assert"
 )
 
 const uuid = "10000000-2000-4000-8000-160000000004"

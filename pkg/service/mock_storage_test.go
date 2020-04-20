@@ -6,10 +6,12 @@ package service_test
 
 import (
 	context "context"
+	reflect "reflect"
+
 	gomock "github.com/golang/mock/gomock"
+
 	domain "github.com/kamilsk/form-api/pkg/domain"
 	types "github.com/kamilsk/form-api/pkg/storage/types"
-	reflect "reflect"
 )
 
 // MockStorage is a mock of Storage interface
@@ -37,6 +39,7 @@ func (m *MockStorage) EXPECT() *MockStorageMockRecorder {
 
 // Schema mocks base method
 func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.ID) (domain.Schema, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Schema", arg0, arg1)
 	ret0, _ := ret[0].(domain.Schema)
 	ret1, _ := ret[1].(error)
@@ -45,11 +48,13 @@ func (m *MockStorage) Schema(arg0 context.Context, arg1 domain.ID) (domain.Schem
 
 // Schema indicates an expected call of Schema
 func (mr *MockStorageMockRecorder) Schema(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Schema", reflect.TypeOf((*MockStorage)(nil).Schema), arg0, arg1)
 }
 
 // StoreInput mocks base method
 func (m *MockStorage) StoreInput(arg0 context.Context, arg1 domain.ID, arg2 domain.InputData) (*types.Input, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "StoreInput", arg0, arg1, arg2)
 	ret0, _ := ret[0].(*types.Input)
 	ret1, _ := ret[1].(error)
@@ -58,11 +63,13 @@ func (m *MockStorage) StoreInput(arg0 context.Context, arg1 domain.ID, arg2 doma
 
 // StoreInput indicates an expected call of StoreInput
 func (mr *MockStorageMockRecorder) StoreInput(arg0, arg1, arg2 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "StoreInput", reflect.TypeOf((*MockStorage)(nil).StoreInput), arg0, arg1, arg2)
 }
 
 // Template mocks base method
 func (m *MockStorage) Template(arg0 context.Context, arg1 domain.ID) (domain.Template, error) {
+	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Template", arg0, arg1)
 	ret0, _ := ret[0].(domain.Template)
 	ret1, _ := ret[1].(error)
@@ -71,5 +78,6 @@ func (m *MockStorage) Template(arg0 context.Context, arg1 domain.ID) (domain.Tem
 
 // Template indicates an expected call of Template
 func (mr *MockStorageMockRecorder) Template(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Template", reflect.TypeOf((*MockStorage)(nil).Template), arg0, arg1)
 }

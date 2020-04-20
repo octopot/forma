@@ -1,2 +1,5 @@
 # binaries
 /bin/
+
+# dependencies
+/vendor/

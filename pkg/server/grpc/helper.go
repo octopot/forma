@@ -5,8 +5,9 @@ import (
 
 	"github.com/golang/protobuf/ptypes"
 	"github.com/golang/protobuf/ptypes/timestamp"
-	"github.com/kamilsk/form-api/pkg/domain"
 	"github.com/pkg/errors"
+
+	"github.com/kamilsk/form-api/pkg/domain"
 )
 
 // Time converts a google.protobuf.Timestamp proto to a time.Time.

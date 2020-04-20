@@ -4,9 +4,10 @@ import (
 	"context"
 
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
-	"github.com/kamilsk/form-api/pkg/domain"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+
+	"github.com/kamilsk/form-api/pkg/domain"
 )
 
 const (

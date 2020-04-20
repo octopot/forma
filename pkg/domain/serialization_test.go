@@ -8,9 +8,10 @@ import (
 	"os"
 	"testing"
 
-	. "github.com/kamilsk/form-api/pkg/domain"
 	"github.com/stretchr/testify/assert"
 	yaml "gopkg.in/yaml.v2"
+
+	. "github.com/kamilsk/form-api/pkg/domain"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

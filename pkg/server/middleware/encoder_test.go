@@ -5,9 +5,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	. "github.com/kamilsk/form-api/pkg/server/middleware"
 	"github.com/kamilsk/form-api/pkg/transfer/encoding"
-	"github.com/stretchr/testify/assert"
 )
 
 func TestEncoder(t *testing.T) {

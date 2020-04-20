@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/kamilsk/go-kit/pkg/fn"
 	"github.com/spf13/cobra"
+	"go.octolab.org/fn"
 )
 
 const (

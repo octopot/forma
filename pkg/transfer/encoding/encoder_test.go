@@ -8,9 +8,10 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/kamilsk/form-api/pkg/domain"
 	. "github.com/kamilsk/form-api/pkg/transfer/encoding"
-	"github.com/stretchr/testify/assert"
 )
 
 var update = flag.Bool("update", false, "update .golden files")

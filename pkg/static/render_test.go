@@ -10,9 +10,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/stretchr/testify/assert"
+
 	"github.com/kamilsk/form-api/pkg/domain"
 	. "github.com/kamilsk/form-api/pkg/static"
-	"github.com/stretchr/testify/assert"
 )
 
 var (

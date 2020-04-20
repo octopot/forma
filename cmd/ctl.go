@@ -5,10 +5,10 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/kamilsk/go-kit/pkg/fn"
-	"github.com/kamilsk/go-kit/pkg/strings"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"go.octolab.org/fn"
+	"go.octolab.org/strings"
 )
 
 const (

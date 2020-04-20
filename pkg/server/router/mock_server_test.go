@@ -5,9 +5,10 @@
 package router_test
 
 import (
-	gomock "github.com/golang/mock/gomock"
 	http "net/http"
 	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
 )
 
 // MockServer is a mock of Server interface
@@ -35,20 +36,24 @@ func (m *MockServer) EXPECT() *MockServerMockRecorder {
 
 // GetV1 mocks base method
 func (m *MockServer) GetV1(arg0 http.ResponseWriter, arg1 *http.Request) {
+	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "GetV1", arg0, arg1)
 }
 
 // GetV1 indicates an expected call of GetV1
 func (mr *MockServerMockRecorder) GetV1(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetV1", reflect.TypeOf((*MockServer)(nil).GetV1), arg0, arg1)
 }
 
 // Input mocks base method
 func (m *MockServer) Input(arg0 http.ResponseWriter, arg1 *http.Request) {
+	m.ctrl.T.Helper()
 	m.ctrl.Call(m, "Input", arg0, arg1)
 }
 
 // Input indicates an expected call of Input
 func (mr *MockServerMockRecorder) Input(arg0, arg1 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Input", reflect.TypeOf((*MockServer)(nil).Input), arg0, arg1)
 }

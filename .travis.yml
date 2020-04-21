@@ -1,32 +1,53 @@
 language: go
+os: linux
 
-go:
-- master
-- 1.x
-- 1.9.x
-- 1.10.x
-- 1.11.x
-
-matrix:
-  fast_finish: true
-
-sudo: false
-
-script:
-- make test ARGS='-timeout=1s'
+cache:
+  directories:
+    - "$HOME/.cache/go-build"
+    - "$HOME/gopath/pkg/mod"
 
 env:
-- META=github.com/kamilsk/form-api/pkg/cmd
+  global:
+    - CODECLIMATE=https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
 
-after_success:
-- echo $TRAVIS_GO_VERSION ":" $TRAVIS_TAG
-- if [[ $TRAVIS_GO_VERSION == 1.10* ]] && [ -n "$TRAVIS_TAG" ]; then curl -sL https://git.io/goreleaser | bash; fi
+go:
+  - master
+  - 1.x
+  - 1.12.x
+  - 1.13.x
+  - 1.14.x
+
+go_import_path: go.octolab.org/ecosystem/forma
+
+jobs:
+  allow_failures:
+    - go: master
+
+before_script:
+  - |
+    if [[ $TRAVIS_GO_VERSION == 1.14* ]]; then
+      curl -L $CODECLIMATE > /home/travis/gopath/bin/cc-test-reporter
+      chmod +x /home/travis/gopath/bin/cc-test-reporter
+      cc-test-reporter before-build
+    fi
+
+script:
+  - |
+    if [[ $TRAVIS_GO_VERSION == 1.14* ]]; then
+      make test-with-coverage-profile
+    else
+      make test
+    fi
+
+after_script:
+  - |
+    if [[ $TRAVIS_GO_VERSION == 1.14* ]]; then
+      cc-test-reporter after-build -t gocov -p $(basename $(go list -m)) --exit-code $TRAVIS_TEST_RESULT
+      if [[ $TRAVIS_TAG ]]; then
+        curl -sL https://git.io/goreleaser | bash
+      fi
+    fi
 
 notifications:
-  slack: octolab:1eMS7IqOArBipiu31jYVd0cN
-  webhooks:
-    urls:
-    - https://webhooks.gitter.im/e/3f7a9d417a5fc07428ef
-    on_success: change
-    on_failure: always
-    on_start:   never
+  slack:
+    secure: VHWCBgcxc9BejOM9pSTqAyXzZN6DEW/UzJKGkNX+lWL1wREIDmJ7iFKM1ZUfTwU6j5WtOE4ruJlfpUlmmlzicqTZUBIkGCJH6LoX9kwP+6IKBD/aCFuGwRuptKKU0I8pLV6Jvs2m2WQBlKQrfSX9IIM4zqb0M+ST067huwRscJP/4bJJ2aPg+dQiGeR3VHLit/izMRzk/IjnT093i3qGlXDhdRZrxnlqd5flmSlnU5sBTfRr9wHcMdrxIXK3smhay/w8M7XeuIgpv9mUjizmg5e+bQkm4e8AZZxYasvUQAdLWWylcwMk9xPHYy9QGKRFTSl1weon6rRrXWVXP1b9PpR8PYeg1qPvV0k+QNKokDdveqzd2N6ZAilRqAMNVYYYnI1fgLTySfBdIXKMwZAM8OnQk0BBBfyPp+FkoB/zewC6pFy54w7gM2pjefdV3RWjOsc6ux/W6Ro2msZufDW1OzJU4Yj4uzWCtZdsjjkGcA2fB9cDQWlhhmkYVpc7tDfhQ2GFgRmTvuvCvZP2jfUbHcMTgK1CW0+zbX5gsGorWCrMvHL6boV3iRydndOvCFKBUFdDDPvKBjbRIJRuoNprpSmhjWwRYZdUUD+HU/S64vm4mKiWoLhP3hUeDHKSg26F7GomvEGoVz2MCkaqXteRUi9tAhNJIjy88a/l354IMWg=

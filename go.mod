@@ -1,4 +1,4 @@
-module github.com/kamilsk/form-api
+module go.octolab.org/ecosystem/forma
 
 go 1.12
 

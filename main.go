@@ -6,9 +6,10 @@ import (
 	"os"
 	"runtime"
 
-	"github.com/kamilsk/form-api/cmd"
-	"github.com/kamilsk/form-api/pkg/errors"
 	"github.com/spf13/cobra"
+
+	cmd "go.octolab.org/ecosystem/forma/internal/cmd/legacy"
+	"go.octolab.org/ecosystem/forma/internal/errors"
 )
 
 const (

@@ -5,15 +5,16 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/kamilsk/form-api/pkg/config"
-	"github.com/kamilsk/form-api/pkg/server"
-	"github.com/kamilsk/form-api/pkg/server/grpc"
-	"github.com/kamilsk/form-api/pkg/server/router"
-	"github.com/kamilsk/form-api/pkg/service"
-	"github.com/kamilsk/form-api/pkg/storage"
 	"github.com/spf13/cobra"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+
+	"go.octolab.org/ecosystem/forma/internal/config"
+	"go.octolab.org/ecosystem/forma/internal/server"
+	"go.octolab.org/ecosystem/forma/internal/server/grpc"
+	"go.octolab.org/ecosystem/forma/internal/server/router"
+	"go.octolab.org/ecosystem/forma/internal/service"
+	"go.octolab.org/ecosystem/forma/internal/storage"
 )
 
 // invariant

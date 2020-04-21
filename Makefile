@@ -11,7 +11,7 @@ GOPROXY     = direct
 LOCAL       = $(MODULE)
 MODULE      = `go list -m`
 PACKAGES    = `go list ./... 2> /dev/null`
-PATHS       = $(shell echo $(PACKAGES) | sed -e "s|$(MODULE)/\{0,1\}||g")
+PATHS       = $(shell echo $(PACKAGES) | sed -e "s|$(MODULE)/||g" | sed -e "s|$(MODULE)|$(PWD)/*.go|g")
 TIMEOUT     = 1s
 
 ifeq (, $(PACKAGES))

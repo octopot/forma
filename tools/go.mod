@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/golang/mock v1.4.3
-	github.com/golangci/golangci-lint v1.24.0
+	github.com/golangci/golangci-lint v1.25.0
 	github.com/kamilsk/egg v0.0.14
 	github.com/mailru/easyjson v0.7.1
 	golang.org/x/tools v0.3.3

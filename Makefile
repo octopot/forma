@@ -9,8 +9,8 @@ GOFLAGS     = -mod=vendor
 GOPRIVATE   = go.octolab.net
 GOPROXY     = direct
 LOCAL       = $(MODULE)
-MODULE      = `go list -m`
-PACKAGES    = `go list ./... 2> /dev/null`
+MODULE      = `GO111MODULE=on go list -m $(GOFLAGS)`
+PACKAGES    = `GO111MODULE=on go list $(GOFLAGS) ./...`
 PATHS       = $(shell echo $(PACKAGES) | sed -e "s|$(MODULE)/||g" | sed -e "s|$(MODULE)|$(PWD)/*.go|g")
 TIMEOUT     = 1s
 
@@ -194,7 +194,7 @@ go$(1):
 endef
 
 render_go_tpl = $(eval $(call go_tpl,$(version)))
-$(foreach version,1.11 1.12 1.13 1.14,$(render_go_tpl))
+$(foreach version,1.12 1.13 1.14,$(render_go_tpl))
 
 
 .PHONY: clean

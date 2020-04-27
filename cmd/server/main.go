@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"runtime"
+	"runtime/debug"
 
 	"github.com/spf13/cobra"
 
@@ -12,15 +13,25 @@ import (
 	"go.octolab.org/ecosystem/forma/internal/errors"
 )
 
+const unknown = "unknown"
+
+var (
+	commit  = unknown
+	date    = unknown
+	version = "dev"
+)
+
+//nolint:gochecknoinits
+func init() {
+	if info, available := debug.ReadBuildInfo(); available && commit == unknown {
+		version = info.Main.Version
+		commit = fmt.Sprintf("%s, mod sum: %s", commit, info.Main.Sum)
+	}
+}
+
 const (
 	success = 0
 	failed  = 1
-)
-
-var (
-	commit  = "none"
-	date    = "unknown"
-	version = "dev"
 )
 
 func main() { application{Commander: cmd.RootCmd, Output: os.Stderr, Shutdown: os.Exit}.run() }

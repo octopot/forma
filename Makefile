@@ -1,8 +1,12 @@
 # sourced by https://github.com/octomation/makefiles
 
 .DEFAULT_GOAL = test-with-coverage
+GO_VERSIONS   = 1.12 1.13 1.14
 
-SHELL = /bin/bash -euo pipefail
+SHELL := /bin/bash -euo pipefail # `explain set -euo pipefail`
+
+OS   = $(shell uname -s)
+ARCH = $(shell uname -m)
 
 GO111MODULE = on
 GOFLAGS     = -mod=vendor
@@ -183,10 +187,12 @@ toolset:
 		go generate tools.go; \
 	)
 
+ifdef GO_VERSIONS
+
 define go_tpl
 .PHONY: go$(1)
 go$(1):
-	docker run \
+	@docker run \
 		--rm -it \
 		-v $(PWD):/src \
 		-w /src \
@@ -194,7 +200,9 @@ go$(1):
 endef
 
 render_go_tpl = $(eval $(call go_tpl,$(version)))
-$(foreach version,1.12 1.13 1.14,$(render_go_tpl))
+$(foreach version,$(GO_VERSIONS),$(render_go_tpl))
+
+endif
 
 
 .PHONY: clean

@@ -85,7 +85,7 @@ func TestApplication_Run(t *testing.T) {
 			app.Commander = tc.cmd()
 			app.Shutdown = func(code int) { panic(assert.Equal(t, tc.expected, code)) }
 			assert.Panics(t, func() { app.run() })
-			assert.Contains(t, buf.String(), "Version dev")
+			assert.Contains(t, buf.String(), "Version (devel)")
 		})
 	}
 }

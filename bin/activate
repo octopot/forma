@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 
 deactivate () {
+    unset _ARCH
     unset _BINPATH
-    unset _ROOT
+    unset _OS
     if [[ -v _OLD_GO111MODULE ]]; then
         export GO111MODULE="${_OLD_GO111MODULE}"
         if [[ -z "${_OLD_GO111MODULE}" ]]; then
@@ -81,8 +82,9 @@ up () { get -u $@ }
 
 deactivate nondestructive
 
-_BINPATH=$(realpath $(dirname "${BASH_SOURCE[0]:-$0}"))
-_ROOT=$(dirname "${_BINPATH}")/
+_OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+_ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+_BINPATH=$(realpath $(dirname "${BASH_SOURCE[0]:-$0}"))/"${_OS}/${_ARCH}"
 
 _OLD_GO111MODULE="${GO111MODULE}"
 _OLD_GOBIN="${GOBIN}"

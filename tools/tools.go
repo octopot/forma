@@ -5,15 +5,25 @@
 package tools
 
 import (
+	_ "github.com/go-swagger/go-swagger/cmd/swagger"
+	_ "github.com/gogo/protobuf/protoc-gen-gofast"
 	_ "github.com/golang/mock/mockgen"
+	_ "github.com/golang/protobuf/protoc-gen-go"
 	_ "github.com/golangci/golangci-lint/cmd/golangci-lint"
+	_ "github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger"
 	_ "github.com/kamilsk/egg"
 	_ "github.com/mailru/easyjson/easyjson"
+	_ "github.com/twitchtv/twirp/protoc-gen-twirp"
 	_ "golang.org/x/tools/cmd/goimports"
 )
 
+//go:generate go install github.com/go-swagger/go-swagger/cmd/swagger
+//go:generate go install github.com/gogo/protobuf/protoc-gen-gofast
 //go:generate go install github.com/golang/mock/mockgen
+//go:generate go install github.com/golang/protobuf/protoc-gen-go
 //go:generate go install github.com/golangci/golangci-lint/cmd/golangci-lint
+//go:generate go install github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
 //go:generate go install github.com/kamilsk/egg
 //go:generate go install github.com/mailru/easyjson/easyjson
+//go:generate go install github.com/twitchtv/twirp/protoc-gen-twirp
 //go:generate go install golang.org/x/tools/cmd/goimports

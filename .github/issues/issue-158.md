@@ -1,13 +1,25 @@
 ---
-id: 158
-database_id: 347723221
-node_id: MDU6SXNzdWUzNDc3MjMyMjE=
-status: closed
-title: "add --dry-run option for ctl command"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNDc3MjMyMjE=
+databaseId: 347723221
+number: 158
 url: https://github.com/octopot/forma/issues/158
-created_at: 2018-08-05T19:11:49Z
-updated_at: 2018-08-08T16:34:00Z
+title: "add --dry-run option for ctl command"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-08-05T19:11:49Z
+updatedAt: 2018-08-08T16:34:00Z
+lastEditedAt: null
+closedAt: 2018-08-08T16:34:00Z
 ---
 
 # add --dry-run option for ctl command

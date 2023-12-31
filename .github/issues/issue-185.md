@@ -1,13 +1,25 @@
 ---
-id: 185
-database_id: 372350499
-node_id: MDU6SXNzdWUzNzIzNTA0OTk=
-status: open
-title: "remove api v1"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUzNzIzNTA0OTk=
+databaseId: 372350499
+number: 185
 url: https://github.com/octopot/forma/issues/185
-created_at: 2018-10-21T19:53:36Z
-updated_at: 2018-10-21T19:53:36Z
+title: "remove api v1"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-3]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2018-10-21T19:53:36Z
+updatedAt: 2018-10-21T19:53:36Z
+lastEditedAt: null
+closedAt: null
 ---
 
 # remove api v1

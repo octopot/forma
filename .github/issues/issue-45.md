@@ -1,13 +1,25 @@
 ---
-id: 45
-database_id: 280782010
-node_id: MDU6SXNzdWUyODA3ODIwMTA=
-status: closed
-title: "code quality problems"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUyODA3ODIwMTA=
+databaseId: 280782010
+number: 45
 url: https://github.com/octopot/forma/issues/45
-created_at: 2017-12-10T04:41:40Z
-updated_at: 2017-12-13T04:34:43Z
+title: "code quality problems"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-12-10T04:41:40Z
+updatedAt: 2017-12-13T04:34:43Z
+lastEditedAt: 2017-12-10T09:31:39Z
+closedAt: 2017-12-13T04:34:43Z
 ---
 
 # code quality problems

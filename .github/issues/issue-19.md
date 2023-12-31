@@ -1,13 +1,25 @@
 ---
-id: 19
-database_id: 275250932
-node_id: MDU6SXNzdWUyNzUyNTA5MzI=
-status: closed
-title: "integrate go mock"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzUyNTA5MzI=
+databaseId: 275250932
+number: 19
 url: https://github.com/octopot/forma/issues/19
-created_at: 2017-11-20T06:37:52Z
-updated_at: 2017-11-23T12:04:24Z
+title: "integrate go mock"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-20T06:37:52Z
+updatedAt: 2017-11-23T12:04:24Z
+lastEditedAt: null
+closedAt: 2017-11-23T12:04:24Z
 ---
 
 # integrate go mock

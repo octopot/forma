@@ -1,13 +1,25 @@
 ---
-id: 93
-database_id: 318098399
-node_id: MDU6SXNzdWUzMTgwOTgzOTk=
-status: closed
-title: "generate bash completion"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzMTgwOTgzOTk=
+databaseId: 318098399
+number: 93
 url: https://github.com/octopot/forma/issues/93
-created_at: 2018-04-26T16:06:52Z
-updated_at: 2018-05-04T09:46:35Z
+title: "generate bash completion"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-04-26T16:06:52Z
+updatedAt: 2018-05-04T09:46:35Z
+lastEditedAt: null
+closedAt: 2018-05-04T09:46:35Z
 ---
 
 # generate bash completion

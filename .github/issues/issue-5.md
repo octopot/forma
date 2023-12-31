@@ -1,13 +1,25 @@
 ---
-id: 5
-database_id: 274157695
-node_id: MDU6SXNzdWUyNzQxNTc2OTU=
-status: closed
-title: "add nginx integration"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzQxNTc2OTU=
+databaseId: 274157695
+number: 5
 url: https://github.com/octopot/forma/issues/5
-created_at: 2017-11-15T13:33:36Z
-updated_at: 2017-11-16T18:44:57Z
+title: "add nginx integration"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-15T13:33:36Z
+updatedAt: 2017-11-16T18:44:57Z
+lastEditedAt: 2017-11-16T18:44:55Z
+closedAt: 2017-11-16T18:44:57Z
 ---
 
 # add nginx integration

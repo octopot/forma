@@ -1,13 +1,25 @@
 ---
-id: 137
-database_id: 343059550
-node_id: MDU6SXNzdWUzNDMwNTk1NTA=
-status: closed
-title: "use net.Listen instead of http.ListenAndServe"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUzNDMwNTk1NTA=
+databaseId: 343059550
+number: 137
 url: https://github.com/octopot/forma/issues/137
-created_at: 2018-07-20T10:40:12Z
-updated_at: 2018-07-20T11:01:05Z
+title: "use net.Listen instead of http.ListenAndServe"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-07-20T10:40:12Z
+updatedAt: 2018-07-20T11:01:05Z
+lastEditedAt: null
+closedAt: 2018-07-20T11:01:05Z
 ---
 
 # use net.Listen instead of http.ListenAndServe

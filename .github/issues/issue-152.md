@@ -1,13 +1,27 @@
 ---
-id: 152
-database_id: 346490022
-node_id: MDU6SXNzdWUzNDY0OTAwMjI=
-status: closed
-title: "add interface casting to test"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNDY0OTAwMjI=
+databaseId: 346490022
+number: 152
 url: https://github.com/octopot/forma/issues/152
-created_at: 2018-08-01T08:00:53Z
-updated_at: 2018-08-01T12:16:31Z
+title: "add interface casting to test"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-08-01T08:00:53Z
+updatedAt: 2018-08-01T12:16:31Z
+lastEditedAt: null
+closedAt: 2018-08-01T12:16:31Z
 ---
 
 # add interface casting to test
+
+

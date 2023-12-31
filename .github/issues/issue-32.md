@@ -1,13 +1,25 @@
 ---
-id: 32
-database_id: 277348085
-node_id: MDU6SXNzdWUyNzczNDgwODU=
-status: closed
-title: "schema.Validate"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzczNDgwODU=
+databaseId: 277348085
+number: 32
 url: https://github.com/octopot/forma/issues/32
-created_at: 2017-11-28T11:20:20Z
-updated_at: 2017-12-05T08:31:20Z
+title: "schema.Validate"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-28T11:20:20Z
+updatedAt: 2017-12-05T08:31:20Z
+lastEditedAt: null
+closedAt: 2017-12-05T08:31:20Z
 ---
 
 # schema.Validate

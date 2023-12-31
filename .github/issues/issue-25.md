@@ -1,13 +1,25 @@
 ---
-id: 25
-database_id: 276514791
-node_id: MDU6SXNzdWUyNzY1MTQ3OTE=
-status: closed
-title: "errors package"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUyNzY1MTQ3OTE=
+databaseId: 276514791
+number: 25
 url: https://github.com/octopot/forma/issues/25
-created_at: 2017-11-24T04:56:28Z
-updated_at: 2017-11-27T21:10:38Z
+title: "errors package"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-24T04:56:28Z
+updatedAt: 2017-11-27T21:10:38Z
+lastEditedAt: null
+closedAt: 2017-11-27T21:10:38Z
 ---
 
 # errors package

@@ -1,13 +1,25 @@
 ---
-id: 163
-database_id: 350392326
-node_id: MDU6SXNzdWUzNTAzOTIzMjY=
-status: open
-title: "dump config"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNTAzOTIzMjY=
+databaseId: 350392326
+number: 163
 url: https://github.com/octopot/forma/issues/163
-created_at: 2018-08-14T11:42:38Z
-updated_at: 2018-08-31T15:46:45Z
+title: "dump config"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-4]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2018-08-14T11:42:38Z
+updatedAt: 2018-08-31T15:46:45Z
+lastEditedAt: null
+closedAt: null
 ---
 
 # dump config

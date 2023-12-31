@@ -1,13 +1,26 @@
 ---
-id: 175
-database_id: 359378600
-node_id: MDU6SXNzdWUzNTkzNzg2MDA=
-status: closed
-title: "right listen"
-labels: ["type:refactoring","status:declined"]
+code: null
+id: MDU6SXNzdWUzNTkzNzg2MDA=
+databaseId: 359378600
+number: 175
 url: https://github.com/octopot/forma/issues/175
-created_at: 2018-09-12T08:54:39Z
-updated_at: 2018-10-17T13:38:41Z
+title: "right listen"
+issueType: null
+labels:
+  - "type:refactoring"
+  - "status:declined"
+assignees:
+  - kamilsk
+milestone: "[[milestone-3]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-09-12T08:54:39Z
+updatedAt: 2018-10-17T13:38:41Z
+lastEditedAt: null
+closedAt: 2018-10-16T08:14:12Z
 ---
 
 # right listen
@@ -27,3 +40,7 @@ func Listen(host string, port uint16) (net.Listener, error) {
   return listener, nil
 }
 ```
+
+<!-- 2018-10-16T08:14Z https://github.com/octopot/forma/issues/175#issuecomment-430143896
+won't do
+-->

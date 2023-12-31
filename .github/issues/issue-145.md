@@ -1,13 +1,25 @@
 ---
-id: 145
-database_id: 343947515
-node_id: MDU6SXNzdWUzNDM5NDc1MTU=
-status: closed
-title: "template_dir must be equal to static by default"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUzNDM5NDc1MTU=
+databaseId: 343947515
+number: 145
 url: https://github.com/octopot/forma/issues/145
-created_at: 2018-07-24T09:03:51Z
-updated_at: 2018-07-28T16:49:48Z
+title: "template_dir must be equal to static by default"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-07-24T09:03:51Z
+updatedAt: 2018-07-28T16:49:48Z
+lastEditedAt: null
+closedAt: 2018-07-28T16:49:48Z
 ---
 
 # template_dir must be equal to static by default

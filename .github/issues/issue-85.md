@@ -1,13 +1,25 @@
 ---
-id: 85
-database_id: 308375723
-node_id: MDU6SXNzdWUzMDgzNzU3MjM=
-status: closed
-title: "add expvar"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzMDgzNzU3MjM=
+databaseId: 308375723
+number: 85
 url: https://github.com/octopot/forma/issues/85
-created_at: 2018-03-25T19:03:41Z
-updated_at: 2018-03-28T12:25:42Z
+title: "add expvar"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-03-25T19:03:41Z
+updatedAt: 2018-03-28T12:25:42Z
+lastEditedAt: null
+closedAt: 2018-03-28T12:25:42Z
 ---
 
 # add expvar

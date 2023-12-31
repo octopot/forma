@@ -1,13 +1,25 @@
 ---
-id: 16
-database_id: 275060598
-node_id: MDU6SXNzdWUyNzUwNjA1OTg=
-status: open
-title: "integrate with swagger"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzUwNjA1OTg=
+databaseId: 275060598
+number: 16
 url: https://github.com/octopot/forma/issues/16
-created_at: 2017-11-18T07:25:02Z
-updated_at: 2018-09-21T12:24:52Z
+title: "integrate with swagger"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-3]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2017-11-18T07:25:02Z
+updatedAt: 2018-09-21T12:24:52Z
+lastEditedAt: 2018-07-18T15:35:58Z
+closedAt: null
 ---
 
 # integrate with swagger

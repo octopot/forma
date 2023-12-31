@@ -1,13 +1,25 @@
 ---
-id: 134
-database_id: 342735878
-node_id: MDU6SXNzdWUzNDI3MzU4Nzg=
-status: open
-title: "docker-compose.demo.yml definitions"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNDI3MzU4Nzg=
+databaseId: 342735878
+number: 134
 url: https://github.com/octopot/forma/issues/134
-created_at: 2018-07-19T13:48:11Z
-updated_at: 2018-08-31T15:42:34Z
+title: "docker-compose.demo.yml definitions"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-4]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2018-07-19T13:48:11Z
+updatedAt: 2018-08-31T15:42:34Z
+lastEditedAt: 2018-08-25T18:55:40Z
+closedAt: null
 ---
 
 # docker-compose.demo.yml definitions

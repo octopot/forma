@@ -1,13 +1,25 @@
 ---
-id: 157
-database_id: 347723137
-node_id: MDU6SXNzdWUzNDc3MjMxMzc=
-status: closed
-title: "add -o, --output for ctl command"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNDc3MjMxMzc=
+databaseId: 347723137
+number: 157
 url: https://github.com/octopot/forma/issues/157
-created_at: 2018-08-05T19:10:29Z
-updated_at: 2018-08-08T14:13:54Z
+title: "add -o, --output for ctl command"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-08-05T19:10:29Z
+updatedAt: 2018-08-08T14:13:54Z
+lastEditedAt: null
+closedAt: 2018-08-08T14:13:54Z
 ---
 
 # add -o, --output for ctl command

@@ -1,13 +1,25 @@
 ---
-id: 10
-database_id: 274223232
-node_id: MDU6SXNzdWUyNzQyMjMyMzI=
-status: closed
-title: "prepare supporting different format for schema"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzQyMjMyMzI=
+databaseId: 274223232
+number: 10
 url: https://github.com/octopot/forma/issues/10
-created_at: 2017-11-15T16:38:10Z
-updated_at: 2017-11-16T19:16:21Z
+title: "prepare supporting different format for schema"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-15T16:38:10Z
+updatedAt: 2017-11-16T19:16:21Z
+lastEditedAt: null
+closedAt: 2017-11-16T19:16:20Z
 ---
 
 # prepare supporting different format for schema

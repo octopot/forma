@@ -1,13 +1,25 @@
 ---
-id: 174
-database_id: 357252196
-node_id: MDU6SXNzdWUzNTcyNTIxOTY=
-status: open
-title: "support captcha"
-labels: ["type:feature"]
+code: null
+id: MDU6SXNzdWUzNTcyNTIxOTY=
+databaseId: 357252196
+number: 174
 url: https://github.com/octopot/forma/issues/174
-created_at: 2018-09-05T14:19:14Z
-updated_at: 2018-09-05T14:19:14Z
+title: "support captcha"
+issueType: null
+labels:
+  - "type:feature"
+assignees:
+  - kamilsk
+milestone: "[[milestone-4]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2018-09-05T14:19:14Z
+updatedAt: 2018-09-05T14:19:14Z
+lastEditedAt: null
+closedAt: null
 ---
 
 # support captcha

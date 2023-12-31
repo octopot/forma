@@ -1,13 +1,25 @@
 ---
-id: 120
-database_id: 340621958
-node_id: MDU6SXNzdWUzNDA2MjE5NTg=
-status: closed
-title: "ctl command"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUzNDA2MjE5NTg=
+databaseId: 340621958
+number: 120
 url: https://github.com/octopot/forma/issues/120
-created_at: 2018-07-12T12:44:41Z
-updated_at: 2018-08-03T19:30:50Z
+title: "ctl command"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-2]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-07-12T12:44:41Z
+updatedAt: 2018-08-03T19:30:50Z
+lastEditedAt: null
+closedAt: 2018-08-03T19:30:50Z
 ---
 
 # ctl command

@@ -1,13 +1,25 @@
 ---
-id: 83
-database_id: 305874005
-node_id: MDU6SXNzdWUzMDU4NzQwMDU=
-status: closed
-title: "external configuration for router"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUzMDU4NzQwMDU=
+databaseId: 305874005
+number: 83
 url: https://github.com/octopot/forma/issues/83
-created_at: 2018-03-16T10:22:57Z
-updated_at: 2018-03-30T14:09:59Z
+title: "external configuration for router"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-03-16T10:22:57Z
+updatedAt: 2018-03-30T14:09:59Z
+lastEditedAt: null
+closedAt: 2018-03-30T14:09:21Z
 ---
 
 # external configuration for router
@@ -27,3 +39,18 @@ as example
 	}
 ```
 this is a not a part of chi router, also as `expvar`.
+
+<!-- 2018-03-17T07:55Z https://github.com/octopot/forma/issues/83#issuecomment-373902118
+use specification instead, like
+
+```
+{http.Get, "/api/v1/path"},
+{http.Post, "/api/v1/path"},
+{http.Get, "/debug/pprof"},
+etc.
+```
+-->
+
+<!-- 2018-03-30T14:09Z https://github.com/octopot/forma/issues/83#issuecomment-377532072
+will not do, but specification is good part, it will be done by https://github.com/kamilsk/form-api/issues/16
+-->

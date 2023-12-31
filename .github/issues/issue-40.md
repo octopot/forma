@@ -1,13 +1,25 @@
 ---
-id: 40
-database_id: 279633734
-node_id: MDU6SXNzdWUyNzk2MzM3MzQ=
-status: closed
-title: "make target for backup/restore database"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzk2MzM3MzQ=
+databaseId: 279633734
+number: 40
 url: https://github.com/octopot/forma/issues/40
-created_at: 2017-12-06T05:40:47Z
-updated_at: 2017-12-06T10:46:51Z
+title: "make target for backup/restore database"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-12-06T05:40:47Z
+updatedAt: 2017-12-06T10:46:51Z
+lastEditedAt: 2017-12-06T05:40:53Z
+closedAt: 2017-12-06T10:46:51Z
 ---
 
 # make target for backup/restore database

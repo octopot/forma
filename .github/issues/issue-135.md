@@ -1,13 +1,25 @@
 ---
-id: 135
-database_id: 342737952
-node_id: MDU6SXNzdWUzNDI3Mzc5NTI=
-status: open
-title: "template environment"
-labels: ["type:feature"]
+code: null
+id: MDU6SXNzdWUzNDI3Mzc5NTI=
+databaseId: 342737952
+number: 135
 url: https://github.com/octopot/forma/issues/135
-created_at: 2018-07-19T13:53:22Z
-updated_at: 2018-09-04T12:40:03Z
+title: "template environment"
+issueType: null
+labels:
+  - "type:feature"
+assignees:
+  - kamilsk
+milestone: "[[milestone-3]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2018-07-19T13:53:22Z
+updatedAt: 2018-09-04T12:40:03Z
+lastEditedAt: null
+closedAt: null
 ---
 
 # template environment

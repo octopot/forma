@@ -1,13 +1,25 @@
 ---
-id: 26
-database_id: 276515001
-node_id: MDU6SXNzdWUyNzY1MTUwMDE=
-status: closed
-title: "support accept header"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUyNzY1MTUwMDE=
+databaseId: 276515001
+number: 26
 url: https://github.com/octopot/forma/issues/26
-created_at: 2017-11-24T04:58:41Z
-updated_at: 2017-12-12T16:14:57Z
+title: "support accept header"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-24T04:58:41Z
+updatedAt: 2017-12-12T16:14:57Z
+lastEditedAt: null
+closedAt: 2017-12-12T16:14:57Z
 ---
 
 # support accept header
@@ -42,3 +54,7 @@ rw.Header().Set("Content-Type", ct)
 fmt.Fprintf(rw, "get form schema in format %q with Content-Type %q", format, ct)
 */
 ```
+
+<!-- 2017-11-24T16:53Z https://github.com/octopot/forma/issues/26#issuecomment-346868269
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept
+-->

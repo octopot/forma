@@ -1,13 +1,25 @@
 ---
-id: 18
-database_id: 275193587
-node_id: MDU6SXNzdWUyNzUxOTM1ODc=
-status: closed
-title: "integrate with pq"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzUxOTM1ODc=
+databaseId: 275193587
+number: 18
 url: https://github.com/octopot/forma/issues/18
-created_at: 2017-11-19T21:21:02Z
-updated_at: 2017-11-20T06:35:01Z
+title: "integrate with pq"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-19T21:21:02Z
+updatedAt: 2017-11-20T06:35:01Z
+lastEditedAt: null
+closedAt: 2017-11-20T06:35:01Z
 ---
 
 # integrate with pq

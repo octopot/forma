@@ -1,13 +1,25 @@
 ---
-id: 47
-database_id: 281378605
-node_id: MDU6SXNzdWUyODEzNzg2MDU=
-status: open
-title: "add target for stress test"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyODEzNzg2MDU=
+databaseId: 281378605
+number: 47
 url: https://github.com/octopot/forma/issues/47
-created_at: 2017-12-12T13:10:20Z
-updated_at: 2018-08-31T15:40:39Z
+title: "add target for stress test"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-4]]"
+parent: null
+issueFields: {}
+state: OPEN
+stateReason: null
+duplicateOf: null
+createdAt: 2017-12-12T13:10:20Z
+updatedAt: 2018-08-31T15:40:39Z
+lastEditedAt: null
+closedAt: null
 ---
 
 # add target for stress test

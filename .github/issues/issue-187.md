@@ -1,13 +1,25 @@
 ---
-id: 187
-database_id: 388784403
-node_id: MDU6SXNzdWUzODg3ODQ0MDM=
-status: closed
-title: "do not include UUID by context"
-labels: ["type:refactoring"]
+code: null
+id: MDU6SXNzdWUzODg3ODQ0MDM=
+databaseId: 388784403
+number: 187
 url: https://github.com/octopot/forma/issues/187
-created_at: 2018-12-07T19:29:45Z
-updated_at: 2018-12-31T14:30:52Z
+title: "do not include UUID by context"
+issueType: null
+labels:
+  - "type:refactoring"
+assignees:
+  - kamilsk
+milestone: "[[milestone-3]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2018-12-07T19:29:45Z
+updatedAt: 2018-12-31T14:30:52Z
+lastEditedAt: null
+closedAt: 2018-12-31T14:30:52Z
 ---
 
 # do not include UUID by context

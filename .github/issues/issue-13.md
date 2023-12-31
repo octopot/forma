@@ -1,13 +1,27 @@
 ---
-id: 13
-database_id: 274631875
-node_id: MDU6SXNzdWUyNzQ2MzE4NzU=
-status: closed
-title: "add profiling port"
-labels: ["type:task"]
+code: null
+id: MDU6SXNzdWUyNzQ2MzE4NzU=
+databaseId: 274631875
+number: 13
 url: https://github.com/octopot/forma/issues/13
-created_at: 2017-11-16T19:16:35Z
-updated_at: 2017-11-22T14:57:32Z
+title: "add profiling port"
+issueType: null
+labels:
+  - "type:task"
+assignees:
+  - kamilsk
+milestone: "[[milestone-1]]"
+parent: null
+issueFields: {}
+state: CLOSED
+stateReason: COMPLETED
+duplicateOf: null
+createdAt: 2017-11-16T19:16:35Z
+updatedAt: 2017-11-22T14:57:32Z
+lastEditedAt: null
+closedAt: 2017-11-22T14:57:32Z
 ---
 
 # add profiling port
+
+

@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/go-swagger/go-swagger v0.23.0
-	github.com/gogo/protobuf v1.3.1
+	github.com/gogo/protobuf v1.3.2
 	github.com/golang/mock v1.4.3
 	github.com/golang/protobuf v1.4.0
 	github.com/golangci/golangci-lint v1.25.1
